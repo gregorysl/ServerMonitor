@@ -1,46 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from "react-dom";
-import 'react-table/react-table.css'
+import { connect } from 'react-redux';
 import ReactTable from "react-table";
+import 'react-table/react-table.css'
+import { selectImageAction } from '../actions/actions'
+import { debuglog } from 'util';
 
 
-const range = len => {
-  const arr = [];
-  for (let i = 0; i < len; i++) {
-    arr.push(i);
-  }
-  return arr;
-};
-const newPerson = () => {
-  const statusChance = Math.random();
-  return {
-    firstName: "asd",
-    lastName: "zxcasf",
-    age: Math.floor(Math.random() * 30),
-    visits: Math.floor(Math.random() * 100),
-    progress: Math.floor(Math.random() * 100),
-    status:
-      statusChance > 0.66
-        ? "relationship"
-        : statusChance > 0.33 ? "complicated" : "single"
-  };
-};
 
-export function makeData(len = 5553) {
-  return range(len).map(d => {
-    return {
-      ...newPerson(),
-      children: range(10).map(newPerson)
-    };
-  });
-}
 
-class Table extends React.Component {
+class Table extends Component {
   constructor() {
     super();
+    let data = makeData()
     this.state = {
-      data: makeData()
+      data: data
     };
+  }
+  componentDidMount(){
+    this.props.dispatch(selectImageAction(666));
   }
   render() {
     const { data } = this.state;
@@ -93,4 +71,9 @@ class Table extends React.Component {
     );
   }
 }
-export default Table;
+
+const mapStateToProps = (data) =({
+  tableData: data.data
+});
+
+export default connect(mapStateToProps)(Table);
