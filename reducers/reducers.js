@@ -5,15 +5,17 @@ const initialState = {
     data: []
   };
 
-const tableReducer =  function (state = initialState.data,action){
+const tableReducer =  function (state = initialState,action){
       switch(action.type){
           case types.GET_TABLE_DATA_SUCCESS:
-            return [...state, action.data];
+            return {...state, data: action.data};
           default:
           return state;
       }
 };
 
-const rootReducer = combineReducers({tableReducer});
+const rootReducer = combineReducers({
+  table: tableReducer
+});
 
 export default rootReducer;

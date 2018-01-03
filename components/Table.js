@@ -10,22 +10,17 @@ import { debuglog } from 'util';
 
 
 class Table extends Component {
-  constructor() {
-    super();
-    let data = makeData()
-    this.state = {
-      data: data
-    };
+  constructor(props) {
+    super(props);
   }
   componentDidMount(){
     this.props.dispatch(selectImageAction(666));
   }
   render() {
-    const { data } = this.state;
     return (
       <div>
         <ReactTable
-          data={data}
+          data={this.props.tableData}
           columns={[
             {
               Header: "Name",
@@ -72,8 +67,8 @@ class Table extends Component {
   }
 }
 
-const mapStateToProps = (data) =({
-  tableData: data.data
-});
+const mapStateToProps = (state) => ({
+    tableData: state.table.data
+  });
 
 export default connect(mapStateToProps)(Table);
