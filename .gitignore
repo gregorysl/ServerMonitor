@@ -6,4 +6,7 @@ node_modules
 # Only apps should have lockfiles
 yarn.lock
 package-lock.json
+dist
+dist/server_monitor.css
 dist/server_monitor.js
+npm-debug.log
