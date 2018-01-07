@@ -1,4 +1,3 @@
 {
-    "presets": ["env", "react", "stage-2"],
-    "plugins": ["transform-class-properties", "transform-runtime"]
+  "presets": ["env", "stage-2", "react",   ["es2015", { "modules": false }]]
 }

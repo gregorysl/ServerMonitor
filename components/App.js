@@ -1,15 +1,10 @@
-import React from 'react';
-import { render } from "react-dom";
-import Table from './Table'
+import React from "react";
+import Table from "./table";
 
-class App extends React.Component {
-  constructor() {
-    super();
-  }
-  render() {
-    return (
-      <Table/>
-    );
-  }
-}
+const App = () => {
+  return (
+    <Table/>
+  );
+};
+
 export default App;
