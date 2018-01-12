@@ -1,4 +1,4 @@
-import './styles/style.scss';
+import './styles/style.less';
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
