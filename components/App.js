@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "./table";
+import SimpleTable from "./table";
 import Chart from "./Chart/chart";
 import {  Row, Col  } from 'antd'
 
@@ -11,7 +11,7 @@ const App = () => {
         <Col span={8}><Chart title={"Processo1r"}/></Col>
         <Col span={8}><Chart title={"Process2r"}/></Col>
       </Row>
-      <Table/>
+      <SimpleTable/>
     </div>
   );
 };
