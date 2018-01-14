@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { render } from "react-dom";
 import { connect } from 'react-redux';
-import 'react-table/react-table.css'
 import { selectImageAction } from '../actions/actions'
 
 import { Table } from 'antd';
