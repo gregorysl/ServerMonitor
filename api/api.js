@@ -1,28 +1,20 @@
-const range = len => {
+const range = (len) => {
   const arr = [];
-  for (let i = 0; i < len; i++) {
+  for (let i = 0; i < len; i += 1) {
     arr.push(i);
   }
   return arr;
 };
-const newPerson = () => {
-  const statusChance = Math.random();
-  return {
-    firstName: "asd",
-    lastName: "zxcasf",
-    age: Math.floor(Math.random() * 30),
-    visits: Math.floor(Math.random() * 100),
-    status: statusChance > 0.66 ?
-      "relationship" :
-      statusChance > 0.33 ? "complicated" : "single"
-  };
-};
+const newPerson = () => ({
+  firstName: 'asd',
+  lastName: 'zxcasf',
+  age: Math.floor(Math.random() * 30),
+  visits: Math.floor(Math.random() * 100),
+});
 
-export function makeData(len = 10) {
-  return range(len).map(d => {
-    return {
-      key: d,
-      ...newPerson()
-    };
-  });
+export default function makeData(len = 10) {
+  return range(len).map(d => ({
+    key: d,
+    ...newPerson(),
+  }));
 }

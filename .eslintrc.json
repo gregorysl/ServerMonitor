@@ -4,5 +4,11 @@
         "react",
         "jsx-a11y",
         "import"
-    ]
+    ],
+    "globals": {
+      "document": true
+    },
+    "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    }
 }

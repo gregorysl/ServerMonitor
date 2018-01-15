@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "parcel index.html",
-    "lint": "eslint ./*",
-    "lint:watch": "yarn run lint -- --watch",
+    "lint": "./node_modules/.bin/eslint .",
+    "lint:watch": "./node_modules/.bin/eslint . --watch",
     "build": "parcel build index.js"
   },
   "author": "gregorysl",

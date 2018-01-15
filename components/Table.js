@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { render } from "react-dom";
 import { connect } from 'react-redux';
-import { selectImageAction } from '../actions/actions'
-
 import { Table } from 'antd';
+import PropTypes from 'prop-types';
+import { selectImageAction } from '../actions/actions';
+
 
 const columns = [
   { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
@@ -11,17 +11,14 @@ const columns = [
   { title: 'Visits', dataIndex: 'visits', key: 'visits' },
   { title: 'Age', dataIndex: 'age', key: 'age' },
   { title: 'Status', dataIndex: 'status', key: 'status' },
-  { title: 'Action', dataIndex: '', key: 'x', render: () => <a href="#">Delete</a> },
+  {
+    title: 'Action', dataIndex: '', key: 'x', render: () => <button href="#">Delete</button>,
+  },
 ];
 
 
-
-
 class SimpleTable extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount(){
+  componentDidMount() {
     this.props.dispatch(selectImageAction(10));
   }
   render() {
@@ -31,8 +28,13 @@ class SimpleTable extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-    tableData: state.table.data
-  });
+const mapStateToProps = state => ({
+  tableData: state.table.data,
+});
+
+SimpleTable.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  tableData: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+};
 
 export default connect(mapStateToProps)(SimpleTable);
