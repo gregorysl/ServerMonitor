@@ -34,7 +34,7 @@ const mapStateToProps = state => ({
 
 SimpleTable.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  tableData: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps)(SimpleTable);

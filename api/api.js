@@ -12,7 +12,7 @@ const newPerson = () => ({
   visits: Math.floor(Math.random() * 100),
 });
 
-export default function makeData(len = 10) {
+export default function (len = 10) {
   return range(len).map(d => ({
     key: d,
     ...newPerson(),
