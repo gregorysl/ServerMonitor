@@ -14,8 +14,18 @@ function tableReducer(state = initialState, action) {
   }
 }
 
+function servicesReducer(state = initialState, action) {
+  switch (action.type) {
+    case types.GET_SERVICES_DATA_SUCCESS:
+      return { ...state, data: action.data };
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   table: tableReducer,
+  service: servicesReducer,
 });
 
 export default rootReducer;

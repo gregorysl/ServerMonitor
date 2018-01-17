@@ -19,7 +19,7 @@ const columns = [
 
 class SimpleTable extends Component {
   componentDidMount() {
-    this.props.dispatch(selectImageAction(10));
+    this.props.dispatch(selectImageAction());
   }
   render() {
     return (

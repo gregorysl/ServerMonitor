@@ -1,8 +1,9 @@
-import { fork } from 'redux-saga/effects';
-import { watchGetTable } from './watcher';
+import { all, fork } from 'redux-saga/effects';
+import { watchGetTable, watchGetServices } from './watcher';
 
 export default function* () {
-  yield [
+  yield all([
     fork(watchGetTable),
-  ];
+    fork(watchGetServices),
+  ]);
 }

@@ -12,9 +12,18 @@ const newPerson = () => ({
   visits: Math.floor(Math.random() * 100),
 });
 
-export default function (len = 10) {
+export function getPeople(len = 10) {
   return range(len).map(d => ({
     key: d,
     ...newPerson(),
+  }));
+}
+
+export function getServices() {
+  return range(5).map(d => ({
+    key: d,
+    url: 'test',
+    name: `test ${d}`,
+    message: 'working',
   }));
 }
