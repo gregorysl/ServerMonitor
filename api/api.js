@@ -12,11 +12,19 @@ const newPerson = () => ({
   visits: Math.floor(Math.random() * 100),
 });
 
+const columns = [
+  { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
+  { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
+  { title: 'Visits', dataIndex: 'visits', key: 'visits' },
+  { title: 'Age', dataIndex: 'age', key: 'age' },
+  { title: 'Status', dataIndex: 'status', key: 'status' },
+];
+
 export function getPeople(len = 10) {
-  return range(len).map(d => ({
-    key: d,
-    ...newPerson(),
-  }));
+  return {
+    columns,
+    data: range(len).map(d => ({ key: d, ...newPerson() })),
+  };
 }
 
 export function getServices() {
