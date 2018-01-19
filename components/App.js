@@ -7,9 +7,9 @@ import Chart from './Chart/chart';
 const App = () => (
   <div>
     <Row>
-      <Col span={8}><Chart title="Processor" /></Col>
-      <Col span={8}><Chart title="Processo1r" /></Col>
-      <Col span={8}><Chart title="Process2r" /></Col>
+      <Col span={8}><Chart title="Processor" percent={12} /></Col>
+      <Col span={8}><Chart title="HDD" percent={75} /></Col>
+      <Col span={8}><Chart title="Ram" percent={23} /></Col>
     </Row>
     <SimpleTable />
     <ServicesList />
