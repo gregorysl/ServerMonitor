@@ -5,10 +5,15 @@ const initialState = {
   data: [],
 };
 
-function tableReducer(state = initialState, action) {
+const tableInitialState = {
+  columns: [],
+  data: [],
+};
+
+function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.GET_TABLE_DATA_SUCCESS:
-      return { ...state, data: action.data };
+      return { ...state, ...action.data };
     default:
       return state;
   }

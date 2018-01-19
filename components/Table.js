@@ -23,25 +23,25 @@ class SimpleTable extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.tableData !== this.props.tableData) {
+    if (nextProps.data !== this.props.data) {
       this.setState({ columns: [...nextProps.columns, ...action] });
     }
   }
   render() {
     return (
-      <Table columns={this.state.columns} dataSource={this.props.tableData} pagination={false} />
+      <Table columns={this.state.columns} dataSource={this.props.data} pagination={false} />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  tableData: state.table.data.data,
-  columns: state.table.data.columns,
+  data: state.table.data,
+  columns: state.table.columns,
 });
 
 SimpleTable.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
