@@ -35,3 +35,13 @@ export function getServices() {
     message: 'working',
   }));
 }
+
+export function getHardware() {
+  return range(2).map(d => ({
+    key: `Server ${d}`,
+    data: range(3).map(x => ({
+      key: `Hardware ${x}`,
+      value: Math.floor(Math.random() * 100),
+    })),
+  }));
+}

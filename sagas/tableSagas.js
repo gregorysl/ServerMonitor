@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/effects';
-import { getPeople, getServices } from '../api/api';
+import { getPeople, getServices, getHardware } from '../api/api';
 import * as types from '../constants/actionTypes';
 
 export function* getTableData({ payload }) {
@@ -17,5 +17,14 @@ export function* getServicesData({ payload }) {
     yield put({ type: types.GET_SERVICES_DATA_SUCCESS, data });
   } catch (error) {
     yield put({ type: types.GET_SERVICES_DATA_ERROR, error });
+  }
+}
+
+export function* getHardwareData() {
+  try {
+    const data = yield call(getHardware);
+    yield put({ type: types.GET_HARDWARE_DATA_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.GET_HARDWARE_DATA_ERROR, error });
   }
 }
