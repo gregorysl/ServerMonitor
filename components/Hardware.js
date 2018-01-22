@@ -11,7 +11,7 @@ class Hardware extends Component {
   }
 
   render() {
-    const components = this.props.data.map(x => <HardwareItem data={x} />);
+    const components = this.props.data.map(x => <HardwareItem key={x.key} item={x} />);
     return (
       <div>{components}</div>
     );
