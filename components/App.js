@@ -1,5 +1,5 @@
 import React from 'react';
-import SimpleTable from './table';
+import SimpleTable from './Table';
 import ServicesList from './servicesList';
 import Hardware from './Hardware';
 
