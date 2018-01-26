@@ -2,7 +2,7 @@
   "name": "server_monitor",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently -k -r -s first \"npm run startP\" \"npm run lint:watch\"",
+    "start": "concurrently -k -r -s first \"yarn run startP\" \"yarn run lint:watch\"",
     "startP": "parcel index.html",
     "lint": "./node_modules/.bin/eslint .",
     "lint:watch": "./node_modules/.bin/esw . --watch",
@@ -16,7 +16,7 @@
     "global": "^4.3.2",
     "less": "^2.7.3",
     "moment": "^2.20.1",
-    "parcel-bundler": "https://github.com/fathyb/parcel#fix/primitive-wildcard",
+    "parcel-bundler": "^1.5.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
