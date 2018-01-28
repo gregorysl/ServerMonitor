@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Tabs } from 'antd';
 import { getHardwareAction } from '../actions/actions';
 import HardwareItem from './HardwareItem';
 
+const { TabPane } = Tabs;
 
 class Hardware extends Component {
   componentDidMount() {
@@ -11,9 +13,12 @@ class Hardware extends Component {
   }
 
   render() {
-    const components = this.props.data.map(x => <HardwareItem key={x.key} item={x} />);
+    const components = this.props.data.map(x =>
+      <TabPane tab={x.key} key={x.key}><HardwareItem item={x} /></TabPane>);
     return (
-      <div>{components}</div>
+      <Tabs defaultActiveKey="0" tabPosition="left" >
+        {components}
+      </Tabs>
     );
   }
 }
