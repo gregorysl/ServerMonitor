@@ -10,7 +10,7 @@ const configureStore = () => {
       rootReducer,
       applyMiddleware(sagaMiddleware),
     ),
-    runSaga: sagaMiddleware.run(sagas),
+    runSaga: sagaMiddleware.run(sagas)
   };
 };
 

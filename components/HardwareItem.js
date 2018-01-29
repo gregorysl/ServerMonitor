@@ -19,9 +19,9 @@ HardwareItem.propTypes = {
     key: PropTypes.string.isRequired,
     data: PropTypes.arrayOf(PropTypes.shape({
       key: PropTypes.string,
-      Value: PropTypes.string,
-    }).isRequired),
-  }).isRequired,
+      Value: PropTypes.string
+    }).isRequired)
+  }).isRequired
 };
 
 export default HardwareItem;

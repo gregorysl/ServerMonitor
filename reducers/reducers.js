@@ -3,12 +3,12 @@ import * as types from '../constants/actionTypes';
 
 const hardwareInitialState = [];
 const initialState = {
-  data: [],
+  data: []
 };
 
 const tableInitialState = {
   columns: [],
-  data: [],
+  data: []
 };
 
 function tableReducer(state = tableInitialState, action) {
@@ -41,7 +41,7 @@ function hardwareReducer(state = hardwareInitialState, action) {
 const rootReducer = combineReducers({
   table: tableReducer,
   service: servicesReducer,
-  hardware: hardwareReducer,
+  hardware: hardwareReducer
 });
 
 export default rootReducer;

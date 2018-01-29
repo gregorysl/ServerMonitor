@@ -21,12 +21,12 @@ class ServicesList extends Component {
 }
 
 const mapStateToProps = state => ({
-  serviceData: state.service.data,
+  serviceData: state.service.data
 });
 
 ServicesList.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  serviceData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  serviceData: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default connect(mapStateToProps)(ServicesList);

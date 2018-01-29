@@ -27,12 +27,12 @@ class Hardware extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.hardware,
+  data: state.hardware
 });
 
 Hardware.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default connect(mapStateToProps)(Hardware);

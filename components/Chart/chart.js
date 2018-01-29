@@ -10,6 +10,6 @@ const Chart = ({ title, percent }) => (
 
 Chart.propTypes = {
   title: PropTypes.string.isRequired,
-  percent: PropTypes.number.isRequired,
+  percent: PropTypes.number.isRequired
 };
 export default Chart;

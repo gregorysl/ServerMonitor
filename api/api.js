@@ -9,7 +9,7 @@ const newPerson = () => ({
   firstName: 'asd',
   lastName: 'zxcasf',
   age: Math.floor(Math.random() * 30),
-  visits: Math.floor(Math.random() * 100),
+  visits: Math.floor(Math.random() * 100)
 });
 
 const columns = [
@@ -17,13 +17,13 @@ const columns = [
   { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
   { title: 'Visits', dataIndex: 'visits', key: 'visits' },
   { title: 'Age', dataIndex: 'age', key: 'age' },
-  { title: 'Status', dataIndex: 'status', key: 'status' },
+  { title: 'Status', dataIndex: 'status', key: 'status' }
 ];
 
 export function getPeople(len = 10) {
   return {
     columns,
-    data: range(len).map(d => ({ key: d, ...newPerson() })),
+    data: range(len).map(d => ({ key: d, ...newPerson() }))
   };
 }
 
@@ -32,7 +32,7 @@ export function getServices() {
     key: d,
     url: 'test',
     name: `test ${d}`,
-    message: 'working',
+    message: 'working'
   }));
 }
 
@@ -41,7 +41,7 @@ export function getHardware() {
     key: `Server ${d}`,
     data: range(3).map(x => ({
       key: `Hardware ${x}`,
-      value: Math.floor(Math.random() * 100),
-    })),
+      value: Math.floor(Math.random() * 100)
+    }))
   }));
 }

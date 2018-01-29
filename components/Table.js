@@ -7,8 +7,8 @@ import { selectImageAction } from '../actions/actions';
 
 const action = [
   {
-    title: 'Action', dataIndex: '', key: 'x', render: () => <button href="#">Delete</button>,
-  },
+    title: 'Action', dataIndex: '', key: 'x', render: () => <button href="#">Delete</button>
+  }
 ];
 
 
@@ -36,13 +36,13 @@ class SimpleTable extends Component {
 
 const mapStateToProps = state => ({
   data: state.table.data,
-  columns: state.table.columns,
+  columns: state.table.columns
 });
 
 SimpleTable.propTypes = {
   dispatch: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default connect(mapStateToProps)(SimpleTable);
