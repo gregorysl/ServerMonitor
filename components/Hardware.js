@@ -13,10 +13,13 @@ class Hardware extends Component {
   }
 
   render() {
-    const components = this.props.data.map(x =>
-      <TabPane tab={x.key} key={x.key}><HardwareItem item={x} /></TabPane>);
+    const components = this.props.data.map(x => (
+      <TabPane tab={x.key} key={x.key}>
+        <HardwareItem item={x} />
+      </TabPane>
+    ));
     return (
-      <Tabs defaultActiveKey="0" tabPosition="left" >
+      <Tabs tabPosition="left" >
         {components}
       </Tabs>
     );

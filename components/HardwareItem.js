@@ -8,10 +8,7 @@ const HardwareItem = ({ item }) => {
     .map(x => <Col key={x.key} span={8}><Chart title={x.key} percent={x.value} /></Col>);
   return (
     <Row>
-      <h1>{item.key}</h1>
-      <Row>
-        {childs}
-      </Row>
+      {childs}
     </Row>
   );
 };
@@ -20,7 +17,10 @@ const HardwareItem = ({ item }) => {
 HardwareItem.propTypes = {
   item: PropTypes.shape({
     key: PropTypes.string.isRequired,
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+    data: PropTypes.arrayOf(PropTypes.shape({
+      key: PropTypes.string,
+      Value: PropTypes.string,
+    }).isRequired),
   }).isRequired,
 };
 
