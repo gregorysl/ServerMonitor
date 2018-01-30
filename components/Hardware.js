@@ -9,7 +9,7 @@ const { TabPane } = Tabs;
 
 class Hardware extends Component {
   componentDidMount() {
-    this.props.dispatch(getHardwareAction());
+    setInterval(() => { this.props.dispatch(getHardwareAction()); }, 1000);
   }
 
   render() {
