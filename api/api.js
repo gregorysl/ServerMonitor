@@ -45,3 +45,22 @@ export function getHardware() {
     }))
   }));
 }
+
+const IisColumns = [
+  { title: 'Application', dataIndex: 'key', key: 'key' },
+  { title: 'State', dataIndex: 'state', key: 'state' }
+];
+
+export function getIisApps() {
+  return {
+    columns: IisColumns,
+    data: range(5).map(d => ({
+      key: `Application ${d}`,
+      state: Math.random() < 0.5 ? 'Stopped' : 'Started',
+      children: range(3).map(x => ({
+        key: `chilren app ${d} ${x}`,
+        state: Math.random() < 0.5
+      }))
+    }))
+  };
+}

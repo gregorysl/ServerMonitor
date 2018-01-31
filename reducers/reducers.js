@@ -13,7 +13,7 @@ const tableInitialState = {
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
-    case types.GET_TABLE_DATA_SUCCESS:
+    case types.GET_IIS_APPS_SUCCESS:
       return { ...state, ...action.data };
     default:
       return state;

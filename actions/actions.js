@@ -13,3 +13,7 @@ export const getServicesAction = () => ({
 export const getHardwareAction = () => ({
   type: types.GET_HARDWARE_DATA_REQUEST
 });
+
+export const getIisAction = () => ({
+  type: types.GET_IIS_APPS_REQUEST
+});

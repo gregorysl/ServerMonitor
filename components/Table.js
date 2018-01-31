@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
-import { selectImageAction } from '../actions/actions';
+import { getIisAction } from '../actions/actions';
 
 
 const action = [
@@ -19,7 +19,7 @@ class SimpleTable extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(selectImageAction());
+    this.props.dispatch(getIisAction());
   }
 
   componentWillReceiveProps(nextProps) {
