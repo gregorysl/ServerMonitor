@@ -3,7 +3,6 @@ import * as watch from './watcher';
 
 export default function* () {
   yield all([
-    fork(watch.watchGetTable),
     fork(watch.watchGetServices),
     fork(watch.watchGetHardware),
     fork(watch.watchGetIis)
