@@ -11,6 +11,7 @@ const action = [
   }
 ];
 
+const reducer = (accumulator, currentValue) => `${accumulator} ${currentValue.key} - ${currentValue.state}`;
 
 class SimpleTable extends Component {
   constructor(props) {
@@ -28,8 +29,16 @@ class SimpleTable extends Component {
     }
   }
   render() {
+    if (this.props.data.length === 0 && this.state.columns.length === 0) {
+      return (<h1>No IIS applications found.</h1>);
+    }
     return (
-      <Table columns={this.state.columns} dataSource={this.props.data} pagination={false} />
+      <Table
+        columns={this.state.columns}
+        expandedRowRender={record => <p style={{ margin: 0 }}>{record.children.reduce(reducer, '')}</p>}
+        dataSource={this.props.data}
+        pagination={false}
+      />
     );
   }
 }
