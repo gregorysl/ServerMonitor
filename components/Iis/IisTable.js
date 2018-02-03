@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
-import { getIisAction } from '../actions/actions';
+import AppPoolList from './AppPoolList';
+import { getIisAction } from '../../actions/actions';
 
 
 const action = [
@@ -11,9 +12,7 @@ const action = [
   }
 ];
 
-const reducer = (accumulator, currentValue) => `${accumulator} ${currentValue.key} - ${currentValue.state}`;
-
-class SimpleTable extends Component {
+class IisTable extends Component {
   constructor(props) {
     super(props);
     this.state = { columns: [] };
@@ -35,7 +34,7 @@ class SimpleTable extends Component {
     return (
       <Table
         columns={this.state.columns}
-        expandedRowRender={record => <p style={{ margin: 0 }}>{record.children.reduce(reducer, '')}</p>}
+        expandedRowRender={record => <AppPoolList items={record.apps} columns={this.props.columns} />}
         dataSource={this.props.data}
         pagination={false}
       />
@@ -48,10 +47,10 @@ const mapStateToProps = state => ({
   columns: state.table.columns
 });
 
-SimpleTable.propTypes = {
+IisTable.propTypes = {
   dispatch: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default connect(mapStateToProps)(SimpleTable);
+export default connect(mapStateToProps)(IisTable);
