@@ -36,7 +36,7 @@ export function getIisApps() {
     data: range(5).map(d => ({
       key: `Application ${d}`,
       state: Math.random() < 0.5 ? 'Stopped' : 'Started',
-      children: range(3).map(x => ({
+      apps: range(3).map(x => ({
         key: `chilren app ${d} ${x}`,
         state: Math.random() < 0.5 ? 'Stopped' : 'Started'
       }))
