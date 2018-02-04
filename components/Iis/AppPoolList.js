@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Table, Icon, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -9,22 +9,20 @@ const action = [
   }
 ];
 
-class AppPoolList extends Component {
-  render() {
-    if (this.props.items.length === 0) {
-      return (<h1>No IIS applications found.</h1>);
-    }
-    const columns = [...this.props.columns, ...action];
-    return (
-      <Table
-        showHeader={false}
-        columns={columns}
-        dataSource={this.props.items}
-        pagination={false}
-      />
-    );
+const AppPoolList = (props) => {
+  if (props.items.length === 0) {
+    return (<h1>No IIS applications found.</h1>);
   }
-}
+  const columns = [...props.columns, ...action];
+  return (
+    <Table
+      showHeader={false}
+      columns={columns}
+      dataSource={props.items}
+      pagination={false}
+    />
+  );
+};
 
 AppPoolList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
