@@ -4,11 +4,12 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import AppPoolList from './AppPoolList';
 import { getIisAction } from '../../actions/actions';
+import ActionsButtons from './ActionsButtons';
 
 
 const action = [
   {
-    title: 'Action', dataIndex: '', key: 'x', render: () => <button href="#">Delete</button>
+    title: 'Action', dataIndex: '', key: 'x', render: () => <ActionsButtons />
   }
 ];
 
@@ -34,7 +35,7 @@ class IisTable extends Component {
     return (
       <Table
         columns={this.state.columns}
-        expandedRowRender={record => <AppPoolList items={record.apps} columns={this.props.columns} />}
+        expandedRowRender={x => <AppPoolList items={x.apps} columns={this.props.columns} />}
         dataSource={this.props.data}
         pagination={false}
       />
