@@ -1,20 +1,22 @@
 import React from 'react';
 import { Icon, Tooltip } from 'antd';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import StartStopButton from './StartStopButton';
 
+const ButtonFn = function () {
+  alert('works');
+};
 
 const ActionsButtons = props => (
   <div>
-    <Tooltip title="start" ><Icon type="caret-right" /></Tooltip>
-    <Tooltip title="stop" ><Icon type="close-square" /></Tooltip>
+    <StartStopButton state={props.state} click={ButtonFn} />
     <Tooltip title="whitelist" ><Icon type="star-o" /></Tooltip>
     <Tooltip title="notes" ><Icon type="edit" /></Tooltip>
   </div>
 );
 
-// ActionsButtons.propTypes = {
-//   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-//   columns: PropTypes.arrayOf(PropTypes.object).isRequired
-// };
+ActionsButtons.propTypes = {
+  state: PropTypes.string.isRequired
+};
 
 export default ActionsButtons;

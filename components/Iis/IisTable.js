@@ -9,7 +9,7 @@ import ActionsButtons from './ActionsButtons';
 
 const action = [
   {
-    title: 'Action', dataIndex: '', key: 'x', render: () => <ActionsButtons />
+    title: 'Action', dataIndex: '', key: 'x', render: props => <ActionsButtons {...props} />
   }
 ];
 
