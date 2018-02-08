@@ -1,3 +1,34 @@
+
+let iisData =
+'{"columns":[{"title":"Application","dataIndex":"key","key":"key"},{"title":"Stat'
++ 'e","dataIndex":"state","key":"state"}],"data":[{"key":"Application 0","state":"S'
++ 'topped","note":"","apps":[{"key":"chilren app 0 0","state":"Started"},{"key":"ch'
++ 'ilren app 0 1","state":"Started"},{"key":"chilren app 0 2","state":"Stopped"}]},'
++ '{"key":"Application 1","state":"Stopped","note":"","apps":[{"key":"chilren app 1'
++ ' 0","state":"Started"},{"key":"chilren app 1 1","state":"Started"},{"key":"chilr'
++ 'en app 1 2","state":"Stopped"}]},{"key":"Application 2","state":"Started","note"'
++ ':"","apps":[{"key":"chilren app 2 0","state":"Started"},{"key":"chilren app 2 1"'
++ ',"state":"Stopped"},{"key":"chilren app 2 2","state":"Stopped"}]},{"key":"Applic'
++ 'ation 3","state":"Stopped","note":"","apps":[{"key":"chilren app 3 0","state":"S'
++ 'topped"},{"key":"chilren app 3 1","state":"Started"},{"key":"chilren app 3 2","s'
++ 'tate":"Started"}]},{"key":"Application 4","state":"Started","note":"","apps":[{"'
++ 'key":"chilren app 4 0","state":"Stopped"},{"key":"chilren app 4 1","state":"Stop'
++ 'ped"},{"key":"chilren app 4 2","state":"Stopped"}]}]}';
+
+function getIissDatas() {
+  return JSON.parse(iisData);
+}
+export function setIisApp(appName) {
+  const data = getIissDatas();
+  Object.keys(data.data).forEach((key) => {
+    Object.keys(data.data[key]).forEach((subkey) => {
+      if (subkey === 'key' && data.data[key][subkey] === appName) {
+        data.data[key].state = data.data[key].state === 'Started' ? 'Stopped' : 'Started';
+      }
+    });
+  });
+  iisData = JSON.stringify(data);
+}
 const range = (len) => {
   const arr = [];
   for (let i = 0; i < len; i += 1) {
@@ -25,21 +56,7 @@ export function getHardware() {
   }));
 }
 
-const IisColumns = [
-  { title: 'Application', dataIndex: 'key', key: 'key' },
-  { title: 'State', dataIndex: 'state', key: 'state' }
-];
 
 export function getIisApps() {
-  return {
-    columns: IisColumns,
-    data: range(5).map(d => ({
-      key: `Application ${d}`,
-      state: Math.random() < 0.5 ? 'Stopped' : 'Started',
-      apps: range(3).map(x => ({
-        key: `chilren app ${d} ${x}`,
-        state: Math.random() < 0.5 ? 'Stopped' : 'Started'
-      }))
-    }))
-  };
+  return getIissDatas();
 }

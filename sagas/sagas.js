@@ -5,6 +5,7 @@ export default function* () {
   yield all([
     fork(watch.watchGetServices),
     fork(watch.watchGetHardware),
-    fork(watch.watchGetIis)
+    fork(watch.watchGetIis),
+    fork(watch.watchSetIis)
   ]);
 }

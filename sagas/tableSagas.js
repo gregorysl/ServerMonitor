@@ -28,3 +28,13 @@ export function* getIisData() {
     yield put({ type: types.GET_IIS_APPS_ERROR, error });
   }
 }
+export function* setIisApp(props) {
+  try {
+    const data1 = yield call(api.setIisApp, props.appName);
+    yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, data1 });
+    const data = yield call(api.getIisApps);
+    yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.GET_IIS_TOGGLE_ERROR, error });
+  }
+}

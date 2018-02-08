@@ -11,3 +11,6 @@ export function* watchGetHardware() {
 export function* watchGetIis() {
   yield takeLatest(types.GET_IIS_APPS_REQUEST, saga.getIisData);
 }
+export function* watchSetIis() {
+  yield takeLatest(types.GET_IIS_TOGGLE_REQUEST, saga.setIisApp);
+}

@@ -11,3 +11,8 @@ export const getHardwareAction = () => ({
 export const getIisAction = () => ({
   type: types.GET_IIS_APPS_REQUEST
 });
+
+export const setIisAction = appName => ({
+  type: types.GET_IIS_TOGGLE_REQUEST,
+  appName
+});
