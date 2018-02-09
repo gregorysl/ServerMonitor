@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import AppPoolList from './AppPoolList';
-import { getIisAction } from '../../actions/actions';
+import { getIisAction, setIisAction } from '../../actions/actions';
 import ActionsButtons from './ActionsButtons';
 
 
 const action = [
   {
-    title: 'Action', dataIndex: '', key: 'x', render: props => <ActionsButtons {...props} />
+    title: 'Action',
+    key: 'x',
+    render: x => (<ActionsButtons {...x} name={x.key} />)
+
   }
 ];
 
@@ -20,12 +23,13 @@ class IisTable extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getIisAction());
+    this.props.get();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
-      this.setState({ columns: [...nextProps.columns, ...action] });
+      const data = nextProps.data.map(x => ({ ...x, click: nextProps.set }));
+      this.setState({ columns: [...nextProps.columns, ...action], data });
     }
   }
   render() {
@@ -36,7 +40,7 @@ class IisTable extends Component {
       <Table
         columns={this.state.columns}
         expandedRowRender={x => <AppPoolList items={x.apps} columns={this.props.columns} />}
-        dataSource={this.props.data}
+        dataSource={this.state.data}
         pagination={false}
       />
     );
@@ -48,10 +52,20 @@ const mapStateToProps = state => ({
   columns: state.table.columns
 });
 
+const mapDispatchToProps = dispatch => ({
+  get: () => {
+    dispatch(getIisAction());
+  },
+  set: (name) => {
+    dispatch(setIisAction(name));
+  }
+});
+
 IisTable.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  get: PropTypes.func.isRequired,
+  set: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default connect(mapStateToProps)(IisTable);
+export default connect(mapStateToProps, mapDispatchToProps)(IisTable);
