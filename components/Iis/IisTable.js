@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import AppPoolList from './AppPoolList';
-import { getIisAction, setIisAction } from '../../actions/actions';
+import { getIisAction } from '../../actions/actions';
 import ActionsButtons from './ActionsButtons';
 
 
@@ -28,7 +28,7 @@ class IisTable extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
-      const data = nextProps.data.map(x => ({ ...x, click: nextProps.set }));
+      const data = nextProps.data.map(x => ({ ...x }));
       this.setState({ columns: [...nextProps.columns, ...action], data });
     }
   }
@@ -55,15 +55,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   get: () => {
     dispatch(getIisAction());
-  },
-  set: (name) => {
-    dispatch(setIisAction(name));
   }
 });
 
 IisTable.propTypes = {
   get: PropTypes.func.isRequired,
-  set: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired
 };
