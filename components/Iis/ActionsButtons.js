@@ -15,9 +15,6 @@ const ActionsButtons = (props) => {
     </div>);
 };
 
-const mapStateToProps = state => ({
-});
-
 const mapDispatchToProps = dispatch => ({
   set: (name) => {
     dispatch(setIisAction(name));
@@ -25,7 +22,8 @@ const mapDispatchToProps = dispatch => ({
 });
 ActionsButtons.propTypes = {
   state: PropTypes.string.isRequired,
+  set: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionsButtons);
+export default connect(null, mapDispatchToProps)(ActionsButtons);
