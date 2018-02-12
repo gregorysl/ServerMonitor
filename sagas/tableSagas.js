@@ -38,3 +38,12 @@ export function* setIisApp(props) {
     yield put({ type: types.GET_IIS_TOGGLE_ERROR, error });
   }
 }
+
+export function* getDiskUsageData() {
+  try {
+    const data = yield call(api.getHardware);
+    yield put({ type: types.DISK_USAGE_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.DISK_USAGE_ERROR, error });
+  }
+}

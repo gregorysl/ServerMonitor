@@ -14,3 +14,6 @@ export function* watchGetIis() {
 export function* watchSetIis() {
   yield takeLatest(types.GET_IIS_TOGGLE_REQUEST, saga.setIisApp);
 }
+export function* watchDiskUsage() {
+  yield takeLatest(types.DISK_USAGE_REQUEST, saga.getDiskUsageData);
+}

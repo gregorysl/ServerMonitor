@@ -16,3 +16,7 @@ export const setIisAction = appName => ({
   type: types.GET_IIS_TOGGLE_REQUEST,
   appName
 });
+
+export const getDiskUsageAction = () => ({
+  type: types.DISK_USAGE_REQUEST
+});

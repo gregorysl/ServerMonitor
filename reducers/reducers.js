@@ -19,6 +19,14 @@ function tableReducer(state = tableInitialState, action) {
       return state;
   }
 }
+function diskUsageReducer(state = tableInitialState, action) {
+  switch (action.type) {
+    case types.DISK_USAGE_SUCCESS:
+      return { ...state, ...action.data };
+    default:
+      return state;
+  }
+}
 
 function servicesReducer(state = initialState, action) {
   switch (action.type) {
@@ -41,7 +49,8 @@ function hardwareReducer(state = hardwareInitialState, action) {
 const rootReducer = combineReducers({
   table: tableReducer,
   service: servicesReducer,
-  hardware: hardwareReducer
+  hardware: hardwareReducer,
+  disk: diskUsageReducer
 });
 
 export default rootReducer;
