@@ -41,7 +41,7 @@ export function* setIisApp(props) {
 
 export function* getDiskUsageData() {
   try {
-    const data = yield call(api.getHardware);
+    const data = yield call(api.getDisk);
     yield put({ type: types.DISK_USAGE_SUCCESS, data });
   } catch (error) {
     yield put({ type: types.DISK_USAGE_ERROR, error });

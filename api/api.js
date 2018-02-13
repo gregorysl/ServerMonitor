@@ -18,7 +18,14 @@ const scheduledTasks = [{
   Name: 'CleanBuilds', State: 'Ready', Path: '\\CleanBuilds', LastRunTime: '09/02/2018 19:06', LastTaskResult: 0
 }];
 
-const disk = [{ Path: 'C:\\Logs', Size: 12180661, Usage: 0.01 }, { Path: 'C:\\inetpub\\wwwroot', Size: 1861605907, Usage: 1.74 }];
+const disk = [
+  {
+    key: 'C:\\Logs', Path: 'C:\\Logs', Size: 12180661, Usage: 0.01
+  },
+  {
+    key: 'C:\\inetpub\\wwwroot', Path: 'C:\\inetpub\\wwwroot', Size: 1861605907, Usage: 1.74
+  }
+];
 
 let iisData =
   '{"columns":[{"title":"Application","dataIndex":"key","key":"key"},{"title":"Stat'
@@ -84,4 +91,14 @@ export function getHardware() {
 
 export function getIisApps() {
   return getIissDatas();
+}
+export function getDisk() {
+  return {
+    data: disk,
+    columns: [
+      { title: 'Path', dataIndex: 'Path', key: 'Path' },
+      { title: 'Size', dataIndex: 'Size', key: 'Size' },
+      { title: 'Usage', dataIndex: 'Usage', key: 'Usage' }
+    ]
+  };
 }
