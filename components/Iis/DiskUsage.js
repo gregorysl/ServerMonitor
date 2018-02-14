@@ -3,17 +3,6 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import { getDiskUsageAction } from '../../actions/actions';
-import ActionsButtons from './ActionsButtons';
-
-
-const action = [
-  {
-    title: 'Action',
-    key: 'x',
-    render: x => (<ActionsButtons {...x} name={x.key} />)
-
-  }
-];
 
 class DiskUsage extends Component {
   componentDidMount() {
