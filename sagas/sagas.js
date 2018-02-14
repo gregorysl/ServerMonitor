@@ -7,6 +7,7 @@ export default function* () {
     fork(watch.watchGetHardware),
     fork(watch.watchGetIis),
     fork(watch.watchSetIis),
-    fork(watch.watchDiskUsage)
+    fork(watch.watchDiskUsage),
+    fork(watch.watchTasks)
   ]);
 }

@@ -20,3 +20,7 @@ export const setIisAction = appName => ({
 export const getDiskUsageAction = () => ({
   type: types.DISK_USAGE_REQUEST
 });
+
+export const getTasksAction = () => ({
+  type: types.TASKS_REQUEST
+});

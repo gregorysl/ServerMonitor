@@ -17,3 +17,7 @@ export function* watchSetIis() {
 export function* watchDiskUsage() {
   yield takeLatest(types.DISK_USAGE_REQUEST, saga.getDiskUsageData);
 }
+
+export function* watchTasks() {
+  yield takeLatest(types.TASKS_REQUEST, saga.getTasksData);
+}

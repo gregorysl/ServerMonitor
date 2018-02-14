@@ -47,3 +47,13 @@ export function* getDiskUsageData() {
     yield put({ type: types.DISK_USAGE_ERROR, error });
   }
 }
+
+
+export function* getTasksData() {
+  try {
+    const data = yield call(api.getTasks);
+    yield put({ type: types.TASKS_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.TASKS_ERROR, error });
+  }
+}
