@@ -92,13 +92,15 @@ export function getHardware() {
 export function getIisApps() {
   return getIissDatas();
 }
+
 export function getDisk() {
   return {
-    data: disk,
-    columns: [
-      { title: 'Path', dataIndex: 'Path', key: 'Path' },
-      { title: 'Size', dataIndex: 'Size', key: 'Size' },
-      { title: 'Usage', dataIndex: 'Usage', key: 'Usage' }
-    ]
+    data: disk
+  };
+}
+
+export function getTasks() {
+  return {
+    data: scheduledTasks
   };
 }
