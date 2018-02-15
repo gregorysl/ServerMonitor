@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import { getSessionsAction } from '../../actions/actions';
 
-class DiskUsage extends Component {
+class UserSessions extends Component {
   componentDidMount() {
     this.props.get();
   }
@@ -24,8 +24,8 @@ class DiskUsage extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.tasks.data,
-  columns: state.tasks.columns
+  data: state.sessions.data,
+  columns: state.sessions.columns
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -34,10 +34,10 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-DiskUsage.propTypes = {
+UserSessions.propTypes = {
   get: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DiskUsage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserSessions);

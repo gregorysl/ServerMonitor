@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import { getTasksAction } from '../../actions/actions';
 
-class DiskUsage extends Component {
+class ScheduledTable extends Component {
   componentDidMount() {
     this.props.get();
   }
@@ -34,10 +34,10 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-DiskUsage.propTypes = {
+ScheduledTable.propTypes = {
   get: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DiskUsage);
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduledTable);
