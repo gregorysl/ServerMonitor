@@ -13,6 +13,11 @@ const tasksColumns = [
   { title: 'LastRunTime', dataIndex: 'LastRunTime', key: 'LastRunTime' },
   { title: 'LastTaskResult', dataIndex: 'LastTaskResult', key: 'LastTaskResult' }
 ];
+const sessionsColumns = [
+  { title: 'User', dataIndex: 'User', key: 'User' },
+  { title: 'LoginDate', dataIndex: 'LoginDate', key: 'LoginDate' },
+  { title: 'State', dataIndex: 'State', key: 'State' }
+];
 
 const hardwareInitialState = [];
 const initialState = {
@@ -50,6 +55,14 @@ function tasksReducer(state = tableInitialState, action) {
       return state;
   }
 }
+function sessionsReducer(state = tableInitialState, action) {
+  switch (action.type) {
+    case types.SESSIONS_SUCCESS:
+      return { ...state, ...action.data, columns: sessionsColumns };
+    default:
+      return state;
+  }
+}
 
 function servicesReducer(state = initialState, action) {
   switch (action.type) {
@@ -74,7 +87,8 @@ const rootReducer = combineReducers({
   service: servicesReducer,
   hardware: hardwareReducer,
   disk: diskUsageReducer,
-  tasks: tasksReducer
+  tasks: tasksReducer,
+  sessions: sessionsReducer
 });
 
 export default rootReducer;

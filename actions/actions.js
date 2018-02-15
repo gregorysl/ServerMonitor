@@ -24,3 +24,7 @@ export const getDiskUsageAction = () => ({
 export const getTasksAction = () => ({
   type: types.TASKS_REQUEST
 });
+
+export const getSessionsAction = () => ({
+  type: types.SESSIONS_REQUEST
+});

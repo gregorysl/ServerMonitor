@@ -104,3 +104,9 @@ export function getTasks() {
     data: scheduledTasks
   };
 }
+
+export function getUserSessions() {
+  return {
+    data: userSessions
+  };
+}
