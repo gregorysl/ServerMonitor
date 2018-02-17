@@ -4,15 +4,16 @@ import { Icon, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import StartStopButton from './StartStopButton';
 import { setIisAction } from '../../actions/actions';
+import WhitelistButton from './WhitelistButton';
 
 const ActionsButtons = (props) => {
   const onClick = () => props.set(props.name);
   return (
-    <div>
+    <div className="actions" >
       <StartStopButton state={props.state} click={onClick} />
-      <Tooltip title="whitelist" ><Icon type="star-o" /></Tooltip>
-      <Tooltip title="notes" ><Icon type="edit" /></Tooltip>
-    </div>);
+      <WhitelistButton state={props.state} click={onClick} />
+      <Tooltip title="notes" ><Icon type="tag" /></Tooltip>
+    </div >);
 };
 
 const mapDispatchToProps = dispatch => ({

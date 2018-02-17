@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const StartStopButton = (props) => {
   const title = props.state === 'Started' ? 'stop' : 'start';
-  const icon = props.state === 'Started' ? 'close-square' : 'caret-right';
+  const icon = props.state === 'Started' ? 'pause-circle-o' : 'play-circle-o';
   return (
     <Tooltip title={title} ><Icon onClick={props.click} type={icon} /></Tooltip>
   );
