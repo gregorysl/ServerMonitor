@@ -13,6 +13,13 @@ const tasksColumns = [
   { title: 'LastRunTime', dataIndex: 'LastRunTime', key: 'LastRunTime' },
   { title: 'LastTaskResult', dataIndex: 'LastTaskResult', key: 'LastTaskResult' }
 ];
+const oracleColumns = [
+  { title: 'Name', dataIndex: 'CurrentBuildName', key: 'CurrentBuildName' },
+  { title: 'Date', dataIndex: 'CurrentBuildDate', key: 'CurrentBuildDate' },
+  { title: 'Instance', dataIndex: 'DisplayName', key: 'DisplayName' },
+  { title: 'Reserved', dataIndex: 'IsReserved', key: 'IsReserved' },
+  { title: 'Deploying', dataIndex: 'IsDeploying', key: 'IsDeploying' }
+];
 const sessionsColumns = [
   { title: 'User', dataIndex: 'User', key: 'User' },
   { title: 'LoginDate', dataIndex: 'LoginDate', key: 'LoginDate' },
@@ -55,10 +62,20 @@ function tasksReducer(state = tableInitialState, action) {
       return state;
   }
 }
+
 function sessionsReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.SESSIONS_SUCCESS:
       return { ...state, ...action.data, columns: sessionsColumns };
+    default:
+      return state;
+  }
+}
+
+function oracleReducer(state = tableInitialState, action) {
+  switch (action.type) {
+    case types.ORACLE_SUCCESS:
+      return { ...state, ...action.data, columns: oracleColumns };
     default:
       return state;
   }
@@ -88,7 +105,8 @@ const rootReducer = combineReducers({
   hardware: hardwareReducer,
   disk: diskUsageReducer,
   tasks: tasksReducer,
-  sessions: sessionsReducer
+  sessions: sessionsReducer,
+  oracle: oracleReducer
 });
 
 export default rootReducer;

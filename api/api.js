@@ -110,3 +110,9 @@ export function getUserSessions() {
     data: userSessions
   };
 }
+
+export function getOracleInstancies() {
+  return {
+    data: oracle
+  };
+}
