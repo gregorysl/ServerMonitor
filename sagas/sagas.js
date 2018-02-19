@@ -9,6 +9,7 @@ export default function* () {
     fork(watch.watchSetIis),
     fork(watch.watchDiskUsage),
     fork(watch.watchTasks),
-    fork(watch.watchSessions)
+    fork(watch.watchSessions),
+    fork(watch.watchOracle)
   ]);
 }

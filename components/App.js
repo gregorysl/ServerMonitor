@@ -12,6 +12,7 @@ class App extends Component {
     this.props.getTasks();
     this.props.getSessions();
     this.props.getUsage();
+    this.props.getOracle();
   }
 
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
         <DataTable data={this.props.sessions.data} columns={this.props.sessions.columns} message="No sessions found." />
         <DataTable data={this.props.tasks.data} columns={this.props.tasks.columns} message="No tasks found." />
         <DataTable data={this.props.disk.data} columns={this.props.disk.columns} message="No directories found." />
+        <DataTable data={this.props.oracle.data} columns={this.props.oracle.columns} message="No instancies found." />
         <Hardware />
         <IisTable />
         <ServicesList />
@@ -32,6 +34,7 @@ App.propTypes = {
   getSessions: PropTypes.func.isRequired,
   getTasks: PropTypes.func.isRequired,
   getUsage: PropTypes.func.isRequired,
+  getOracle: PropTypes.func.isRequired,
   sessions: PropTypes.objectOf(PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.array.isRequired
@@ -43,19 +46,25 @@ App.propTypes = {
   disk: PropTypes.objectOf(PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf.isRequired
+  })).isRequired,
+  oracle: PropTypes.objectOf(PropTypes.shape({
+    data: PropTypes.array.isRequired,
+    columns: PropTypes.arrayOf.isRequired
   })).isRequired
 };
 
 const mapStateToProps = state => ({
   tasks: state.tasks,
   sessions: state.sessions,
-  disk: state.disk
+  disk: state.disk,
+  oracle: state.oracle
 });
 
 const mapDispatchToProps = dispatch => ({
   getTasks: () => dispatch(actions.getTasksAction()),
   getSessions: () => dispatch(actions.getSessionsAction()),
-  getUsage: () => dispatch(actions.getDiskUsageAction())
+  getUsage: () => dispatch(actions.getDiskUsageAction()),
+  getOracle: () => dispatch(actions.getOracleAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -65,3 +65,12 @@ export function* getSessionsData() {
     yield put({ type: types.SESSIONS_ERROR, error });
   }
 }
+
+export function* getOracleData() {
+  try {
+    const data = yield call(api.getOracleInstancies);
+    yield put({ type: types.ORACLE_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.ORACLE_ERROR, error });
+  }
+}
