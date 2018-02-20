@@ -7,7 +7,7 @@ const oracle = [
   {
     Id: 10, CurrentBuildName: 'QA.174', CurrentBuildDate: '06/02/2018 09:49', DisplayName: 'f-ora1', IsReserved: false, IsDeploying: false
   }, {
-    Id: 20, CurrentBuildName: 'QA.175', CurrentBuildDate: '08/02/2018 18:46', DisplayName: 'f-ora2', IsReserved: false, IsDeploying: false
+    Id: 20, CurrentBuildName: 'QA.175', CurrentBuildDate: '08/02/2018 18:46', DisplayName: 'f-ora2', IsReserved: false, IsDeploying: true
   }, {
     Id: 30, CurrentBuildName: 'QA.176', CurrentBuildDate: '09/02/2018 00:50', DisplayName: 'f-ora3', IsReserved: true, IsDeploying: false
   }, {

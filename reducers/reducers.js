@@ -17,8 +17,7 @@ const oracleColumns = [
   { title: 'Name', dataIndex: 'CurrentBuildName', key: 'CurrentBuildName' },
   { title: 'Date', dataIndex: 'CurrentBuildDate', key: 'CurrentBuildDate' },
   { title: 'Instance', dataIndex: 'DisplayName', key: 'DisplayName' },
-  { title: 'Reserved', dataIndex: 'IsReserved', key: 'IsReserved' },
-  { title: 'Deploying', dataIndex: 'IsDeploying', key: 'IsDeploying' }
+  { title: 'Reserved', dataIndex: 'IsReserved', key: 'IsReserved' }
 ];
 const sessionsColumns = [
   { title: 'User', dataIndex: 'User', key: 'User' },
