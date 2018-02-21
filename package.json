@@ -2,44 +2,101 @@
   "name": "server_monitor",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently -k -r -s first \"yarn run startP\" \"yarn run lint:watch\"",
-    "startP": "parcel index.html",
-    "lint": "./node_modules/.bin/eslint .",
+    "start": "webpack-dev-server",
+    "clean": "rimraf dist",
+    "production": "cross-env npm run clean && webpack --config webpack.production.config.js --progress --profile --colors",
+    "lint": "eslint ./app/**/**.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "coverage": "jest --coverage",
+    "precommit": "cross-env npm run lint && npm test",
+    "prepush": "cross-env npm run lint && npm test",
+    "startP": "concurrently -k -r -s first \"npm run startP\" \"npm run lint:watch\"",
+    "lintP": "./node_modules/.bin/eslint .",
     "lint:watch": "./node_modules/.bin/esw . --watch",
-    "build": "parcel build index.js"
+    "buildP": "parcel build index.js"
   },
   "author": "gregorysl",
-  "license": "ISC",
+  "license": "MIT",
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/config/jest/shim.js"
+    ],
+    "mapCoverage": true,
+    "collectCoverageFrom": [
+      "app/**/*.{js,jsx,ts,tsx}"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/assetsTransformer.js",
+      "\\.(css|less)$": "<rootDir>/config/jest/assetsTransformer.js"
+    },
+    "testMatch": [
+      "**/?(*.)(spec|test).js?(x)"
+    ],
+    "transform": {
+      "\\.js$": "babel-jest"
+    }
+  },
   "dependencies": {
     "antd": "^3.2.1",
     "babel-polyfill": "^6.26.0",
+    "cross-env": "5.1.2",
     "global": "^4.3.2",
     "less": "^2.7.3",
     "moment": "^2.20.1",
-    "parcel-bundler": "^1.5.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-hot-loader": "4.0.0-beta.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0"
   },
   "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
-    "babel-plugin-import": "^1.6.3",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-jest": "22.0.6",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-react-boilerplate": "1.1.1",
+    "babel-preset-react-hmre": "1.1.1",
+    "babel-preset-stage-2": "6.24.1",
     "concurrently": "^3.5.1",
     "eslint": "^4.18.0",
+    "copy-webpack-plugin": "^4.3.1",
+    "css-loader": "^0.28.8",
+    "css-mqpacker": "^6.0.1",
+    "cssnano": "^3.10.0",
+    "enzyme": "3.3.0",
+    "enzyme-adapter-react-16": "1.1.1",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-watch": "^3.1.3",
-    "node-sass": "^4.7.2"
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "global": "^4.3.2",
+    "html-webpack-plugin": "2.30.1",
+    "husky": "0.15.0-beta.2",
+    "jest": "22.1.0",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
+    "moment": "^2.20.1",
+    "node-sass": "4.7.2",
+    "open-browser-webpack-plugin": "0.0.5",
+    "react-addons-test-utils": "15.6.2",
+    "react-test-renderer": "16.2.0",
+    "rimraf": "2.6.2",
+    "sass-loader": "6.0.6",
+    "style-loader": "0.19.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.10.0"
   }
 }

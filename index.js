@@ -18,5 +18,8 @@ const Item = (
 render(Item, rootDiv);
 
 if (module.hot) {
-  module.hot.accept();
+  module.hot.accept('./components/App', () => {
+    const newApp = require('./components/App').default;
+    render(newApp);
+  });
 }
