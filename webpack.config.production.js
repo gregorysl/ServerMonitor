@@ -1,19 +1,18 @@
 const { resolve } = require('path');
-
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 const config = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-source-map',
 
   entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
-    './index.js',
-    './styles/style.less',
+    './main.js',
+    './assets/scss/main.scss',
   ],
+
+  context: resolve(__dirname, 'app'),
 
   output: {
     filename: 'bundle.js',
@@ -21,29 +20,32 @@ const config = {
     publicPath: '',
   },
 
-  context: resolve(__dirname, '.'),
-
-
-  devServer: {
-    hot: true,
-    contentBase: resolve(__dirname, 'build'),
-    publicPath: '/',
-  },
+  plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new HtmlWebpackPlugin({
+      template: `${__dirname}/app/index.html`,
+      filename: 'index.html',
+      inject: 'body',
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+    }),
+    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
+    new ExtractTextPlugin({ filename: './styles/style.css', disable: false, allChunks: true }),
+    new CopyWebpackPlugin([{ from: './vendors', to: 'vendors' }]),
+  ],
 
   module: {
-    rules: [
+    loaders: [
       {
-        enforce: 'pre',
-        test: /\.js$/,
+        test: /\.js?$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader',
-      },
-      {
-        test: /\.js$/,
-        loaders: [
-          'babel-loader',
-        ],
-        exclude: /node_modules/,
+        loader: 'babel-loader',
       },
       {
         test: /\.scss$/,
@@ -52,24 +54,10 @@ const config = {
           fallback: 'style-loader',
           use: [
             'css-loader',
-            {
-              loader: 'sass-loader',
-              query: {
-                sourceMap: false,
-              },
-            },
+            { loader: 'sass-loader', query: { sourceMap: false } },
           ],
           publicPath: '../',
         }),
-      }, {
-        test: /\.less$/,
-        use: [{
-          loader: 'style-loader', // creates style nodes from JS strings
-        }, {
-          loader: 'css-loader', // translates CSS into CommonJS
-        }, {
-          loader: 'less-loader', // compiles Less to CSS
-        }],
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -136,22 +124,6 @@ const config = {
       },
     ],
   },
-
-  plugins: [
-    new webpack.LoaderOptionsPlugin({
-      test: /\.js$/,
-      options: {
-        eslint: {
-          configFile: resolve(__dirname, '.eslintrc.json'),
-          cache: false,
-        },
-      },
-    }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new ExtractTextPlugin({ filename: './styles/style.css', disable: false, allChunks: true }),
-    new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
-    new webpack.HotModuleReplacementPlugin(),
-  ],
 };
 
 module.exports = config;
