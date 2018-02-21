@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 
 
 const DataTable = ({
-  data, columns, message, extraColumns = [], rowKey = 'key'
+  data,
+  columns,
+  message,
+  expandedRowRender,
+  extraColumns = [],
+  rowKey = 'key'
 }) => {
   if (data.length === 0 && columns.length === 0) {
     return (<h1>{message}</h1>);
@@ -16,13 +21,15 @@ const DataTable = ({
       columns={finalColumns}
       dataSource={data}
       pagination={false}
+      expandedRowRender={expandedRowRender}
     />
   );
 };
 
 DataTable.defaultProps = {
   extraColumns: [],
-  rowKey: 'key'
+  rowKey: 'key',
+  expandedRowRender: null
 };
 
 DataTable.propTypes = {
@@ -30,6 +37,7 @@ DataTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   message: PropTypes.string.isRequired,
   rowKey: PropTypes.string,
+  expandedRowRender: PropTypes.func,
   extraColumns: PropTypes.arrayOf(PropTypes.object)
 };
 
