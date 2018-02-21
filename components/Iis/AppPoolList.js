@@ -13,7 +13,9 @@ const AppPoolList = (props) => {
   if (props.items.length === 0) {
     return (<h1>No IIS applications found.</h1>);
   }
-  const columns = [...props.columns, ...action];
+  const cols = [];
+  Object.keys(props.items[0]).forEach(key => cols.push({ title: key, dataIndex: key, key }));
+  const columns = [...cols, ...action];
   return (
     <Table
       showHeader={false}
@@ -25,8 +27,7 @@ const AppPoolList = (props) => {
 };
 
 AppPoolList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  columns: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default AppPoolList;
