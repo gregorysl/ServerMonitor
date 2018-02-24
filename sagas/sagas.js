@@ -1,4 +1,4 @@
-import { fork } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 import * as watch from './watcher';
 
 const sagas = [
@@ -13,5 +13,5 @@ const sagas = [
 ];
 
 export default function* () {
-  yield sagas;
+  yield all(sagas);
 }
