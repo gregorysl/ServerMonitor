@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/effects';
-import * as api from '../api/api';
+import * as api from '../api/api_new';
 import * as types from '../constants/actionTypes';
 
 export function* getServicesData({ payload }) {

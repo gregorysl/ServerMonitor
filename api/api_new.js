@@ -1,55 +1,11 @@
-const userSessions = [
-  { User: 'Domain\\f-greg', LoginDate: '09/02/2018 22:03', State: 'Disconnected' },
-  { User: 'Domain\\f-asd', LoginDate: '09/02/2018 22:03', State: 'Disconnected' }
-];
+import Axios from 'axios';
+import baseUri from './baseUri';
 
-const oracle = [
-  {
-    Id: 10,
-    CurrentBuildName: 'QA.174',
-    CurrentBuildDate:
-      '06/02/2018 09:49',
-    DisplayName: 'f-ora1',
-    IsReserved: false,
-    IsDeploying: false
-  }, {
-    Id: 20,
-    CurrentBuildName: 'QA.175',
-    CurrentBuildDate:
-      '08/02/2018 18:46',
-    DisplayName: 'f-ora2',
-    IsReserved: false,
-    IsDeploying: true
-  }, {
-    Id: 30,
-    CurrentBuildName: 'QA.176',
-    CurrentBuildDate:
-      '09/02/2018 00:50',
-    DisplayName: 'f-ora3',
-    IsReserved: true,
-    IsDeploying: false
-  }, {
-    Id: 40,
-    CurrentBuildName: 'QA.501',
-    CurrentBuildDate:
-      '09/02/2018 09:46',
-    DisplayName: 'f-ora4',
-    IsReserved: false,
-    IsDeploying: false
-  }];
-
-const scheduledTasks = [{
-  Name: 'CleanBuilds', State: 'Ready', Path: '\\CleanBuilds', LastRunTime: '09/02/2018 19:06', LastTaskResult: 0
-}];
-
-const disk = [
-  {
-    key: 'C:\\Logs', Path: 'C:\\Logs', Size: 12180661, Usage: 0.01
-  },
-  {
-    key: 'C:\\inetpub\\wwwroot', Path: 'C:\\inetpub\\wwwroot', Size: 1861605907, Usage: 1.74
-  }
-];
+const apiUri = `${baseUri}/ServerMonitor/Monitor/`;
+const oracleUri = `${apiUri}GetOracleInstances?order=asc`;
+const tasksUri = `${apiUri}GetScheduledTasks`;
+const sessionsUri = `${apiUri}GetUserSesssions`;
+const diskUri = `${apiUri}GetDiskUsage`;
 
 let iisData =
   '{"columns":[{"title":"Application","dataIndex":"key","key":"key"},{"title":"Stat'
@@ -118,25 +74,25 @@ export function getIisApps() {
 }
 
 export function getDisk() {
-  return {
-    data: disk
-  };
+  return Axios.get(diskUri).catch((error) => {
+    console.log(error);
+  });
 }
 
 export function getTasks() {
-  return {
-    data: scheduledTasks
-  };
+  return Axios.get(tasksUri).catch((error) => {
+    console.log(error);
+  });
 }
 
 export function getUserSessions() {
-  return {
-    data: userSessions
-  };
+  return Axios.get(sessionsUri).catch((error) => {
+    console.log(error);
+  });
 }
 
 export function getOracleInstancies() {
-  return {
-    data: oracle
-  };
+  return Axios.get(oracleUri).catch((error) => {
+    console.log(error);
+  });
 }
