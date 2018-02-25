@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Checkbox } from 'antd';
+import { Checkbox, notification } from 'antd';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import ServicesList from './servicesList';
@@ -33,6 +33,17 @@ class App extends Component {
     this.props.getOracle();
     this.props.getIis();
   }
+  componentWillReceiveProps(nextProps) {
+    const nextErrors = nextProps.oracle.errors;
+    const { errors } = this.props.oracle;
+    if (errors.length < nextErrors.length) {
+      notification.error({
+        message: 'Notification Title',
+        description: errors[errors.length]
+      });
+    }
+    console.log(nextProps);
+  }
 
   render() {
     return (
@@ -54,6 +65,7 @@ class App extends Component {
           data={this.props.disk.data}
           columns={this.props.disk.columns}
           message="No directories found."
+          rowKey="Path"
         />
         <DataTable
           data={this.props.oracle.data}
@@ -95,6 +107,7 @@ App.propTypes = {
   })).isRequired,
   oracle: PropTypes.objectOf(PropTypes.shape({
     data: PropTypes.array.isRequired,
+    errors: PropTypes.arrayOf(PropTypes.string),
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
   })).isRequired,
   iis: PropTypes.objectOf(PropTypes.shape({

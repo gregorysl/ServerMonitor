@@ -74,25 +74,17 @@ export function getIisApps() {
 }
 
 export function getDisk() {
-  return Axios.get(diskUri).catch((error) => {
-    console.log(error);
-  });
+  return Axios.get(diskUri);
 }
 
 export function getTasks() {
-  return Axios.get(tasksUri).catch((error) => {
-    console.log(error);
-  });
+  return Axios.get(tasksUri);
 }
 
 export function getUserSessions() {
-  return Axios.get(sessionsUri).catch((error) => {
-    console.log(error);
-  });
+  return Axios.get(sessionsUri);
 }
 
 export function getOracleInstancies() {
-  return Axios.get(oracleUri).catch((error) => {
-    console.log(error);
-  });
+  return Axios.get(oracleUri);
 }
