@@ -27,7 +27,8 @@ const sessionsColumns = [
 
 const hardwareInitialState = [];
 const initialState = {
-  data: []
+  data: [],
+  errors: []
 };
 
 const tableInitialState = {
@@ -35,6 +36,10 @@ const tableInitialState = {
   data: [],
   errors: []
 };
+const oracleInstanciesErrorText = 'Oracle Instancies';
+const userSessionsErrorText = 'User Sessions';
+const tasksErrorText = 'Tasks';
+const diskUsageErrorText = 'Disk Usage';
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
@@ -49,6 +54,14 @@ function diskUsageReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.DISK_USAGE_SUCCESS:
       return { ...state, ...action.data, columns: diskColumns };
+    case types.DISK_USAGE_ERROR:
+      return {
+        ...state,
+        errors: state.errors.concat({
+          title: diskUsageErrorText,
+          error: action.error.message
+        })
+      };
     default:
       return state;
   }
@@ -58,6 +71,14 @@ function tasksReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.TASKS_SUCCESS:
       return { ...state, ...action.data, columns: tasksColumns };
+    case types.TASKS_ERROR:
+      return {
+        ...state,
+        errors: state.errors.concat({
+          title: tasksErrorText,
+          error: action.error.message
+        })
+      };
     default:
       return state;
   }
@@ -67,6 +88,14 @@ function sessionsReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.SESSIONS_SUCCESS:
       return { ...state, ...action.data, columns: sessionsColumns };
+    case types.SESSIONS_ERROR:
+      return {
+        ...state,
+        errors: state.errors.concat({
+          title: userSessionsErrorText,
+          error: action.error.message
+        })
+      };
     default:
       return state;
   }
@@ -78,9 +107,13 @@ function oracleReducer(state = tableInitialState, action) {
       debugger;
       return { ...state, ...action.data, columns: oracleColumns };
     case types.ORACLE_ERROR:
-      debugger;
-      return { ...state, errors: state.errors.concat(`Getting Oracle Instancies - ${action.error.message}`) };
-
+      return {
+        ...state,
+        errors: state.errors.concat({
+          title: oracleInstanciesErrorText,
+          error: action.error.message
+        })
+      };
     default:
       return state;
   }
