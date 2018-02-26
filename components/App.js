@@ -9,6 +9,15 @@ import DataTable from './Iis/DataTable';
 import AppPoolList from './Iis/AppPoolList';
 import ActionsButtons from './Iis/ActionsButtons';
 
+const checkErrors = (props, nextProps) => {
+  if (props.length < nextProps.length) {
+    const error = nextProps[nextProps.length - 1];
+    notification.error({
+      message: error.title,
+      description: error.error
+    });
+  }
+};
 const isDeployingColumn =
   {
     title: 'Deploying',
@@ -34,15 +43,10 @@ class App extends Component {
     this.props.getIis();
   }
   componentWillReceiveProps(nextProps) {
-    const nextErrors = nextProps.oracle.errors;
-    const { errors } = this.props.oracle;
-    if (errors.length < nextErrors.length) {
-      notification.error({
-        message: 'Notification Title',
-        description: errors[errors.length]
-      });
-    }
-    console.log(nextProps);
+    checkErrors(this.props.oracle.errors, nextProps.oracle.errors);
+    checkErrors(this.props.sessions.errors, nextProps.sessions.errors);
+    checkErrors(this.props.disk.errors, nextProps.disk.errors);
+    checkErrors(this.props.tasks.errors, nextProps.tasks.errors);
   }
 
   render() {
