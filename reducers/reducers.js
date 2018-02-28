@@ -104,7 +104,6 @@ function sessionsReducer(state = tableInitialState, action) {
 function oracleReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
-      debugger;
       return { ...state, ...action.data, columns: oracleColumns };
     case types.ORACLE_ERROR:
       return {

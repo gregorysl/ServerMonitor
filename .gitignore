@@ -10,3 +10,10 @@ dist
 dist/server_monitor.css
 dist/server_monitor.js
 npm-debug.log
+
+
+_server/packages
+_server/.vs
+_server/ServerMonitor/ServerMonitor.csproj.vspscc
+_server/ServerMonitor/bin
+_server/ServerMonitor/obj

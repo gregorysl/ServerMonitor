@@ -28,6 +28,7 @@ export function* getIisData() {
     yield put({ type: types.GET_IIS_APPS_ERROR, error });
   }
 }
+
 export function* setIisApp(props) {
   try {
     const data1 = yield call(api.setIisApp, props.appName);
