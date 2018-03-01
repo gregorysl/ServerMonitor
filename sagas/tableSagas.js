@@ -13,7 +13,10 @@ export function* getServicesData({ payload }) {
 
 export function* getHardwareData() {
   try {
-    const data = yield call(api.getHardware);
+    let data = yield call(api.getHardware);
+    if (data.constructor === Object) {
+      data = [data];
+    }
     yield put({ type: types.GET_HARDWARE_DATA_SUCCESS, data });
   } catch (error) {
     yield put({ type: types.GET_HARDWARE_DATA_ERROR, error });
