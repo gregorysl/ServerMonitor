@@ -59,13 +59,14 @@ export function getServices() {
 }
 
 export function getHardware() {
-  return range(2).map(d => ({
-    key: `Server ${d}`,
-    data: range(3).map(x => ({
-      key: `Hardware ${x}`,
-      value: Math.floor(Math.random() * 100)
-    }))
-  }));
+  return Axios.get('http://localhost/ServerMonitor/Hardware/GetHardware').then(x => JSON.parse(x.data));
+  // return range(2).map(d => ({
+  //   key: `Server ${d}`,
+  //   data: range(3).map(x => ({
+  //     key: `Hardware ${x}`,
+  //     value: Math.floor(Math.random() * 100)
+  //   }))
+  // }));
 }
 
 
