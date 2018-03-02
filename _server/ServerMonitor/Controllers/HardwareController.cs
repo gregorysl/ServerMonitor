@@ -23,17 +23,16 @@ namespace ServerMonitor.Controllers
                 var hardware = new Hardware
                 {
                     Name = ComputerName(),
-                    Data = new List<Tuple<string, string>>
+                    Data = new List<Data<double>>
                     {
-                        new Tuple<string, string>("CPU", CpuUsage() +""),
-                        new Tuple<string, string>("RAM", MemoryUsage() +""),
-                        new Tuple<string, string>("HDD", DiskUsage() +"")
-
+                        new Data<double> {Name = "CPU", Value = CpuUsage()},
+                        new Data<double> {Name = "RAM", Value = MemoryUsage()},
+                        new Data<double> {Name = "HDD", Value = DiskUsage()}
                     }
                 };
-                var usage = CpuUsage();
 
-                return Json(hardware, JsonRequestBehavior.AllowGet);
+                string json = JsonConvert.SerializeObject(hardware);
+                return json.ToJsonResult();
             }
             catch (Exception ex)
             {
@@ -79,11 +78,21 @@ namespace ServerMonitor.Controllers
             return "";
         }
     }
-
+    [JsonObject(MemberSerialization.OptIn)]
     public class Hardware
     {
+        [JsonProperty("key")]
         public string Name { get; set; }
-        public List<Tuple<string, string>> Data { get; set; }
+        [JsonProperty("data")]
+        public List<Data<double>> Data { get; set; }
+    }
+    [JsonObject(MemberSerialization.OptIn)]
+    public class Data<T>
+    {
+        [JsonProperty("key")]
+        public string Name { get; set; }
+        [JsonProperty("value")]
+        public T Value { get; set; }
     }
 
 }
