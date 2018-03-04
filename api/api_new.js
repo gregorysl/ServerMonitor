@@ -6,6 +6,7 @@ const oracleUri = `${apiUri}GetOracleInstances?order=asc`;
 const tasksUri = `${apiUri}GetScheduledTasks`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
+const hardwareUri = `${baseUri}/ServerMonitor/Hardware/GetHardware`;
 
 let iisData =
   '{"columns":[{"title":"Application","dataIndex":"key","key":"key"},{"title":"Stat'
@@ -59,14 +60,7 @@ export function getServices() {
 }
 
 export function getHardware() {
-  return Axios.get('http://localhost/ServerMonitor/Hardware/GetHardware').then(x => JSON.parse(x.data));
-  // return range(2).map(d => ({
-  //   key: `Server ${d}`,
-  //   data: range(3).map(x => ({
-  //     key: `Hardware ${x}`,
-  //     value: Math.floor(Math.random() * 100)
-  //   }))
-  // }));
+  return Axios.get(hardwareUri).then(x => JSON.parse(x.data));
 }
 
 
