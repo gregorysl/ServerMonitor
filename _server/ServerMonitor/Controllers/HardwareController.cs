@@ -30,9 +30,8 @@ namespace ServerMonitor.Controllers
                         new Data<double> {Name = "HDD", Value = DiskUsage()}
                     }
                 };
-
-                string json = JsonConvert.SerializeObject(hardware);
-                return json.ToJsonResult();
+                
+                return hardware.ToJsonResult();
             }
             catch (Exception ex)
             {
