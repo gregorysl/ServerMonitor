@@ -11,6 +11,6 @@ namespace ServerMonitor.Models
         [JsonProperty("state")]
         public string State { get; set; }
         [JsonProperty("children")]
-        public IList<WebApplication> WebApplications { get; set; }
+        public IList<string> Apps { get; set; }
     }
 }

@@ -35,41 +35,39 @@ namespace ServerMonitor.Controllers
             {
                 var mgr = new ServerManager();
                 var appPools = new List<IISAppPool>();
-                var applications = new List<IISApplication>();
                 var sites = mgr.Sites[0].Applications.GroupBy(s => s.ApplicationPoolName)
                     .Select(g => new
                     {
                         PoolName = g.Key,
-                        WebApps = g.Select(s => new WebApplication { Name = s.Path }).ToList()
+                        WebApps = g.Select(s =>  s.Path ).ToList()
                     }).ToList();
 
                 foreach (var app in mgr.ApplicationPools)
                 {
-
                     appPools.Add(new IISAppPool
                     {
                         Name = app.Name,
                         State = app.State.ToString(),
-                        WebApplications = sites.FirstOrDefault(s => s.PoolName == app.Name)?.WebApps
+                        Apps = sites.FirstOrDefault(s => s.PoolName == app.Name)?.WebApps.ToList()
                     });
                 }
 
 
-                GroupAppPools(appPools, applications);
+                var applications = GroupAppPools(appPools);
 
                 var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
                 var filteredApps = applications.Where(a => !ignoreList.Contains(a.Name)).ToList();
 
 
-                var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
-                var whitelist = XDocument.Load(whitelistFile);
+                var buildsNode = GetWhitelistItems();
+                if (buildsNode != null)
+                {
+                    filteredApps.ForEach(ap => ap.IsWhitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
+                }
 
-                var buildsNode = whitelist.Descendants("builds").First();
-
-                filteredApps.ForEach(ap => ap.IsWhitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
                 filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
 
-                return Json(filteredApps, JsonRequestBehavior.AllowGet);
+                return filteredApps.ToJsonResult();
             }
             catch (Exception ex)
             {
@@ -78,14 +76,25 @@ namespace ServerMonitor.Controllers
             }
         }
 
+        private static XElement GetWhitelistItems()
+        {
+            var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
+            if (!System.IO.File.Exists(whitelistFile)) return null;
+            var whitelist = XDocument.Load(whitelistFile);
+
+            var buildsNode = whitelist.Descendants("builds").First();
+            return buildsNode;
+        }
+
         private bool IsWhiteListed(IList<IISAppPool> applicationPools, XElement buildsNode)
         {
             return applicationPools.All(appPool => buildsNode.Descendants("build")
                 .Any(n => n.Descendants("app").Any(a => a.Attribute("value")?.Value == appPool.Name)));
         }
 
-        private static void GroupAppPools(List<IISAppPool> appPools, List<IISApplication> applications)
+        private static List<IISApplication> GroupAppPools(List<IISAppPool> appPools)
         {
+            var applications = new List<IISApplication>();
             var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
             var regex = new Regex(regexString);
 
@@ -117,6 +126,7 @@ namespace ServerMonitor.Controllers
                     application.ApplicationPools.Add(appPool);
                 }
             }
+            return applications;
         }
 
         [HttpGet]
