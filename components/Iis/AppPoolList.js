@@ -15,6 +15,12 @@ const AppPoolList = (props) => {
   if (props.items.length === 0) {
     return (<h1>No IIS applications found.</h1>);
   }
+  props.items.forEach((element) => {
+    if (element.children) {
+      const childs = element.children.map(x => ({ key: x }));
+      element.children = childs;
+    }
+  });
   return (
     <Table
       showHeader={false}

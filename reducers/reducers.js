@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/actionTypes';
 
+const iisColumns = [
+  { title: 'Application', dataIndex: 'key', key: 'key' },
+  { title: 'State', dataIndex: 'state', key: 'state' }
+];
 const diskColumns = [
   { title: 'Path', dataIndex: 'Path', key: 'Path' },
   { title: 'Size', dataIndex: 'Size', key: 'Size' },
@@ -44,7 +48,7 @@ const diskUsageErrorText = 'Disk Usage';
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.GET_IIS_APPS_SUCCESS:
-      return { ...state, ...action.data };
+      return { ...state, data: action.data.data, columns: iisColumns };
     default:
       return state;
   }
