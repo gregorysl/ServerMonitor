@@ -7,40 +7,13 @@ const tasksUri = `${apiUri}GetScheduledTasks`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const hardwareUri = `${baseUri}/ServerMonitor/Hardware/GetHardware`;
+const iisUri = `${apiUri}/GetIisApplications`;
+const iisStopUri = `${apiUri}/Stop`;
 
-let iisData =
-  '{"columns":[{"title":"Application","dataIndex":"key","key":"key"},{"title":"Stat'
-  + 'e","dataIndex":"state","key":"state"}],"data":[{"key":"Application 0","state":"S'
-  + 'topped","note":"","apps":[{"key":"chilren app 0 0","state":"Started"},{"key":"ch'
-  + 'ilren app 0 1","state":"Started"},{"key":"chilren app 0 2","state":"Stopped"}]},'
-  + '{"key":"Application 1","state":"Stopped","note":"","apps":[{"key":"chilren app 1'
-  + ' 0","state":"Started"},{"key":"chilren app 1 1","state":"Started"},{"key":"chilr'
-  + 'en app 1 2","state":"Stopped"}]},{"key":"Application 2","state":"Started","note"'
-  + ':"","apps":[{"key":"chilren app 2 0","state":"Started"},{"key":"chilren app 2 1"'
-  + ',"state":"Stopped"},{"key":"chilren app 2 2","state":"Stopped"}]},{"key":"Applic'
-  + 'ation 3","state":"Stopped","note":"","apps":[{"key":"chilren app 3 0","state":"S'
-  + 'topped"},{"key":"chilren app 3 1","state":"Started"},{"key":"chilren app 3 2","s'
-  + 'tate":"Started"}]},{"key":"Application 4","state":"Started","note":"","apps":[{"'
-  + 'key":"chilren app 4 0","state":"Stopped"},{"key":"chilren app 4 1","state":"Stop'
-  + 'ped"},{"key":"chilren app 4 2","state":"Stopped"}]}]}';
-
-function getIissDatas() {
-  return JSON.parse(iisData);
-}
 export function setIisApp(appName) {
-  const data = getIissDatas();
-  Object.keys(data.data).forEach((key) => {
-    Object.keys(data.data[key]).forEach((subkey) => {
-      if (subkey === 'key' && data.data[key][subkey] === appName) {
-        const state = data.data[key].state === 'Started' ? 'Stopped' : 'Started';
-        data.data[key].state = state;
-        Object.keys(data.data[key].apps).forEach((app) => {
-          data.data[key].apps[app].state = state;
-        });
-      }
-    });
-  });
-  iisData = JSON.stringify(data);
+  debugger;
+  return Axios.post(iisStopUri, appName).then(x => JSON.parse(x.data));
+
 }
 const range = (len) => {
   const arr = [];
@@ -65,7 +38,7 @@ export function getHardware() {
 
 
 export function getIisApps() {
-  return getIissDatas();
+  return Axios.get(iisUri);
 }
 
 export function getDisk() {
