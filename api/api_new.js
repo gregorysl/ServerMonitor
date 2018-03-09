@@ -10,10 +10,28 @@ const hardwareUri = `${baseUri}/ServerMonitor/Hardware/GetHardware`;
 const iisUri = `${apiUri}/GetIisApplications`;
 const iisStopUri = `${apiUri}/Stop`;
 
+// function getIissDatas() {
+//   const iisData = '';
+//   console.log(iisData);
+//   return JSON.parse(iisData);
+// }
 export function setIisApp(appName) {
   debugger;
   return Axios.post(iisStopUri, appName).then(x => JSON.parse(x.data));
 
+  // const data = getIissDatas();
+  // Object.keys(data.data).forEach((key) => {
+  //   Object.keys(data.data[key]).forEach((subkey) => {
+  //     if (subkey === 'key' && data.data[key][subkey] === appName) {
+  //       const state = data.data[key].state === 'Started' ? 'Stopped' : 'Started';
+  //       data.data[key].state = state;
+  //       Object.keys(data.data[key].apps).forEach((app) => {
+  //         data.data[key].apps[app].state = state;
+  //       });
+  //     }
+  //   });
+  // });
+  // const iisData = JSON.stringify(data);
 }
 const range = (len) => {
   const arr = [];
