@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 
 const columns = [
   { title: 'key', dataIndex: 'key', key: 'key' },
-  { title: 'State', dataIndex: 'State', key: 'State' },
+  {
+    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
+  },
   {
     title: 'Action', dataIndex: '', key: 'x', render: () => <Tooltip title="recycle" ><Icon type="reload" /></Tooltip>
   }

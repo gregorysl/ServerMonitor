@@ -3,7 +3,9 @@ import * as types from '../constants/actionTypes';
 
 const iisColumns = [
   { title: 'Application', dataIndex: 'key', key: 'key' },
-  { title: 'State', dataIndex: 'state', key: 'state' }
+  {
+    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
+  }
 ];
 const diskColumns = [
   { title: 'Path', dataIndex: 'Path', key: 'Path' },

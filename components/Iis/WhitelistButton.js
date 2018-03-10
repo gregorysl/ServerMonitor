@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 
 const WhitelistButton = (props) => {
-  const title = props.state === 'Whitelisted' ? 'stop' : 'start';
-  const icon = props.state === 'Started' ? 'star-o' : 'star';
+  const title = props.running ? 'stop' : 'start';
+  const icon = props.running ? 'star-o' : 'star';
   return (
     <Tooltip title={title} >
       <Icon onClick={props.click} type={icon} />
@@ -14,7 +14,7 @@ const WhitelistButton = (props) => {
 };
 
 WhitelistButton.propTypes = {
-  state: PropTypes.string.isRequired,
+  running: PropTypes.bool.isRequired,
   click: PropTypes.func.isRequired
 };
 

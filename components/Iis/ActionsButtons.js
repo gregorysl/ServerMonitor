@@ -10,21 +10,23 @@ const ActionsButtons = (props) => {
   const onClick = () => props.set(props);
   return (
     <div className="actions" >
-      <StartStopButton state={props.state} click={onClick} />
-      <WhitelistButton state={props.state} click={onClick} />
+      <StartStopButton running={props.running} click={onClick} />
+      <WhitelistButton running={props.running} click={onClick} />
       <Tooltip title="notes" ><Icon type="tag" /></Tooltip>
     </div >);
 };
 
 const mapDispatchToProps = dispatch => ({
-  set: (name) => {
-    const apppools = Object.assign(...name.apps.map(x => x.children));
+  set: (item) => {
+    const appPools = Object.assign(...item.apps.map(x => x.children));
+    const data = { appPools, running: item.running };
     debugger;
-    dispatch(setIisAction(apppools));
+    dispatch(setIisAction(data));
   }
 });
+
 ActionsButtons.propTypes = {
-  state: PropTypes.string.isRequired,
+  running: PropTypes.bool.isRequired,
   set: PropTypes.func.isRequired
 };
 

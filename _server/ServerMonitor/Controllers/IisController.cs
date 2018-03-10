@@ -16,7 +16,7 @@ namespace ServerMonitor.Controllers
     public class IisController : Controller
     {
         private static string DB_PATH => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
-        // GET: Monitor
+
         [HttpGet]
         public ActionResult Get()
         {
@@ -36,7 +36,7 @@ namespace ServerMonitor.Controllers
                     appPools.Add(new IISAppPool
                     {
                         Name = app.Name,
-                        State = app.State.ToString(),
+                        Running = app.State.ToString(),
                         Apps = sites.FirstOrDefault(s => s.PoolName == app.Name)?.WebApps.ToList()
                     });
                 }
@@ -119,17 +119,23 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
-        public ActionResult Stop(List<IISAppPool> appPools)
+        public ActionResult Toggle(List<string> appPools, bool running)
         {
             try
             {
-                var poolsNames = appPools.Select(a => a.Name);
                 var mgr = new ServerManager();
-                var pools = mgr.ApplicationPools.Where(app => poolsNames.Contains(app.Name));
+                var pools = mgr.ApplicationPools.Where(app => appPools.Contains(app.Name));
 
                 foreach (var pool in pools)
                 {
-                    pool.Stop();
+                    if (running)
+                    {
+                        pool.Stop();
+                    }
+                    else
+                    {
+                        pool.Start();
+                    }
                 }
 
                 return Json(new { Message = "Application pools stopped successfuly." });
@@ -142,29 +148,7 @@ namespace ServerMonitor.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult Start(List<IISAppPool> appPools)
-        {
-            try
-            {
-                var poolsNames = appPools.Select(a => a.Name);
-                var mgr = new ServerManager();
-                var pools = mgr.ApplicationPools.Where(app => poolsNames.Contains(app.Name));
 
-                foreach (var pool in pools)
-                {
-                    pool.Start();
-                }
-
-                return Json(new { Message = "Application pools started successfuly." });
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-
-        }
         protected string GetBuildNote(string name)
         {
             using (var db = new LiteDatabase(DB_PATH))
@@ -176,5 +160,49 @@ namespace ServerMonitor.Controllers
                 return note?.Note;
             }
         }
+
+        protected void SetBuildNote(string buildName, string note)
+        {
+            using (var db = new LiteDatabase(DB_PATH))
+            {
+                // Get a collection (or create, if doesn't exist)
+                var col = db.GetCollection<BuildNote>("BuildNotes");
+                var buildNote = col.Find(c => c.BuildName == buildName).FirstOrDefault();
+
+                if (buildNote == null)
+                {
+                    col.Insert(new BuildNote
+                    {
+                        Id = new Guid(),
+                        BuildName = buildName,
+                        Note = note
+                    });
+                }
+                else
+                {
+                    buildNote.Note = note;
+                    col.Update(buildNote);
+                }
+
+                col.EnsureIndex(x => x.BuildName);
+                db.Engine.Commit();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveBuildNote(string name, string value, string pk)
+        {
+            try
+            {
+                SetBuildNote(pk, value);
+                return Json(new { Message = "Application note saved succesfully." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }
