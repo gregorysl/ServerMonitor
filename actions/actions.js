@@ -12,9 +12,9 @@ export const getIisAction = () => ({
   type: types.GET_IIS_APPS_REQUEST
 });
 
-export const setIisAction = appName => ({
+export const setIisAction = appList => ({
   type: types.GET_IIS_TOGGLE_REQUEST,
-  appName
+  appList
 });
 
 export const getDiskUsageAction = () => ({

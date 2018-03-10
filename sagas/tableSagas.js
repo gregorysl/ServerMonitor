@@ -34,7 +34,7 @@ export function* getIisData() {
 
 export function* setIisApp(props) {
   try {
-    const data1 = yield call(api.setIisApp, props.appName);
+    const data1 = yield call(api.setIisApp, props.appList);
     yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, data1 });
     const data = yield call(api.getIisApps);
     yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
