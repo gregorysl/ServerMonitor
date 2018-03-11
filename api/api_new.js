@@ -1,38 +1,21 @@
 import Axios from 'axios';
 import baseUri from './baseUri';
 
-const apiUri = `${baseUri}/ServerMonitor/Monitor/`;
-const oracleUri = `${apiUri}GetOracleInstances?order=asc`;
-const tasksUri = `${apiUri}GetScheduledTasks`;
+const appUri = `${baseUri}/ServerMonitor/`;
+const apiUri = `${appUri}Monitor/`;
+const oracleUri = `${apiUri}GetOracleInstances`;
+const tasksUri = `${appUri}/Tasks/GetScheduledTasks`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
-const hardwareUri = `${baseUri}/ServerMonitor/Hardware/GetHardware`;
-const iisUri = `${apiUri}/GetIisApplications`;
-const iisStopUri = `${apiUri}/Stop`;
+const hardwareUri = `${appUri}/Hardware/GetHardware`;
+const iisUri = `${appUri}Iis/Get`;
+const iisStopUri = `${appUri}Iis/Toggle`;
 
-// function getIissDatas() {
-//   const iisData = '';
-//   console.log(iisData);
-//   return JSON.parse(iisData);
-// }
 export function setIisApp(appName) {
   debugger;
   return Axios.post(iisStopUri, appName).then(x => JSON.parse(x.data));
-
-  // const data = getIissDatas();
-  // Object.keys(data.data).forEach((key) => {
-  //   Object.keys(data.data[key]).forEach((subkey) => {
-  //     if (subkey === 'key' && data.data[key][subkey] === appName) {
-  //       const state = data.data[key].state === 'Started' ? 'Stopped' : 'Started';
-  //       data.data[key].state = state;
-  //       Object.keys(data.data[key].apps).forEach((app) => {
-  //         data.data[key].apps[app].state = state;
-  //       });
-  //     }
-  //   });
-  // });
-  // const iisData = JSON.stringify(data);
 }
+
 const range = (len) => {
   const arr = [];
   for (let i = 0; i < len; i += 1) {

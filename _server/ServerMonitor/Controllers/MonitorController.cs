@@ -3,20 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using Cassia;
 using LiteDB;
 using Microsoft.Web.Administration;
-using Microsoft.Win32.TaskScheduler;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
@@ -24,110 +21,7 @@ namespace ServerMonitor.Controllers
 {
     public class MonitorController : Controller
     {
-        protected static PerformanceCounter CpuCounter { get; set; }
         private static string DB_PATH => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
-
-        // GET: Monitor
-        [HttpGet]
-        public ActionResult GetIISApplications()
-        {
-            try
-            {
-                var mgr = new ServerManager();
-                var appPools = new List<IISAppPool>();
-                var sites = mgr.Sites[0].Applications.GroupBy(s => s.ApplicationPoolName)
-                    .Select(g => new
-                    {
-                        PoolName = g.Key,
-                        WebApps = g.Select(s =>  s.Path ).ToList()
-                    }).ToList();
-
-                foreach (var app in mgr.ApplicationPools)
-                {
-                    appPools.Add(new IISAppPool
-                    {
-                        Name = app.Name,
-                        State = app.State.ToString(),
-                        Apps = sites.FirstOrDefault(s => s.PoolName == app.Name)?.WebApps.ToList()
-                    });
-                }
-
-
-                var applications = GroupAppPools(appPools);
-
-                var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
-                var filteredApps = applications.Where(a => !ignoreList.Contains(a.Name)).ToList();
-
-
-                var buildsNode = GetWhitelistItems();
-                if (buildsNode != null)
-                {
-                    filteredApps.ForEach(ap => ap.IsWhitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
-                }
-
-                filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
-
-                return filteredApps.ToJsonResult();
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        private static XElement GetWhitelistItems()
-        {
-            var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
-            if (!System.IO.File.Exists(whitelistFile)) return null;
-            var whitelist = XDocument.Load(whitelistFile);
-
-            var buildsNode = whitelist.Descendants("builds").First();
-            return buildsNode;
-        }
-
-        private bool IsWhiteListed(IList<IISAppPool> applicationPools, XElement buildsNode)
-        {
-            return applicationPools.All(appPool => buildsNode.Descendants("build")
-                .Any(n => n.Descendants("app").Any(a => a.Attribute("value")?.Value == appPool.Name)));
-        }
-
-        private static List<IISApplication> GroupAppPools(List<IISAppPool> appPools)
-        {
-            var applications = new List<IISApplication>();
-            var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
-            var regex = new Regex(regexString);
-
-            foreach (var appPool in appPools)
-            {
-                var matches = regex.Match(appPool.Name);
-                if (matches.Success)
-                {
-                    var name = string.Empty;
-
-                    for (var i = 1; i < matches.Groups.Count; i++)
-                    {
-                        name = matches.Groups[i].Value;
-                        if (!string.IsNullOrEmpty(name)) break;
-                    }
-
-                    if (string.IsNullOrEmpty(name)) continue;
-
-                    var application = applications.FirstOrDefault(a => a.Name == name);
-                    if (application == null)
-                    {
-                        application = new IISApplication
-                        {
-                            Name = name
-                        };
-                        applications.Add(application);
-                    }
-
-                    application.ApplicationPools.Add(appPool);
-                }
-            }
-            return applications;
-        }
 
         [HttpGet]
         public ActionResult Recycle(string Name)
@@ -458,62 +352,6 @@ namespace ServerMonitor.Controllers
                 return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
             }
         }
-
-        protected string GetBuildNote(string name)
-        {
-            using (var db = new LiteDatabase(DB_PATH))
-            {
-                // Get a collection (or create, if doesn't exist)
-                var col = db.GetCollection<BuildNote>("BuildNotes");
-
-                var note = col.Find(c => c.BuildName == name).FirstOrDefault();
-                return note?.Note;
-            }
-        }
-
-        protected void SetBuildNote(string buildName, string note)
-        {
-            using (var db = new LiteDatabase(DB_PATH))
-            {
-                // Get a collection (or create, if doesn't exist)
-                var col = db.GetCollection<BuildNote>("BuildNotes");
-                var buildNote = col.Find(c => c.BuildName == buildName).FirstOrDefault();
-
-                if (buildNote == null)
-                {
-                    col.Insert(new BuildNote
-                    {
-                        Id = new Guid(),
-                        BuildName = buildName,
-                        Note = note
-                    });
-                }
-                else
-                {
-                    buildNote.Note = note;
-                    col.Update(buildNote);
-                }
-
-                col.EnsureIndex(x => x.BuildName);
-                db.Engine.Commit();
-            }
-        }
-
-        [HttpPost]
-        public ActionResult SaveBuildNote(string name, string value, string pk)
-        {
-            try
-            {
-                SetBuildNote(pk, value);
-                return Json(new { Message = "Application note saved succesfully." }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
 
         [HttpGet]
         public ActionResult GetserviceState()
