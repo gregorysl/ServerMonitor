@@ -16,17 +16,10 @@ namespace ServerMonitor.Models
 
         public string Note { get; set; }
 
-        [JsonProperty("state")]
-        public string State
+        [JsonProperty("running")]
+        public bool Running
         {
-            get
-            {
-                return ApplicationPools.All(a => a.State == ObjectState.Started.ToString())
-                    ? "Running"
-                    : ApplicationPools.Any(a => a.State == ObjectState.Started.ToString())
-                        ? "Partialy Running"
-                        : ObjectState.Stopped.ToString();
-            }
+            get { return ApplicationPools.Any(a => a.Running == ObjectState.Started.ToString()); }
         }
 
         public IISApplication()
