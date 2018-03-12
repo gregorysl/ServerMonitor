@@ -6,6 +6,8 @@ import StartStopButton from './StartStopButton';
 import { setIisAction } from '../../actions/actions';
 import WhitelistButton from './WhitelistButton';
 
+const flatten = list => list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+
 const ActionsButtons = (props) => {
   const onClick = () => props.set(props);
   return (
@@ -18,9 +20,11 @@ const ActionsButtons = (props) => {
 
 const mapDispatchToProps = dispatch => ({
   set: (item) => {
-    const appPools = Object.assign(...item.apps.map(x => x.children));
-    const data = { appPools, running: item.running };
-    debugger;
+    const data =
+    {
+      appPools: flatten(item.apps.map(x => x.children)),
+      running: item.running
+    };
     dispatch(setIisAction(data));
   }
 });
