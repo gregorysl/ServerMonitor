@@ -23,24 +23,15 @@ namespace ServerMonitor.Controllers
             try
             {
                 var mgr = new ServerManager();
-                var appPools = new List<IISAppPool>();
-                var sites = mgr.Sites[0].Applications.GroupBy(s => s.ApplicationPoolName)
-                    .Select(g => new
-                    {
-                        PoolName = g.Key,
-                        WebApps = g.Select(s => s.Path).ToList()
-                    }).ToList();
-
-                foreach (var app in mgr.ApplicationPools)
+                var iis = mgr.Sites[0].Applications;
+                var appPools = mgr.ApplicationPools.Select(x => new IISAppPool
                 {
-                    appPools.Add(new IISAppPool
-                    {
-                        Name = app.Name,
-                        Running = app.State.ToString(),
-                        Apps = sites.FirstOrDefault(s => s.PoolName == app.Name)?.WebApps.ToList()
-                    });
-                }
-
+                    Name = x.Name,
+                    Running = x.State == ObjectState.Started,
+                    Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
+                        .Select(s => s.Path.Replace("/", string.Empty)).ToList()
+                }).ToList();
+                
 
                 var applications = GroupAppPools(appPools);
 
@@ -138,12 +129,12 @@ namespace ServerMonitor.Controllers
                     }
                 }
 
-                return Json(new { Message = "Application pools stopped successfuly." });
+                return Json(new { message = "Application pools stopped successfuly." });
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return Json(new { message = ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
             }
 
         }

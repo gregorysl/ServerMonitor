@@ -19,7 +19,7 @@ namespace ServerMonitor.Models
         [JsonProperty("running")]
         public bool Running
         {
-            get { return ApplicationPools.Any(a => a.Running == ObjectState.Started.ToString()); }
+            get { return ApplicationPools.Any(a => a.Running); }
         }
 
         public IISApplication()

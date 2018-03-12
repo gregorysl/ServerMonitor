@@ -9,7 +9,7 @@ namespace ServerMonitor.Models
         [JsonProperty("key")]
         public string Name { get; set; }
         [JsonProperty("running")]
-        public string Running { get; set; }
+        public bool Running { get; set; }
         [JsonProperty("children")]
         public IList<string> Apps { get; set; }
     }
