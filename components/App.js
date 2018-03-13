@@ -43,10 +43,7 @@ class App extends Component {
     this.props.getIis();
   }
   componentWillReceiveProps(nextProps) {
-    checkErrors(this.props.oracle.errors, nextProps.oracle.errors);
-    checkErrors(this.props.sessions.errors, nextProps.sessions.errors);
-    checkErrors(this.props.disk.errors, nextProps.disk.errors);
-    checkErrors(this.props.tasks.errors, nextProps.tasks.errors);
+    checkErrors(this.props.errors, nextProps.errors);
   }
 
   render() {
@@ -117,7 +114,8 @@ App.propTypes = {
   iis: PropTypes.objectOf(PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  })).isRequired
+  })).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const mapStateToProps = state => ({
@@ -125,7 +123,8 @@ const mapStateToProps = state => ({
   sessions: state.sessions,
   disk: state.disk,
   oracle: state.oracle,
-  iis: state.table
+  iis: state.table,
+  errors: state.errors
 });
 
 const mapDispatchToProps = dispatch => ({

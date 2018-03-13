@@ -46,6 +46,7 @@ const oracleInstanciesErrorText = 'Oracle Instancies';
 const userSessionsErrorText = 'User Sessions';
 const tasksErrorText = 'Tasks';
 const diskUsageErrorText = 'Disk Usage';
+const iisErrorText = 'IIS Applications';
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
@@ -60,14 +61,6 @@ function diskUsageReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.DISK_USAGE_SUCCESS:
       return { ...state, ...action.data, columns: diskColumns };
-    case types.DISK_USAGE_ERROR:
-      return {
-        ...state,
-        errors: state.errors.concat({
-          title: diskUsageErrorText,
-          error: action.error.message
-        })
-      };
     default:
       return state;
   }
@@ -77,14 +70,6 @@ function tasksReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.TASKS_SUCCESS:
       return { ...state, ...action.data, columns: tasksColumns };
-    case types.TASKS_ERROR:
-      return {
-        ...state,
-        errors: state.errors.concat({
-          title: tasksErrorText,
-          error: action.error.message
-        })
-      };
     default:
       return state;
   }
@@ -94,14 +79,6 @@ function sessionsReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.SESSIONS_SUCCESS:
       return { ...state, ...action.data, columns: sessionsColumns };
-    case types.SESSIONS_ERROR:
-      return {
-        ...state,
-        errors: state.errors.concat({
-          title: userSessionsErrorText,
-          error: action.error.message
-        })
-      };
     default:
       return state;
   }
@@ -111,14 +88,6 @@ function oracleReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
       return { ...state, ...action.data, columns: oracleColumns };
-    case types.ORACLE_ERROR:
-      return {
-        ...state,
-        errors: state.errors.concat({
-          title: oracleInstanciesErrorText,
-          error: action.error.message
-        })
-      };
     default:
       return state;
   }
@@ -142,6 +111,43 @@ function hardwareReducer(state = hardwareInitialState, action) {
   }
 }
 
+function errorReducer(state = [], action) {
+  switch (action.type) {
+    case types.ORACLE_ERROR:
+      return [...state, {
+        title: oracleInstanciesErrorText,
+        error: action.error.message
+      }];
+    case types.DISK_USAGE_ERROR:
+      return [...state, {
+        title: diskUsageErrorText,
+        error: action.error.message
+      }];
+    case types.TASKS_ERROR:
+      return [...state, {
+        title: tasksErrorText,
+        error: action.error.message
+      }];
+    case types.SESSIONS_ERROR:
+      return [...state, {
+        title: userSessionsErrorText,
+        error: action.error.message
+      }];
+    case types.GET_IIS_APPS_ERROR:
+      return [...state, {
+        title: iisErrorText,
+        error: action.error.message
+      }];
+    case types.GET_IIS_TOGGLE_SUCCESS:
+      return [...state, {
+        title: iisErrorText,
+        error: action.message
+      }];
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   table: tableReducer,
   service: servicesReducer,
@@ -149,7 +155,8 @@ const rootReducer = combineReducers({
   disk: diskUsageReducer,
   tasks: tasksReducer,
   sessions: sessionsReducer,
-  oracle: oracleReducer
+  oracle: oracleReducer,
+  errors: errorReducer
 });
 
 export default rootReducer;
