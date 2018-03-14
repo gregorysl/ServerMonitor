@@ -5,6 +5,7 @@ node_modules
 
 # Only apps should have lockfiles
 yarn.lock
+yarn-error.log
 package-lock.json
 dist
 dist/server_monitor.css
