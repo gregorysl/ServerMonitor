@@ -352,55 +352,7 @@ namespace ServerMonitor.Controllers
                 return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
             }
         }
-
-        [HttpGet]
-        public ActionResult GetserviceState()
-        {
-            try
-            {
-                var serviceUrl = ConfigurationManager.AppSettings["serviceUrl"];
-                var serviceUser = ConfigurationManager.AppSettings["serviceUser"];
-                var servicePassword = ConfigurationManager.AppSettings["servicePassword"];
-                ApiClient.Execute(serviceUrl, HttpMethod.Get, new NetworkCredential(serviceUser, servicePassword));
-
-                return Json(new { Message = "SUCCESS" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (AggregateException ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { Message = string.Join("<br/>", ex.InnerExceptions.Select(e => e.Message)), Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult GetElasticsearchState()
-        {
-            try
-            {
-                var elasticUrl = ConfigurationManager.AppSettings["ElasticUrl"];
-                var elasticUser = ConfigurationManager.AppSettings["ElasticUser"];
-                var elasticPassword = ConfigurationManager.AppSettings["ElasticPassword"];
-                ApiClient.Execute(elasticUrl, HttpMethod.Get, new NetworkCredential(elasticUser, elasticPassword));
-
-                return Json(new { Message = "SUCCESS" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (AggregateException ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { Message = string.Join("<br/>", ex.InnerExceptions.Select(e => e.Message)), Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
+        
         [HttpGet]
         public ActionResult GetSettingValue(string key)
         {
