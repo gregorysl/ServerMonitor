@@ -4,16 +4,15 @@ import baseUri from './baseUri';
 const appUri = `${baseUri}/ServerMonitor/`;
 const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${apiUri}GetOracleInstances`;
-const tasksUri = `${appUri}/Tasks/GetScheduledTasks`;
+const tasksUri = `${appUri}Tasks/GetScheduledTasks`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
-const hardwareUri = `${appUri}/Hardware/GetHardware`;
+const hardwareUri = `${appUri}Hardware/GetHardware`;
 const iisUri = `${appUri}Iis/Get`;
 const iisStopUri = `${appUri}Iis/Toggle`;
 
-export function setIisApp(appName) {
-  debugger;
-  return Axios.post(iisStopUri, appName).then(x => JSON.parse(x.data));
+export function setIisApp(appList) {
+  return Axios.post(iisStopUri, appList);
 }
 
 const range = (len) => {
