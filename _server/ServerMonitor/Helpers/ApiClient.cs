@@ -109,7 +109,7 @@ namespace ServerMonitor.Helpers
 
         }
 
-        public static void Execute(string url, HttpMethod verb, NetworkCredential credential, StringContent httpContent = null)
+        public static HttpResponseMessage Execute(string url, HttpMethod verb, NetworkCredential credential, StringContent httpContent = null)
         {
             if (verb != HttpMethod.Get && verb != HttpMethod.Post && verb != HttpMethod.Put)
                 throw new NotSupportedException($"Verb {verb.Method} not supported");
@@ -136,11 +136,8 @@ namespace ServerMonitor.Helpers
                     {
                         responseApi = client.PutAsync(client.BaseAddress, httpContent).Result;
                     }
-
-                    if (responseApi.StatusCode != HttpStatusCode.OK && responseApi.StatusCode != HttpStatusCode.NoContent)
-                    {
-                        throw new WebException(responseApi.ReasonPhrase, WebExceptionStatus.UnknownError);
-                    }
+                    
+                    return responseApi;
                 }
             }
 
