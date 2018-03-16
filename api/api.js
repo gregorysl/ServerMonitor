@@ -94,12 +94,13 @@ const range = (len) => {
 };
 
 export function getServices() {
-  return range(5).map(d => ({
-    key: d,
-    url: 'test',
-    name: `test ${d}`,
-    message: 'working'
-  }));
+  return [{
+    key: 'Fdim', working: false, message: "An error occurred while sending the request.\\r\\nThe remote name could not be resolved: 'propp-jav.com'\\r\\n", url: 'https://propp-jav.com:8083/MessageBroker/ping'
+  }, {
+    key: 'ElasticSearch', working: false, message: 'Unauthorized', url: 'https://localhost:9200/'
+  }, {
+    key: 'Google', working: true, message: 'OK', url: 'https://www.google.com/'
+  }];
 }
 
 export function getHardware() {
