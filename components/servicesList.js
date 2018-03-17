@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'antd';
 import PropTypes from 'prop-types';
+import ServiceItem from './ServiceItem';
 import { getServicesAction } from '../actions/actions';
 
 
@@ -12,9 +13,9 @@ class ServicesList extends Component {
   render() {
     return (
       <List
-        bordered
-        renderItem={item => (<List.Item>{item.name}</List.Item>)}
+        grid={{ gutter: 16, column: 4 }}
         dataSource={this.props.serviceData}
+        renderItem={item => (<ServiceItem {...item} name={item.key} />)}
       />
     );
   }
