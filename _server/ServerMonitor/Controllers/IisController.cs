@@ -42,7 +42,7 @@ namespace ServerMonitor.Controllers
                 var buildsNode = GetWhitelistItems();
                 if (buildsNode != null)
                 {
-                    filteredApps.ForEach(ap => ap.IsWhitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
+                    filteredApps.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
                 }
 
                 filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));

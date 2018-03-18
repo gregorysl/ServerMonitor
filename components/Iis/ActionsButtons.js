@@ -13,7 +13,7 @@ const ActionsButtons = (props) => {
   return (
     <div className="actions" >
       <StartStopButton running={props.running} click={onClick} />
-      <WhitelistButton running={props.running} click={onClick} />
+      <WhitelistButton whitelisted={props.whitelisted} click={onClick} />
       <Tooltip title="notes" ><Icon type="tag" /></Tooltip>
     </div >);
 };
@@ -31,6 +31,7 @@ const mapDispatchToProps = dispatch => ({
 
 ActionsButtons.propTypes = {
   running: PropTypes.bool.isRequired,
+  whitelisted: PropTypes.bool.isRequired,
   set: PropTypes.func.isRequired
 };
 

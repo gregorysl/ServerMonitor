@@ -12,7 +12,8 @@ namespace ServerMonitor.Models
         [JsonProperty("apps")]
         public IList<IISAppPool> ApplicationPools { get; set; }
 
-        public bool IsWhitelisted { get; set; }
+        [JsonProperty("whitelisted")]
+        public bool Whitelisted { get; set; }
 
         public string Note { get; set; }
 
