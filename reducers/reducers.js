@@ -143,6 +143,11 @@ function errorReducer(state = [], action) {
         title: iisErrorText,
         error: action.message
       }];
+    case types.GET_IIS_TOGGLE_ERROR:
+      return [...state, {
+        title: iisErrorText,
+        error: action.error.message
+      }];
     default:
       return state;
   }
