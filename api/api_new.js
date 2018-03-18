@@ -26,7 +26,7 @@ export function getServices() {
 }
 
 export function getHardware() {
-  return Axios.get(hardwareUri).then(x => JSON.parse(x.data));
+  return Axios.get(hardwareUri);
 }
 
 

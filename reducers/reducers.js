@@ -105,7 +105,7 @@ function servicesReducer(state = initialState, action) {
 function hardwareReducer(state = hardwareInitialState, action) {
   switch (action.type) {
     case types.GET_HARDWARE_DATA_SUCCESS:
-      return [...action.data];
+      return [...action.data.data];
     default:
       return state;
   }

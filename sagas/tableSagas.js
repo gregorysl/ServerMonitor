@@ -13,9 +13,9 @@ export function* getServicesData({ payload }) {
 
 export function* getHardwareData() {
   try {
-    let data = yield call(api.getHardware);
-    if (data.constructor === Object) {
-      data = [data];
+    const data = yield call(api.getHardware);
+    if (data.data.constructor === Object) {
+      data.data = [data.data];
     }
     yield put({ type: types.GET_HARDWARE_DATA_SUCCESS, data });
   } catch (error) {
