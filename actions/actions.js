@@ -32,3 +32,8 @@ export const getSessionsAction = () => ({
 export const getOracleAction = () => ({
   type: types.ORACLE_REQUEST
 });
+
+export const runTask = name => ({
+  type: types.TASKS_RUN_REQUEST,
+  name
+});

@@ -26,12 +26,19 @@ const isDeployingColumn =
 
   };
 
-const action =
+const tasksAction =
   {
     title: 'Action',
     key: 'x',
     render: x => (<ActionsButtons {...x} name={x.key} />)
   };
+
+const action =
+    {
+      title: 'Action',
+      key: 'x',
+      render: x => (<ActionsButtons {...x} name={x.key} />)
+    };
 const iisExpandedRowRenderer = x => (<AppPoolList items={x.apps} />);
 
 class App extends Component {
@@ -132,7 +139,8 @@ const mapDispatchToProps = dispatch => ({
   getSessions: () => dispatch(actions.getSessionsAction()),
   getUsage: () => dispatch(actions.getDiskUsageAction()),
   getOracle: () => dispatch(actions.getOracleAction()),
-  getIis: () => dispatch(actions.getIisAction())
+  getIis: () => dispatch(actions.getIisAction()),
+  runTask: name => dispatch(actions.runTask(name))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
