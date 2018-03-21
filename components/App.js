@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Checkbox, notification } from 'antd';
+import { Icon, Checkbox, notification } from 'antd';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import ServicesList from './servicesList';
@@ -26,13 +26,6 @@ const isDeployingColumn =
 
   };
 
-const tasksAction =
-  {
-    title: 'Action',
-    key: 'x',
-    render: x => (<ActionsButtons {...x} name={x.key} />)
-  };
-
 const action =
     {
       title: 'Action',
@@ -53,6 +46,16 @@ class App extends Component {
     checkErrors(this.props.errors, nextProps.errors);
   }
 
+  getTasksAction(z) {
+    debugger;
+    console.log(z);
+    const click = () => this.props.runTask(this.key);
+    return ({
+      title: 'Action',
+      key: 'x',
+      render: x => (<Icon onClick={click} {...x} type="star" />)
+    });
+  }
   render() {
     return (
       <div>
@@ -67,6 +70,7 @@ class App extends Component {
           data={this.props.tasks.data}
           columns={this.props.tasks.columns}
           message="No tasks found."
+          extraColumns={[this.getTasksAction]}
           rowKey="Name"
         />
         <DataTable
@@ -101,6 +105,7 @@ App.propTypes = {
   getUsage: PropTypes.func.isRequired,
   getOracle: PropTypes.func.isRequired,
   getIis: PropTypes.func.isRequired,
+  runTask: PropTypes.func.isRequired,
   sessions: PropTypes.objectOf(PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
