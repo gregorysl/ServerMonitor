@@ -78,3 +78,12 @@ export function* getOracleData() {
     yield put({ type: types.ORACLE_ERROR, error });
   }
 }
+
+export function* runTask(props) {
+  try {
+    const data = yield call(api.runTask, props.name);
+    yield put({ type: types.TASKS_RUN_SUCCESS, message: data.data.Message });
+  } catch (error) {
+    yield put({ type: types.TASKS_RUN_ERROR, error });
+  }
+}

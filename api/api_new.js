@@ -5,6 +5,7 @@ const appUri = `${baseUri}/ServerMonitor/`;
 const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${apiUri}GetOracleInstances`;
 const tasksUri = `${appUri}Tasks/GetScheduledTasks`;
+const runTasksUri = `${appUri}Tasks/StartTask`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const hardwareUri = `${appUri}Hardware/GetHardware`;
@@ -13,6 +14,9 @@ const iisStopUri = `${appUri}Iis/Toggle`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, appList);
+}
+export function runTask(name) {
+  return Axios.post(runTasksUri, { Path: name });
 }
 
 export function getServices() {

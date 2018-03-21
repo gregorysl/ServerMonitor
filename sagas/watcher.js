@@ -33,3 +33,7 @@ export function* watchSessions() {
 export function* watchOracle() {
   yield takeLatest(types.ORACLE_REQUEST, saga.getOracleData);
 }
+
+export function* watchRunTask() {
+  yield takeLatest(types.TASKS_RUN_REQUEST, saga.runTask);
+}

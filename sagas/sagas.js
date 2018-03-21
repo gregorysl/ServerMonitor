@@ -9,7 +9,8 @@ const sagas = [
   fork(watch.watchDiskUsage),
   fork(watch.watchTasks),
   fork(watch.watchSessions),
-  fork(watch.watchOracle)
+  fork(watch.watchOracle),
+  fork(watch.watchRunTask)
 ];
 
 export default function* () {
