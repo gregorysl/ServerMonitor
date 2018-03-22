@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/actionTypes';
 
+const filesize = require('filesize');
+
 const iisColumns = [
   { title: 'Application', dataIndex: 'key', key: 'key' },
   {
@@ -9,7 +11,9 @@ const iisColumns = [
 ];
 const diskColumns = [
   { title: 'Path', dataIndex: 'Path', key: 'Path' },
-  { title: 'Size', dataIndex: 'Size', key: 'Size' },
+  {
+    title: 'Size', dataIndex: 'Size', key: 'Size', render: size => filesize(size)
+  },
   { title: 'Usage', dataIndex: 'Usage', key: 'Usage' }
 ];
 const tasksColumns = [

@@ -42,6 +42,7 @@
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "cross-env": "5.1.2",
+    "filesize": "^3.6.0",
     "global": "^4.3.2",
     "less": "^2.7.3",
     "moment": "^2.20.1",
