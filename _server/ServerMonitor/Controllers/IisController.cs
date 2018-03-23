@@ -52,7 +52,7 @@ namespace ServerMonitor.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
         private static List<IISApplication> GroupAppPools(List<IISAppPool> appPools)
@@ -119,22 +119,16 @@ namespace ServerMonitor.Controllers
 
                 foreach (var pool in pools)
                 {
-                    if (running)
-                    {
-                        pool.Stop();
-                    }
-                    else
-                    {
-                        pool.Start();
-                    }
+                    var newState = running ? pool.Stop() : pool.Start();
                 }
 
-                return Json(new { message = "Application pools stopped successfuly." });
+                var state = running ? "stopped" : "started";
+                return new { message = $"Application pools ${state} successfuly."}.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { message = ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { message = ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
 
         }
@@ -186,12 +180,12 @@ namespace ServerMonitor.Controllers
             try
             {
                 SetBuildNote(pk, value);
-                return Json(new { Message = "Application note saved succesfully." }, JsonRequestBehavior.AllowGet);
+                return new { Message = "Application note saved succesfully." }.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
 

@@ -34,17 +34,17 @@ namespace ServerMonitor.Controllers
                 if (pool == null)
                 {
                     Response.StatusCode = 404;
-                    return Json(new { Message = "Application pool not found." }, JsonRequestBehavior.AllowGet);
+                    return new { Message = "Application pool not found." }.ToJsonResult();
                 }
 
                 pool.Recycle();
 
-                return Json(new { Message = "Application pool succesfully recycled." }, JsonRequestBehavior.AllowGet);
+                return new { Message = "Application pool succesfully recycled." }.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
 
         }
@@ -64,12 +64,12 @@ namespace ServerMonitor.Controllers
                     pool.Stop();
                 }
 
-                return Json(new { Message = "Application pools stopped successfuly." });
+                return new { Message = "Application pools stopped successfuly." }.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
 
         }
@@ -88,12 +88,12 @@ namespace ServerMonitor.Controllers
                     pool.Start();
                 }
 
-                return Json(new { Message = "Application pools started successfuly." });
+                return new { Message = "Application pools started successfuly." }.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
 
         }
@@ -137,12 +137,12 @@ namespace ServerMonitor.Controllers
                     }
                 }
 
-                return Json(new { Message = "Application whitelisted successfuly." }, JsonRequestBehavior.AllowGet);
+                return new { Message = "Application whitelisted successfuly." }.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
 
         }
@@ -207,12 +207,12 @@ namespace ServerMonitor.Controllers
                     }
                 }
 
-                return Json(new { Message = "Application un-whitelisted successfuly." }, JsonRequestBehavior.AllowGet);
+                return new { Message = "Application un-whitelisted successfuly." }.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
 
         }
@@ -233,12 +233,12 @@ namespace ServerMonitor.Controllers
                     sizes.Add(new FolderSize { Path = path, Size = CalculateFolderSize(path) });
                 }
 
-                return Json(sizes, JsonRequestBehavior.AllowGet);
+                return sizes.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
 
@@ -282,12 +282,12 @@ namespace ServerMonitor.Controllers
             try
             {
                 var instances = GetAllOracleInstances();
-                return Json(instances.Select(i => new { i.Id, i.CurrentBuildName, CurrentBuildDate = i.CurrentBuildDate.ToString("g"), i.DisplayName, i.IsReserved, i.IsDeploying }), JsonRequestBehavior.AllowGet);
+                return instances.Select(i => new { i.Id, i.CurrentBuildName, CurrentBuildDate = i.CurrentBuildDate.ToString("g"), i.DisplayName, i.IsReserved, i.IsDeploying }).ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
 
@@ -302,13 +302,13 @@ namespace ServerMonitor.Controllers
                     Reserve = isReserved
                 });
 
-                return Json(new { Message = $"Succesfully {(isReserved ? "" : "un")}reserved Oracle instance."}, JsonRequestBehavior.AllowGet);
+                return new { Message = $"Succesfully {(isReserved ? "" : "un")}reserved Oracle instance."}.ToJsonResult();
 
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
 
@@ -342,14 +342,14 @@ namespace ServerMonitor.Controllers
                             LoginDate = s.LoginTime?.ToString("g"),
                             State = s.ConnectionState.ToString()
                         });
-                    return Json(sessions, JsonRequestBehavior.AllowGet);
+                    return sessions.ToJsonResult();
 
                 }
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
         
@@ -361,16 +361,16 @@ namespace ServerMonitor.Controllers
                 if (string.IsNullOrEmpty(key))
                 {
                     Response.StatusCode = 400;
-                    return Json(new { Message = "Key parameter cannot be null or empty." }, JsonRequestBehavior.AllowGet);
+                    return new { Message = "Key parameter cannot be null or empty." }.ToJsonResult();
                 }
 
                 var value = ConfigurationManager.AppSettings[key];
-                return Json(new { Message = "SUCCESS", Value = value }, JsonRequestBehavior.AllowGet);
+                return new { Message = "SUCCESS", Value = value }.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
     }

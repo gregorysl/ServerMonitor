@@ -36,7 +36,7 @@ namespace ServerMonitor.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
 
