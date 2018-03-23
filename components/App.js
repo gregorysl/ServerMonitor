@@ -22,7 +22,7 @@ const checkErrors = (props, nextProps) => {
 const isDeployingColumn =
   {
     title: 'Deploying',
-    key: 'IsDeploying',
+    key: 'isDeploying',
     render: x => (<Checkbox defaultChecked={x.IsDeploying} disabled />)
 
   };
@@ -31,7 +31,7 @@ const taskAction =
     {
       title: 'Action',
       key: 'x',
-      render: x => (<TaskActionButtons {...x} name={x.key} />)
+      render: x => (<TaskActionButtons {...x} />)
     };
 
 const action =
@@ -62,27 +62,27 @@ class App extends Component {
           data={this.props.sessions.data}
           columns={this.props.sessions.columns}
           message="No sessions found."
-          rowKey="User"
+          rowKey="user"
         />
         <DataTable
           data={this.props.tasks.data}
           columns={this.props.tasks.columns}
           message="No tasks found."
           extraColumns={[taskAction]}
-          rowKey="Name"
+          rowKey="name"
         />
         <DataTable
           data={this.props.disk.data}
           columns={this.props.disk.columns}
           message="No directories found."
-          rowKey="Path"
+          rowKey="path"
         />
         <DataTable
           data={this.props.oracle.data}
           columns={this.props.oracle.columns}
           message="No instancies found."
           extraColumns={[isDeployingColumn]}
-          rowKey="CurrentBuildName"
+          rowKey="currentBuildName"
         />
         <DataTable
           data={this.props.iis.data}

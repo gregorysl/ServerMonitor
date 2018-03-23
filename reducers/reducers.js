@@ -6,33 +6,32 @@ const filesize = require('filesize');
 const iisColumns = [
   { title: 'Application', dataIndex: 'key', key: 'key' },
   {
-    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
+    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'started' : 'stopped')
   }
 ];
 const diskColumns = [
-  { title: 'Path', dataIndex: 'Path', key: 'Path' },
+  { title: 'Path', dataIndex: 'path', key: 'path' },
   {
-    title: 'Size', dataIndex: 'Size', key: 'Size', render: size => filesize(size)
+    title: 'Size', dataIndex: 'size', key: 'size', render: size => (size !== '' ? filesize(size) : '')
   },
-  { title: 'Usage', dataIndex: 'Usage', key: 'Usage' }
+  { title: 'Usage', dataIndex: 'usage', key: 'usage' }
 ];
 const tasksColumns = [
-  { title: 'Name', dataIndex: 'Name', key: 'Name' },
-  { title: 'State', dataIndex: 'State', key: 'State' },
-  { title: 'Path', dataIndex: 'Path', key: 'Path' },
-  { title: 'LastRunTime', dataIndex: 'LastRunTime', key: 'LastRunTime' },
-  { title: 'LastTaskResult', dataIndex: 'LastTaskResult', key: 'LastTaskResult' }
+  { title: 'Name', dataIndex: 'name', key: 'name' },
+  { title: 'State', dataIndex: 'state', key: 'state' },
+  { title: 'Last Run Time', dataIndex: 'lastRunTime', key: 'lastRunTime' },
+  { title: 'Last Result', dataIndex: 'lastTaskResult', key: 'lastTaskResult' }
 ];
 const oracleColumns = [
-  { title: 'Name', dataIndex: 'CurrentBuildName', key: 'CurrentBuildName' },
-  { title: 'Date', dataIndex: 'CurrentBuildDate', key: 'CurrentBuildDate' },
-  { title: 'Instance', dataIndex: 'DisplayName', key: 'DisplayName' },
-  { title: 'Reserved', dataIndex: 'IsReserved', key: 'IsReserved' }
+  { title: 'name', dataIndex: 'currentBuildName', key: 'currentBuildName' },
+  { title: 'Date', dataIndex: 'currentBuildDate', key: 'currentBuildDate' },
+  { title: 'Instance', dataIndex: 'displayName', key: 'displayName' },
+  { title: 'Reserved', dataIndex: 'isReserved', key: 'isReserved' }
 ];
 const sessionsColumns = [
-  { title: 'User', dataIndex: 'User', key: 'User' },
-  { title: 'LoginDate', dataIndex: 'LoginDate', key: 'LoginDate' },
-  { title: 'State', dataIndex: 'State', key: 'State' }
+  { title: 'User', dataIndex: 'user', key: 'user' },
+  { title: 'Login Date', dataIndex: 'loginDate', key: 'loginDate' },
+  { title: 'State', dataIndex: 'state', key: 'state' }
 ];
 
 const hardwareInitialState = [];
