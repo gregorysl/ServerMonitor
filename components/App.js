@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Checkbox, notification } from 'antd';
+import { Checkbox, notification, Layout } from 'antd';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import ServicesList from './servicesList';
@@ -9,6 +9,8 @@ import DataTable from './Iis/DataTable';
 import AppPoolList from './Iis/AppPoolList';
 import ActionsButtons from './Iis/ActionsButtons';
 import TaskActionButtons from './TaskActionButtons';
+
+const { Header, Content } = Layout;
 
 const checkErrors = (props, nextProps) => {
   if (props.length < nextProps.length) {
@@ -56,43 +58,57 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Hardware />
-        <DataTable
-          data={this.props.sessions.data}
-          columns={this.props.sessions.columns}
-          message="No sessions found."
-          rowKey="user"
-        />
-        <DataTable
-          data={this.props.tasks.data}
-          columns={this.props.tasks.columns}
-          message="No tasks found."
-          extraColumns={[taskAction]}
-          rowKey="name"
-        />
-        <DataTable
-          data={this.props.disk.data}
-          columns={this.props.disk.columns}
-          message="No directories found."
-          rowKey="path"
-        />
-        <DataTable
-          data={this.props.oracle.data}
-          columns={this.props.oracle.columns}
-          message="No instancies found."
-          extraColumns={[isDeployingColumn]}
-          rowKey="currentBuildName"
-        />
-        <DataTable
-          data={this.props.iis.data}
-          columns={this.props.iis.columns}
-          message="No IIS applications found."
-          extraColumns={[action]}
-          expandedRowRender={iisExpandedRowRenderer}
-        />
-        <ServicesList />
-      </div>
+      <Layout className="layout">
+        <Header>
+          <div className="logo" />
+        </Header>
+        <Content style={{ padding: '0 50px' }} >
+          <div style={{ background: '#fff', padding: 24, minHeight: 280 }} >
+            <h1>Hardware Monitor</h1>
+            <Hardware />
+            <h1>Component Status</h1>
+            <ServicesList />
+            <h1>IIS Applications</h1>
+            <DataTable
+              data={this.props.iis.data}
+              columns={this.props.iis.columns}
+              message="No IIS applications found."
+              extraColumns={[action]}
+              expandedRowRender={iisExpandedRowRenderer}
+            />
+            <h1>Disk Status</h1>
+            <DataTable
+              data={this.props.disk.data}
+              columns={this.props.disk.columns}
+              message="No directories found."
+              rowKey="path"
+            />
+            <h1>Scheduled Tasks</h1>
+            <DataTable
+              data={this.props.tasks.data}
+              columns={this.props.tasks.columns}
+              message="No tasks found."
+              extraColumns={[taskAction]}
+              rowKey="name"
+            />
+            <h1>Oracle Instances</h1>
+            <DataTable
+              data={this.props.oracle.data}
+              columns={this.props.oracle.columns}
+              message="No instancies found."
+              extraColumns={[isDeployingColumn]}
+              rowKey="currentBuildName"
+            />
+            <h1>User Sessions</h1>
+            <DataTable
+              data={this.props.sessions.data}
+              columns={this.props.sessions.columns}
+              message="No sessions found."
+              rowKey="user"
+            />
+          </div>
+        </Content>
+      </Layout>
     );
   }
 }
