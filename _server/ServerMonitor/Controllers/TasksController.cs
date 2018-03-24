@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
+using ServerMonitor.Helpers;
 
 namespace ServerMonitor.Controllers
 {
@@ -18,52 +19,46 @@ namespace ServerMonitor.Controllers
                 var taskDetails = TaskService.Instance.AllTasks.Where(t => tasks.Contains(t.Name));
                 var details = taskDetails.Select(t => new
                 {
-                    Name = t.Name,
+                    t.Name,
                     State = t.State.ToString(),
                     t.Path,
                     LastRunTime = t.LastRunTime.ToString("g"),
                     t.LastTaskResult
                 });
-                return Json(details, JsonRequestBehavior.AllowGet);
+                return details.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new {ex.Message, Exception = ex.StackTrace}.ToJsonResult();
             }
         }
 
         [HttpPost]
-        public ActionResult StartTask(string Path)
+        public ActionResult Toggle(string name)
         {
             try
             {
-                var task = TaskService.Instance.GetTask(Path);
-                task.Run();
-                return Json(new { Message = "Task started successfuly." });
+                string message;
+                var task = TaskService.Instance.GetTask(name);
+                if (task.State == TaskState.Running)
+                {
+                    task.Stop();
+                    message = "stopped";
+                }
+                else
+                {
+                    task.Run();
+                    message = "started";
+                }
+
+                return new { Message = $"Task ${message} successfuly."}.ToJsonResult();
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
         }
-
-        [HttpPost]
-        public ActionResult StopTask(string Path)
-        {
-            try
-            {
-                var task = TaskService.Instance.GetTask(Path);
-                task.Stop();
-                return Json(new { Message = "Task stopped successfuly." });
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(new { ex.Message, Exception = ex.StackTrace }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
     }
 }
