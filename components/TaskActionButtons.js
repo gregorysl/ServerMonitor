@@ -4,25 +4,23 @@ import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import { runTask } from '../actions/actions';
 
-const flatten = list => list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
-
 const TaskActionButtons = (props) => {
-  const onClick = () => props.set(props.Name);
+  const onClick = () => props.set(props.name);
+  const icon = props.state === 'Ready' ? 'caret-right' : 'close-square';
   return (
     <div>
-      <Icon onClick={onClick} type="star" />
+      <Icon onClick={onClick} type={icon} />
     </div >);
 };
 
 const mapDispatchToProps = dispatch => ({
-  set: (item) => {
-    dispatch(runTask(item));
-  }
+  set: item => dispatch(runTask(item))
 });
 
 TaskActionButtons.propTypes = {
   set: PropTypes.func.isRequired,
-  Name: PropTypes.string.isRequired
+  state: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired
 };
 
 export default connect(null, mapDispatchToProps)(TaskActionButtons);

@@ -12,7 +12,7 @@ const DataTable = ({
   rowKey = 'key'
 }) => {
   if (data.length === 0 && columns.length === 0) {
-    return (<h1>{message}</h1>);
+    return (<h2>{message}</h2>);
   }
   const finalColumns = [...columns, ...extraColumns];
   return (
