@@ -5,28 +5,23 @@ const appUri = `${baseUri}/ServerMonitor/`;
 const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${apiUri}GetOracleInstances`;
 const tasksUri = `${appUri}Tasks/GetScheduledTasks`;
-const runTasksUri = `${appUri}Tasks/StartTask`;
+const runTasksUri = `${appUri}Tasks/Toggle`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const hardwareUri = `${appUri}Hardware/GetHardware`;
 const iisUri = `${appUri}Iis/Get`;
 const iisStopUri = `${appUri}Iis/Toggle`;
+const servicesStopUri = `${appUri}Links/Get`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, appList);
 }
 export function runTask(name) {
-  return Axios.post(runTasksUri, { Path: name });
+  return Axios.post(runTasksUri, { name });
 }
 
 export function getServices() {
-  return [{
-    key: 'Fdim', working: false, message: "An error occurred while sending the request.\\r\\nThe remote name could not be resolved: 'propp-jav.com'\\r\\n", url: 'https://propp-jav.com:8083/MessageBroker/ping'
-  }, {
-    key: 'ElasticSearch', working: false, message: 'Unauthorized', url: 'https://localhost:9200/'
-  }, {
-    key: 'Google', working: true, message: 'OK', url: 'https://www.google.com/'
-  }];
+  return Axios.get(servicesStopUri);
 }
 
 export function getHardware() {

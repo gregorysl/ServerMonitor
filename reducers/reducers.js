@@ -99,7 +99,7 @@ function oracleReducer(state = tableInitialState, action) {
 function servicesReducer(state = initialState, action) {
   switch (action.type) {
     case types.GET_SERVICES_DATA_SUCCESS:
-      return { ...state, data: action.data };
+      return { ...state, data: action.data.data };
     default:
       return state;
   }
