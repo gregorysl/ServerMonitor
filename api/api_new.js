@@ -11,11 +11,17 @@ const diskUri = `${apiUri}GetDiskUsage`;
 const hardwareUri = `${appUri}Hardware/GetHardware`;
 const iisUri = `${appUri}Iis/Get`;
 const iisStopUri = `${appUri}Iis/Toggle`;
+const iisWhitelistUri = `${appUri}Iis/WhitelistToggle`;
 const servicesStopUri = `${appUri}Links/Get`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, appList);
 }
+
+export function whitelistApp(appList) {
+  return Axios.post(iisWhitelistUri, appList);
+}
+
 export function runTask(name) {
   return Axios.post(runTasksUri, { name });
 }

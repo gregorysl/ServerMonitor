@@ -43,6 +43,17 @@ export function* setIisApp(props) {
   }
 }
 
+export function* setIisAppWhitelist(props) {
+  try {
+    const data1 = yield call(api.whitelistApp, props.list);
+    yield put({ type: types.GET_IIS_WHITELIST_SUCCESS, message: data1.data.message });
+    const data = yield call(api.getIisApps);
+    yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.GET_IIS_WHITELIST_ERROR, error });
+  }
+}
+
 export function* getDiskUsageData() {
   try {
     const data = yield call(api.getDisk);

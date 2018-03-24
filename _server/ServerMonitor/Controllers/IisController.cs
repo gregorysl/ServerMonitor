@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Hosting;
@@ -129,6 +130,71 @@ namespace ServerMonitor.Controllers
             {
                 Response.StatusCode = 500;
                 return new { message = ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult WhitelistToggle(IList<string> pools, bool isWhitelisted)
+        {
+            try
+            {
+                var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
+                var whitelist = XDocument.Load(whitelistFile);
+
+                var buildsNode = whitelist.Descendants("builds").First();
+
+                if (!isWhitelisted)
+                {
+                    var build = new XElement("build");
+
+                    foreach (var appPool in pools)
+                    {
+                        var poolElement = new XElement("app");
+                        poolElement.SetAttributeValue("value", appPool);
+                        build.Add(poolElement);
+                    }
+
+                    buildsNode.Add(build);
+                }
+                else
+                {
+                    foreach (var appPool in pools)
+                    {
+                        var builds = buildsNode.Descendants("build").Where(n => n.Descendants("app").Any(a => a.Attribute("value")?.Value == appPool)).ToList();
+                        foreach (var build in builds)
+                        {
+                            build.Descendants("app").Where(a => a.Attribute("value")?.Value == appPool).Remove();
+                            if (!build.HasElements) build.Remove();
+                        }
+                    }
+                }
+
+                using (var file = new StreamWriter(whitelistFile))
+                {
+                    whitelist.Save(file);
+                }
+
+                //if (application.Name.EndsWith("-O"))
+                //{
+                //    var oracleInstances = GetAllOracleInstances();
+                //    var instance = oracleInstances.FirstOrDefault(i => i.CurrentBuildName == application.Name.Replace("-O", ""));
+                //    if (instance != null)
+                //    {
+                //        SetReserved(new OracleInstanceReservationRequest
+                //        {
+                //            Id = instance.Id,
+                //            Reserve = true
+                //        });
+                //    }
+                //}
+
+                return new { Message = "Application whitelisted successfuly." }.ToJsonResult();
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
             }
 
         }

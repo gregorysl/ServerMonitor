@@ -33,6 +33,11 @@ export const getOracleAction = () => ({
   type: types.ORACLE_REQUEST
 });
 
+export const whitelistApp = list => ({
+  type: types.GET_IIS_WHITELIST_REQUEST,
+  list
+});
+
 export const runTask = name => ({
   type: types.TASKS_RUN_REQUEST,
   name

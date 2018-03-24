@@ -37,3 +37,7 @@ export function* watchOracle() {
 export function* watchRunTask() {
   yield takeLatest(types.TASKS_RUN_REQUEST, saga.runTask);
 }
+
+export function* watchIisWhitelist() {
+  yield takeLatest(types.GET_IIS_WHITELIST_REQUEST, saga.setIisAppWhitelist);
+}
