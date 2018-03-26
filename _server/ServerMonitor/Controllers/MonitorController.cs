@@ -98,55 +98,6 @@ namespace ServerMonitor.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult Whitelist(IISApplication application)
-        {
-            try
-            {
-                var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
-                var whitelist = XDocument.Load(whitelistFile);
-
-                var buildsNode = whitelist.Descendants("builds").First();
-                var build = new XElement("build");
-
-                foreach (var appPool in application.ApplicationPools)
-                {
-                    var poolElement = new XElement("app");
-                    poolElement.SetAttributeValue("value", appPool.Name);
-                    build.Add(poolElement);
-                }
-
-                buildsNode.Add(build);
-
-                using (var file = new StreamWriter(whitelistFile))
-                {
-                    whitelist.Save(file);
-                }
-
-                if (application.Name.EndsWith("-O"))
-                {
-                    var oracleInstances = GetAllOracleInstances();
-                    var instance = oracleInstances.FirstOrDefault(i => i.CurrentBuildName == application.Name.Replace("-O", ""));
-                    if (instance != null)
-                    {
-                        SetReserved(new OracleInstanceReservationRequest
-                        {
-                            Id = instance.Id,
-                            Reserve = true
-                        });
-                    }
-                }
-
-                return new { Message = "Application whitelisted successfuly." }.ToJsonResult();
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
-            }
-
-        }
-
         private static List<OracleInstanceDetails> GetAllOracleInstances()
         {
             var instanceManagerHost = ConfigurationManager.AppSettings["OracleInstanceApi"];
@@ -168,56 +119,7 @@ namespace ServerMonitor.Controllers
             var content = ApiClient.GetHttpContent<OracleInstanceReservationRequest>(request);
             ApiClient.Execute(url, HttpMethod.Put, content);
         }
-
-        [HttpPost]
-        public ActionResult UnWhitelist(IISApplication application)
-        {
-            try
-            {
-                var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
-                var whitelist = XDocument.Load(whitelistFile);
-
-                var buildsNode = whitelist.Descendants("builds").First();
-
-                foreach (var appPool in application.ApplicationPools)
-                {
-                    var builds = buildsNode.Descendants("build").Where(n => n.Descendants("app").Any(a => a.Attribute("value")?.Value == appPool.Name)).ToList();
-                    foreach (var build in builds)
-                    {
-                        build.Descendants("app").Where(a => a.Attribute("value")?.Value == appPool.Name).Remove();
-                        if (!build.HasElements) build.Remove();
-                    }
-                }
-
-                using (var file = new StreamWriter(whitelistFile))
-                {
-                    whitelist.Save(file);
-                }
-                if (application.Name.EndsWith("-O"))
-                {
-                    var oracleInstances = GetAllOracleInstances();
-                    var instance = oracleInstances.FirstOrDefault(i => i.CurrentBuildName == application.Name.Replace("-O", ""));
-                    if (instance != null)
-                    {
-                        SetReserved(new OracleInstanceReservationRequest
-                        {
-                            Id = instance.Id,
-                            Reserve = false
-                        });
-                    }
-                }
-
-                return new { Message = "Application un-whitelisted successfuly." }.ToJsonResult();
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
-            }
-
-        }
-
-
+        
 
         [HttpGet]
         public ActionResult GetDiskUsage()
@@ -312,19 +214,6 @@ namespace ServerMonitor.Controllers
             }
         }
 
-        private double GetPhysicalMemory()
-        {
-            ObjectQuery winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(winQuery);
-
-            double memory = 0;
-            foreach (ManagementObject item in searcher.Get())
-            {
-                memory = double.Parse(item["TotalVirtualMemorySize"].ToString());
-            }
-            return memory;
-        }
-
         [HttpGet]
         public ActionResult GetUserSesssions()
         {
@@ -353,25 +242,5 @@ namespace ServerMonitor.Controllers
             }
         }
         
-        [HttpGet]
-        public ActionResult GetSettingValue(string key)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(key))
-                {
-                    Response.StatusCode = 400;
-                    return new { Message = "Key parameter cannot be null or empty." }.ToJsonResult();
-                }
-
-                var value = ConfigurationManager.AppSettings[key];
-                return new { Message = "SUCCESS", Value = value }.ToJsonResult();
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
-            }
-        }
     }
 }
