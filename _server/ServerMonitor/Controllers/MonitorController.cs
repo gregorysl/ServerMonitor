@@ -48,56 +48,7 @@ namespace ServerMonitor.Controllers
             }
 
         }
-
-
-        [HttpPost]
-        public ActionResult Stop(List<IISAppPool> appPools)
-        {
-            try
-            {
-                var poolsNames = appPools.Select(a => a.Name);
-                var mgr = new ServerManager();
-                var pools = mgr.ApplicationPools.Where(app => poolsNames.Contains(app.Name));
-
-                foreach (var pool in pools)
-                {
-                    pool.Stop();
-                }
-
-                return new { Message = "Application pools stopped successfuly." }.ToJsonResult();
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
-            }
-
-        }
-
-        [HttpPost]
-        public ActionResult Start(List<IISAppPool> appPools)
-        {
-            try
-            {
-                var poolsNames = appPools.Select(a => a.Name);
-                var mgr = new ServerManager();
-                var pools = mgr.ApplicationPools.Where(app => poolsNames.Contains(app.Name));
-
-                foreach (var pool in pools)
-                {
-                    pool.Start();
-                }
-
-                return new { Message = "Application pools started successfuly." }.ToJsonResult();
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
-            }
-
-        }
-
+        
         private static List<OracleInstanceDetails> GetAllOracleInstances()
         {
             var instanceManagerHost = ConfigurationManager.AppSettings["OracleInstanceApi"];
@@ -184,7 +135,7 @@ namespace ServerMonitor.Controllers
             try
             {
                 var instances = GetAllOracleInstances();
-                return instances.Select(i => new { i.Id, i.CurrentBuildName, CurrentBuildDate = i.CurrentBuildDate.ToString("g"), i.DisplayName, i.IsReserved, i.IsDeploying }).ToJsonResult();
+                return instances.ToJsonResult();
             }
             catch (Exception ex)
             {
