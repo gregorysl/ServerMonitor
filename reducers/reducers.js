@@ -25,8 +25,7 @@ const tasksColumns = [
 const oracleColumns = [
   { title: 'name', dataIndex: 'currentBuildName', key: 'currentBuildName' },
   { title: 'Date', dataIndex: 'currentBuildDate', key: 'currentBuildDate' },
-  { title: 'Instance', dataIndex: 'displayName', key: 'displayName' },
-  { title: 'Reserved', dataIndex: 'isReserved', key: 'isReserved' }
+  { title: 'Instance', dataIndex: 'displayName', key: 'displayName' }
 ];
 const sessionsColumns = [
   { title: 'User', dataIndex: 'user', key: 'user' },

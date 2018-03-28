@@ -22,12 +22,17 @@ const checkErrors = (props, nextProps) => {
   }
 };
 const isDeployingColumn =
-  {
+  [{
+    title: 'Reserved',
+    key: 'isReserved',
+    render: x => (<Checkbox defaultChecked={x.isReserved} />)
+
+  }, {
     title: 'Deploying',
     key: 'isDeploying',
-    render: x => (<Checkbox defaultChecked={x.IsDeploying} disabled />)
+    render: x => (<Checkbox defaultChecked={x.isDeploying} disabled />)
 
-  };
+  }];
 
 const taskAction =
     {
@@ -96,7 +101,7 @@ class App extends Component {
               data={this.props.oracle.data}
               columns={this.props.oracle.columns}
               message="No instancies found."
-              extraColumns={[isDeployingColumn]}
+              extraColumns={isDeployingColumn}
               rowKey="currentBuildName"
             />
             <h1>User Sessions</h1>
