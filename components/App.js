@@ -9,6 +9,7 @@ import DataTable from './Iis/DataTable';
 import AppPoolList from './Iis/AppPoolList';
 import ActionsButtons from './Iis/ActionsButtons';
 import TaskActionButtons from './TaskActionButtons';
+import OracleToggleButton from './OracleToggleButton';
 
 const { Header, Content } = Layout;
 
@@ -25,7 +26,7 @@ const isDeployingColumn =
   [{
     title: 'Reserved',
     key: 'isReserved',
-    render: x => (<Checkbox defaultChecked={x.isReserved} />)
+    render: x => (<OracleToggleButton {...x} />)
 
   }, {
     title: 'Deploying',
