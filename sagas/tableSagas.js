@@ -54,6 +54,17 @@ export function* setIisAppWhitelist(props) {
   }
 }
 
+export function* setOracle(props) {
+  try {
+    const data1 = yield call(api.setOracle, props.data);
+    yield put({ type: types.TOGGLE_ORACLE_SUCCESS, message: data1.data.message });
+    const data = yield call(api.getOracleInstancies);
+    yield put({ type: types.ORACLE_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.TOGGLE_ORACLE_ERROR, error });
+  }
+}
+
 export function* getDiskUsageData() {
   try {
     const data = yield call(api.getDisk);

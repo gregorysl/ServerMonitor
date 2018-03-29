@@ -42,3 +42,8 @@ export const runTask = name => ({
   type: types.TASKS_RUN_REQUEST,
   name
 });
+
+export const setOracle = data => ({
+  type: types.TOGGLE_ORACLE_REQUEST,
+  data
+});

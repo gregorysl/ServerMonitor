@@ -11,7 +11,8 @@ const sagas = [
   fork(watch.watchSessions),
   fork(watch.watchOracle),
   fork(watch.watchRunTask),
-  fork(watch.watchIisWhitelist)
+  fork(watch.watchIisWhitelist),
+  fork(watch.watchSetOracle)
 ];
 
 export default function* () {

@@ -8,6 +8,7 @@ const tasksUri = `${appUri}Tasks/GetScheduledTasks`;
 const runTasksUri = `${appUri}Tasks/Toggle`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
+const setOracleUri = `${apiUri}SetOracleInstanceReserved`;
 const hardwareUri = `${appUri}Hardware/GetHardware`;
 const iisUri = `${appUri}Iis/Get`;
 const iisStopUri = `${appUri}Iis/Toggle`;
@@ -16,6 +17,10 @@ const servicesStopUri = `${appUri}Links/Get`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, appList);
+}
+
+export function setOracle(data) {
+  return Axios.post(setOracleUri, data);
 }
 
 export function whitelistApp(appList) {
