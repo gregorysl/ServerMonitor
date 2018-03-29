@@ -155,7 +155,7 @@ namespace ServerMonitor.Controllers
                     Reserve = isReserved
                 });
 
-                return new { Message = $"Succesfully {(isReserved ? "" : "un")}reserved Oracle instance."}.ToJsonResult();
+                return new { Message = $"Succesfully {(!isReserved ? "" : "un")}reserved Oracle instance."}.ToJsonResult();
 
             }
             catch (Exception ex)
