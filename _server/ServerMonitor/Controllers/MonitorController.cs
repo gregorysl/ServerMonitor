@@ -9,22 +9,21 @@ using System.Management;
 using System.Net;
 using System.Net.Http;
 using System.Web.Hosting;
-using System.Web.Mvc;
+using System.Web.Http;
 using System.Xml.Linq;
 using Cassia;
-using LiteDB;
 using Microsoft.Web.Administration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
-    public class MonitorController : Controller
+    public class MonitorController : ApiController
     {
         private static string DB_PATH => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
 
         [HttpGet]
-        public ActionResult Recycle(string Name)
+        public object Recycle(string Name)
         {
             try
             {
@@ -33,18 +32,16 @@ namespace ServerMonitor.Controllers
 
                 if (pool == null)
                 {
-                    Response.StatusCode = 404;
-                    return new { Message = "Application pool not found." }.ToJsonResult();
+                    return new { Message = "Application pool not found." };
                 }
 
                 pool.Recycle();
 
-                return new { Message = "Application pool succesfully recycled." }.ToJsonResult();
+                return new { Message = "Application pool succesfully recycled." };
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
 
         }
@@ -73,7 +70,7 @@ namespace ServerMonitor.Controllers
         
 
         [HttpGet]
-        public ActionResult GetDiskUsage()
+        public object GetDiskUsage()
         {
             try
             {
@@ -86,12 +83,11 @@ namespace ServerMonitor.Controllers
                     sizes.Add(new FolderSize { Path = path, Size = CalculateFolderSize(path) });
                 }
 
-                return sizes.ToJsonResult();
+                return sizes;
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
         }
 
@@ -130,22 +126,21 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetOracleInstances()
+        public object GetOracleInstances()
         {
             try
             {
                 var instances = GetAllOracleInstances();
-                return instances.ToJsonResult();
+                return instances;
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
         }
 
         [HttpPost]
-        public ActionResult SetOracleInstanceReserved(int id, bool isReserved)
+        public object SetOracleInstanceReserved(int id, bool isReserved)
         {
             try
             {
@@ -155,18 +150,17 @@ namespace ServerMonitor.Controllers
                     Reserve = isReserved
                 });
 
-                return new { Message = $"Succesfully {(!isReserved ? "" : "un")}reserved Oracle instance."}.ToJsonResult();
+                return new { Message = $"Succesfully {(!isReserved ? "" : "un")}reserved Oracle instance."};
 
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
         }
 
         [HttpGet]
-        public ActionResult GetUserSesssions()
+        public object GetUserSesssions()
         {
             try
             {
@@ -182,14 +176,13 @@ namespace ServerMonitor.Controllers
                             LoginDate = s.LoginTime?.ToString("g"),
                             State = s.ConnectionState.ToString()
                         });
-                    return sessions.ToJsonResult();
+                    return sessions;
 
                 }
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
         }
         

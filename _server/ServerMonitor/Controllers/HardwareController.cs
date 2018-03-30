@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
-using System.Web.Mvc;
+using System.Web.Http;
 using Newtonsoft.Json;
 using ServerMonitor.Helpers;
 using ComputerInfo = Microsoft.VisualBasic.Devices.ComputerInfo;
 
 namespace ServerMonitor.Controllers
 {
-    public class HardwareController : Controller
+    public class HardwareController : ApiController
     {
         protected static PerformanceCounter CpuCounter { get; set; }
 
         private readonly ComputerInfo _computerInfo = new ComputerInfo();
 
         [HttpGet]
-        public ActionResult GetHardware()
+        public object GetHardware()
         {
             try
             {
@@ -31,12 +31,11 @@ namespace ServerMonitor.Controllers
                     }
                 };
                 
-                return hardware.ToJsonResult();
+                return hardware;
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
         }
 
@@ -81,7 +80,7 @@ namespace ServerMonitor.Controllers
     public class Hardware
     {
         [JsonProperty("key")]
-        public string Name { get; set; }
+        public object Name { get; set; }
         [JsonProperty("data")]
         public List<Data<double>> Data { get; set; }
     }
@@ -89,7 +88,7 @@ namespace ServerMonitor.Controllers
     public class Data<T>
     {
         [JsonProperty("key")]
-        public string Name { get; set; }
+        public object Name { get; set; }
         [JsonProperty("value")]
         public T Value { get; set; }
     }

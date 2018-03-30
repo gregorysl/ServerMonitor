@@ -5,16 +5,16 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+using System.Web.Http;
 using Newtonsoft.Json;
 using ServerMonitor.Helpers;
 
 namespace ServerMonitor.Controllers
 {
-    public class LinksController : Controller
+    public class LinksController : ApiController
     {
         // GET api/<controller>
-        public ActionResult Get()
+        public object Get()
         {
             var links = new List<Link>();
             var config = ConfigurationManager.GetSection("links") as LinksConfigSection;
@@ -56,7 +56,7 @@ namespace ServerMonitor.Controllers
                 links.Add(link);
             }
 
-            return links.ToJsonResult();
+            return links;
         }
         
 
@@ -70,12 +70,12 @@ namespace ServerMonitor.Controllers
     public class Link
     {
         [JsonProperty("key")]
-        public string Name { get; set; }
+        public object Name { get; set; }
         [JsonProperty("working")]
         public bool Working { get; set; }
         [JsonProperty("message")]
-        public string Message { get; set; }
+        public object Message { get; set; }
         [JsonProperty("url")]
-        public string Url { get; set; }
+        public object Url { get; set; }
     }
 }

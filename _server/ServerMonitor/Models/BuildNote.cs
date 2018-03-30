@@ -1,11 +1,11 @@
 ﻿using System;
-using LiteDB;
+//using LiteDB;
 
 namespace ServerMonitor.Models
 {
     public class BuildNote
     {
-        [BsonId]
+        //[BsonId]
         public Guid Id { get; set; }
         public string BuildName { get; set; }
         public string Note { get; set; }

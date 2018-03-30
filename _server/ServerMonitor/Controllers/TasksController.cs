@@ -2,16 +2,16 @@
 using System;
 using System.Configuration;
 using System.Linq;
-using System.Web.Mvc;
+using System.Web.Http;
 using ServerMonitor.Helpers;
 
 namespace ServerMonitor.Controllers
 {
-    public class TasksController : Controller
+    public class TasksController : ApiController
     {
 
         [HttpGet]
-        public ActionResult GetScheduledTasks()
+        public object GetScheduledTasks()
         {
             try
             {
@@ -25,17 +25,16 @@ namespace ServerMonitor.Controllers
                     LastRunTime = t.LastRunTime.ToString("g"),
                     t.LastTaskResult
                 });
-                return details.ToJsonResult();
+                return details;
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new {ex.Message, Exception = ex.StackTrace}.ToJsonResult();
+                return new {ex.Message, Exception = ex.StackTrace};
             }
         }
 
         [HttpPost]
-        public ActionResult Toggle(string name)
+        public object Toggle(string name)
         {
             try
             {
@@ -52,12 +51,11 @@ namespace ServerMonitor.Controllers
                     message = "started";
                 }
 
-                return new { Message = $"Task ${message} successfuly."}.ToJsonResult();
+                return new { Message = $"Task ${message} successfuly."};
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
         }
     }

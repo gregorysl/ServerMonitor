@@ -5,21 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Hosting;
-using System.Web.Mvc;
+using System.Web.Http;
 using System.Xml.Linq;
-using LiteDB;
 using Microsoft.Web.Administration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
-    public class IisController : Controller
+    public class IisController : ApiController
     {
         private static string DB_PATH => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
 
         [HttpGet]
-        public ActionResult Get()
+        public object Get()
         {
             try
             {
@@ -46,14 +45,13 @@ namespace ServerMonitor.Controllers
                     filteredApps.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
                 }
 
-                filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
+                //filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
 
-                return filteredApps.ToJsonResult();
+                return filteredApps;
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
         }
         private static List<IISApplication> GroupAppPools(List<IISAppPool> appPools)
@@ -111,7 +109,7 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
-        public ActionResult Toggle(List<string> appPools, bool running)
+        public object Toggle(List<string> appPools, bool running)
         {
             try
             {
@@ -124,18 +122,17 @@ namespace ServerMonitor.Controllers
                 }
 
                 var state = running ? "stopped" : "started";
-                return new { message = $"Application pools ${state} successfuly."}.ToJsonResult();
+                return new { message = $"Application pools ${state} successfuly."};
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { message = ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { message = ex.Message, Exception = ex.StackTrace };
             }
 
         }
 
         [HttpPost]
-        public ActionResult WhitelistToggle(IList<string> pools, bool isWhitelisted)
+        public object WhitelistToggle(IList<string> pools, bool isWhitelisted)
         {
             try
             {
@@ -189,71 +186,70 @@ namespace ServerMonitor.Controllers
                 //    }
                 //}
 
-                return new { Message = "Application whitelisted successfuly." }.ToJsonResult();
+                return new { Message = "Application whitelisted successfuly." };
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
+                return new { ex.Message, Exception = ex.StackTrace };
             }
 
         }
 
 
-        protected string GetBuildNote(string name)
-        {
-            using (var db = new LiteDatabase(DB_PATH))
-            {
-                // Get a collection (or create, if doesn't exist)
-                var col = db.GetCollection<BuildNote>("BuildNotes");
+        //protected string GetBuildNote(string name)
+        //{
+        //    using (var db = new LiteDatabase(DB_PATH))
+        //    {
+        //        // Get a collection (or create, if doesn't exist)
+        //        var col = db.GetCollection<BuildNote>("BuildNotes");
 
-                var note = col.Find(c => c.BuildName == name).FirstOrDefault();
-                return note?.Note;
-            }
-        }
+        //        var note = col.Find(c => c.BuildName == name).FirstOrDefault();
+        //        return note?.Note;
+        //    }
+        //}
 
-        protected void SetBuildNote(string buildName, string note)
-        {
-            using (var db = new LiteDatabase(DB_PATH))
-            {
-                // Get a collection (or create, if doesn't exist)
-                var col = db.GetCollection<BuildNote>("BuildNotes");
-                var buildNote = col.Find(c => c.BuildName == buildName).FirstOrDefault();
+        ////protected void SetBuildNote(string buildName, string note)
+        ////{
+        ////    using (var db = new LiteDatabase(DB_PATH))
+        ////    {
+        ////        // Get a collection (or create, if doesn't exist)
+        ////        var col = db.GetCollection<BuildNote>("BuildNotes");
+        ////        var buildNote = col.Find(c => c.BuildName == buildName).FirstOrDefault();
 
-                if (buildNote == null)
-                {
-                    col.Insert(new BuildNote
-                    {
-                        Id = new Guid(),
-                        BuildName = buildName,
-                        Note = note
-                    });
-                }
-                else
-                {
-                    buildNote.Note = note;
-                    col.Update(buildNote);
-                }
+        ////        if (buildNote == null)
+        ////        {
+        ////            col.Insert(new BuildNote
+        ////            {
+        ////                Id = new Guid(),
+        ////                BuildName = buildName,
+        ////                Note = note
+        ////            });
+        ////        }
+        ////        else
+        ////        {
+        ////            buildNote.Note = note;
+        ////            col.Update(buildNote);
+        ////        }
 
-                col.EnsureIndex(x => x.BuildName);
-                db.Engine.Commit();
-            }
-        }
+        ////        col.EnsureIndex(x => x.BuildName);
+        ////        db.Engine.Commit();
+        ////    }
+        ////}
 
-        [HttpPost]
-        public ActionResult SaveBuildNote(string name, string value, string pk)
-        {
-            try
-            {
-                SetBuildNote(pk, value);
-                return new { Message = "Application note saved succesfully." }.ToJsonResult();
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return new { ex.Message, Exception = ex.StackTrace }.ToJsonResult();
-            }
-        }
+        //[HttpPost]
+        //public object SaveBuildNote(string name, string value, string pk)
+        //{
+        //    try
+        //    {
+        //        SetBuildNote(pk, value);
+        //        return new { Message = "Application note saved succesfully." };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.StatusCode = 500;
+        //        return new { ex.Message, Exception = ex.StackTrace };
+        //    }
+        //}
 
     }
 }
