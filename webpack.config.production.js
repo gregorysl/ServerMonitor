@@ -20,6 +20,7 @@ const config = {
   context: resolve(__dirname, '.'),
 
   plugins: [
+    new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({
       template: `${__dirname}/build/index.html`,
@@ -34,7 +35,8 @@ const config = {
     new webpack.optimize.UglifyJsPlugin({
       beautify: false
     }),
-    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } })
+    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
+    new ExtractTextPlugin({ filename: 'styles.css', disable: false, allChunks: true })
   ],
 
   module: {
@@ -45,25 +47,11 @@ const config = {
         loader: 'babel-loader'
       },
       {
-        test: /\.scss$/,
-        exclude: /node_modules/,
+        test: /\.less$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: [
-            'css-loader',
-            { loader: 'sass-loader', query: { sourceMap: false } }
-          ],
-          publicPath: '../'
+          use: ['css-loader', 'less-loader']
         })
-      }, {
-        test: /\.less$/,
-        use: [{
-          loader: 'style-loader' // creates style nodes from JS strings
-        }, {
-          loader: 'css-loader' // translates CSS into CommonJS
-        }, {
-          loader: 'less-loader' // compiles Less to CSS
-        }]
       },
       {
         test: /\.(png|jpg|gif)$/,
