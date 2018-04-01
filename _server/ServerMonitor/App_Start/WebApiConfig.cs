@@ -9,6 +9,12 @@ namespace ServerMonitor
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
+            config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
+            config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{action}/{id}",
