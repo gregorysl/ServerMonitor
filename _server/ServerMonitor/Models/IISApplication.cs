@@ -11,13 +11,13 @@ namespace ServerMonitor.Models
         public string Name { get; set; }
         [JsonProperty("apps")]
         public IList<IISAppPool> ApplicationPools { get; set; }
-
-        [JsonProperty("whitelisted")]
+        
         public bool Whitelisted { get; set; }
 
         public string Note { get; set; }
 
-        [JsonProperty("running")]
+        public string Url { get; set; }
+
         public bool Running
         {
             get { return ApplicationPools.Any(a => a.Running); }

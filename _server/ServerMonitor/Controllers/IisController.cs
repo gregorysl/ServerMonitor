@@ -60,6 +60,12 @@ namespace ServerMonitor.Controllers
             var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
             var regex = new Regex(regexString);
 
+            var appRoot = ConfigurationManager.AppSettings["AppRootUrl"];
+            if (!appRoot.EndsWith("/"))
+            {
+                appRoot += "/";
+            }
+
             foreach (var appPool in appPools)
             {
                 var matches = regex.Match(appPool.Name);
@@ -80,7 +86,8 @@ namespace ServerMonitor.Controllers
                     {
                         application = new IISApplication
                         {
-                            Name = name
+                            Name = name,
+                            Url = $"{appRoot}{name}/",
                         };
                         applications.Add(application);
                     }
