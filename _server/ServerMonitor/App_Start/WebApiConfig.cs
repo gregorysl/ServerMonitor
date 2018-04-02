@@ -10,6 +10,7 @@ namespace ServerMonitor
         {
             config.MapHttpAttributeRoutes();
             config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
+            config.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
             config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
