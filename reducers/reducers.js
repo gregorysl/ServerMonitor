@@ -3,12 +3,6 @@ import * as types from '../constants/actionTypes';
 
 const filesize = require('filesize');
 
-const iisColumns = [
-  { title: 'Application', dataIndex: 'key', key: 'key' },
-  {
-    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'started' : 'stopped')
-  }
-];
 const diskColumns = [
   { title: 'Path', dataIndex: 'path', key: 'path' },
   {
@@ -53,7 +47,7 @@ const iisErrorText = 'IIS Applications';
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.GET_IIS_APPS_SUCCESS:
-      return { ...state, data: action.data.data, columns: iisColumns };
+      return { ...state, data: action.data.data };
     default:
       return state;
   }

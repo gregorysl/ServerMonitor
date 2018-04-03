@@ -1,7 +1,7 @@
 import Axios from 'axios';
-import baseUri from './baseUri';
 
-const appUri = `${baseUri}/ServerMonitor/`;
+// const appUri = document.location.href;
+const appUri = 'http://localhost/ServerMonitor/';
 const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${apiUri}GetOracleInstances`;
 const tasksUri = `${appUri}Tasks/GetScheduledTasks`;

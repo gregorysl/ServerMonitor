@@ -48,6 +48,15 @@ const action =
       key: 'x',
       render: x => (<ActionsButtons {...x} name={x.key} />)
     };
+
+const iisColumns = [
+  {
+    title: 'Application', dataIndex: 'key', key: 'key', render: (key, item) => (<a targer="_blank" href={item.url}>{item.key}</a>)
+  },
+  {
+    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'started' : 'stopped')
+  }
+];
 const iisExpandedRowRenderer = x => (<AppPoolList items={x.apps} />);
 
 class App extends Component {
@@ -77,7 +86,7 @@ class App extends Component {
             <h1>IIS Applications</h1>
             <DataTable
               data={this.props.iis.data}
-              columns={this.props.iis.columns}
+              columns={iisColumns}
               message="No IIS applications found."
               extraColumns={[action]}
               expandedRowRender={iisExpandedRowRenderer}
@@ -138,12 +147,12 @@ App.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
   })).isRequired,
   oracle: PropTypes.objectOf(PropTypes.shape({
-    data: PropTypes.array.isRequired,
+    data: PropTypes.arrayOf(PropTypes.object).isRequired,
     errors: PropTypes.arrayOf(PropTypes.string),
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
   })).isRequired,
   iis: PropTypes.objectOf(PropTypes.shape({
-    data: PropTypes.array.isRequired,
+    data: PropTypes.arrayOf(PropTypes.object).isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
   })).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired
