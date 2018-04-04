@@ -11,7 +11,7 @@ namespace ServerMonitor.Controllers
     {
 
         [HttpGet]
-        public object GetScheduledTasks()
+        public object Get()
         {
             try
             {
@@ -51,7 +51,7 @@ namespace ServerMonitor.Controllers
                     message = "started";
                 }
 
-                return new { Message = $"Task ${message} successfuly."};
+                return new { Message = $"Task {message} successfuly."};
             }
             catch (Exception ex)
             {

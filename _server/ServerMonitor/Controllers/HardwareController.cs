@@ -16,7 +16,7 @@ namespace ServerMonitor.Controllers
         private readonly ComputerInfo _computerInfo = new ComputerInfo();
 
         [HttpGet]
-        public object GetHardware()
+        public object Get()
         {
             try
             {
