@@ -16,11 +16,9 @@ namespace ServerMonitor
                 NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            config.Routes.MapHttpRoute("DefaultApi", "{controller}/{action}");
+            config.Routes.MapHttpRoute("Tasks", "{controller}/{action}/{name}", new {name = ""});
+            config.Routes.MapHttpRoute("Api", "{controller}/");
         }
     }
 }
