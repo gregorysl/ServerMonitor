@@ -8,7 +8,9 @@ const diskColumns = [
   {
     title: 'Size', dataIndex: 'size', key: 'size', render: size => (size !== '' ? filesize(size) : '')
   },
-  { title: 'Usage', dataIndex: 'usage', key: 'usage' }
+  {
+    title: 'Usage', dataIndex: 'usage', key: 'usage', render: usage => `${usage}%`
+  }
 ];
 const tasksColumns = [
   { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -120,6 +122,7 @@ function errorReducer(state = [], action) {
         error: action.error.message
       }];
     case types.TASKS_ERROR:
+    case types.TASKS_RUN_ERROR:
       return [...state, {
         title: tasksErrorText,
         error: action.error.message
