@@ -4,16 +4,16 @@ import Axios from 'axios';
 const appUri = 'http://localhost/ServerMonitor/';
 const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${apiUri}GetOracleInstances`;
-const tasksUri = `${appUri}Tasks/GetScheduledTasks`;
-const runTasksUri = `${appUri}Tasks/Toggle`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const setOracleUri = `${apiUri}SetOracleInstanceReserved`;
-const hardwareUri = `${appUri}Hardware/GetHardware`;
-const iisUri = `${appUri}Iis/Get`;
+const tasksUri = `${appUri}Tasks/`;
+const runTasksUri = `${appUri}Tasks/Toggle`;
+const hardwareUri = `${appUri}Hardware/`;
+const iisUri = `${appUri}Iis/`;
 const iisStopUri = `${appUri}Iis/Toggle`;
 const iisWhitelistUri = `${appUri}Iis/WhitelistToggle`;
-const servicesStopUri = `${appUri}Links/Get`;
+const servicesStopUri = `${appUri}Links/`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, appList);
