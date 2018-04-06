@@ -7,10 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerMonitor", "ServerMoni
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Base|Any CPU = Base|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F977F4FE-41DC-4D89-9C07-67F132768612}.Base|Any CPU.ActiveCfg = Base|Any CPU
+		{F977F4FE-41DC-4D89-9C07-67F132768612}.Base|Any CPU.Build.0 = Base|Any CPU
 		{F977F4FE-41DC-4D89-9C07-67F132768612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F977F4FE-41DC-4D89-9C07-67F132768612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F977F4FE-41DC-4D89-9C07-67F132768612}.Release|Any CPU.ActiveCfg = Release|Any CPU
