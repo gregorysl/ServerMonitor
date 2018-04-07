@@ -24,3 +24,5 @@ _server/ServerMonitor/styles.css
 _server/ServerMonitor/index.html
 _server/ServerMonitor/bin
 _server/ServerMonitor/obj
+_server/ServerMonitor/Web.config
+_server/ServerMonitor/Web.Debug.config
