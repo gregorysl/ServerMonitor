@@ -78,9 +78,12 @@ namespace ServerMonitor.Controllers
                 var paths = foldersString.Split('|');
                 var sizes = new List<FolderSize>();
 
-                foreach (var path in paths)
+                foreach (var path in paths.Where(string.IsNullOrEmpty))
                 {
-                    sizes.Add(new FolderSize { Path = path, Size = CalculateFolderSize(path) });
+                    var size = CalculateFolderSize(path);
+                    var drive = Path.GetPathRoot(path);
+                    var totalSize = new DriveInfo(drive).TotalSize;
+                    sizes.Add(new FolderSize {Path = path, Size = size, TotalSize = totalSize});
                 }
 
                 return sizes;
@@ -96,22 +99,15 @@ namespace ServerMonitor.Controllers
             double folderSize = 0;
             try
             {
-                //Checks if the path is valid or not
                 if (!Directory.Exists(folder))
                     return folderSize;
                 try
                 {
-                    foreach (string file in Directory.GetFiles(folder))
-                    {
-                        if (System.IO.File.Exists(file))
-                        {
-                            var finfo = new FileInfo(file);
-                            folderSize += finfo.Length;
-                        }
-                    }
-
-                    foreach (string dir in Directory.GetDirectories(folder))
-                        folderSize += CalculateFolderSize(dir);
+                    folderSize = Directory.GetFiles(folder)
+                                     .Where(File.Exists)
+                                     .Select(x => new FileInfo(x))
+                                     .Aggregate(folderSize, (current, finfo) => current + finfo.Length) +
+                                 Directory.GetDirectories(folder).Sum(dir => CalculateFolderSize(dir));
                 }
                 catch (NotSupportedException e)
                 {
@@ -122,6 +118,7 @@ namespace ServerMonitor.Controllers
             {
 
             }
+
             return folderSize;
         }
 
