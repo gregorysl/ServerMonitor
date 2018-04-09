@@ -54,7 +54,7 @@ const iisColumns = [
     title: 'Application', dataIndex: 'key', key: 'key', render: (key, item) => (<a targer="_blank" href={item.url}>{item.key}</a>)
   },
   {
-    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'started' : 'stopped')
+    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
   }
 ];
 const iisExpandedRowRenderer = x => (<AppPoolList items={x.apps} />);

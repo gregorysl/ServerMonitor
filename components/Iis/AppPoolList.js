@@ -1,6 +1,7 @@
 import React from 'react';
-import { Table, Icon, Tooltip } from 'antd';
+import { Table } from 'antd';
 import PropTypes from 'prop-types';
+import TooltipButon from '../TooltipButon';
 
 
 const columns = [
@@ -9,7 +10,7 @@ const columns = [
     title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
   },
   {
-    title: 'Action', dataIndex: '', key: 'x', render: () => <Tooltip title="recycle" ><Icon type="reload" /></Tooltip>
+    title: 'Action', dataIndex: '', key: 'x', render: () => <TooltipButon title="recycle" icon="reload" />
   }
 ];
 

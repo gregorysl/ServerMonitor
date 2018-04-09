@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import { runTask } from '../actions/actions';
+import TooltipButon from './TooltipButon';
 
 const TaskActionButtons = (props) => {
   const onClick = () => props.set(props.name);
   const icon = props.state === 'Ready' ? 'caret-right' : 'close-square';
   return (
     <div>
-      <Icon onClick={onClick} type={icon} />
+      <TooltipButon click={onClick} icon={icon} title="Run Task" />
     </div >);
 };
 
