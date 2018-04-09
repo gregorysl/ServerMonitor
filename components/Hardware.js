@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import PageVisibility from 'react-page-visibility';
 import { Tabs } from 'antd';
 import { getHardwareAction } from '../actions/actions';
 import HardwareItem from './HardwareItem';
@@ -8,8 +9,27 @@ import HardwareItem from './HardwareItem';
 const { TabPane } = Tabs;
 
 class Hardware extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hidden: true
+    };
+    this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
+    this.dispatchChange = this.dispatchChange.bind(this);
+  }
+
   componentDidMount() {
-    setInterval(() => { this.props.dispatch(getHardwareAction()); }, 1000);
+    setInterval(this.dispatchChange, 1000);
+  }
+
+  handleVisibilityChange(isVisible) {
+    this.setState({ hidden: !isVisible });
+  }
+
+  dispatchChange() {
+    if (!this.state.hidden) {
+      this.props.dispatch(getHardwareAction());
+    }
   }
 
   render() {
@@ -19,9 +39,11 @@ class Hardware extends Component {
       </TabPane>
     ));
     return (
-      <Tabs tabPosition="left" >
-        {components}
-      </Tabs>
+      <PageVisibility onChange={this.handleVisibilityChange}>
+        <Tabs tabPosition="left" >
+          {components}
+        </Tabs>
+      </PageVisibility>
     );
   }
 }
