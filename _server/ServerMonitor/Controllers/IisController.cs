@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Xml.Linq;
 using LiteDB;
 using Microsoft.Web.Administration;
+using Newtonsoft.Json.Linq;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
@@ -242,12 +243,12 @@ namespace ServerMonitor.Controllers
             }
         }
 
-        [HttpGet]
-        public object SaveBuildNote(string name, string value)
+        [HttpPost]
+        public object SaveBuildNote([FromBody]Data<string> data)
         {
             try
             {
-                SetBuildNote(name, value);
+                SetBuildNote(data.Name, data.Value);
                 return new { Message = "Application note saved succesfully." };
             }
             catch (Exception ex)

@@ -80,7 +80,7 @@ namespace ServerMonitor.Controllers
     public class Hardware
     {
         [JsonProperty("key")]
-        public object Name { get; set; }
+        public string Name { get; set; }
         [JsonProperty("data")]
         public List<Data<double>> Data { get; set; }
     }
@@ -88,7 +88,7 @@ namespace ServerMonitor.Controllers
     public class Data<T>
     {
         [JsonProperty("key")]
-        public object Name { get; set; }
+        public string Name { get; set; }
         [JsonProperty("value")]
         public T Value { get; set; }
     }
