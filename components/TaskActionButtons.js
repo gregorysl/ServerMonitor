@@ -7,10 +7,7 @@ import TooltipButon from './TooltipButon';
 const TaskActionButtons = (props) => {
   const onClick = () => props.set(props.name);
   const icon = props.state === 'Ready' ? 'caret-right' : 'close-square';
-  return (
-    <div>
-      <TooltipButon click={onClick} icon={icon} title="Run Task" />
-    </div >);
+  return (<TooltipButon click={onClick} icon={icon} title="Run Task" />);
 };
 
 const mapDispatchToProps = dispatch => ({
