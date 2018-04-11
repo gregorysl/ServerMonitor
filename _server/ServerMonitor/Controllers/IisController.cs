@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Xml.Linq;
+using LiteDB;
 using Microsoft.Web.Administration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
@@ -15,7 +16,7 @@ namespace ServerMonitor.Controllers
 {
     public class IisController : ApiController
     {
-        private static string DB_PATH => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
+        private static string DbPath => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
 
         [HttpGet]
         public object Get()
@@ -45,7 +46,7 @@ namespace ServerMonitor.Controllers
                     filteredApps.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
                 }
 
-                //filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
+                filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
 
                 return filteredApps;
             }
@@ -203,60 +204,74 @@ namespace ServerMonitor.Controllers
         }
 
 
-        //protected string GetBuildNote(string name)
-        //{
-        //    using (var db = new LiteDatabase(DB_PATH))
-        //    {
-        //        // Get a collection (or create, if doesn't exist)
-        //        var col = db.GetCollection<BuildNote>("BuildNotes");
+        protected string GetBuildNote(string name)
+        {
+            using (var db = new LiteDatabase(DbPath))
+            {
+                var col = db.GetCollection<BuildNote>("BuildNotes");
 
-        //        var note = col.Find(c => c.BuildName == name).FirstOrDefault();
-        //        return note?.Note;
-        //    }
-        //}
+                var note = col.Find(c => c.BuildName == name).FirstOrDefault();
+                return note?.Note;
+            }
+        }
 
-        ////protected void SetBuildNote(string buildName, string note)
-        ////{
-        ////    using (var db = new LiteDatabase(DB_PATH))
-        ////    {
-        ////        // Get a collection (or create, if doesn't exist)
-        ////        var col = db.GetCollection<BuildNote>("BuildNotes");
-        ////        var buildNote = col.Find(c => c.BuildName == buildName).FirstOrDefault();
+        protected void SetBuildNote(string buildName, string note)
+        {
+            using (var db = new LiteDatabase(DbPath))
+            {
+                var col = db.GetCollection<BuildNote>("BuildNotes");
 
-        ////        if (buildNote == null)
-        ////        {
-        ////            col.Insert(new BuildNote
-        ////            {
-        ////                Id = new Guid(),
-        ////                BuildName = buildName,
-        ////                Note = note
-        ////            });
-        ////        }
-        ////        else
-        ////        {
-        ////            buildNote.Note = note;
-        ////            col.Update(buildNote);
-        ////        }
+                var buildNote = col.Find(c => c.BuildName == buildName).FirstOrDefault();
 
-        ////        col.EnsureIndex(x => x.BuildName);
-        ////        db.Engine.Commit();
-        ////    }
-        ////}
+                if (buildNote == null)
+                {
+                    col.Insert(new BuildNote
+                    {
+                        Id = new Guid(),
+                        BuildName = buildName,
+                        Note = note
+                    });
+                }
+                else
+                {
+                    buildNote.Note = note;
+                    col.Update(buildNote);
+                }
 
-        //[HttpPost]
-        //public object SaveBuildNote(string name, string value, string pk)
-        //{
-        //    try
-        //    {
-        //        SetBuildNote(pk, value);
-        //        return new { Message = "Application note saved succesfully." };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.StatusCode = 500;
-        //        return new { ex.Message, Exception = ex.StackTrace };
-        //    }
-        //}
+                col.EnsureIndex(x => x.BuildName);
+            }
+        }
+
+        [HttpGet]
+        public object SaveBuildNote(string name, string value)
+        {
+            try
+            {
+                SetBuildNote(name, value);
+                return new { Message = "Application note saved succesfully." };
+            }
+            catch (Exception ex)
+            {
+                return new { ex.Message, Exception = ex.StackTrace };
+            }
+        }
+
+        [HttpGet]
+        public object GetBuildNotes(string name)
+        {
+            try
+            {
+                return new
+                {
+                    Message =
+                        GetBuildNote(name)
+                };
+            }
+            catch (Exception ex)
+            {
+                return new { ex.Message, Exception = ex.StackTrace };
+            }
+        }
 
     }
 }
