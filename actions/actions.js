@@ -47,3 +47,9 @@ export const setOracle = data => ({
   type: types.TOGGLE_ORACLE_REQUEST,
   data
 });
+
+
+export const setNote = data => ({
+  type: types.SET_NOTE_REQUEST,
+  data
+});

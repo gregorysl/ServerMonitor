@@ -59,3 +59,7 @@ export function getUserSessions() {
 export function getOracleInstancies() {
   return Axios.get(oracleUri);
 }
+
+export function setNote(data) {
+  return Axios.post(`${appUri}Iis/SaveBuildNote`, data);
+}

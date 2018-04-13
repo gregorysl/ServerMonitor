@@ -45,3 +45,7 @@ export function* watchIisWhitelist() {
 export function* watchSetOracle() {
   yield takeLatest(types.TOGGLE_ORACLE_REQUEST, saga.setOracle);
 }
+
+export function* watchSetNote() {
+  yield takeLatest(types.SET_NOTE_REQUEST, saga.setNote);
+}
