@@ -46,7 +46,8 @@ const action =
     {
       title: 'Action',
       key: 'x',
-      render: x => (<ActionsButtons {...x} name={x.key} />)
+      render: x => (<ActionsButtons {...x} name={x.key} />),
+      width: 300
     };
 
 const iisColumns = [
