@@ -1,7 +1,10 @@
 import Axios from 'axios';
 
-// const appUri = document.location.href;
-const appUri = 'http://localhost/ServerMonitor/';
+let appUri = 'http://localhost/ServerMonitor/';
+if (process.env.NODE_ENV === 'production') {
+  appUri = document.location.href;
+}
+
 const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${apiUri}GetOracleInstances`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
