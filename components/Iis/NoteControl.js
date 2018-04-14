@@ -11,6 +11,7 @@ class NoteControl extends Component {
     };
     this.confirmNote = this.confirmNote.bind(this);
     this.setEditMode = this.setEditMode.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
 
@@ -24,6 +25,13 @@ class NoteControl extends Component {
     });
   }
 
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.confirmNote();
+    } else if (event.keyCode === 27) {
+      this.setEditMode();
+    }
+  }
   confirmNote() {
     this.setState({ isEditMode: !this.state.isEditMode });
 
@@ -40,7 +48,7 @@ class NoteControl extends Component {
     return (
       this.state.isEditMode ?
         <React.Fragment>
-          <Input placeholder="Note" type="text" value={this.state.value} onChange={evt => this.updateInputValue(evt)} />
+          <Input placeholder="Note" type="text" value={this.state.value} onChange={evt => this.updateInputValue(evt)} onKeyDown={this.handleKeyPress} />
           <Icon className="icon-hand" onClick={this.confirmNote} type="check" />
           <Icon className="icon-hand" onClick={this.setEditMode} type="close" />
         </React.Fragment>
