@@ -12,7 +12,7 @@ class Hardware extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hidden: true
+      visible: false
     };
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
     this.dispatchChange = this.dispatchChange.bind(this);
@@ -22,12 +22,12 @@ class Hardware extends Component {
     setInterval(this.dispatchChange, 1000);
   }
 
-  handleVisibilityChange(isVisible) {
-    this.setState({ hidden: !isVisible });
+  handleVisibilityChange(visible) {
+    this.setState({ visible });
   }
 
   dispatchChange() {
-    if (!this.state.hidden) {
+    if (this.state.visible) {
       this.props.dispatch(getHardwareAction());
     }
   }
