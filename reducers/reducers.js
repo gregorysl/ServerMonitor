@@ -85,7 +85,7 @@ function sessionsReducer(state = tableInitialState, action) {
 function oracleReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
-      return { ...state, ...action.data, columns: oracleColumns };
+      return { ...state, data: action.data.data.data, columns: oracleColumns };
     default:
       return state;
   }
