@@ -92,6 +92,14 @@ class App extends Component {
               extraColumns={[action]}
               expandedRowRender={iisExpandedRowRenderer}
             />
+            <h1>Oracle Instances</h1>
+            <DataTable
+              data={this.props.oracle.data}
+              columns={this.props.oracle.columns}
+              message="No instancies found."
+              extraColumns={isDeployingColumn}
+              rowKey="currentBuildName"
+            />
             <h1>Disk Status</h1>
             <DataTable
               data={this.props.disk.data}
@@ -106,14 +114,6 @@ class App extends Component {
               message="No tasks found."
               extraColumns={[taskAction]}
               rowKey="name"
-            />
-            <h1>Oracle Instances</h1>
-            <DataTable
-              data={this.props.oracle.data}
-              columns={this.props.oracle.columns}
-              message="No instancies found."
-              extraColumns={isDeployingColumn}
-              rowKey="currentBuildName"
             />
             <h1>User Sessions</h1>
             <DataTable
