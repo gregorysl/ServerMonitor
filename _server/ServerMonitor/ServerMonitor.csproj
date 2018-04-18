@@ -118,6 +118,7 @@
     <Compile Include="Models\IISAppPool.cs" />
     <Compile Include="Models\OracleInstanceDetails.cs" />
     <Compile Include="Models\OracleInstanceReservationRequest.cs" />
+    <Compile Include="Models\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
