@@ -10,12 +10,6 @@ namespace ServerMonitor.Helpers
 {
     public static class ApiClient
     {
-        /// <summary>
-        /// Serialise object into json and convert into HttpContent
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="request"></param>
-        /// <returns></returns>
         public static StringContent GetHttpContent<T>(object request)
         {
             var sb = new StringBuilder();
@@ -30,15 +24,7 @@ namespace ServerMonitor.Helpers
             var httpContent = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
             return httpContent;
         }
-
-        /// <summary>
-        /// Execute API call
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url">Url to the API</param>
-        /// <param name="verb">Http Methods supported are GET and POST</param>
-        /// <param name="httpContent">Content to be passed in body</param>
-        /// <returns>Deserialised response from API</returns>
+        
         public static T Execute<T>(string url, HttpMethod verb, StringContent httpContent = null)
         {
             var result = string.Empty;
