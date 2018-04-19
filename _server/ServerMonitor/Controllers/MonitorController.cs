@@ -46,13 +46,13 @@ namespace ServerMonitor.Controllers
 
         }
         
-        private static List<OracleInstanceDetails> GetAllOracleInstances()
+        private static Response GetAllOracleInstances()
         {
             var instanceManagerHost = ConfigurationManager.AppSettings["OracleInstanceApi"];
             if (string.IsNullOrEmpty(instanceManagerHost)) return null;
             if (!instanceManagerHost.EndsWith("/")) instanceManagerHost += "/";
             var url = instanceManagerHost + "OracleInstance";
-            return ApiClient.Execute<List<OracleInstanceDetails>>(url, HttpMethod.Get);
+            return ApiClient.Execute<List<OracleInstanceDetails>>(url);
         }
 
         public static void SetReserved(OracleInstanceReservationRequest request)
@@ -65,7 +65,7 @@ namespace ServerMonitor.Controllers
             var url = instanceManagerHost + "OracleInstanceReservation";
 
             var content = ApiClient.GetHttpContent<OracleInstanceReservationRequest>(request);
-            ApiClient.Execute(url, HttpMethod.Put, content);
+            ApiClient.Put(url, content);
         }
         
 
@@ -123,16 +123,24 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpGet]
-        public object GetOracleInstances()
+        public HttpResponseMessage GetOracleInstances()
         {
             try
             {
                 var instances = GetAllOracleInstances();
-                return instances;
+                var responseCode = instances.Status == Status.Error ? HttpStatusCode.InternalServerError : HttpStatusCode.OK;
+                var response = Request.CreateResponse(responseCode, instances);
+                return response;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new Response
+                {
+                    Notifications =
+                    {
+                        new Notification {Message = ex.Message, MessageDetails = ex.StackTrace, Status = Status.Error}
+                    }
+                });
             }
         }
 
