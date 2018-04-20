@@ -12,14 +12,14 @@ class Hardware extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: true
     };
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
     this.dispatchChange = this.dispatchChange.bind(this);
   }
 
   componentDidMount() {
-    setInterval(this.dispatchChange, 1000);
+    setInterval(this.dispatchChange, 5000);
   }
 
   handleVisibilityChange(visible) {
