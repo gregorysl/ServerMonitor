@@ -11,7 +11,7 @@ namespace ServerMonitor.Helpers
 {
     public static class ApiClient
     {
-        public static StringContent GetHttpContent<T>(object request)
+        public static StringContent CreateHttpContent<T>(object request)
         {
             var sb = new StringBuilder();
             using (var textWriter = new StringWriter(sb))
@@ -26,7 +26,7 @@ namespace ServerMonitor.Helpers
             return httpContent;
         }
         
-        public static Response Execute<T>(string url)
+        public static Response Get<T>(string url)
         {
             using (var client = new HttpClient())
             {
@@ -56,13 +56,10 @@ namespace ServerMonitor.Helpers
                     Status = Status.Success,
                     Data = response
                 };
-
-
             }
-
         }
 
-        public static void Put(string url, StringContent httpContent = null)
+        public static Response Put(string url, StringContent httpContent = null)
         {
             using (var client = new HttpClient())
             {
@@ -71,15 +68,22 @@ namespace ServerMonitor.Helpers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage responseApi = client.PutAsync(client.BaseAddress, httpContent).Result;
+                var responseApi = client.PutAsync(client.BaseAddress, httpContent).Result;
 
+                var response = new Response {Status = Status.Success};
                 if (responseApi.StatusCode != HttpStatusCode.OK && responseApi.StatusCode != HttpStatusCode.NoContent)
                 {
-                    throw new WebException(responseApi.ReasonPhrase, WebExceptionStatus.UnknownError);
+                    response.Status = Status.Error;
+                   response.Notifications.Add(new Notification {Status = Status.Error, Message = responseApi.ReasonPhrase});
                 }
-            }
 
+                return response;
+            }
         }
-        
+
+        public static string EnsureSlash(this string url)
+        {
+            return url.EndsWith(@"\") ? url : url + @"\";
+        }
     }
 }
