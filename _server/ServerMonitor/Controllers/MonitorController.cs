@@ -5,12 +5,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Net;
 using System.Net.Http;
 using System.Web.Hosting;
 using System.Web.Http;
-using System.Xml.Linq;
 using Cassia;
 using Microsoft.Web.Administration;
 using ServerMonitor.Helpers;
@@ -20,7 +18,6 @@ namespace ServerMonitor.Controllers
 {
     public class MonitorController : ApiController
     {
-        private static string DB_PATH => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
 
         [HttpGet]
         public object Recycle(string Name)
@@ -50,9 +47,9 @@ namespace ServerMonitor.Controllers
         {
             var instanceManagerHost = ConfigurationManager.AppSettings["OracleInstanceApi"];
             if (string.IsNullOrEmpty(instanceManagerHost)) return null;
-            if (!instanceManagerHost.EndsWith("/")) instanceManagerHost += "/";
-            var url = instanceManagerHost + "OracleInstance";
-            return ApiClient.Execute<List<OracleInstanceDetails>>(url);
+            var url = instanceManagerHost.EnsureSlash() + "OracleInstance";
+
+            return ApiClient.Get<List<OracleInstanceDetails>>(url);
         }
 
         public static void SetReserved(OracleInstanceReservationRequest request)
@@ -60,11 +57,9 @@ namespace ServerMonitor.Controllers
 
             var instanceManagerHost = ConfigurationManager.AppSettings["OracleInstanceApi"];
             if (string.IsNullOrEmpty(instanceManagerHost)) return;
+            var url = instanceManagerHost.EnsureSlash() + "OracleInstanceReservation";
 
-            if (!instanceManagerHost.EndsWith("/")) instanceManagerHost += "/";
-            var url = instanceManagerHost + "OracleInstanceReservation";
-
-            var content = ApiClient.GetHttpContent<OracleInstanceReservationRequest>(request);
+            var content = ApiClient.CreateHttpContent<OracleInstanceReservationRequest>(request);
             ApiClient.Put(url, content);
         }
         
@@ -75,22 +70,21 @@ namespace ServerMonitor.Controllers
             try
             {
                 var foldersString = ConfigurationManager.AppSettings["PathsToCheckSize"];
-                var paths = foldersString.Split('|');
-                var sizes = new List<FolderSize>();
-
-                foreach (var path in paths.Where(string.IsNullOrEmpty))
-                {
-                    var size = CalculateFolderSize(path);
-                    var drive = Path.GetPathRoot(path);
-                    var totalSize = new DriveInfo(drive).TotalSize;
-                    sizes.Add(new FolderSize {Path = path, Size = size, TotalSize = totalSize});
-                }
-
-                return sizes;
+                var data = foldersString.Split('|')
+                    .Where(string.IsNullOrEmpty)
+                    .Where(x => Path.GetPathRoot(x) != null)
+                    .Select(path =>
+                        new FolderSize
+                        {
+                            Path = path,
+                            Size = CalculateFolderSize(path),
+                            TotalSize = new DriveInfo(Path.GetPathRoot(path)).TotalSize
+                        }).ToList();
+                return data;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                return new {ex.Message, Exception = ex.StackTrace};
             }
         }
 

@@ -62,11 +62,7 @@ namespace ServerMonitor.Controllers
             var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
             var regex = new Regex(regexString);
 
-            var appRoot = ConfigurationManager.AppSettings["AppRootUrl"];
-            if (!appRoot.EndsWith("/"))
-            {
-                appRoot += "/";
-            }
+            var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
 
             foreach (var appPool in appPools)
             {
