@@ -76,7 +76,7 @@ function tasksReducer(state = tableInitialState, action) {
 function sessionsReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.SESSIONS_SUCCESS:
-      return { ...state, ...action.data, columns: sessionsColumns };
+      return { ...state, data: action.data.data, columns: sessionsColumns };
     default:
       return state;
   }

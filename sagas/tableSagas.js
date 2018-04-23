@@ -85,7 +85,7 @@ export function* getTasksData() {
 
 export function* getSessionsData() {
   try {
-    const data = yield call(api.getUserSessions);
+    const { data } = yield call(api.getUserSessions);
     yield put({ type: types.SESSIONS_SUCCESS, data });
   } catch (error) {
     yield put({ type: types.SESSIONS_ERROR, error });

@@ -159,8 +159,10 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpGet]
-        public object GetUserSesssions()
+        [Route("Monitor/GetUserSesssions")]
+        public Response GetUserSesssions()
         {
+            var response = new Response { Status = Status.Success };
             try
             {
                 TerminalServicesManager manager = new TerminalServicesManager();
@@ -175,13 +177,21 @@ namespace ServerMonitor.Controllers
                             LoginDate = s.LoginTime?.ToString("g"),
                             State = s.ConnectionState.ToString()
                         });
-                    return sessions;
-
+                    response.Data = sessions;
+                    return response;
                 }
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.Status = Status.Error;
+                response.Notifications.Add(new Notification
+                {
+                    Message = ex.Message,
+                    MessageDetails = ex.StackTrace,
+                    Status = Status.Error
+                });
+                return response;
+
             }
         }
         
