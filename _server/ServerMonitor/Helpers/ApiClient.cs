@@ -83,7 +83,7 @@ namespace ServerMonitor.Helpers
 
         public static string EnsureSlash(this string url)
         {
-            return url.EndsWith(@"\") ? url : url + @"\";
+            return url.EndsWith(@"/") ? url : url + @"/";
         }
     }
 }
