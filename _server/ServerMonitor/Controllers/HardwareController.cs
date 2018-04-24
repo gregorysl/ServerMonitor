@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Management;
 using System.Web.Http;
 using Newtonsoft.Json;
 using ServerMonitor.Helpers;
+using ServerMonitor.Models;
 using ComputerInfo = Microsoft.VisualBasic.Devices.ComputerInfo;
 
 namespace ServerMonitor.Controllers
@@ -39,6 +41,33 @@ namespace ServerMonitor.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Hardware/GetAll")]
+        public Response GetAll()
+        {
+            var response = new Response();
+            var links = new List<Hardware>();
+            var config = ConfigurationManager.GetSection("hardwareList") as LinksConfigSection;
+
+            if (config == null) return null;
+            foreach (LinkItem link in config.Instances)
+            {
+                var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";
+                var responseItem = ApiClient.Get<Hardware>(linkUrl);
+                if (responseItem.Status == Status.Success)
+                {
+                    links.Add((Hardware) responseItem.Data);
+                }
+                else
+                {
+                    response.Notifications.AddRange(responseItem.Notifications);
+                }
+            }
+
+            response.Data = links;
+            return response;
+        }
+
         private static double CpuUsage()
         {
             if (CpuCounter == null)
@@ -68,9 +97,9 @@ namespace ServerMonitor.Controllers
         {
             ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
             ManagementObjectCollection moc = mc.GetInstances();
-            foreach (ManagementObject item in moc)
+            foreach (var item in moc)
             {
-                return item.Properties["DNSHostName"].Value.ToString();
+                return ((ManagementObject)item).Properties["DNSHostName"].Value.ToString()+DateTime.Now.Millisecond;
             }
 
             return "";
