@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Http;
 using ServerMonitor.Helpers;
+using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
@@ -34,12 +35,20 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
-        public object Toggle(string name)
+        public Response Post([FromBody] string name)
         {
+            var response = new Response {Status = Status.Success};
             try
             {
-                string message;
                 var task = TaskService.Instance.GetTask(name);
+                if (task == null)
+                {
+                    response.Status = Status.Error;
+                    response.AddErrorNotification("There is no task with given name");
+                    return response;
+                }
+
+                string message;
                 if (task.State == TaskState.Running)
                 {
                     task.Stop();
@@ -51,11 +60,14 @@ namespace ServerMonitor.Controllers
                     message = "started";
                 }
 
-                return new { Message = $"Task {message} successfuly."};
+                response.AddSuccessNotification($"Task {message} successfuly");
+                return response;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.Status = Status.Error;
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
             }
         }
     }
