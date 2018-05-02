@@ -65,6 +65,7 @@ namespace ServerMonitor.Controllers
         
 
         [HttpGet]
+        [Route("Monitor/GetDiskUsage")]
         public object GetDiskUsage()
         {
             try
@@ -117,6 +118,7 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpGet]
+        [Route("Monitor/GetOracleInstances")]
         public HttpResponseMessage GetOracleInstances()
         {
             try

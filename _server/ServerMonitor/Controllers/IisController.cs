@@ -114,6 +114,7 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
+        [Route("Iis/Toggle")]
         public object Toggle(List<string> appPools, bool running)
         {
             try
@@ -240,6 +241,7 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
+        [Route("Iis/SaveBuildNote")]
         public object SaveBuildNote([FromBody]Data<string> data)
         {
             try
