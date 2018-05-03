@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Web.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 using ComputerInfo = Microsoft.VisualBasic.Devices.ComputerInfo;
@@ -18,8 +19,9 @@ namespace ServerMonitor.Controllers
         private readonly ComputerInfo _computerInfo = new ComputerInfo();
 
         [HttpGet]
-        public object Get()
+        public Response Get()
         {
+            var response = new Response();
             try
             {
                 var hardware = new Hardware
@@ -32,12 +34,14 @@ namespace ServerMonitor.Controllers
                         new Data<double> {Name = "HDD", Value = DiskUsage()}
                     }
                 };
-                
-                return hardware;
+                response.Data = hardware;
+                return response;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.Status = Status.Error;
+                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                return response;
             }
         }
 
@@ -53,15 +57,15 @@ namespace ServerMonitor.Controllers
             foreach (LinkItem link in config.Instances)
             {
                 var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";
-                var responseItem = ApiClient.Get<Hardware>(linkUrl);
+                var responseItem = ApiClient.Get<Response>(linkUrl);
                 if (responseItem.Status == Status.Success)
                 {
-                    links.Add((Hardware) responseItem.Data);
+                    var innerResponse = (Response) responseItem.Data;
+                    response.Notifications.AddRange(innerResponse.Notifications);
+                    var data = ((JObject) innerResponse.Data).ToObject<Hardware>();
+                    links.Add(data);
                 }
-                else
-                {
-                    response.Notifications.AddRange(responseItem.Notifications);
-                }
+                response.Notifications.AddRange(responseItem.Notifications);
             }
 
             response.Data = links;
