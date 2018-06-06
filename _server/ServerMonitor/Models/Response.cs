@@ -19,7 +19,7 @@ namespace ServerMonitor.Models
 
         public void AddErrorNotification(string message, string messageDetails = "")
         {
-            AddNotification(Status.Success, message, messageDetails);
+            AddNotification(Status.Error, message, messageDetails);
         }
 
         private void AddNotification(Status status, string message, string messageDetails)
