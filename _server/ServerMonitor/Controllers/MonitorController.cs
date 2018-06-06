@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Hosting;
 using System.Web.Http;
 using Cassia;
+using log4net;
 using Microsoft.Web.Administration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
@@ -18,6 +18,7 @@ namespace ServerMonitor.Controllers
 {
     public class MonitorController : ApiController
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(MonitorController));
 
         [HttpGet]
         public object Recycle(string Name)
@@ -164,7 +165,7 @@ namespace ServerMonitor.Controllers
         [Route("Monitor/GetUserSesssions")]
         public Response GetUserSesssions()
         {
-            var response = new Response { Status = Status.Success };
+            var response = new Response();
             try
             {
                 TerminalServicesManager manager = new TerminalServicesManager();

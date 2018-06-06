@@ -8,10 +8,10 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
-    public class TasksController : ApiController
+    public class TasksController : BaseApi
     {
 
-        [HttpGet]
+       [HttpGet]
         public object Get()
         {
             try
@@ -37,7 +37,7 @@ namespace ServerMonitor.Controllers
         [HttpPost]
         public Response Post([FromBody] string name)
         {
-            var response = new Response {Status = Status.Success};
+            var response = new Response();
             try
             {
                 var task = TaskService.Instance.GetTask(name);

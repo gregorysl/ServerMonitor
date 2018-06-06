@@ -70,7 +70,7 @@ namespace ServerMonitor.Helpers
 
                 var responseApi = client.PutAsync(client.BaseAddress, httpContent).Result;
 
-                var response = new Response {Status = Status.Success};
+                var response = new Response();
                 if (responseApi.StatusCode != HttpStatusCode.OK && responseApi.StatusCode != HttpStatusCode.NoContent)
                 {
                     response.Status = Status.Error;

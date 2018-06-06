@@ -36,7 +36,7 @@ namespace ServerMonitor.Models
     public class Notification
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Success;
         public string Message { get; set; }
         public string MessageDetails { get; set; }
     }
