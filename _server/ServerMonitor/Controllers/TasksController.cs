@@ -11,28 +11,41 @@ namespace ServerMonitor.Controllers
     public class TasksController : BaseApi
     {
 
-       [HttpGet]
+        [HttpGet]
         public object Get()
         {
+            var response = new Response();
             try
             {
-                var tasks = ConfigurationManager.AppSettings["ScheduledTasksToView"];
-                var taskDetails = TaskService.Instance.AllTasks.Where(t => tasks.Contains(t.Name));
-                var details = taskDetails.Select(t => new
-                {
-                    t.Name,
-                    State = t.State.ToString(),
-                    t.Path,
-                    LastRunTime = t.LastRunTime.ToString("g"),
-                    t.LastTaskResult
-                });
-                return details;
+                Log.Debug("GetScheduledTasks called.");
+                var details = CacheManager.GetObjectFromCache("ScheduledTasks", _cacheLifecycle, GetScheduledTasks);
+                Log.Debug("GetScheduledTasks call success.");
+                response.Data = details;
+                return response;
             }
             catch (Exception ex)
             {
-                return new {ex.Message, Exception = ex.StackTrace};
+                response.Status = Status.Error;
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
             }
         }
+
+        private static object GetScheduledTasks()
+        {
+            var tasks = ConfigurationManager.AppSettings["ScheduledTasksToView"];
+            var taskDetails = TaskService.Instance.AllTasks.Where(t => tasks.Contains(t.Name));
+            var details = taskDetails.Select(t => new
+            {
+                t.Name,
+                State = t.State.ToString(),
+                t.Path,
+                LastRunTime = t.LastRunTime.ToString("g"),
+                t.LastTaskResult
+            });
+            return details;
+        }
+
 
         [HttpPost]
         public Response Post([FromBody] string name)
