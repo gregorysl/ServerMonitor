@@ -76,8 +76,9 @@ export function* getDiskUsageData() {
 
 export function* getTasksData() {
   try {
-    const data = yield call(api.getTasks);
-    yield put({ type: types.TASKS_SUCCESS, data });
+    const { data } = yield call(api.getTasks);
+    const type = data.status === 'Success' ? types.TASKS_SUCCESS : types.TASKS_ERROR;
+    yield put({ type, data });
   } catch (error) {
     yield put({ type: types.TASKS_ERROR, error });
   }
