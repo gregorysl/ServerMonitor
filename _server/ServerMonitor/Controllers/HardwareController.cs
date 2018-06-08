@@ -12,7 +12,7 @@ using ComputerInfo = Microsoft.VisualBasic.Devices.ComputerInfo;
 
 namespace ServerMonitor.Controllers
 {
-    public class HardwareController : ApiController
+    public class HardwareController : BaseApi
     {
         protected static PerformanceCounter CpuCounter { get; set; }
 
@@ -24,16 +24,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var hardware = new Hardware
-                {
-                    Name = ComputerName(),
-                    Data = new List<Data<double>>
-                    {
-                        new Data<double> {Name = "CPU", Value = CpuUsage()},
-                        new Data<double> {Name = "RAM", Value = MemoryUsage()},
-                        new Data<double> {Name = "HDD", Value = DiskUsage()}
-                    }
-                };
+                var hardware = CacheManager.GetObjectFromCache("IISApplications", _cacheLifecycle, GetHardware);
                 response.Data = hardware;
                 return response;
             }
@@ -45,15 +36,35 @@ namespace ServerMonitor.Controllers
             }
         }
 
+        private Hardware GetHardware()
+        {
+            var hardware = new Hardware
+            {
+                Name = ComputerName(),
+                Data = new List<Data<double>>
+                {
+                    new Data<double> {Name = "CPU", Value = CpuUsage()},
+                    new Data<double> {Name = "RAM", Value = MemoryUsage()},
+                    new Data<double> {Name = "HDD", Value = DiskUsage()}
+                }
+            };
+            return hardware;
+        }
+
         [HttpGet]
         [Route("Hardware/GetAll")]
         public Response GetAll()
         {
             var response = new Response();
-            var links = new List<Hardware>();
+            var harwareList = new List<Hardware>();
             var config = ConfigurationManager.GetSection("hardwareList") as LinksConfigSection;
 
-            if (config == null) return null;
+            if (config == null)
+            {
+                response.Status = Status.Error;
+                response.AddErrorNotification("Configuration of hardwareList missing");
+                return response;
+            }
             foreach (LinkItem link in config.Instances)
             {
                 var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";
@@ -62,13 +73,16 @@ namespace ServerMonitor.Controllers
                 {
                     var innerResponse = (Response) responseItem.Data;
                     response.Notifications.AddRange(innerResponse.Notifications);
-                    var data = ((JObject) innerResponse.Data).ToObject<Hardware>();
-                    links.Add(data);
+                    if (innerResponse.Status == Status.Success)
+                    {
+                        var data = ((JObject) innerResponse.Data).ToObject<Hardware>();
+                        harwareList.Add(data);
+                    }
                 }
                 response.Notifications.AddRange(responseItem.Notifications);
             }
 
-            response.Data = links;
+            response.Data = harwareList;
             return response;
         }
 
@@ -103,7 +117,7 @@ namespace ServerMonitor.Controllers
             ManagementObjectCollection moc = mc.GetInstances();
             foreach (var item in moc)
             {
-                return ((ManagementObject)item).Properties["DNSHostName"].Value.ToString()+DateTime.Now.Millisecond;
+                return ((ManagementObject)item).Properties["DNSHostName"].Value.ToString();
             }
 
             return "";
