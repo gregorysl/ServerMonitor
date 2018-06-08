@@ -57,7 +57,8 @@ namespace ServerMonitor.Controllers
         {
             var response = new Response();
             var harwareList = new List<Hardware>();
-            var config = ConfigurationManager.GetSection("hardwareList") as LinksConfigSection;
+
+            var config = LinksHelper.GetLinks("hardwareList");
 
             if (config == null)
             {
@@ -65,7 +66,7 @@ namespace ServerMonitor.Controllers
                 response.AddErrorNotification("Configuration of hardwareList missing");
                 return response;
             }
-            foreach (LinkItem link in config.Instances)
+            foreach (LinkItem link in config)
             {
                 var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";
                 var responseItem = ApiClient.Get<Response>(linkUrl);

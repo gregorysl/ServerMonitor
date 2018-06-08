@@ -1,7 +1,25 @@
 ﻿using System.Configuration;
+using ServerMonitor.Models;
 
 namespace ServerMonitor.Helpers
 {
+    public static class LinksHelper
+    {
+        public static LinkCollection GetLinks(string name)
+        {
+            var config = ConfigurationManager.GetSection(name) as LinksConfigSection;
+            return config?.Instances;
+        }
+
+        public static Link FromConfig(this LinkItem link)
+        {
+            return new Link
+            {
+                Name = link.Name,
+                Url = link.Url
+            };
+        }
+    }
     public class LinksConfigSection : ConfigurationSection
     {
         [ConfigurationProperty("", IsRequired = true, IsDefaultCollection = true)]
