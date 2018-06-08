@@ -43,6 +43,7 @@ const tableInitialState = {
 const oracleInstanciesErrorText = 'Oracle Instancies';
 const userSessionsErrorText = 'User Sessions';
 const tasksErrorText = 'Tasks';
+const hardwareErrorText = 'Hardware Monitor';
 const diskUsageErrorText = 'Disk Usage';
 const iisErrorText = 'IIS Applications';
 
@@ -67,7 +68,7 @@ function diskUsageReducer(state = tableInitialState, action) {
 function tasksReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.TASKS_SUCCESS:
-      return { ...state, ...action.data, columns: tasksColumns };
+      return { ...state, data: action.data.data, columns: tasksColumns };
     default:
       return state;
   }
@@ -109,8 +110,18 @@ function hardwareReducer(state = hardwareInitialState, action) {
   }
 }
 
+function addAllNotifications(stateArray, notifications, message) {
+  const toAdd = notifications.map(x => ({ message, description: x.message, type: x.type }));
+  return [...stateArray, ...toAdd];
+}
+
 function errorReducer(state = [], action) {
   switch (action.type) {
+    case types.TASKS_ERROR:
+    case types.TASKS_RUN_ERROR:
+      return addAllNotifications(state, action.data.notifications, tasksErrorText);
+    case types.GET_HARDWARE_DATA_SUCCESS:
+      return addAllNotifications(state, action.data.notifications, hardwareErrorText);
     case types.ORACLE_ERROR:
       return [...state, {
         title: oracleInstanciesErrorText,
@@ -119,12 +130,6 @@ function errorReducer(state = [], action) {
     case types.DISK_USAGE_ERROR:
       return [...state, {
         title: diskUsageErrorText,
-        error: action.error.message
-      }];
-    case types.TASKS_ERROR:
-    case types.TASKS_RUN_ERROR:
-      return [...state, {
-        title: tasksErrorText,
         error: action.error.message
       }];
     case types.SESSIONS_ERROR:
