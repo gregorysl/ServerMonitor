@@ -135,7 +135,7 @@ namespace ServerMonitor.Controllers
                 {
                     Notifications =
                     {
-                        new Notification {Message = ex.Message, MessageDetails = ex.StackTrace, Status = Status.Error}
+                        new Notification {Message = ex.Message, MessageDetail = ex.StackTrace, Status = Status.Error}
                     }
                 });
             }
@@ -190,7 +190,7 @@ namespace ServerMonitor.Controllers
                 response.Notifications.Add(new Notification
                 {
                     Message = ex.Message,
-                    MessageDetails = ex.StackTrace,
+                    MessageDetail = ex.StackTrace,
                     Status = Status.Error
                 });
                 return response;

@@ -28,7 +28,7 @@ namespace ServerMonitor.Models
             {
                 Status = status,
                 Message = message,
-                MessageDetails = messageDetails
+                MessageDetail = messageDetails
             });
         }
     }
@@ -38,7 +38,7 @@ namespace ServerMonitor.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; } = Status.Success;
         public string Message { get; set; }
-        public string MessageDetails { get; set; }
+        public string MessageDetail { get; set; }
     }
 
     public enum Status
