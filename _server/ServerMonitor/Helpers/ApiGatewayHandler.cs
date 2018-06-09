@@ -5,6 +5,8 @@ using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ServerMonitor.Models;
 
 namespace ServerMonitor.Helpers
@@ -15,28 +17,33 @@ namespace ServerMonitor.Helpers
             CancellationToken cancellationToken)
         {
             var response = await base.SendAsync(request, cancellationToken);
-
-            if (response != null && response.StatusCode == HttpStatusCode.NotFound)
+            
+            if (response != null && !response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
 
-                //you can change the response here
-                if (msg != null && msg.Contains("No HTTP resource was found"))
+                var notification = new JavaScriptSerializer().Deserialize<Notification>(msg);
+                notification.Status = Status.Error;
+                return new HttpResponseMessage
                 {
-                    var a = new JavaScriptSerializer().Deserialize<Notification>(msg);
-                    return new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Content = new ObjectContent(typeof(Response),
-                            new Response()
+                    StatusCode = HttpStatusCode.NotFound,
+                    Content = new ObjectContent(typeof(Response),
+                        new Response
+                        {
+                            Status = Status.Error,
+                            Notifications =
+                                new List<Notification> {notification}
+                        },
+                        new JsonMediaTypeFormatter
+                        {
+                            SerializerSettings = new JsonSerializerSettings
                             {
-                                Status = Status.Error,
-                                Notifications =
-                                    new List<Notification> { new Notification { Status = Status.Error, Message = "asdasd" } }
-                            },
-                            new JsonMediaTypeFormatter())
-                    };
-                }
+                                NullValueHandling = NullValueHandling.Ignore,
+                                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                            }
+                        })
+                };
+
             }
 
             return response;
