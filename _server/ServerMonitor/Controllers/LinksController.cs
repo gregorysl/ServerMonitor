@@ -10,31 +10,39 @@ namespace ServerMonitor.Controllers
 {
     public class LinksController : BaseApi
     {
-
+        private LinkCollection _linkCollection;
         // GET api/<controller>
         public Response Get()
         {
             var response = new Response();
-            var links = new List<Link>();
-            var config = LinksHelper.GetLinks("links");
-
-            if (config == null)
+            _linkCollection = LinksHelper.GetLinks("links");
+            if (_linkCollection == null)
             {
                 response.Status = Status.Error;
                 response.AddErrorNotification("Configuration of links missing");
                 return response;
             }
 
-            foreach (LinkItem item in config)
+            var links = CacheManager.GetObjectFromCache("IISApplications", _cacheLifecycle, GetLinksStatus);
+
+            response.Data = links;
+            return response;
+        }
+
+        private List<Link> GetLinksStatus()
+        {
+            var links = new List<Link>();
+
+            foreach (LinkItem item in _linkCollection)
             {
                 var credentials = !string.IsNullOrWhiteSpace(item.Username) && !string.IsNullOrWhiteSpace(item.Password)
                     ? new NetworkCredential(item.Username, item.Password)
                     : null;
                 var link = item.FromConfig();
-                
+
                 try
                 {
-                    using (var handler = new HttpClientHandler { Credentials = credentials })
+                    using (var handler = new HttpClientHandler {Credentials = credentials})
                     {
                         using (var client = new HttpClient(handler))
                         {
@@ -48,7 +56,6 @@ namespace ServerMonitor.Controllers
                             link.Working = linkResponse.IsSuccessStatusCode;
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -59,10 +66,9 @@ namespace ServerMonitor.Controllers
                 links.Add(link);
             }
 
-            response.Data = links;
-            return response;
+            return links;
         }
-        
+
 
         public static string GatherExceptions(Exception e)
         {
