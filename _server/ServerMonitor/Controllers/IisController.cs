@@ -15,6 +15,18 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
+    public class IssToggleConfig
+    {
+        public IssToggleConfig(List<string> appPools, bool running)
+        {
+            AppPools = appPools;
+            Running = running;
+        }
+
+        public List<string> AppPools { get; private set; }
+        public bool Running { get; private set; }
+    }
+
     public class IisController : ApiController
     {
         private static string DbPath => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
@@ -115,24 +127,27 @@ namespace ServerMonitor.Controllers
 
         [HttpPost]
         [Route("Iis/Toggle")]
-        public object Toggle(List<string> appPools, bool running)
+        public Response Toggle(IssToggleConfig issToggleConfig)
         {
+            var response= new Response();
             try
             {
                 var mgr = new ServerManager();
-                var pools = mgr.ApplicationPools.Where(app => appPools.Contains(app.Name));
+                var pools = mgr.ApplicationPools.Where(app => issToggleConfig.AppPools.Contains(app.Name));
 
                 foreach (var pool in pools)
                 {
-                    var newState = running ? pool.Stop() : pool.Start();
+                    var newState = issToggleConfig.Running ? pool.Stop() : pool.Start();
                 }
 
-                var state = running ? "stopped" : "started";
-                return new { message = $"Application pools ${state} successfuly."};
+                var state = issToggleConfig.Running ? "stopped" : "started";
+                response.AddSuccessNotification($"Application pools {state} successfuly.");
+                return response;
             }
             catch (Exception ex)
             {
-                return new { message = ex.Message, Exception = ex.StackTrace };
+                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                return response;
             }
 
         }
