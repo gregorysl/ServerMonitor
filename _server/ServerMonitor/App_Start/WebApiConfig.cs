@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using ServerMonitor.Helpers;
 
 namespace ServerMonitor
 {
@@ -9,6 +10,7 @@ namespace ServerMonitor
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
+            config.MessageHandlers.Add(new ApiGatewayHandler());
             config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
             config.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
             config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings
@@ -16,9 +18,15 @@ namespace ServerMonitor
                 NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
-            config.Routes.MapHttpRoute("DefaultApi", "{controller}/{action}");
-            config.Routes.MapHttpRoute("Tasks", "{controller}/{action}/{name}", new {name = ""});
-            config.Routes.MapHttpRoute("Api", "{controller}/");
+            config.Routes.MapHttpRoute(
+                name: "API action",
+                routeTemplate: "{controller}/{action}"
+            );
+            config.Routes.MapHttpRoute(
+                name: "API Default",
+                routeTemplate: "{controller}/{name}",
+                defaults: new { name = RouteParameter.Optional }
+            );
         }
     }
 }
