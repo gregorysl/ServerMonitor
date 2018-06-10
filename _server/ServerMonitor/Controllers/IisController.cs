@@ -9,24 +9,11 @@ using System.Web.Http;
 using System.Xml.Linq;
 using LiteDB;
 using Microsoft.Web.Administration;
-using Newtonsoft.Json.Linq;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
-    public class IssToggleConfig
-    {
-        public IssToggleConfig(List<string> appPools, bool running)
-        {
-            AppPools = appPools;
-            Running = running;
-        }
-
-        public List<string> AppPools { get; private set; }
-        public bool Running { get; private set; }
-    }
-
     public class IisController : ApiController
     {
         private static string DbPath => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
@@ -137,10 +124,10 @@ namespace ServerMonitor.Controllers
 
                 foreach (var pool in pools)
                 {
-                    var newState = issToggleConfig.Running ? pool.Stop() : pool.Start();
+                    var newState = issToggleConfig.Condition ? pool.Stop() : pool.Start();
                 }
 
-                var state = issToggleConfig.Running ? "stopped" : "started";
+                var state = issToggleConfig.Condition ? "stopped" : "started";
                 response.AddSuccessNotification($"Application pools {state} successfuly.");
                 return response;
             }
@@ -153,8 +140,9 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
-        public object WhitelistToggle(IList<string> pools, bool isWhitelisted)
+        public Response WhitelistToggle(IssToggleConfig issToggleConfig)
         {
+            var response = new Response();
             try
             {
                 var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
@@ -162,11 +150,11 @@ namespace ServerMonitor.Controllers
 
                 var buildsNode = whitelist.Descendants("builds").First();
 
-                if (!isWhitelisted)
+                if (!issToggleConfig.Condition)
                 {
                     var build = new XElement("build");
 
-                    foreach (var appPool in pools)
+                    foreach (var appPool in issToggleConfig.AppPools)
                     {
                         var poolElement = new XElement("app");
                         poolElement.SetAttributeValue("value", appPool);
@@ -177,7 +165,7 @@ namespace ServerMonitor.Controllers
                 }
                 else
                 {
-                    foreach (var appPool in pools)
+                    foreach (var appPool in issToggleConfig.AppPools)
                     {
                         var builds = buildsNode.Descendants("build").Where(n => n.Descendants("app").Any(a => a.Attribute("value")?.Value == appPool)).ToList();
                         foreach (var build in builds)
@@ -206,12 +194,14 @@ namespace ServerMonitor.Controllers
                 //        });
                 //    }
                 //}
-
-                return new { Message = "Application whitelisted successfuly." };
+                var function = issToggleConfig.Condition ? "un" : "";
+                response.AddSuccessNotification($"Application {function}whitelisted successfuly.");
+                return response;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
             }
 
         }
