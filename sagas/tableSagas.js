@@ -4,7 +4,7 @@ import * as types from '../constants/actionTypes';
 
 export function* getServicesData({ payload }) {
   try {
-    const data = yield call(api.getServices, payload);
+    const { data } = yield call(api.getServices, payload);
     yield put({ type: types.GET_SERVICES_DATA_SUCCESS, data });
   } catch (error) {
     yield put({ type: types.GET_SERVICES_DATA_ERROR, error });
@@ -34,12 +34,11 @@ export function* getIisData() {
 
 export function* setIisApp(props) {
   try {
-    const data1 = yield call(api.setIisApp, props.appList);
-    yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, message: data1.data.message });
-    const data = yield call(api.getIisApps);
-    yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
+    const { data } = yield call(api.setIisApp, props.appList);
+    yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, data });
+    yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {
-    yield put({ type: types.GET_IIS_TOGGLE_ERROR, error });
+    yield put({ type: types.GET_IIS_TOGGLE_ERROR, data: error.response.data });
   }
 }
 
@@ -47,10 +46,11 @@ export function* setIisAppWhitelist(props) {
   try {
     const data1 = yield call(api.whitelistApp, props.list);
     yield put({ type: types.GET_IIS_WHITELIST_SUCCESS, message: data1.data.message });
-    const data = yield call(api.getIisApps);
-    yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
+    yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {
-    yield put({ type: types.GET_IIS_WHITELIST_ERROR, error });
+    console.log(error);
+    debugger;
+    yield put({ type: types.GET_IIS_WHITELIST_ERROR, data: error.response.data });
   }
 }
 
@@ -115,8 +115,7 @@ export function* setNote(props) {
   try {
     const data1 = yield call(api.setNote, props.data);
     yield put({ type: types.TOGGLE_ORACLE_SUCCESS, message: data1.data.message });
-    const data = yield call(api.getIisApps);
-    yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
+    yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {
     yield put({ type: types.TOGGLE_ORACLE_ERROR, error });
   }
