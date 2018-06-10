@@ -109,6 +109,7 @@
     <Compile Include="Controllers\HardwareController.cs" />
     <Compile Include="Controllers\IisController.cs" />
     <Compile Include="Helpers\ApiGatewayHandler.cs" />
+    <Compile Include="Models\IssToggleConfig.cs" />
     <Compile Include="Models\Link.cs" />
     <Compile Include="Controllers\LinksController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
