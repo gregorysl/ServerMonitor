@@ -26,15 +26,15 @@ const mapDispatchToProps = dispatch => ({
     const data =
     {
       appPools: flatten(item.apps.map(x => x.children)),
-      running: item.running
+      condition: item.running
     };
     dispatch(setIisAction(data));
   },
   whitelist: (item) => {
     const data =
     {
-      pools: flatten(item.apps.map(x => x.children)),
-      isWhitelisted: item.whitelisted
+      appPools: flatten(item.apps.map(x => x.children)),
+      condition: item.whitelisted
     };
     dispatch(whitelistApp(data));
   },

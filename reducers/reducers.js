@@ -147,6 +147,8 @@ function errorReducer(state = [], action) {
       }];
     case types.GET_IIS_TOGGLE_SUCCESS:
     case types.GET_IIS_TOGGLE_ERROR:
+    case types.GET_IIS_WHITELIST_ERROR:
+    case types.GET_IIS_WHITELIST_SUCCESS:
       return addAllNotifications(state, action.data.notifications, iisErrorText);
     default:
       return state;

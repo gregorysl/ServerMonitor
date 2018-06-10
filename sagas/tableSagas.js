@@ -44,12 +44,10 @@ export function* setIisApp(props) {
 
 export function* setIisAppWhitelist(props) {
   try {
-    const data1 = yield call(api.whitelistApp, props.list);
-    yield put({ type: types.GET_IIS_WHITELIST_SUCCESS, message: data1.data.message });
+    const { data } = yield call(api.whitelistApp, props.list);
+    yield put({ type: types.GET_IIS_WHITELIST_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {
-    console.log(error);
-    debugger;
     yield put({ type: types.GET_IIS_WHITELIST_ERROR, data: error.response.data });
   }
 }
