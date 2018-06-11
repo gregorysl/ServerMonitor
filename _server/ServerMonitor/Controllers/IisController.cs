@@ -14,47 +14,59 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
-    public class IisController : ApiController
+    public class IisController : BaseApi
     {
         private static string DbPath => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
 
         [HttpGet]
-        public object Get()
+        public Response Get()
         {
+            var response = new Response();
             try
             {
-                var mgr = new ServerManager();
-                var iis = mgr.Sites[0].Applications;
-                var appPools = mgr.ApplicationPools.Select(x => new IISAppPool
-                {
-                    Name = x.Name,
-                    Running = x.State == ObjectState.Started,
-                    Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
-                        .Select(s => s.Path.Replace("/", string.Empty)).ToList()
-                }).ToList();
-                
+                Log.Debug("GetFilteredApps called.");
+                var filteredApps = CacheManager.GetObjectFromCache("ScheduledTasks", _cacheLifecycle, GetFilteredApps);
+                Log.Debug("GetFilteredApps call success.");
 
-                var applications = GroupAppPools(appPools);
-
-                var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
-                var filteredApps = applications.Where(a => !ignoreList.Contains(a.Name)).ToList();
-
-
-                var buildsNode = GetWhitelistItems();
-                if (buildsNode != null)
-                {
-                    filteredApps.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
-                }
-
-                filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
-
-                return filteredApps;
+                response.Data = filteredApps;
+                return response;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                return response;
             }
         }
+
+        private List<IISApplication> GetFilteredApps()
+        {
+            var mgr = new ServerManager();
+            var iis = mgr.Sites[0].Applications;
+            var appPools = mgr.ApplicationPools.Select(x => new IISAppPool
+            {
+                Name = x.Name,
+                Running = x.State == ObjectState.Started,
+                Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
+                    .Select(s => s.Path.Replace("/", string.Empty)).ToList()
+            }).ToList();
+
+
+            var applications = GroupAppPools(appPools);
+
+            var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
+            var filteredApps = applications.Where(a => !ignoreList.Contains(a.Name)).ToList();
+
+
+            var buildsNode = GetWhitelistItems();
+            if (buildsNode != null)
+            {
+                filteredApps.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
+            }
+
+            filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
+            return filteredApps;
+        }
+
         private static List<IISApplication> GroupAppPools(List<IISAppPool> appPools)
         {
             var applications = new List<IISApplication>();
