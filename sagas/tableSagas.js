@@ -25,10 +25,10 @@ export function* getHardwareData() {
 
 export function* getIisData() {
   try {
-    const data = yield call(api.getIisApps);
+    const { data } = yield call(api.getIisApps);
     yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.GET_IIS_APPS_ERROR, error });
+    yield put({ type: types.GET_IIS_APPS_ERROR, data: error.response.data });
   }
 }
 
