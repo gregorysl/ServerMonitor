@@ -11,15 +11,20 @@ const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const setOracleUri = `${apiUri}SetOracleInstanceReserved`;
 const tasksUri = `${appUri}Tasks/`;
-const runTasksUri = `${appUri}Tasks/Toggle`;
-const hardwareUri = `${appUri}Hardware/`;
+const runTasksUri = `${appUri}Tasks/`;
+// const hardwareUri = `${appUri}Hardware/`;
+const hardwareUri = `${appUri}Hardware/GetAll`;
 const iisUri = `${appUri}Iis/`;
 const iisStopUri = `${appUri}Iis/Toggle`;
 const iisWhitelistUri = `${appUri}Iis/WhitelistToggle`;
 const servicesStopUri = `${appUri}Links/`;
 
 export function setIisApp(appList) {
-  return Axios.post(iisStopUri, appList);
+  return Axios.post(iisStopUri, JSON.stringify(appList), {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 }
 
 export function setOracle(data) {
@@ -31,7 +36,11 @@ export function whitelistApp(appList) {
 }
 
 export function runTask(name) {
-  return Axios.post(runTasksUri, { name });
+  return Axios.post(runTasksUri, `'${name}'`, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 }
 
 export function getServices() {
