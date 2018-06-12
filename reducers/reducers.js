@@ -47,6 +47,7 @@ const hardwareErrorText = 'Hardware Monitor';
 const diskUsageErrorText = 'Disk Usage';
 const iisErrorText = 'IIS Applications';
 const linksErrorText = 'Links';
+const noteErrorText = 'Build Notes';
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
@@ -125,6 +126,9 @@ function errorReducer(state = [], action) {
       return addAllNotifications(state, action.data.notifications, hardwareErrorText);
     case types.GET_SERVICES_DATA_SUCCESS:
       return addAllNotifications(state, action.data.notifications, linksErrorText);
+    case types.SET_NOTE_SUCCESS:
+    case types.SET_NOTE_ERROR:
+      return addAllNotifications(state, action.data.notifications, noteErrorText);
     case types.ORACLE_ERROR:
       return [...state, {
         title: oracleInstanciesErrorText,
@@ -141,10 +145,6 @@ function errorReducer(state = [], action) {
         error: action.error.message
       }];
     case types.GET_IIS_APPS_ERROR:
-      return [...state, {
-        title: iisErrorText,
-        error: action.error.message
-      }];
     case types.GET_IIS_TOGGLE_SUCCESS:
     case types.GET_IIS_TOGGLE_ERROR:
     case types.GET_IIS_WHITELIST_ERROR:
