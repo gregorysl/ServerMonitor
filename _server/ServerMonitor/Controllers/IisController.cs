@@ -25,7 +25,7 @@ namespace ServerMonitor.Controllers
             try
             {
                 Log.Debug("GetFilteredApps called.");
-                var filteredApps = CacheManager.GetObjectFromCache("ScheduledTasks", _cacheLifecycle, GetFilteredApps);
+                var filteredApps = GetFilteredApps();
                 Log.Debug("GetFilteredApps call success.");
 
                 response.Data = filteredApps;
@@ -259,33 +259,36 @@ namespace ServerMonitor.Controllers
 
         [HttpPost]
         [Route("Iis/SaveBuildNote")]
-        public object SaveBuildNote([FromBody]Data<string> data)
+        public Response SaveBuildNote([FromBody]Data<string> data)
         {
+            var response = new Response();
             try
             {
                 SetBuildNote(data.Name, data.Value);
-                return new { Message = "Application note saved succesfully." };
+                response.AddSuccessNotification("Application note saved succesfully.");
+                return response;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
             }
         }
 
         [HttpGet]
-        public object GetBuildNotes(string name)
+        public Response GetBuildNotes(string name)
         {
+            var response = new Response();
             try
             {
-                return new
-                {
-                    Message =
-                        GetBuildNote(name)
-                };
+                var buildNote = GetBuildNote(name);
+                response.Data = buildNote;
+                return response;
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
             }
         }
 
