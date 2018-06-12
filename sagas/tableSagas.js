@@ -111,10 +111,10 @@ export function* runTask(props) {
 
 export function* setNote(props) {
   try {
-    const data1 = yield call(api.setNote, props.data);
-    yield put({ type: types.TOGGLE_ORACLE_SUCCESS, message: data1.data.message });
+    const { data } = yield call(api.setNote, props.data);
+    yield put({ type: types.SET_NOTE_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {
-    yield put({ type: types.TOGGLE_ORACLE_ERROR, error });
+    yield put({ type: types.SET_NOTE_ERROR, error });
   }
 }
