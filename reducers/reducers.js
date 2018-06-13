@@ -140,10 +140,9 @@ function errorReducer(state = [], action) {
         error: action.error.message
       }];
     case types.SESSIONS_ERROR:
-      return [...state, {
-        title: userSessionsErrorText,
-        error: action.error.message
-      }];
+    case types.SESSIONS_KILL_SUCCESS:
+    case types.SESSIONS_KILL_ERROR:
+      return addAllNotifications(state, action.data.notifications, userSessionsErrorText);
     case types.GET_IIS_APPS_ERROR:
     case types.GET_IIS_TOGGLE_SUCCESS:
     case types.GET_IIS_TOGGLE_ERROR:

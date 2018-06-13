@@ -49,3 +49,7 @@ export function* watchSetOracle() {
 export function* watchSetNote() {
   yield takeLatest(types.SET_NOTE_REQUEST, saga.setNote);
 }
+
+export function* watchKillUser() {
+  yield takeLatest(types.SESSIONS_KILL_REQUEST, saga.setKillUser);
+}

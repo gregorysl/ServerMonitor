@@ -53,3 +53,8 @@ export const setNote = data => ({
   type: types.SET_NOTE_REQUEST,
   data
 });
+
+export const killSession = name => ({
+  type: types.SESSIONS_KILL_REQUEST,
+  name
+});

@@ -118,3 +118,14 @@ export function* setNote(props) {
     yield put({ type: types.SET_NOTE_ERROR, error });
   }
 }
+
+
+export function* setKillUser(props) {
+  try {
+    const { data } = yield call(api.killUser, props.name);
+    yield put({ type: types.SESSIONS_KILL_SUCCESS, data });
+    yield put({ type: types.SESSIONS_REQUEST });
+  } catch (error) {
+    yield put({ type: types.SESSIONS_KILL_ERROR, data: error.response.data });
+  }
+}
