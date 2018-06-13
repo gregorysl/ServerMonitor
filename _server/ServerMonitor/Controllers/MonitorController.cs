@@ -16,10 +16,8 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
-    public class MonitorController : ApiController
+    public class MonitorController : BaseApi
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(MonitorController));
-
         [HttpGet]
         public object Recycle(string Name)
         {
@@ -168,7 +166,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                TerminalServicesManager manager = new TerminalServicesManager();
+                var manager = new TerminalServicesManager();
                 using (ITerminalServer server = manager.GetLocalServer())
                 {
                     server.Open();
@@ -197,6 +195,47 @@ namespace ServerMonitor.Controllers
 
             }
         }
-        
+
+        [HttpPost]
+        [Route("Monitor/DropUserSession")]
+        public Response DropUserSession([FromBody]string username)
+        {
+            var response = new Response();
+            try
+            {
+                Log.Debug($"DropUserSession called for user {username}.");
+
+                var manager = new TerminalServicesManager();
+                using (ITerminalServer server = manager.GetLocalServer())
+                {
+                    server.Open();
+                    var userSession = server.GetSessions()
+                        .FirstOrDefault(s => String.Equals($@"{s.DomainName}\{s.UserName}", username, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (userSession == null)
+                    {
+                        response.Status = Status.Error;
+                        response.AddErrorNotification($"User session for {username} not found.");
+                        return response;
+                    }
+
+                    //userSession.Logoff(true);
+                }
+
+                var message = $"Successfully closed session for user {username}.";
+                Log.Debug(message);
+                response.AddSuccessNotification(message);
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                response.Status = Status.Error;
+                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                return response;
+            }
+        }
+
     }
 }

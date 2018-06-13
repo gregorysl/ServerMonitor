@@ -36,7 +36,7 @@ export function whitelistApp(appList) {
 }
 
 export function runTask(name) {
-  return Axios.post(runTasksUri, `'${name}'`, {
+  return Axios.post(runTasksUri, JSON.stringify(name), {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -74,4 +74,13 @@ export function getOracleInstancies() {
 
 export function setNote(data) {
   return Axios.post(`${appUri}Iis/SaveBuildNote`, data);
+}
+
+export function killUser(data) {
+  debugger;
+  return Axios.post(`${apiUri}DropUserSession/`, JSON.stringify(data), {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 }
