@@ -10,16 +10,14 @@ import AppPoolList from './Iis/AppPoolList';
 import ActionsButtons from './Iis/ActionsButtons';
 import TaskActionButtons from './TaskActionButtons';
 import OracleToggleButton from './OracleToggleButton';
+import SessionsActionButtons from './SessionsActionButtons';
 
 const { Header, Content } = Layout;
 
 const checkErrors = (props, nextProps) => {
   if (props.length < nextProps.length) {
     const error = nextProps[nextProps.length - 1];
-    notification.error({
-      message: error.title,
-      description: error.error
-    });
+    notification.error(error);
   }
 };
 const isDeployingColumn =
@@ -36,11 +34,16 @@ const isDeployingColumn =
   }];
 
 const taskAction =
-    {
-      title: 'Action',
-      key: 'x',
-      render: x => (<TaskActionButtons {...x} />)
-    };
+  {
+    title: 'Action',
+    key: 'x',
+    render: x => (<TaskActionButtons {...x} />)
+  };
+const sessionActions =
+      {
+        key: 'x',
+        render: x => (<SessionsActionButtons {...x} />)
+      };
 
 const action =
     {
@@ -64,7 +67,7 @@ class App extends Component {
   componentDidMount() {
     this.props.getTasks();
     this.props.getSessions();
-    this.props.getUsage();
+    this.props.getHardwareUsage();
     this.props.getOracle();
     this.props.getIis();
   }
@@ -121,6 +124,7 @@ class App extends Component {
               columns={this.props.sessions.columns}
               message="No sessions found."
               rowKey="user"
+              extraColumns={[sessionActions]}
             />
           </div>
         </Content>
@@ -132,7 +136,7 @@ class App extends Component {
 App.propTypes = {
   getSessions: PropTypes.func.isRequired,
   getTasks: PropTypes.func.isRequired,
-  getUsage: PropTypes.func.isRequired,
+  getHardwareUsage: PropTypes.func.isRequired,
   getOracle: PropTypes.func.isRequired,
   getIis: PropTypes.func.isRequired,
   sessions: PropTypes.objectOf(PropTypes.shape({
@@ -171,7 +175,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getTasks: () => dispatch(actions.getTasksAction()),
   getSessions: () => dispatch(actions.getSessionsAction()),
-  getUsage: () => dispatch(actions.getDiskUsageAction()),
+  getHardwareUsage: () => dispatch(actions.getDiskUsageAction()),
   getOracle: () => dispatch(actions.getOracleAction()),
   getIis: () => dispatch(actions.getIisAction())
 });
