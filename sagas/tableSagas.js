@@ -93,10 +93,11 @@ export function* getSessionsData() {
 
 export function* getOracleData() {
   try {
-    const data = yield call(api.getOracleInstancies);
-    yield put({ type: types.ORACLE_SUCCESS, data });
+    const { data } = yield call(api.getOracleInstancies);
+    const type = data.status === 'Success' ? types.ORACLE_SUCCESS : types.ORACLE_ERROR;
+    yield put({ type, data });
   } catch (error) {
-    yield put({ type: types.ORACLE_ERROR, error });
+    yield put({ type: types.ORACLE_ERROR, data: error.response.data });
   }
 }
 
