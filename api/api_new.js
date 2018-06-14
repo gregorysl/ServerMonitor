@@ -77,7 +77,6 @@ export function setNote(data) {
 }
 
 export function killUser(data) {
-  debugger;
   return Axios.post(`${apiUri}DropUserSession/`, JSON.stringify(data), {
     headers: {
       'Content-Type': 'application/json'
