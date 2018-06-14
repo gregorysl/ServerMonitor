@@ -7,7 +7,7 @@ export function* getServicesData({ payload }) {
     const { data } = yield call(api.getServices, payload);
     yield put({ type: types.GET_SERVICES_DATA_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.GET_SERVICES_DATA_ERROR, error });
+    yield put({ type: types.GET_SERVICES_DATA_ERROR, data: error.response.data });
   }
 }
 
@@ -19,7 +19,7 @@ export function* getHardwareData() {
     }
     yield put({ type: types.GET_HARDWARE_DATA_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.GET_HARDWARE_DATA_ERROR, error });
+    yield put({ type: types.GET_HARDWARE_DATA_ERROR, data: error.response.data });
   }
 }
 
@@ -59,7 +59,7 @@ export function* setOracle(props) {
     const data = yield call(api.getOracleInstancies);
     yield put({ type: types.ORACLE_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.TOGGLE_ORACLE_ERROR, error });
+    yield put({ type: types.TOGGLE_ORACLE_ERROR, data: error.response.data });
   }
 }
 
@@ -68,7 +68,7 @@ export function* getDiskUsageData() {
     const data = yield call(api.getDisk);
     yield put({ type: types.DISK_USAGE_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.DISK_USAGE_ERROR, error });
+    yield put({ type: types.DISK_USAGE_ERROR, data: error.response.data });
   }
 }
 
@@ -78,7 +78,7 @@ export function* getTasksData() {
     const type = data.status === 'Success' ? types.TASKS_SUCCESS : types.TASKS_ERROR;
     yield put({ type, data });
   } catch (error) {
-    yield put({ type: types.TASKS_ERROR, error });
+    yield put({ type: types.TASKS_ERROR, data: error.response.data });
   }
 }
 
@@ -87,7 +87,7 @@ export function* getSessionsData() {
     const { data } = yield call(api.getUserSessions);
     yield put({ type: types.SESSIONS_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.SESSIONS_ERROR, error });
+    yield put({ type: types.SESSIONS_ERROR, data: error.response.data });
   }
 }
 
@@ -106,7 +106,7 @@ export function* runTask(props) {
     const data = yield call(api.runTask, props.name);
     yield put({ type: types.TASKS_RUN_SUCCESS, message: data.data.Message });
   } catch (error) {
-    yield put({ type: types.TASKS_RUN_ERROR, error });
+    yield put({ type: types.TASKS_RUN_ERROR, data: error.response.data });
   }
 }
 
@@ -116,7 +116,7 @@ export function* setNote(props) {
     yield put({ type: types.SET_NOTE_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {
-    yield put({ type: types.SET_NOTE_ERROR, error });
+    yield put({ type: types.SET_NOTE_ERROR, data: error.response.data });
   }
 }
 
