@@ -130,10 +130,7 @@ function errorReducer(state = [], action) {
     case types.SET_NOTE_ERROR:
       return addAllNotifications(state, action.data.notifications, noteErrorText);
     case types.ORACLE_ERROR:
-      return [...state, {
-        title: oracleInstanciesErrorText,
-        error: action.error.message
-      }];
+      return addAllNotifications(state, action.data.notifications, oracleInstanciesErrorText);
     case types.DISK_USAGE_ERROR:
       return [...state, {
         title: diskUsageErrorText,
