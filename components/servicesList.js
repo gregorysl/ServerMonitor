@@ -13,7 +13,7 @@ class ServicesList extends Component {
   render() {
     return (
       <List
-        grid={{ column: 4 }}
+        grid={{ column: 6 }}
         dataSource={this.props.serviceData}
         renderItem={item => (<ServiceItem {...item} name={item.key} />)}
       />
