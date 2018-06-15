@@ -62,7 +62,7 @@ namespace ServerMonitor.Controllers
             ApiClient.Put(url, content);
         }
         
-
+        
         [HttpGet]
         [Route("Monitor/GetDiskUsage")]
         public object GetDiskUsage()
@@ -118,24 +118,19 @@ namespace ServerMonitor.Controllers
 
         [HttpGet]
         [Route("Monitor/GetOracleInstances")]
-        public HttpResponseMessage GetOracleInstances()
+        public Response GetOracleInstances()
         {
+            var response = new Response();
             try
             {
                 var instances = GetAllOracleInstances();
-                var responseCode = instances.Status == Status.Error ? HttpStatusCode.InternalServerError : HttpStatusCode.OK;
-                var response = Request.CreateResponse(responseCode, instances);
+                response = instances;
                 return response;
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new Response
-                {
-                    Notifications =
-                    {
-                        new Notification {Message = ex.Message, MessageDetail = ex.StackTrace, Status = Status.Error}
-                    }
-                });
+                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                return response;
             }
         }
 
