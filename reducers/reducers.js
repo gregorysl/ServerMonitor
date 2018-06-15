@@ -123,8 +123,10 @@ function errorReducer(state = [], action) {
     case types.TASKS_RUN_ERROR:
       return addAllNotifications(state, action.data.notifications, tasksErrorText);
     case types.GET_HARDWARE_DATA_SUCCESS:
+    case types.GET_HARDWARE_DATA_ERROR:
       return addAllNotifications(state, action.data.notifications, hardwareErrorText);
     case types.GET_SERVICES_DATA_SUCCESS:
+    case types.GET_SERVICES_DATA_ERROR:
       return addAllNotifications(state, action.data.notifications, linksErrorText);
     case types.SET_NOTE_SUCCESS:
     case types.SET_NOTE_ERROR:
