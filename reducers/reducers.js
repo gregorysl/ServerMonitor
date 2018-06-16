@@ -88,7 +88,7 @@ function sessionsReducer(state = tableInitialState, action) {
 function oracleReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
-      return { ...state, data: action.data.data.data, columns: oracleColumns };
+      return { ...state, data: action.data.data, columns: oracleColumns };
     default:
       return state;
   }
@@ -132,12 +132,11 @@ function errorReducer(state = [], action) {
     case types.SET_NOTE_ERROR:
       return addAllNotifications(state, action.data.notifications, noteErrorText);
     case types.ORACLE_ERROR:
+    case types.TOGGLE_ORACLE_ERROR:
+    case types.TOGGLE_ORACLE_SUCCESS:
       return addAllNotifications(state, action.data.notifications, oracleInstanciesErrorText);
     case types.DISK_USAGE_ERROR:
-      return [...state, {
-        title: diskUsageErrorText,
-        error: action.error.message
-      }];
+      return addAllNotifications(state, action.data.notifications, diskUsageErrorText);
     case types.SESSIONS_ERROR:
     case types.SESSIONS_KILL_SUCCESS:
     case types.SESSIONS_KILL_ERROR:
