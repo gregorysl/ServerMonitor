@@ -137,22 +137,20 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
-        public object SetOracleInstanceReserved(int id, bool isReserved)
+        public Response SetOracleInstanceReserved(OracleInstanceReservationRequest request)
         {
+            var response = new Response();
             try
             {
-                SetReserved(new OracleInstanceReservationRequest
-                {
-                    Id = id,
-                    Reserve = isReserved
-                });
-
-                return new { Message = $"Succesfully {(!isReserved ? "" : "un")}reserved Oracle instance."};
+                SetReserved(request);
+                response.AddSuccessNotification($"Succesfully {(request.Reserve ? "" : "un")}reserved Oracle instance.");
+                return response;
 
             }
             catch (Exception ex)
             {
-                return new { ex.Message, Exception = ex.StackTrace };
+                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                return response;
             }
         }
 
