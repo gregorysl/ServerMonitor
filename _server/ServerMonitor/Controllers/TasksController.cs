@@ -12,7 +12,7 @@ namespace ServerMonitor.Controllers
     {
 
         [HttpGet]
-        public object Get()
+        public Response Get()
         {
             var response = new Response();
             try

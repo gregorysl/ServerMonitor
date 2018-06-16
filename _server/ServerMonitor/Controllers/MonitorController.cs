@@ -62,16 +62,16 @@ namespace ServerMonitor.Controllers
             ApiClient.Put(url, content);
         }
         
-        
+
         [HttpGet]
         [Route("Monitor/GetDiskUsage")]
-        public object GetDiskUsage()
+        public Response GetDiskUsage()
         {
+            var response = new Response();
             try
             {
                 var foldersString = ConfigurationManager.AppSettings["PathsToCheckSize"];
                 var data = foldersString.Split('|')
-                    .Where(string.IsNullOrEmpty)
                     .Where(x => Path.GetPathRoot(x) != null)
                     .Select(path =>
                         new FolderSize
@@ -80,11 +80,13 @@ namespace ServerMonitor.Controllers
                             Size = CalculateFolderSize(path),
                             TotalSize = new DriveInfo(Path.GetPathRoot(path)).TotalSize
                         }).ToList();
-                return data;
+                response.Data = data;
+                return response;
             }
             catch (Exception ex)
             {
-                return new {ex.Message, Exception = ex.StackTrace};
+                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                return response;
             }
         }
 
@@ -214,7 +216,7 @@ namespace ServerMonitor.Controllers
                         return response;
                     }
 
-                    //userSession.Logoff(true);
+                    userSession.Logoff(true);
                 }
 
                 var message = $"Successfully closed session for user {username}.";
