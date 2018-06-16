@@ -54,10 +54,10 @@ export function* setIisAppWhitelist(props) {
 
 export function* setOracle(props) {
   try {
-    const data1 = yield call(api.setOracle, props.data);
-    yield put({ type: types.TOGGLE_ORACLE_SUCCESS, message: data1.data.message });
-    const data = yield call(api.getOracleInstancies);
-    yield put({ type: types.ORACLE_SUCCESS, data });
+    const { data } = yield call(api.setOracle, props.data);
+    const type = data.status === 'Success' ? types.TOGGLE_ORACLE_SUCCESS : types.TOGGLE_ORACLE_ERROR;
+    yield put({ type, data });
+    yield put({ type: types.ORACLE_REQUEST });
   } catch (error) {
     yield put({ type: types.TOGGLE_ORACLE_ERROR, data: error.response.data });
   }
@@ -65,7 +65,7 @@ export function* setOracle(props) {
 
 export function* getDiskUsageData() {
   try {
-    const data = yield call(api.getDisk);
+    const { data } = yield call(api.getDisk);
     yield put({ type: types.DISK_USAGE_SUCCESS, data });
   } catch (error) {
     yield put({ type: types.DISK_USAGE_ERROR, data: error.response.data });
