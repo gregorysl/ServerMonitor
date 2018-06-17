@@ -8,12 +8,12 @@ const ServiceItem = props => (
     <List.Item>
       <a className="service-link" target="blank" href={props.url}>
         <Button
+          icon={props.working ? 'check' : 'close'}
+          size="large"
           type={!props.working ? 'danger' : null}
           className={props.working ? 'green' : 'red'}
         >
-          <h3>
-            {props.name}
-          </h3>
+          {props.name}
         </Button>
       </a>
     </List.Item>
