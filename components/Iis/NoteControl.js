@@ -53,9 +53,12 @@ class NoteControl extends Component {
           <Icon className="icon-hand" onClick={this.setEditMode} type="close" />
         </React.Fragment>
         :
-        <Tooltip onClick={this.setEditMode} title={this.props.note} >
-          <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
-        </Tooltip>
+        <React.Fragment>
+          <Tooltip onClick={this.setEditMode} title={this.props.note} >
+            <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
+          </Tooltip>
+          {this.props.note && (<h3>{this.props.note}</h3>)}
+        </React.Fragment>
     );
   }
 }
