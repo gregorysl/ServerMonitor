@@ -1,14 +1,16 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using ServerMonitor.Models;
 
 namespace ServerMonitor.Helpers
 {
     public static class LinksHelper
     {
-        public static LinkCollection GetLinks(string name)
+        public static IEnumerable<LinkItem> GetLinks(string name)
         {
             var config = ConfigurationManager.GetSection(name) as LinksConfigSection;
-            return config?.Instances;
+            return config?.Instances.Cast<LinkItem>();
         }
 
         public static Link FromConfig(this LinkItem link)
