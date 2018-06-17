@@ -6,7 +6,7 @@ import TooltipButon from './TooltipButon';
 
 const SessionsActionButtons = (props) => {
   const onClick = () => props.set(props.user);
-  return (<TooltipButon click={onClick} icon="usergroup-delete" title="Log off user" />);
+  return props.state !== 'Active' && (<TooltipButon click={onClick} icon="usergroup-delete" title="Log off user" />);
 };
 
 const mapDispatchToProps = dispatch => ({
