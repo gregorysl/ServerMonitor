@@ -118,38 +118,50 @@ function addAllNotifications(stateArray, notifications, message) {
 }
 
 function errorReducer(state = [], action) {
+  let title = '';
   switch (action.type) {
     case types.TASKS_ERROR:
     case types.TASKS_RUN_ERROR:
-      return addAllNotifications(state, action.data.notifications, tasksErrorText);
+      title = tasksErrorText;
+      break;
     case types.GET_HARDWARE_DATA_SUCCESS:
     case types.GET_HARDWARE_DATA_ERROR:
-      return addAllNotifications(state, action.data.notifications, hardwareErrorText);
+      title = hardwareErrorText;
+      break;
     case types.GET_SERVICES_DATA_SUCCESS:
     case types.GET_SERVICES_DATA_ERROR:
-      return addAllNotifications(state, action.data.notifications, linksErrorText);
+      title = linksErrorText;
+      break;
     case types.SET_NOTE_SUCCESS:
     case types.SET_NOTE_ERROR:
-      return addAllNotifications(state, action.data.notifications, noteErrorText);
+      title = noteErrorText;
+      break;
     case types.ORACLE_ERROR:
     case types.TOGGLE_ORACLE_ERROR:
     case types.TOGGLE_ORACLE_SUCCESS:
-      return addAllNotifications(state, action.data.notifications, oracleInstanciesErrorText);
+      title = oracleInstanciesErrorText;
+      break;
     case types.DISK_USAGE_ERROR:
-      return addAllNotifications(state, action.data.notifications, diskUsageErrorText);
+      title = diskUsageErrorText;
+      break;
     case types.SESSIONS_ERROR:
     case types.SESSIONS_KILL_SUCCESS:
     case types.SESSIONS_KILL_ERROR:
-      return addAllNotifications(state, action.data.notifications, userSessionsErrorText);
+      title = userSessionsErrorText;
+      break;
     case types.GET_IIS_APPS_ERROR:
     case types.GET_IIS_TOGGLE_SUCCESS:
     case types.GET_IIS_TOGGLE_ERROR:
     case types.GET_IIS_WHITELIST_ERROR:
     case types.GET_IIS_WHITELIST_SUCCESS:
-      return addAllNotifications(state, action.data.notifications, iisErrorText);
+      title = iisErrorText;
+      break;
     default:
-      return state;
+      title = '';
   }
+  if (title === '') return state;
+
+  return addAllNotifications(state, action.data.notifications, title);
 }
 
 const rootReducer = combineReducers({
