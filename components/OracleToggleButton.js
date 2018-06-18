@@ -12,7 +12,7 @@ const OracleToggleButton = (props) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  set: (id, isReserved) => dispatch(setOracle({ id, isReserved }))
+  set: (id, Reserve) => dispatch(setOracle({ id, Reserve }))
 });
 
 OracleToggleButton.propTypes = {
