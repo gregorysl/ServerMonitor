@@ -70,7 +70,14 @@ namespace ServerMonitor.Helpers
         [ConfigurationProperty("password", IsRequired = false)]
         public string Password
         {
-            get { return (string) base["password"]; }
+            get { return (string)base["password"]; }
+            set { base["password"] = value; }
+        }
+
+        [ConfigurationProperty("type", IsRequired = false)]
+        public string Type
+        {
+            get { return (string)base["type"]; }
             set { base["password"] = value; }
         }
     }
