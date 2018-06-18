@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
@@ -25,7 +24,7 @@ namespace ServerMonitor.Controllers
                 return response;
             }
 
-            var links = GetLinksStatus();//CacheManager.GetObjectFromCache("Links", _cacheLifecycle, GetLinksStatus);
+            var links = CacheManager.GetObjectFromCache("Links", _cacheLifecycle, GetLinksStatus);
 
             response.Data = links;
             return response;
@@ -50,17 +49,22 @@ namespace ServerMonitor.Controllers
             {
                 using (var handler = new HttpClientHandler {Credentials = credentials})
                 {
-                    using (var client = new HttpClient(handler))
+                    using (var client = new HttpClient(handler)
                     {
-                        ServicePointManager.ServerCertificateValidationCallback +=
-                            (sender, cert, chain, sslPolicyErrors) => true;
-                        client.BaseAddress = new Uri(item.Url, UriKind.Absolute);
-                        client.Timeout = TimeSpan.FromSeconds(30);
-                        client.DefaultRequestHeaders.Accept.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        var linkResponse = client.GetAsync(client.BaseAddress).Result;
-                        link.Message = linkResponse.StatusCode.ToString();
-                        link.Working = linkResponse.IsSuccessStatusCode;
+                        BaseAddress = new Uri(item.Url, UriKind.Absolute),
+                        Timeout = TimeSpan.FromSeconds(30)
+                    })
+                    {
+                        using (client)
+                        {
+                            ServicePointManager.ServerCertificateValidationCallback +=
+                                (sender, cert, chain, sslPolicyErrors) => true;
+                            client.DefaultRequestHeaders.Accept.Clear();
+                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            var linkResponse = client.GetAsync(client.BaseAddress).Result;
+                            link.Message = linkResponse.StatusCode.ToString();
+                            link.Working = linkResponse.IsSuccessStatusCode;
+                        }
                     }
                 }
             }
