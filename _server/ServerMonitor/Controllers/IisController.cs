@@ -19,15 +19,21 @@ namespace ServerMonitor.Controllers
         private static string DbPath => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
 
         [HttpGet]
-        public Response Get()
+        [Route("Iis")]
+        public Response Get([FromUri]bool force = false)
         {
+            var cacheKey = "GetFilteredApps";
             var response = new Response();
             try
             {
                 Log.Debug("GetFilteredApps called.");
-                var filteredApps = GetFilteredApps();
+                if (force)
+                {
+                    CacheManager.FlushCache(cacheKey);
+                    response.AddSuccessNotification("Flushed IIS cache successfully");
+                }
+                var filteredApps = CacheManager.GetObjectFromCache(cacheKey, _cacheLifecycle, GetFilteredApps);
                 Log.Debug("GetFilteredApps call success.");
-
                 response.Data = filteredApps;
                 return response;
             }
