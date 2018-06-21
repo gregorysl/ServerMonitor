@@ -150,6 +150,7 @@ function errorReducer(state = [], action) {
       title = userSessionsErrorText;
       break;
     case types.GET_IIS_APPS_ERROR:
+    case types.GET_IIS_APPS_SUCCESS:
     case types.GET_IIS_TOGGLE_SUCCESS:
     case types.GET_IIS_TOGGLE_ERROR:
     case types.GET_IIS_WHITELIST_ERROR:
