@@ -8,8 +8,9 @@ export const getHardwareAction = () => ({
   type: types.GET_HARDWARE_DATA_REQUEST
 });
 
-export const getIisAction = () => ({
-  type: types.GET_IIS_APPS_REQUEST
+export const getIisAction = data => ({
+  type: types.GET_IIS_APPS_REQUEST,
+  data
 });
 
 export const setIisAction = appList => ({

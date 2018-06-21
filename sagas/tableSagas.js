@@ -23,9 +23,9 @@ export function* getHardwareData() {
   }
 }
 
-export function* getIisData() {
+export function* getIisData(props) {
   try {
-    const { data } = yield call(api.getIisApps);
+    const { data } = yield call(api.getIisApps, props.data);
     yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
   } catch (error) {
     yield put({ type: types.GET_IIS_APPS_ERROR, data: error.response.data });
@@ -36,7 +36,7 @@ export function* setIisApp(props) {
   try {
     const { data } = yield call(api.setIisApp, props.appList);
     yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, data });
-    yield put({ type: types.GET_IIS_APPS_REQUEST });
+    yield put({ type: types.GET_IIS_APPS_REQUEST, data: true });
   } catch (error) {
     yield put({ type: types.GET_IIS_TOGGLE_ERROR, data: error.response.data });
   }

@@ -52,8 +52,9 @@ export function getHardware() {
 }
 
 
-export function getIisApps() {
-  return Axios.get(iisUri);
+export function getIisApps(props) {
+  const force = !props ? '' : '?force=true';
+  return Axios.get(iisUri + force);
 }
 
 export function getDisk() {
