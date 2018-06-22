@@ -89,6 +89,7 @@ class App extends Component {
             <ServicesList />
             <h1>IIS Applications</h1>
             <DataTable
+              loading={this.props.iis.loading}
               data={this.props.iis.data}
               columns={iisColumns}
               message="No IIS applications found."
@@ -158,7 +159,8 @@ App.propTypes = {
   })).isRequired,
   iis: PropTypes.objectOf(PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.object).isRequired,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired
+    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+    loading: PropTypes.bool.isRequired
   })).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired
 };

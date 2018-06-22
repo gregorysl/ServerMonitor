@@ -38,7 +38,8 @@ const initialState = {
 const tableInitialState = {
   columns: [],
   data: [],
-  errors: []
+  errors: [],
+  loading: true
 };
 const oracleInstanciesErrorText = 'Oracle Instancies';
 const userSessionsErrorText = 'User Sessions';
@@ -51,8 +52,10 @@ const noteErrorText = 'Build Notes';
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
+    case types.GET_IIS_TOGGLE_REQUEST:
+      return { ...state, loading: true };
     case types.GET_IIS_APPS_SUCCESS:
-      return { ...state, data: action.data.data };
+      return { ...state, data: action.data.data, loading: false };
     default:
       return state;
   }
