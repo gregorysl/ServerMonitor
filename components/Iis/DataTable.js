@@ -13,17 +13,15 @@ const DataTable = ({
   extraColumns = [],
   rowKey = 'key'
 }) => {
-  if (data.length === 0 && columns.length === 0) {
-    return (<h2>{message}</h2>);
-  }
   const finalColumns = [...columns, ...extraColumns];
   return (
     <Table
+      locale={{ emptyText: message }}
       rowKey={rowKey}
       columns={finalColumns}
       dataSource={data}
       loading={loading}
-      title={() => (<h1>{title}</h1>)}
+      title={() => (<h1 className="table-title">{title}</h1>)}
       pagination={false}
       expandedRowRender={expandedRowRender}
     />
