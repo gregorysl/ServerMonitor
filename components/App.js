@@ -87,8 +87,8 @@ class App extends Component {
             <Hardware />
             <h1>Component Status</h1>
             <ServicesList />
-            <h1>IIS Applications</h1>
             <DataTable
+              title="IIS Applications"
               loading={this.props.iis.loading}
               data={this.props.iis.data}
               columns={iisColumns}
@@ -96,31 +96,31 @@ class App extends Component {
               extraColumns={[action]}
               expandedRowRender={iisExpandedRowRenderer}
             />
-            <h1>Oracle Instances</h1>
             <DataTable
+              title="Oracle Instances"
               data={this.props.oracle.data}
               columns={this.props.oracle.columns}
               message="No instancies found."
               extraColumns={isDeployingColumn}
               rowKey="currentBuildName"
             />
-            <h1>Disk Status</h1>
             <DataTable
+              title="Disk Status"
               data={this.props.disk.data}
               columns={this.props.disk.columns}
               message="No directories found."
               rowKey="path"
             />
-            <h1>Scheduled Tasks</h1>
             <DataTable
+              title="Scheduled Tasks"
               data={this.props.tasks.data}
               columns={this.props.tasks.columns}
               message="No tasks found."
               extraColumns={[taskAction]}
               rowKey="name"
             />
-            <h1>User Sessions</h1>
             <DataTable
+              title="User Sessions"
               data={this.props.sessions.data}
               columns={this.props.sessions.columns}
               message="No sessions found."
