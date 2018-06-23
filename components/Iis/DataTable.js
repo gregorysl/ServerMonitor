@@ -1,5 +1,5 @@
 import React from 'react';
-import { Spin, Table } from 'antd';
+import { Table } from 'antd';
 import PropTypes from 'prop-types';
 
 
@@ -15,18 +15,16 @@ const DataTable = ({
   if (data.length === 0 && columns.length === 0) {
     return (<h2>{message}</h2>);
   }
-  console.log(loading);
   const finalColumns = [...columns, ...extraColumns];
   return (
-    <Spin spinning={loading}>
-      <Table
-        rowKey={rowKey}
-        columns={finalColumns}
-        dataSource={data}
-        pagination={false}
-        expandedRowRender={expandedRowRender}
-      />
-    </Spin>
+    <Table
+      rowKey={rowKey}
+      columns={finalColumns}
+      dataSource={data}
+      loading={loading}
+      pagination={false}
+      expandedRowRender={expandedRowRender}
+    />
   );
 };
 
