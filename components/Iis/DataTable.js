@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 const DataTable = ({
   data,
+  title,
   columns,
   message,
   loading,
@@ -22,6 +23,7 @@ const DataTable = ({
       columns={finalColumns}
       dataSource={data}
       loading={loading}
+      title={() => (<h1>{title}</h1>)}
       pagination={false}
       expandedRowRender={expandedRowRender}
     />
@@ -39,6 +41,7 @@ DataTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   message: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   loading: PropTypes.bool,
   rowKey: PropTypes.string,
   expandedRowRender: PropTypes.func,
