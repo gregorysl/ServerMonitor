@@ -13,8 +13,11 @@ class ServicesList extends Component {
   render() {
     return (
       <List
+        header={(<h1>Component Status</h1>)}
+        bordered
         grid={{ column: 6 }}
-        dataSource={this.props.serviceData}
+        loading={this.props.service.loading}
+        dataSource={this.props.service.data}
         renderItem={item => (<ServiceItem {...item} name={item.key} />)}
       />
     );
@@ -22,12 +25,15 @@ class ServicesList extends Component {
 }
 
 const mapStateToProps = state => ({
-  serviceData: state.service.data
+  service: state.service
 });
 
 ServicesList.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  serviceData: PropTypes.arrayOf(PropTypes.object).isRequired
+  service: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.array.isRequired
+  }).isRequired
 };
 
 export default connect(mapStateToProps)(ServicesList);
