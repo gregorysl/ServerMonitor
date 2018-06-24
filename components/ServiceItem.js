@@ -1,21 +1,18 @@
 import React from 'react';
-import { Button, Tooltip, List } from 'antd';
+import { Tooltip, List, Tag } from 'antd';
 import PropTypes from 'prop-types';
 
 
 const ServiceItem = props => (
   <Tooltip title={props.message}>
     <List.Item>
-      <a className="service-link" target="blank" href={props.url}>
-        <Button
-          icon={props.working ? 'check' : 'close'}
-          size="large"
-          type={!props.working ? 'danger' : null}
-          className={props.working ? 'green' : 'red'}
-        >
+      <Tag
+        color={props.working ? '#87d068' : '#f50'}
+      >
+        <a className="service-link" target="blank" href={props.url}>
           {props.name}
-        </Button>
-      </a>
+        </a>
+      </Tag>
     </List.Item>
   </Tooltip>
 );
