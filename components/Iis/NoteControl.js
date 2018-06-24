@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Tooltip, Input } from 'antd';
+import { Icon, Input, Tag } from 'antd';
 
 class NoteControl extends Component {
   constructor(props) {
@@ -48,16 +48,21 @@ class NoteControl extends Component {
     return (
       this.state.isEditMode ?
         <React.Fragment>
-          <Input placeholder="Note" type="text" value={this.state.value} onChange={evt => this.updateInputValue(evt)} onKeyDown={this.handleKeyPress} />
+          <Input
+            placeholder="Note"
+            type="text"
+            value={this.state.value}
+            onChange={evt => this.updateInputValue(evt)}
+            onKeyDown={this.handleKeyPress}
+            prefix={<Icon type="tag" />}
+          />
           <Icon className="icon-hand" onClick={this.confirmNote} type="check" />
           <Icon className="icon-hand" onClick={this.setEditMode} type="close" />
         </React.Fragment>
         :
         <React.Fragment>
-          <Tooltip onClick={this.setEditMode} title={this.props.note} >
-            <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
-          </Tooltip>
-          {this.props.note && (<h3>{this.props.note}</h3>)}
+          <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
+          {this.props.note && (<Tag>{this.props.note}</Tag>)}
         </React.Fragment>
     );
   }
