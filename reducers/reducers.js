@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
+import filesize from 'filesize';
 import * as types from '../constants/actionTypes';
-
-const filesize = require('filesize');
 
 const diskColumns = [
   { title: 'Path', dataIndex: 'path', key: 'path' },
@@ -32,7 +31,8 @@ const sessionsColumns = [
 const hardwareInitialState = [];
 const initialState = {
   data: [],
-  errors: []
+  errors: [],
+  loading: true
 };
 
 const tableInitialState = {
@@ -64,7 +64,9 @@ function tableReducer(state = tableInitialState, action) {
 function diskUsageReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.DISK_USAGE_SUCCESS:
-      return { ...state, ...action.data, columns: diskColumns };
+      return {
+        ...state, ...action.data, columns: diskColumns, loading: false
+      };
     default:
       return state;
   }
@@ -73,7 +75,13 @@ function diskUsageReducer(state = tableInitialState, action) {
 function tasksReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.TASKS_SUCCESS:
-      return { ...state, data: action.data.data, columns: tasksColumns };
+      return {
+        ...state, data: action.data.data, columns: tasksColumns, loading: false
+      };
+    case types.TASKS_RUN_REQUEST:
+      return {
+        ...state, loading: true
+      };
     default:
       return state;
   }
@@ -82,7 +90,13 @@ function tasksReducer(state = tableInitialState, action) {
 function sessionsReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.SESSIONS_SUCCESS:
-      return { ...state, data: action.data.data, columns: sessionsColumns };
+      return {
+        ...state, data: action.data.data, columns: sessionsColumns, loading: false
+      };
+    case types.SESSIONS_KILL_REQUEST:
+      return {
+        ...state, loading: true
+      };
     default:
       return state;
   }
@@ -91,7 +105,17 @@ function sessionsReducer(state = tableInitialState, action) {
 function oracleReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
-      return { ...state, data: action.data.data, columns: oracleColumns };
+      return {
+        ...state, data: action.data.data, columns: oracleColumns, loading: false
+      };
+    case types.ORACLE_ERROR:
+      return {
+        ...state, loading: false
+      };
+    case types.TOGGLE_ORACLE_REQUEST:
+      return {
+        ...state, loading: true
+      };
     default:
       return state;
   }
@@ -100,7 +124,7 @@ function oracleReducer(state = tableInitialState, action) {
 function servicesReducer(state = initialState, action) {
   switch (action.type) {
     case types.GET_SERVICES_DATA_SUCCESS:
-      return { ...state, data: action.data.data };
+      return { ...state, data: action.data.data, loading: false };
     default:
       return state;
   }
