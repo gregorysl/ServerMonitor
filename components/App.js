@@ -46,13 +46,6 @@ const sessionActions =
         render: x => (<SessionsActionButtons {...x} />)
       };
 
-const action =
-          {
-            title: 'Action',
-            key: 'x',
-            render: x => (<ActionsButtons {...x} name={x.key} />),
-            width: 300
-          };
 
 const iisColumns = [
   {
@@ -60,6 +53,9 @@ const iisColumns = [
   },
   {
     title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
+  },
+  {
+    title: 'Action', key: 'x', render: x => (<ActionsButtons {...x} name={x.key} />), width: 300
   }
 ];
 const iisExpandedRowRenderer = x => (<AppPoolList items={x.apps} />);
@@ -92,7 +88,6 @@ class App extends Component {
               title="IIS Applications"
               columns={iisColumns}
               message="No IIS applications found."
-              extraColumns={[action]}
               expandedRowRender={iisExpandedRowRenderer}
             />
             <DataTable
