@@ -124,35 +124,34 @@ class App extends Component {
   }
 }
 
-
 App.propTypes = {
   getSessions: PropTypes.func.isRequired,
   getTasks: PropTypes.func.isRequired,
   getHardwareUsage: PropTypes.func.isRequired,
   getOracle: PropTypes.func.isRequired,
   getIis: PropTypes.func.isRequired,
-  sessions: PropTypes.objectOf(PropTypes.shape({
+  sessions: PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  })).isRequired,
-  tasks: PropTypes.objectOf(PropTypes.shape({
+  }).isRequired,
+  tasks: PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  })).isRequired,
-  disk: PropTypes.objectOf(PropTypes.shape({
+  }).isRequired,
+  disk: PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  })).isRequired,
-  oracle: PropTypes.objectOf(PropTypes.shape({
+  }).isRequired,
+  oracle: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.object).isRequired,
     errors: PropTypes.arrayOf(PropTypes.string),
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  })).isRequired,
-  iis: PropTypes.objectOf(PropTypes.shape({
+  }).isRequired,
+  iis: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.object).isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     loading: PropTypes.bool.isRequired
-  })).isRequired,
+  }).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
