@@ -4,6 +4,7 @@ import { Checkbox, notification, Layout } from 'antd';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import ServicesList from './servicesList';
+import OracleError from './OracleError';
 import Hardware from './Hardware';
 import DataTable from './Iis/DataTable';
 import AppPoolList from './Iis/AppPoolList';
@@ -46,12 +47,12 @@ const sessionActions =
       };
 
 const action =
-    {
-      title: 'Action',
-      key: 'x',
-      render: x => (<ActionsButtons {...x} name={x.key} />),
-      width: 300
-    };
+          {
+            title: 'Action',
+            key: 'x',
+            render: x => (<ActionsButtons {...x} name={x.key} />),
+            width: 300
+          };
 
 const iisColumns = [
   {
@@ -85,44 +86,38 @@ class App extends Component {
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }} >
             <h1>Hardware Monitor</h1>
             <Hardware />
-            <h1>Component Status</h1>
             <ServicesList />
             <DataTable
+              {...this.props.iis}
               title="IIS Applications"
-              loading={this.props.iis.loading}
-              data={this.props.iis.data}
               columns={iisColumns}
               message="No IIS applications found."
               extraColumns={[action]}
               expandedRowRender={iisExpandedRowRenderer}
             />
             <DataTable
+              {...this.props.oracle}
               title="Oracle Instances"
-              data={this.props.oracle.data}
-              columns={this.props.oracle.columns}
-              message="No instancies found."
+              message={(<OracleError />)}
               extraColumns={isDeployingColumn}
               rowKey="currentBuildName"
             />
             <DataTable
+              {...this.props.disk}
               title="Disk Status"
-              data={this.props.disk.data}
-              columns={this.props.disk.columns}
               message="No directories found."
               rowKey="path"
             />
             <DataTable
+              {...this.props.tasks}
               title="Scheduled Tasks"
-              data={this.props.tasks.data}
-              columns={this.props.tasks.columns}
               message="No tasks found."
               extraColumns={[taskAction]}
               rowKey="name"
             />
             <DataTable
+              {...this.props.sessions}
               title="User Sessions"
-              data={this.props.sessions.data}
-              columns={this.props.sessions.columns}
               message="No sessions found."
               rowKey="user"
               extraColumns={[sessionActions]}
@@ -133,6 +128,7 @@ class App extends Component {
     );
   }
 }
+
 
 App.propTypes = {
   getSessions: PropTypes.func.isRequired,
