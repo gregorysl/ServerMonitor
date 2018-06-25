@@ -105,6 +105,7 @@ export function* runTask(props) {
   try {
     const data = yield call(api.runTask, props.name);
     yield put({ type: types.TASKS_RUN_SUCCESS, message: data.data.Message });
+    yield put({ type: types.TASKS_REQUEST });
   } catch (error) {
     yield put({ type: types.TASKS_RUN_ERROR, data: error.response.data });
   }

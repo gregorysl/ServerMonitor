@@ -75,12 +75,19 @@ function diskUsageReducer(state = tableInitialState, action) {
 function tasksReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.TASKS_SUCCESS:
+      console.table(action);
       return {
         ...state, data: action.data.data, columns: tasksColumns, loading: false
       };
     case types.TASKS_RUN_REQUEST:
+      console.table(action);
       return {
         ...state, loading: true
+      };
+    case types.TASKS_ERROR:
+      console.table(action);
+      return {
+        ...state, loading: false
       };
     default:
       return state;
@@ -148,7 +155,9 @@ function errorReducer(state = [], action) {
   let title = '';
   switch (action.type) {
     case types.TASKS_ERROR:
+    case types.TASKS_SUCCESS:
     case types.TASKS_RUN_ERROR:
+    case types.TASKS_RUN_SUCCESS:
       title = tasksErrorText;
       break;
     case types.GET_HARDWARE_DATA_SUCCESS:
