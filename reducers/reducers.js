@@ -75,17 +75,14 @@ function diskUsageReducer(state = tableInitialState, action) {
 function tasksReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.TASKS_SUCCESS:
-      console.table(action);
       return {
         ...state, data: action.data.data, columns: tasksColumns, loading: false
       };
     case types.TASKS_RUN_REQUEST:
-      console.table(action);
       return {
         ...state, loading: true
       };
     case types.TASKS_ERROR:
-      console.table(action);
       return {
         ...state, loading: false
       };
