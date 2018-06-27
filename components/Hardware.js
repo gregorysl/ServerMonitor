@@ -40,7 +40,7 @@ class Hardware extends Component {
     ));
     return (
       <PageVisibility onChange={this.handleVisibilityChange}>
-        <Tabs tabPosition="left" >
+        <Tabs tabPosition="left" style={{ padding: 5 }} >
           {components}
         </Tabs>
       </PageVisibility>

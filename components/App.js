@@ -79,7 +79,7 @@ class App extends Component {
           <div className="logo" />
         </Header>
         <Content style={{ padding: '0 50px' }} >
-          <div style={{ background: '#fff', padding: 24, minHeight: 280 }} >
+          <div style={{ background: '#fff', padding: 5, minHeight: 280 }} >
             <h1>Hardware Monitor</h1>
             <Hardware />
             <ServicesList />
