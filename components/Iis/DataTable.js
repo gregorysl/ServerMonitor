@@ -39,7 +39,7 @@ DataTable.defaultProps = {
 DataTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  message: PropTypes.string.isRequired,
+  message: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   loading: PropTypes.bool,
   rowKey: PropTypes.string,
