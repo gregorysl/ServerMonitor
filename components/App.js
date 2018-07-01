@@ -4,7 +4,6 @@ import { Checkbox, notification, Layout } from 'antd';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import ServicesList from './servicesList';
-import OracleError from './OracleError';
 import Hardware from './Hardware';
 import DataTable from './Iis/DataTable';
 import AppPoolList from './Iis/AppPoolList';
@@ -12,6 +11,7 @@ import ActionsButtons from './Iis/ActionsButtons';
 import TaskActionButtons from './TaskActionButtons';
 import OracleToggleButton from './OracleToggleButton';
 import SessionsActionButtons from './SessionsActionButtons';
+import DataTableErrorMessage from './DataTableErrorMessage';
 
 const { Header, Content } = Layout;
 
@@ -87,33 +87,33 @@ class App extends Component {
               {...this.props.iis}
               title="IIS Applications"
               columns={iisColumns}
-              message="No IIS applications found."
+              message={(<DataTableErrorMessage title="No directories found." />)}
               expandedRowRender={iisExpandedRowRenderer}
             />
             <DataTable
               {...this.props.oracle}
               title="Oracle Instances"
-              message={(<OracleError />)}
+              message={(<DataTableErrorMessage title="No Oracle Instances found" />)}
               extraColumns={isDeployingColumn}
               rowKey="currentBuildName"
             />
             <DataTable
               {...this.props.disk}
               title="Disk Status"
-              message="No directories found."
+              message={(<DataTableErrorMessage title="No directories found." />)}
               rowKey="path"
             />
             <DataTable
               {...this.props.tasks}
               title="Scheduled Tasks"
-              message="No tasks found."
+              message={(<DataTableErrorMessage title="No tasks found." />)}
               extraColumns={[taskAction]}
               rowKey="name"
             />
             <DataTable
               {...this.props.sessions}
               title="User Sessions"
-              message="No sessions found."
+              message={(<DataTableErrorMessage title="No sessions found." />)}
               rowKey="user"
               extraColumns={[sessionActions]}
             />
