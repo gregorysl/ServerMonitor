@@ -17,8 +17,12 @@ const { Header, Content } = Layout;
 
 const checkErrors = (props, nextProps) => {
   if (props.length < nextProps.length) {
-    const error = nextProps[nextProps.length - 1];
-    notification.error(error);
+    const item = nextProps[nextProps.length - 1];
+    if (item.type === 'Success') {
+      notification.success(item);
+    } else {
+      notification.error(item);
+    }
   }
 };
 const isDeployingColumn =

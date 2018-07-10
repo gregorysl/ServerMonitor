@@ -144,7 +144,7 @@ function hardwareReducer(state = hardwareInitialState, action) {
 }
 
 function addAllNotifications(stateArray, notifications, message) {
-  const toAdd = notifications.map(x => ({ message, description: x.message, type: x.type }));
+  const toAdd = notifications.map(x => ({ message, description: x.message, type: x.status }));
   return [...stateArray, ...toAdd];
 }
 
