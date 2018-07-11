@@ -20,7 +20,7 @@ const DataTable = ({
       rowKey={rowKey}
       columns={finalColumns}
       dataSource={data}
-      size="small"
+      size="middle"
       loading={loading}
       title={() => (<h1 className="table-title">{title}</h1>)}
       pagination={false}
