@@ -5,11 +5,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Cassia;
-using log4net;
 using Microsoft.Web.Administration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
@@ -73,19 +70,21 @@ namespace ServerMonitor.Controllers
                 var foldersString = ConfigurationManager.AppSettings["PathsToCheckSize"];
                 var data = foldersString.Split('|')
                     .Where(x => Path.GetPathRoot(x) != null)
-                    .Select(path =>
-                        new FolderSize
+                    .Select(x => new DirectoryInfo(x))
+                    .Select(x => new FolderSize
                         {
-                            Path = path,
-                            Size = CalculateFolderSize(path),
-                            TotalSize = new DriveInfo(Path.GetPathRoot(path)).TotalSize
-                        }).ToList();
+                            Path = x.FullName,
+                            Size = x.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length),
+                            TotalSize = new DriveInfo(Path.GetPathRoot(x.FullName)).TotalSize
+                        }
+                    ).ToList();
+
                 response.Data = data;
                 return response;
             }
             catch (Exception ex)
             {
-                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
         }
