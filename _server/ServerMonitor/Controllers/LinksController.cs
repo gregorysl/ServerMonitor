@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
@@ -32,13 +34,18 @@ namespace ServerMonitor.Controllers
 
         private  List<Link> GetLinksStatus()
         {
-            var links = _linkCollection.AsParallel().Select(GetLinkStatus).ToList();
+            var links = new List<Link>();
+            var tasksToWait = _linkCollection.Select(link => Task.Run(() => { links.Add(GetLinkStatus(link)); })).ToList();
 
+            while (tasksToWait.Any(t => t.Status == TaskStatus.Running))
+            {
+                Thread.Sleep(1000);
+            }
 
-            return links;
+            return links.OrderBy(x=>x.Name).ToList();
         }
 
-        private static Link GetLinkStatus(LinkItem item)
+        private  Link GetLinkStatus(LinkItem item)
         {
             var credentials = !string.IsNullOrWhiteSpace(item.Username) && !string.IsNullOrWhiteSpace(item.Password)
                 ? new NetworkCredential(item.Username, item.Password)
