@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { List } from 'antd';
+import { Card, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import ServiceItem from './ServiceItem';
 import { getServicesAction } from '../actions/actions';
 
 
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
 class ServicesList extends Component {
   componentDidMount() {
     this.props.dispatch(getServicesAction());
   }
+
   render() {
+    const cards = [];
+    const types = this.props.service.data.map(x => x.type).filter(onlyUnique);
+    const columns = Math.floor(24 / types.length);
+    types.forEach((element) => {
+      const items = this.props.service.data.filter(x => x.type === element);
+      const inner = items.map(x => (<ServiceItem {...x} name={x.key} />));
+      const car = (
+        <Col span={columns} key={element}>
+          <Card title={element}>
+            {inner}
+          </Card>
+        </Col>);
+      cards.push(car);
+    });
     return (
-      <List
-        header={(<h1>Component Status</h1>)}
-        bordered
-        grid={{ column: 6 }}
-        loading={this.props.service.loading}
-        dataSource={this.props.service.data}
-        renderItem={item => (<ServiceItem {...item} name={item.key} />)}
-      />
+      <React.Fragment>
+        <h1>Component Status</h1>
+        <Row>
+          {cards}
+        </Row>
+      </React.Fragment>
     );
   }
 }
