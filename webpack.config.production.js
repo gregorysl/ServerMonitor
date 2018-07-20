@@ -2,9 +2,10 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const config = {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   entry: [
     './index.js',
@@ -14,7 +15,8 @@ const config = {
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, '_server\\ServerMonitor'),
-    publicPath: ''
+    publicPath: '',
+    jsonpFunction: 'webpackJsonp'
   },
 
   context: resolve(__dirname, '.'),
@@ -33,10 +35,32 @@ const config = {
       debug: false
     }),
     new webpack.optimize.UglifyJsPlugin({
-      beautify: false
+      compress: {
+        warnings: false,
+        screw_ie8: true,
+        conditionals: true,
+        unused: true,
+        comparisons: true,
+        sequences: true,
+        dead_code: true,
+        evaluate: true,
+        if_return: true,
+        join_vars: true
+      },
+      output: {
+        comments: false
+      }
     }),
-    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
-    new ExtractTextPlugin({ filename: 'styles.css', disable: false, allChunks: true })
+    new webpack.HashedModuleIdsPlugin(),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+    new ExtractTextPlugin({ filename: 'styles.css', disable: false, allChunks: true }),
+    new CompressionPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      threshold: 10240,
+      minRatio: 0.8
+    })
   ],
 
   module: {
