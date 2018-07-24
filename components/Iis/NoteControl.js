@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Icon, Input, Tag } from 'antd';
+import { Icon, Input } from 'antd';
+import { setNote } from '../../actions/actions';
 
 class NoteControl extends Component {
   constructor(props) {
@@ -40,7 +42,7 @@ class NoteControl extends Component {
       key: this.props.name,
       value: this.state.value
     };
-    this.props.click(data);
+    this.props.saveNote(data);
   }
 
   render() {
@@ -49,9 +51,11 @@ class NoteControl extends Component {
       this.state.isEditMode ?
         <React.Fragment>
           <Input
+            className="tag-input"
             placeholder="Note"
             type="text"
             value={this.state.value}
+            onPressEnter={this.confirmNote}
             onChange={evt => this.updateInputValue(evt)}
             onKeyDown={this.handleKeyPress}
             prefix={<Icon type="tag" />}
@@ -62,17 +66,23 @@ class NoteControl extends Component {
         :
         <React.Fragment>
           <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
-          {this.props.note && (<Tag>{this.props.note}</Tag>)}
+          {this.props.note && (<p>{this.props.note}</p>)}
         </React.Fragment>
     );
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  saveNote: (data) => {
+    dispatch(setNote(data));
+  }
+});
+
 NoteControl.propTypes = {
   note: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  click: PropTypes.func.isRequired
+  saveNote: PropTypes.func.isRequired
 };
 
-export default NoteControl;
+export default connect(null, mapDispatchToProps)(NoteControl);
 
