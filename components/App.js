@@ -7,8 +7,10 @@ import ServicesList from './servicesList';
 import Hardware from './Hardware';
 import DataTable from './Iis/DataTable';
 import AppPoolList from './Iis/AppPoolList';
+import NoteControl from './Iis/NoteControl';
 import ActionsButtons from './Iis/ActionsButtons';
 import TaskActionButtons from './TaskActionButtons';
+import WhitelistButton from './Iis/WhitelistButton';
 import OracleToggleButton from './OracleToggleButton';
 import SessionsActionButtons from './SessionsActionButtons';
 import DataTableErrorMessage from './DataTableErrorMessage';
@@ -57,6 +59,12 @@ const iisColumns = [
   },
   {
     title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
+  },
+  {
+    title: 'Note', dataIndex: 'note', key: 'note', render: (a, x) => (<NoteControl {...x} name={x.key} />)
+  },
+  {
+    title: 'IsReserved', key: 'x', render: x => (<WhitelistButton {...x} name={x.key} />)
   },
   {
     title: 'Action', key: 'x', render: x => (<ActionsButtons {...x} name={x.key} />), width: 300
