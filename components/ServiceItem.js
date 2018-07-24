@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip, List, Tag } from 'antd';
+import { Tooltip, Tag } from 'antd';
 import PropTypes from 'prop-types';
 
 
