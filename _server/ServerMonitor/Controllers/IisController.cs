@@ -117,7 +117,7 @@ namespace ServerMonitor.Controllers
         private static XElement GetWhitelistItems()
         {
             var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
-            if (!System.IO.File.Exists(whitelistFile)) return null;
+            if (!File.Exists(whitelistFile)) return null;
             var whitelist = XDocument.Load(whitelistFile);
 
             var buildsNode = whitelist.Descendants("builds").First();
@@ -126,8 +126,9 @@ namespace ServerMonitor.Controllers
 
         private bool IsWhiteListed(IList<IISAppPool> applicationPools, XElement buildsNode)
         {
-            return applicationPools.All(appPool => buildsNode.Descendants("build")
-                .Any(n => n.Descendants("app").Any(a => a.Attribute("value")?.Value == appPool.Name)));
+            var builds = buildsNode.Descendants("app").Select(x => x.Attribute("value")?.Value);
+            var apps = applicationPools.Select(x => x.Name).ToList();
+            return builds.Intersect(apps).Count() == apps.Count;
         }
 
         [HttpPost]
@@ -170,30 +171,23 @@ namespace ServerMonitor.Controllers
 
                 if (!issToggleConfig.Condition)
                 {
-                    var build = new XElement("build");
-
                     foreach (var appPool in issToggleConfig.AppPools)
                     {
                         var poolElement = new XElement("app");
                         poolElement.SetAttributeValue("value", appPool);
-                        build.Add(poolElement);
+                        buildsNode.Add(poolElement);
                     }
-
-                    buildsNode.Add(build);
                 }
                 else
                 {
-                    foreach (var appPool in issToggleConfig.AppPools)
+                    var builds = buildsNode.Descendants("app")
+                        .Where(x => issToggleConfig.AppPools.Contains(x.Attribute("value")?.Value)).ToList();
+                    foreach (var build in builds)
                     {
-                        var builds = buildsNode.Descendants("build").Where(n => n.Descendants("app").Any(a => a.Attribute("value")?.Value == appPool)).ToList();
-                        foreach (var build in builds)
-                        {
-                            build.Descendants("app").Where(a => a.Attribute("value")?.Value == appPool).Remove();
-                            if (!build.HasElements) build.Remove();
-                        }
+                        build.Remove();
                     }
                 }
-
+                
                 using (var file = new StreamWriter(whitelistFile))
                 {
                     whitelist.Save(file);
