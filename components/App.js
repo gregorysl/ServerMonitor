@@ -6,11 +6,8 @@ import * as actions from '../actions/actions';
 import ServicesList from './servicesList';
 import Hardware from './Hardware';
 import DataTable from './Iis/DataTable';
-import AppPoolList from './Iis/AppPoolList';
-import NoteControl from './Iis/NoteControl';
-import ActionsButtons from './Iis/ActionsButtons';
+import IisSection from './Iis/IisSection';
 import TaskActionButtons from './TaskActionButtons';
-import WhitelistButton from './Iis/WhitelistButton';
 import OracleToggleButton from './OracleToggleButton';
 import SessionsActionButtons from './SessionsActionButtons';
 import DataTableErrorMessage from './DataTableErrorMessage';
@@ -52,33 +49,12 @@ const sessionActions =
         render: x => (<SessionsActionButtons {...x} />)
       };
 
-
-const iisColumns = [
-  {
-    title: 'Application', dataIndex: 'key', key: 'key', render: (key, item) => (<a targer="_blank" href={item.url}>{item.key}</a>)
-  },
-  {
-    title: 'State', dataIndex: 'running', key: 'running', render: running => (running ? 'Started' : 'Stopped')
-  },
-  {
-    title: 'Note', dataIndex: 'note', key: 'note', render: (a, x) => (<NoteControl {...x} name={x.key} />)
-  },
-  {
-    title: 'IsReserved', key: 'x', render: x => (<WhitelistButton {...x} name={x.key} />)
-  },
-  {
-    title: 'Action', key: 'x', render: x => (<ActionsButtons {...x} name={x.key} />), width: 300
-  }
-];
-const iisExpandedRowRenderer = x => (<AppPoolList items={x.apps} />);
-
 class App extends Component {
   componentDidMount() {
     this.props.getTasks();
     this.props.getSessions();
     this.props.getHardwareUsage();
     this.props.getOracle();
-    this.props.getIis();
   }
   componentWillReceiveProps(nextProps) {
     checkErrors(this.props.errors, nextProps.errors);
@@ -95,13 +71,7 @@ class App extends Component {
             <h1>Hardware Monitor</h1>
             <Hardware />
             <ServicesList />
-            <DataTable
-              {...this.props.iis}
-              title="IIS Applications"
-              columns={iisColumns}
-              message={(<DataTableErrorMessage title="No directories found." />)}
-              expandedRowRender={iisExpandedRowRenderer}
-            />
+            <IisSection />
             <DataTable
               {...this.props.oracle}
               title="Oracle Instances"
@@ -141,7 +111,6 @@ App.propTypes = {
   getTasks: PropTypes.func.isRequired,
   getHardwareUsage: PropTypes.func.isRequired,
   getOracle: PropTypes.func.isRequired,
-  getIis: PropTypes.func.isRequired,
   sessions: PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -159,11 +128,6 @@ App.propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
   }).isRequired,
-  iis: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-    loading: PropTypes.bool.isRequired
-  }).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
@@ -172,7 +136,6 @@ const mapStateToProps = state => ({
   sessions: state.sessions,
   disk: state.disk,
   oracle: state.oracle,
-  iis: state.table,
   errors: state.errors
 });
 
@@ -180,8 +143,7 @@ const mapDispatchToProps = dispatch => ({
   getTasks: () => dispatch(actions.getTasksAction()),
   getSessions: () => dispatch(actions.getSessionsAction()),
   getHardwareUsage: () => dispatch(actions.getDiskUsageAction()),
-  getOracle: () => dispatch(actions.getOracleAction()),
-  getIis: () => dispatch(actions.getIisAction())
+  getOracle: () => dispatch(actions.getOracleAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
