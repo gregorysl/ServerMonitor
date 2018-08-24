@@ -34,6 +34,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 return new { ex.Message, Exception = ex.StackTrace };
             }
 
@@ -84,6 +85,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
@@ -106,12 +108,12 @@ namespace ServerMonitor.Controllers
                 }
                 catch (NotSupportedException e)
                 {
-
+                    Log.Error(e.Message);
                 }
             }
             catch (UnauthorizedAccessException e)
             {
-
+                Log.Error(e.Message);
             }
 
             return folderSize;
@@ -130,6 +132,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.AddErrorNotification(ex.Message,ex.StackTrace);
                 return response;
             }
@@ -148,6 +151,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.AddErrorNotification(ex.Message,ex.StackTrace);
                 return response;
             }
@@ -178,6 +182,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.Status = Status.Error;
                 response.Notifications.Add(new Notification
                 {
@@ -224,7 +229,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Error(ex.Message);
                 response.Status = Status.Error;
                 response.AddErrorNotification(ex.Message,ex.StackTrace);
                 return response;
