@@ -77,6 +77,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 link.Working = false;
                 link.Message = GatherExceptions(ex);
             }
