@@ -259,12 +259,12 @@ namespace ServerMonitor.Controllers
 
         [HttpPost]
         [Route("Iis/SaveBuildNote")]
-        public Response SaveBuildNote([FromBody]Data<string> data)
+        public Response SaveBuildNote([FromBody]KeyValueData<string> data)
         {
             var response = new Response();
             try
             {
-                SetBuildNote(data.Name, data.Value);
+                SetBuildNote(data.Key, data.Value);
                 response.AddSuccessNotification("Application note saved succesfully.");
                 return response;
             }
