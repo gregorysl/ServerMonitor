@@ -28,7 +28,7 @@ namespace ServerMonitor.Controllers
             return response;
         }
 
-        private List<Link> GetLinksStatus()
+        private IList<Link> GetLinksStatus()
         {
             var links = new List<Link>();
             var tasksToWait = _linkCollection.Select(link => Task.Run(() => { links.Add(LinksHelper.GetLinkStatus(link)); })).ToArray();
