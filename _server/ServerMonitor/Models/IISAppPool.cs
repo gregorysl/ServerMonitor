@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace ServerMonitor.Models
@@ -11,6 +10,6 @@ namespace ServerMonitor.Models
         [JsonProperty("running")]
         public bool Running { get; set; }
         [JsonProperty("children")]
-        public IList<string> Apps { get; set; }
+        public IEnumerable<string> Apps { get; set; }
     }
 }

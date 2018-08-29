@@ -45,18 +45,18 @@ namespace ServerMonitor.Controllers
             }
         }
 
-        private List<IISApplication> GetFilteredApps()
+        private IList<IISApplication> GetFilteredApps()
         {
             var mgr = new ServerManager();
             var iis = mgr.Sites[0].Applications;
+
             var appPools = mgr.ApplicationPools.Select(x => new IISAppPool
             {
                 Name = x.Name,
                 Running = x.State == ObjectState.Started,
                 Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
                     .Select(s => s.Path.Replace("/", string.Empty)).ToList()
-            }).ToList();
-
+            }).Where(x => x.Apps.Any());
 
             var applications = GroupAppPools(appPools);
 
@@ -74,7 +74,7 @@ namespace ServerMonitor.Controllers
             return filteredApps;
         }
 
-        private static List<IISApplication> GroupAppPools(List<IISAppPool> appPools)
+        private static IList<IISApplication> GroupAppPools(IEnumerable<IISAppPool> appPools)
         {
             var applications = new List<IISApplication>();
             var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
@@ -262,12 +262,12 @@ namespace ServerMonitor.Controllers
 
         [HttpPost]
         [Route("Iis/SaveBuildNote")]
-        public Response SaveBuildNote([FromBody]Data<string> data)
+        public Response SaveBuildNote([FromBody]KeyValueData<string> data)
         {
             var response = new Response();
             try
             {
-                SetBuildNote(data.Name, data.Value);
+                SetBuildNote(data.Key, data.Value);
                 response.AddSuccessNotification("Application note saved succesfully.");
                 return response;
             }

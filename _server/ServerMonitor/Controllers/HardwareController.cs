@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.Management;
 using System.Web.Http;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
-using ComputerInfo = Microsoft.VisualBasic.Devices.ComputerInfo;
+using static ServerMonitor.Helpers.HardwareManager;
 
 namespace ServerMonitor.Controllers
 {
     public class HardwareController : BaseApi
     {
-        protected static PerformanceCounter CpuCounter { get; set; }
-
-        private readonly ComputerInfo _computerInfo = new ComputerInfo();
-
         [HttpGet]
         public Response Get()
         {
@@ -37,21 +29,6 @@ namespace ServerMonitor.Controllers
             }
         }
 
-        private Hardware GetHardware()
-        {
-            var hardware = new Hardware
-            {
-                Name = ComputerName(),
-                Data = new List<Data<double>>
-                {
-                    new Data<double> {Name = "CPU", Value = CpuUsage()},
-                    new Data<double> {Name = "RAM", Value = MemoryUsage()},
-                    new Data<double> {Name = "HDD", Value = DiskUsage()}
-                }
-            };
-            return hardware;
-        }
-
         [HttpGet]
         [Route("Hardware/GetAll")]
         public Response GetAll()
@@ -67,6 +44,7 @@ namespace ServerMonitor.Controllers
                 response.AddErrorNotification("Configuration of hardwareList missing");
                 return response;
             }
+
             foreach (LinkItem link in config)
             {
                 var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";
@@ -87,59 +65,6 @@ namespace ServerMonitor.Controllers
             response.Data = harwareList;
             return response;
         }
-
-        private static double CpuUsage()
-        {
-            if (CpuCounter == null)
-            {
-                CpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            }
-            return Math.Round(CpuCounter.NextValue());
-        }
-
-        private double MemoryUsage()
-        {
-            var availableMemory = _computerInfo.AvailablePhysicalMemory;
-            var allMemory = _computerInfo.TotalPhysicalMemory;
-            var usedMemory = allMemory - availableMemory;
-            var usage = usedMemory * 100 / allMemory;
-
-            return Math.Round((double)usage);
-        }
-
-        private double DiskUsage()
-        {
-            var p = new PerformanceCounter("LogicalDisk", "% Free Space", "C:");
-            return Math.Round(p.NextValue());
-        }
-
-        private string ComputerName()
-        {
-            ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
-            ManagementObjectCollection moc = mc.GetInstances();
-            foreach (var item in moc)
-            {
-                return ((ManagementObject)item).Properties["DNSHostName"].Value.ToString();
-            }
-
-            return "";
-        }
-    }
-    [JsonObject(MemberSerialization.OptIn)]
-    public class Hardware
-    {
-        [JsonProperty("key")]
-        public string Name { get; set; }
-        [JsonProperty("data")]
-        public List<Data<double>> Data { get; set; }
-    }
-    [JsonObject(MemberSerialization.OptIn)]
-    public class Data<T>
-    {
-        [JsonProperty("key")]
-        public string Name { get; set; }
-        [JsonProperty("value")]
-        public T Value { get; set; }
     }
 
 }

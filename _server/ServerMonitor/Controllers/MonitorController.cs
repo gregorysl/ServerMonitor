@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -16,12 +14,12 @@ namespace ServerMonitor.Controllers
     public class MonitorController : BaseApi
     {
         [HttpGet]
-        public object Recycle(string Name)
+        public object Recycle(string name)
         {
             try
             {
                 var mgr = new ServerManager();
-                var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == Name);
+                var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
 
                 if (pool == null)
                 {
@@ -209,7 +207,7 @@ namespace ServerMonitor.Controllers
                 {
                     server.Open();
                     var userSession = server.GetSessions()
-                        .FirstOrDefault(s => String.Equals($@"{s.DomainName}\{s.UserName}", username, StringComparison.InvariantCultureIgnoreCase));
+                        .FirstOrDefault(s => string.Equals($@"{s.DomainName}\{s.UserName}", username, StringComparison.InvariantCultureIgnoreCase));
 
                     if (userSession == null)
                     {
