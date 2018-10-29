@@ -25,7 +25,7 @@ class IisSection extends Component {
         dataIndex: 'key',
         key: 'key',
         render: (key, item) => (
-          <a targer="_blank" href={item.url}>
+          <a target="_blank" href={item.url}>
             {item.key}
           </a>
         )
