@@ -4,11 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
-using ComputerInfo = Microsoft.VisualBasic.Devices.ComputerInfo;
+using static ServerMonitor.Helpers.HardwareManager;
 
 namespace ServerMonitor.Controllers
 {
@@ -31,6 +30,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.Status = Status.Error;
                 response.AddErrorNotification(ex.Message,ex.StackTrace);
                 return response;
@@ -67,6 +67,7 @@ namespace ServerMonitor.Controllers
                 response.AddErrorNotification("Configuration of hardwareList missing");
                 return response;
             }
+
             foreach (LinkItem link in config)
             {
                 var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";

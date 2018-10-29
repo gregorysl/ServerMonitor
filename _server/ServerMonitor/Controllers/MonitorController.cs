@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -16,12 +14,12 @@ namespace ServerMonitor.Controllers
     public class MonitorController : BaseApi
     {
         [HttpGet]
-        public object Recycle(string Name)
+        public object Recycle(string name)
         {
             try
             {
                 var mgr = new ServerManager();
-                var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == Name);
+                var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
 
                 if (pool == null)
                 {
@@ -34,6 +32,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 return new { ex.Message, Exception = ex.StackTrace };
             }
 
@@ -84,6 +83,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
@@ -106,12 +106,12 @@ namespace ServerMonitor.Controllers
                 }
                 catch (NotSupportedException e)
                 {
-
+                    Log.Error(e.Message);
                 }
             }
             catch (UnauthorizedAccessException e)
             {
-
+                Log.Error(e.Message);
             }
 
             return folderSize;
@@ -130,6 +130,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.AddErrorNotification(ex.Message,ex.StackTrace);
                 return response;
             }
@@ -148,6 +149,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.AddErrorNotification(ex.Message,ex.StackTrace);
                 return response;
             }
@@ -178,6 +180,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.Status = Status.Error;
                 response.Notifications.Add(new Notification
                 {
@@ -204,7 +207,7 @@ namespace ServerMonitor.Controllers
                 {
                     server.Open();
                     var userSession = server.GetSessions()
-                        .FirstOrDefault(s => String.Equals($@"{s.DomainName}\{s.UserName}", username, StringComparison.InvariantCultureIgnoreCase));
+                        .FirstOrDefault(s => string.Equals($@"{s.DomainName}\{s.UserName}", username, StringComparison.InvariantCultureIgnoreCase));
 
                     if (userSession == null)
                     {
@@ -224,7 +227,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Error(ex.Message);
                 response.Status = Status.Error;
                 response.AddErrorNotification(ex.Message,ex.StackTrace);
                 return response;

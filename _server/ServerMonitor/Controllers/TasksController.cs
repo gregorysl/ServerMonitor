@@ -25,6 +25,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.Status = Status.Error;
                 response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
@@ -78,6 +79,7 @@ namespace ServerMonitor.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 response.Status = Status.Error;
                 response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
