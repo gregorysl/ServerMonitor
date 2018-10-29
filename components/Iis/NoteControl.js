@@ -47,6 +47,8 @@ class NoteControl extends Component {
 
   render() {
     const icon = this.props.note === '' ? 'tag-o' : 'tag';
+    // eslint-disable-next-line react/no-array-index-key
+    const note = this.props.note && this.props.note.split('\\n').map((item, key) => <span key={key}>{item}<br /></span>);
     return (
       this.state.isEditMode ?
         <React.Fragment>
@@ -66,7 +68,7 @@ class NoteControl extends Component {
         :
         <React.Fragment>
           <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
-          {this.props.note && (<p>{this.props.note}</p>)}
+          {note}
         </React.Fragment>
     );
   }
@@ -77,9 +79,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setNote(data));
   }
 });
+NoteControl.defaultProps = { note: '' };
 
 NoteControl.propTypes = {
-  note: PropTypes.string.isRequired,
+  note: PropTypes.string,
   name: PropTypes.string.isRequired,
   saveNote: PropTypes.func.isRequired
 };

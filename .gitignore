@@ -18,9 +18,11 @@ _server/.vs
 _server/ServerMonitor/ServerMonitor.csproj.user
 _server/ServerMonitor/ServerMonitor.csproj.vspscc
 _server/ServerMonitor/bundle.js
+_server/ServerMonitor/bundle.js.gz
 _server/ServerMonitor/bundle.js.map
 _server/ServerMonitor/styles.css.map
 _server/ServerMonitor/styles.css
+_server/ServerMonitor/styles.css.gz
 _server/ServerMonitor/index.html
 _server/ServerMonitor/bin
 _server/ServerMonitor/obj

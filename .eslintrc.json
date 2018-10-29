@@ -39,6 +39,8 @@
       "error",
       "never"
     ],
+    "react/no-unused-prop-types": "warn",
+    "no-unused-vars": "warn",
     "no-debugger": 0,
     "no-console": 0,
     "no-param-reassign": ["error", { "props": false }]
