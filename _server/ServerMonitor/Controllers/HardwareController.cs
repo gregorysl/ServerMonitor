@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Management;
 using System.Web.Http;
 using Newtonsoft.Json;
@@ -17,6 +19,7 @@ namespace ServerMonitor.Controllers
         protected static PerformanceCounter CpuCounter { get; set; }
 
         private readonly ComputerInfo _computerInfo = new ComputerInfo();
+        private readonly DriveInfo _driveInfo = DriveInfo.GetDrives().First(x => x.Name == "C:\\");
 
         [HttpGet]
         public Response Get()
@@ -44,8 +47,8 @@ namespace ServerMonitor.Controllers
                 Data = new List<Data<double>>
                 {
                     new Data<double> {Name = "CPU", Value = CpuUsage()},
-                    new Data<double> {Name = "RAM", Value = MemoryUsage()},
-                    new Data<double> {Name = "HDD", Value = DiskUsage()}
+                    new Data<double> {Name = "RAM", Value = MemoryUsage(), Text = TotalMemory().ToString()},
+                    new Data<double> {Name = "HDD", Value = DiskUsage(), Text = TotalDiskSpace().ToString()}
                 }
             };
             return hardware;
@@ -99,11 +102,20 @@ namespace ServerMonitor.Controllers
         private double MemoryUsage()
         {
             var availableMemory = _computerInfo.AvailablePhysicalMemory;
-            var allMemory = _computerInfo.TotalPhysicalMemory;
+            var allMemory = TotalMemory();
             var usedMemory = allMemory - availableMemory;
             var usage = usedMemory * 100 / allMemory;
 
             return Math.Round((double)usage);
+        }
+        public ulong TotalMemory()
+        {
+            return _computerInfo.TotalPhysicalMemory;
+        }
+
+        public long TotalDiskSpace()
+        {
+            return _driveInfo.TotalSize;
         }
 
         private double DiskUsage()
@@ -139,6 +151,8 @@ namespace ServerMonitor.Controllers
         public string Name { get; set; }
         [JsonProperty("value")]
         public T Value { get; set; }
+        [JsonProperty("text")]
+        public string Text { get; set; }
     }
 
 }
