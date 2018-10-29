@@ -5,7 +5,7 @@ import Chart from './Chart/chart';
 
 const HardwareItem = ({ item }) => {
   const childs = item.data
-    .map(x => <Col key={x.key} span={8}><Chart title={x.key} percent={x.value} /></Col>);
+    .map(x => <Col key={x.key} span={8}><Chart title={x.key} {...x} /></Col>);
   return (
     <Row>
       {childs}
