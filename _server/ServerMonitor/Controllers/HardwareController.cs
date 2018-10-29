@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -43,7 +41,7 @@ namespace ServerMonitor.Controllers
         {
             var hardware = new Hardware
             {
-                Name = ComputerName(),
+                Name = Environment.MachineName,
                 Data = new List<Data<double>>
                 {
                     new Data<double> {Name = "CPU", Value = CpuUsage()},
@@ -120,20 +118,7 @@ namespace ServerMonitor.Controllers
 
         private double DiskUsage()
         {
-            var p = new PerformanceCounter("LogicalDisk", "% Free Space", "C:");
-            return Math.Round(p.NextValue());
-        }
-
-        private string ComputerName()
-        {
-            ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
-            ManagementObjectCollection moc = mc.GetInstances();
-            foreach (var item in moc)
-            {
-                return ((ManagementObject)item).Properties["DNSHostName"].Value.ToString();
-            }
-
-            return "";
+            return _driveInfo.TotalFreeSpace * 100 / _driveInfo.TotalSize;
         }
     }
     [JsonObject(MemberSerialization.OptIn)]
