@@ -34,7 +34,7 @@ class IisSection extends Component {
         title: 'State',
         dataIndex: 'running',
         key: 'running',
-        render: running => (running ? 'Started' : 'Stopped'),
+        render: running => <font className={`state-${running ? 'started' : 'stopped'}`}>{running ? 'Started' : 'Stopped'}</font>,
         width: 100
       },
       {
