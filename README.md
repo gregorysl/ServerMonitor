@@ -10,5 +10,5 @@ Simple tool to monitor server resources, manage IIS applications, check disk usa
 
 ## Getting started
 
-Run `yarn install` - to install dependencies
-Run `yarn production` to create bundle
+1. Run `yarn install` - to install dependencies
+2. Run `yarn production` to create bundle
