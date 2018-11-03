@@ -16,16 +16,16 @@ Title.propTypes = {
   text: PropTypes.string
 };
 
-const Chart = ({ title, percent, text }) => (
+const Chart = ({ title, value, text }) => (
   <Card className="chart-card" title={(<Title text={text} title={title} />)}>
-    <Progress type="dashboard" percent={percent} />
+    <Progress type="dashboard" percent={value} />
   </Card>
 );
 Chart.defaultProps = { text: '' };
 
 Chart.propTypes = {
   title: PropTypes.string.isRequired,
-  percent: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
   text: PropTypes.string
 };
 export default Chart;
