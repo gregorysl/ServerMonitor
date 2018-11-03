@@ -7,7 +7,10 @@ export function* getServicesData({ payload }) {
     const { data } = yield call(api.getServices, payload);
     yield put({ type: types.GET_SERVICES_DATA_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.GET_SERVICES_DATA_ERROR, data: error.response.data });
+    yield put({
+      type: types.GET_SERVICES_DATA_ERROR,
+      data: error.response.data
+    });
   }
 }
 
@@ -19,7 +22,10 @@ export function* getHardwareData() {
     }
     yield put({ type: types.GET_HARDWARE_DATA_SUCCESS, data });
   } catch (error) {
-    yield put({ type: types.GET_HARDWARE_DATA_ERROR, data: error.response.data });
+    yield put({
+      type: types.GET_HARDWARE_DATA_ERROR,
+      data: error.response.data
+    });
   }
 }
 
@@ -48,14 +54,29 @@ export function* setIisAppWhitelist(props) {
     yield put({ type: types.GET_IIS_WHITELIST_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {
-    yield put({ type: types.GET_IIS_WHITELIST_ERROR, data: error.response.data });
+    yield put({
+      type: types.GET_IIS_WHITELIST_ERROR,
+      data: error.response.data
+    });
+  }
+}
+export function* setIisAppRecycle(props) {
+  try {
+    const { data } = yield call(api.recycleApp, props.name);
+    yield put({ type: types.GET_IIS_RECYCLE_SUCCESS, data });
+    yield put({ type: types.GET_IIS_APPS_REQUEST });
+  } catch (error) {
+    yield put({ type: types.GET_IIS_RECYCLE_ERROR, data: error.response.data });
   }
 }
 
 export function* setOracle(props) {
   try {
     const { data } = yield call(api.setOracle, props.data);
-    const type = data.status === 'Success' ? types.TOGGLE_ORACLE_SUCCESS : types.TOGGLE_ORACLE_ERROR;
+    const type =
+      data.status === 'Success'
+        ? types.TOGGLE_ORACLE_SUCCESS
+        : types.TOGGLE_ORACLE_ERROR;
     yield put({ type, data });
     yield put({ type: types.ORACLE_REQUEST });
   } catch (error) {
@@ -75,7 +96,8 @@ export function* getDiskUsageData() {
 export function* getTasksData() {
   try {
     const { data } = yield call(api.getTasks);
-    const type = data.status === 'Success' ? types.TASKS_SUCCESS : types.TASKS_ERROR;
+    const type =
+      data.status === 'Success' ? types.TASKS_SUCCESS : types.TASKS_ERROR;
     yield put({ type, data });
   } catch (error) {
     yield put({ type: types.TASKS_ERROR, data: error.response.data });
@@ -94,7 +116,8 @@ export function* getSessionsData() {
 export function* getOracleData() {
   try {
     const { data } = yield call(api.getOracleInstancies);
-    const type = data.status === 'Success' ? types.ORACLE_SUCCESS : types.ORACLE_ERROR;
+    const type =
+      data.status === 'Success' ? types.ORACLE_SUCCESS : types.ORACLE_ERROR;
     yield put({ type, data });
   } catch (error) {
     yield put({ type: types.ORACLE_ERROR, data: error.response.data });
@@ -120,7 +143,6 @@ export function* setNote(props) {
     yield put({ type: types.SET_NOTE_ERROR, data: error.response.data });
   }
 }
-
 
 export function* setKillUser(props) {
   try {

@@ -38,6 +38,10 @@ export const whitelistApp = list => ({
   type: types.GET_IIS_WHITELIST_REQUEST,
   list
 });
+export const recycleApp = name => ({
+  type: types.GET_IIS_RECYCLE_REQUEST,
+  name
+});
 
 export const runTask = name => ({
   type: types.TASKS_RUN_REQUEST,
@@ -48,7 +52,6 @@ export const setOracle = data => ({
   type: types.TOGGLE_ORACLE_REQUEST,
   data
 });
-
 
 export const setNote = data => ({
   type: types.SET_NOTE_REQUEST,

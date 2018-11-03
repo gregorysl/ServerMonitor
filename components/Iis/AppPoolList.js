@@ -29,8 +29,14 @@ const AppPoolList = (props) => {
         },
         {
           Header: 'Action',
-          accessor: 'x',
-          Cell: row => <TooltipButon title="recycle" icon="reload" />,
+          accessor: 'name',
+          Cell: row => (
+            <TooltipButon
+              title="recycle"
+              icon="reload"
+              click={() => props.recycle(row.value)}
+            />
+          ),
           width: 100
         }
       ]}
@@ -46,7 +52,8 @@ const AppPoolList = (props) => {
 };
 
 AppPoolList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  recycle: PropTypes.func.isRequired
 };
 
 export default AppPoolList;

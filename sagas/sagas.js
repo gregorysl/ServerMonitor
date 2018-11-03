@@ -6,6 +6,7 @@ const sagas = [
   fork(watch.watchGetHardware),
   fork(watch.watchGetIis),
   fork(watch.watchSetIis),
+  fork(watch.watchRecycleIis),
   fork(watch.watchDiskUsage),
   fork(watch.watchTasks),
   fork(watch.watchSessions),

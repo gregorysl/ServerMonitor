@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import * as actions from '../../actions/actions';
 import AppPoolList from './AppPoolList';
 import NoteControl from './NoteControl';
@@ -22,6 +21,8 @@ class IisSection extends Component {
         <h1 className="table-title">IIS Applications</h1>
         <ReactTable
           showPagination={false}
+          noDataText="No IIS applications found"
+          sortable={false}
           minRows={1}
           data={this.props.iis.data}
           defaultSorted={[{ id: 'name' }]}
@@ -76,7 +77,12 @@ class IisSection extends Component {
               width: 100
             }
           ]}
-          SubComponent={row => <AppPoolList items={row.original.apps} />}
+          SubComponent={row => (
+            <AppPoolList
+              items={row.original.apps}
+              recycle={this.props.recycle}
+            />
+          )}
         />
       </React.Fragment>
     );
@@ -90,7 +96,8 @@ IisSection.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     loading: PropTypes.bool.isRequired
   }).isRequired,
-  whitelist: PropTypes.func.isRequired
+  whitelist: PropTypes.func.isRequired,
+  recycle: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -99,6 +106,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getIis: () => dispatch(actions.getIisAction()),
+  recycle: name => dispatch(actions.recycleApp(name)),
   whitelist: (item) => {
     const data = {
       appPools: flatten(item.apps.map(x => x.children)),

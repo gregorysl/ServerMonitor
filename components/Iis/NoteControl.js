@@ -51,7 +51,7 @@ class NoteControl extends Component {
     // eslint-disable-next-line react/no-array-index-key
     const note =
       this.props.note &&
-      this.props.note.split('\\n').map((item, key) => (
+      this.props.note.split('\\n').map(item => (
         <span key={item}>
           {item}
           <br />
