@@ -16,9 +16,11 @@ class NoteControl extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-
   setEditMode() {
-    this.setState({ isEditMode: !this.state.isEditMode, value: this.props.note });
+    this.setState({
+      isEditMode: !this.state.isEditMode,
+      value: this.props.note
+    });
   }
 
   updateInputValue(evt) {
@@ -37,8 +39,7 @@ class NoteControl extends Component {
   confirmNote() {
     this.setState({ isEditMode: !this.state.isEditMode });
 
-    const data =
-    {
+    const data = {
       key: this.props.name,
       value: this.state.value
     };
@@ -48,28 +49,34 @@ class NoteControl extends Component {
   render() {
     const icon = this.props.note === '' ? 'tag-o' : 'tag';
     // eslint-disable-next-line react/no-array-index-key
-    const note = this.props.note && this.props.note.split('\\n').map((item, key) => <span key={key}>{item}<br /></span>);
-    return (
-      this.state.isEditMode ?
-        <React.Fragment>
-          <Input
-            className="tag-input"
-            placeholder="Note"
-            type="text"
-            value={this.state.value}
-            onPressEnter={this.confirmNote}
-            onChange={evt => this.updateInputValue(evt)}
-            onKeyDown={this.handleKeyPress}
-            prefix={<Icon type="tag" />}
-          />
-          <Icon className="icon-hand" onClick={this.confirmNote} type="check" />
-          <Icon className="icon-hand" onClick={this.setEditMode} type="close" />
-        </React.Fragment>
-        :
-        <React.Fragment>
-          <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
-          {note}
-        </React.Fragment>
+    const note =
+      this.props.note &&
+      this.props.note.split('\\n').map((item, key) => (
+        <span key={item}>
+          {item}
+          <br />
+        </span>
+      ));
+    return this.state.isEditMode ? (
+      <div>
+        <Input
+          className="tag-input"
+          placeholder="Note"
+          type="text"
+          value={this.state.value}
+          onPressEnter={this.confirmNote}
+          onChange={evt => this.updateInputValue(evt)}
+          onKeyDown={this.handleKeyPress}
+          prefix={<Icon type="tag" />}
+        />
+        <Icon className="icon-hand" onClick={this.confirmNote} type="check" />
+        <Icon className="icon-hand" onClick={this.setEditMode} type="close" />
+      </div>
+    ) : (
+      <div>
+        <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
+        {note}
+      </div>
     );
   }
 }
@@ -87,5 +94,7 @@ NoteControl.propTypes = {
   saveNote: PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(NoteControl);
-
+export default connect(
+  null,
+  mapDispatchToProps
+)(NoteControl);

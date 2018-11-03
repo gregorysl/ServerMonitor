@@ -19,10 +19,19 @@ class IisSection extends Component {
   render() {
     return (
       <React.Fragment>
+        <h1 className="table-title">IIS Applications</h1>
         <ReactTable
           showPagination={false}
           minRows={1}
           data={this.props.iis.data}
+          defaultSorted={[{ id: 'name' }]}
+          getTdProps={() => ({
+            style: {
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }
+          })}
           columns={[
             {
               Header: 'Name',
