@@ -52,6 +52,7 @@ namespace ServerMonitor.Controllers
 
             var appPools = mgr.ApplicationPools.Select(x => new IISAppPool
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = x.Name,
                 Running = x.State == ObjectState.Started,
                 Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
@@ -81,7 +82,6 @@ namespace ServerMonitor.Controllers
             var regex = new Regex(regexString);
 
             var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
-
             foreach (var appPool in appPools)
             {
                 var matches = regex.Match(appPool.Name);
@@ -102,6 +102,7 @@ namespace ServerMonitor.Controllers
                     {
                         application = new IISApplication
                         {
+                            Id = Guid.NewGuid().ToString(),
                             Name = name,
                             Url = $"{appRoot}{name}/",
                         };
