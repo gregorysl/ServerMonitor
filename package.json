@@ -53,6 +53,7 @@
     "react-hot-loader": "4.0.1",
     "react-page-visibility": "^2.0.0",
     "react-redux": "^5.0.6",
+    "react-table": "^6.8.6",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
     "webpack-bundle-analyzer": "^2.11.1"

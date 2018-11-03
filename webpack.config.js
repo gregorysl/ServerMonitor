@@ -23,7 +23,6 @@ const config = {
 
   context: resolve(__dirname, '.'),
 
-
   devServer: {
     hot: true,
     contentBase: resolve(__dirname, 'build'),
@@ -40,9 +39,7 @@ const config = {
       },
       {
         test: /\.js$/,
-        loaders: [
-          'babel-loader'
-        ],
+        loaders: ['babel-loader'],
         exclude: /node_modules/
       },
       {
@@ -61,15 +58,31 @@ const config = {
           ],
           publicPath: '../'
         })
-      }, {
+      },
+      {
         test: /\.less$/,
-        use: [{
-          loader: 'style-loader' // creates style nodes from JS strings
-        }, {
-          loader: 'css-loader' // translates CSS into CommonJS
-        }, {
-          loader: 'less-loader' // compiles Less to CSS
-        }]
+        use: [
+          {
+            loader: 'style-loader' // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader' // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader' // compiles Less to CSS
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader' // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader' // translates CSS into CommonJS
+          }
+        ]
       },
       {
         test: /\.(png|jpg|gif)$/,
