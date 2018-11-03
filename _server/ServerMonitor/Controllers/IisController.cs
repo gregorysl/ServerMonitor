@@ -45,6 +45,42 @@ namespace ServerMonitor.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("IIS/Recycle/{name}")]
+        public Response Recycle(string name)
+        {
+            var response = new Response();
+            try
+            {
+                var mgr = new ServerManager();
+                var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
+                
+                if (pool == null)
+                {
+                    response.AddErrorNotification("Application pool not found.");
+                    response.Status = Status.Error;
+                    return response;
+                }else if(pool.State == ObjectState.Stopped)
+                {
+                    response.AddErrorNotification("Application pool is not started.");
+                    response.Status = Status.Error;
+                    return response;
+                }
+
+                pool.Recycle();
+
+                response.AddSuccessNotification("Application pool succesfully recycled.");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
+            }
+
+        }
+
         private IList<IISApplication> GetFilteredApps()
         {
             var mgr = new ServerManager();
