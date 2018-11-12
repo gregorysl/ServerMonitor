@@ -1,45 +1,36 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System;
+using ServerMonitor.Helpers;
+using ServerMonitor.Models;
 using ServerMonitor.Oracle;
 
 namespace ServerMonitor.Controllers
 {
-    public class OracleInstanceController : ApiController
+    public class OracleInstanceController : BaseApi
     {
-        protected readonly OracleInstanceBl _oracleInstanceBl;
+        protected readonly OracleInstanceBl OracleInstanceBl;
 
         public OracleInstanceController()
         {
-            _oracleInstanceBl = new OracleInstanceBl();
+            OracleInstanceBl = new OracleInstanceBl();
         }
 
-        // GET: api/OracleInstance
-        public HttpResponseMessage Get()
+        public Response Get()
         {
-            var instances = _oracleInstanceBl.GetAllInstances();
-
-            if (instances != null)
+            var response = new Response();
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, instances);
+                Log.Debug("GetAllInstances called.");
+                var instances = OracleInstanceBl.GetAllInstances();
+                Log.Debug("GetAllInstances call success.");
+                response.Data = instances;
+                return response;
             }
-
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "We cannot find any available oracle instance.");
-        }
-
-        // POST: api/OracleInstance
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/OracleInstance/5
-        public void Put([FromBody] string value)
-        {
-        }
-
-        // DELETE: api/OracleInstance/5
-        public void Delete(int id)
-        {
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
+            }
         }
     }
 }

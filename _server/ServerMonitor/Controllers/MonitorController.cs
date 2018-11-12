@@ -39,27 +39,6 @@ namespace ServerMonitor.Controllers
 
         }
         
-        private static Response GetAllOracleInstances()
-        {
-            var instanceManagerHost = ConfigurationManager.AppSettings["OracleInstanceApi"];
-            if (string.IsNullOrEmpty(instanceManagerHost)) return null;
-            var url = instanceManagerHost.EnsureSlash() + "OracleInstance";
-
-            return ApiClient.Get<List<OracleInstanceDetails>>(url);
-        }
-
-        public static void SetReserved(OracleInstanceReservationRequest request)
-        {
-
-            var instanceManagerHost = ConfigurationManager.AppSettings["OracleInstanceApi"];
-            if (string.IsNullOrEmpty(instanceManagerHost)) return;
-            var url = instanceManagerHost.EnsureSlash() + "OracleInstanceReservation";
-
-            var content = ApiClient.CreateHttpContent<OracleInstanceReservationRequest>(request);
-            ApiClient.Put(url, content);
-        }
-        
-
         [HttpGet]
         [Route("Monitor/GetDiskUsage")]
         public Response GetDiskUsage()
@@ -116,44 +95,6 @@ namespace ServerMonitor.Controllers
             }
 
             return folderSize;
-        }
-
-        [HttpGet]
-        [Route("Monitor/GetOracleInstances")]
-        public Response GetOracleInstances()
-        {
-            var response = new Response();
-            try
-            {
-                var instances = GetAllOracleInstances();
-                response = instances;
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message,ex.StackTrace);
-                return response;
-            }
-        }
-
-        [HttpPost]
-        public Response SetOracleInstanceReserved(OracleInstanceReservationRequest request)
-        {
-            var response = new Response();
-            try
-            {
-                SetReserved(request);
-                response.AddSuccessNotification($"Succesfully {(request.Reserve ? "" : "un")}reserved Oracle instance.");
-                return response;
-
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message,ex.StackTrace);
-                return response;
-            }
         }
 
         [HttpGet]
