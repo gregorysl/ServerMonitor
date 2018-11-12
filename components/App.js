@@ -75,11 +75,11 @@ class App extends Component {
             <Hardware />
             <ServicesList />
             <IisSection />
-            <DataTable
+            {!this.props.oracle.isDisabled && <DataTable
               {...this.props.oracle}
               title="Oracle Instances"
               extraColumns={isDeployingColumn}
-            />
+            />}
             <DataTable {...this.props.disk} title="Disk Status" />
             <DataTable
               {...this.props.tasks}
@@ -98,6 +98,7 @@ class App extends Component {
   }
 }
 
+App.defaultProps = { isDisabled: true, data: [], columns: [] };
 App.propTypes = {
   getSessions: PropTypes.func.isRequired,
   getTasks: PropTypes.func.isRequired,
@@ -116,9 +117,10 @@ App.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
   }).isRequired,
   oracle: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+    data: PropTypes.arrayOf(PropTypes.object),
     errors: PropTypes.arrayOf(PropTypes.string),
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired
+    columns: PropTypes.arrayOf(PropTypes.object),
+    isDisabled: PropTypes.bool
   }).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired
 };

@@ -24,8 +24,11 @@ const tasksColumns = [
 ];
 const oracleColumns = [
   { Header: 'Name', accessor: 'currentBuildName' },
-  { Header: 'Date', accessor: 'currentBuildDate',
-    Cell: date => dateformat(date.value, 'dd.mm.yyyy, dddd') },
+  {
+    Header: 'Date',
+    accessor: 'currentBuildDate',
+    Cell: date => dateformat(date.value, 'dd.mm.yyyy, dddd')
+  },
   { Header: 'Instance', accessor: 'displayName' }
 ];
 const sessionsColumns = [
@@ -127,15 +130,25 @@ function sessionsReducer(state = tableInitialState, action) {
 function oracleReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
+      if (!action.data.data) {
+        return {
+          isDisabled: true,
+          loading: false
+        };
+      }
+
       return {
         ...state,
         data: action.data.data,
         columns: oracleColumns,
+        isDisabled: false,
         loading: false
       };
+
     case types.ORACLE_ERROR:
       return {
         ...state,
+        isDisabled: true,
         loading: false
       };
     case types.TOGGLE_ORACLE_REQUEST:

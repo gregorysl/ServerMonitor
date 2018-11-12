@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 using ServerMonitor.Oracle;
@@ -19,10 +20,19 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                Log.Debug("GetAllInstances called.");
-                var instances = OracleInstanceBl.GetAllInstances();
-                Log.Debug("GetAllInstances call success.");
-                response.Data = instances;
+                var parsed = bool.TryParse(ConfigurationManager.AppSettings["IsOracleInstanceManagerEnabled"], out var isEnabled);
+                if (parsed && isEnabled)
+                {
+                    Log.Debug("GetAllInstances called.");
+                    var instances = OracleInstanceBl.GetAllInstances();
+                    Log.Debug("GetAllInstances call success.");
+                    response.Data = instances;
+                }
+                else
+                {
+                    response.Data = false;
+                }
+
                 return response;
             }
             catch (Exception ex)
