@@ -1,49 +1,44 @@
 import React from 'react';
-import { Table } from 'antd';
+import ReactTable from 'react-table';
 import PropTypes from 'prop-types';
-
 
 const DataTable = ({
   data,
   title,
   columns,
-  message,
   loading,
-  expandedRowRender,
-  extraColumns = [],
-  rowKey = 'key'
+  extraColumns,
+  message
 }) => {
   const finalColumns = [...columns, ...extraColumns];
   return (
-    <Table
-      locale={{ emptyText: message }}
-      rowKey={rowKey}
-      columns={finalColumns}
-      dataSource={data}
-      size="middle"
-      loading={loading}
-      title={() => (<h1 className="table-title">{title}</h1>)}
-      pagination={false}
-      expandedRowRender={expandedRowRender}
-    />
+    <React.Fragment>
+      <h1 className="table-title">{title}</h1>
+      {message !== '' && <h2>{message}</h2>}
+      <ReactTable
+        showPagination={false}
+        sortable={false}
+        loading={loading}
+        data={data}
+        columns={finalColumns}
+        minRows={1}
+      />
+    </React.Fragment>
   );
 };
 
 DataTable.defaultProps = {
   extraColumns: [],
-  rowKey: 'key',
   loading: false,
-  expandedRowRender: null
+  message: ''
 };
 
 DataTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  message: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
+  message: PropTypes.string,
   loading: PropTypes.bool,
-  rowKey: PropTypes.string,
-  expandedRowRender: PropTypes.func,
   extraColumns: PropTypes.arrayOf(PropTypes.object)
 };
 

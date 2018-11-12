@@ -8,6 +8,7 @@ const config = {
   devtool: 'cheap-module-eval-source-map',
 
   entry: [
+    '@babel/polyfill',
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
@@ -18,11 +19,10 @@ const config = {
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, 'dist'),
-    publicPath: ''
+    publicPath: '/'
   },
 
   context: resolve(__dirname, '.'),
-
 
   devServer: {
     hot: true,
@@ -40,9 +40,7 @@ const config = {
       },
       {
         test: /\.js$/,
-        loaders: [
-          'babel-loader'
-        ],
+        loaders: ['babel-loader'],
         exclude: /node_modules/
       },
       {
@@ -61,15 +59,31 @@ const config = {
           ],
           publicPath: '../'
         })
-      }, {
+      },
+      {
         test: /\.less$/,
-        use: [{
-          loader: 'style-loader' // creates style nodes from JS strings
-        }, {
-          loader: 'css-loader' // translates CSS into CommonJS
-        }, {
-          loader: 'less-loader' // compiles Less to CSS
-        }]
+        use: [
+          {
+            loader: 'style-loader' // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader' // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader' // compiles Less to CSS
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader' // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader' // translates CSS into CommonJS
+          }
+        ]
       },
       {
         test: /\.(png|jpg|gif)$/,

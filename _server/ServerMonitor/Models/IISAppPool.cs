@@ -6,6 +6,8 @@ namespace ServerMonitor.Models
     public class IISAppPool
     {
         [JsonProperty("key")]
+        public string Id { get; set; }
+        [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("running")]
         public bool Running { get; set; }

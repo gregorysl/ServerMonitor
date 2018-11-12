@@ -8,6 +8,8 @@ namespace ServerMonitor.Models
     public class IISApplication
     {
         [JsonProperty("key")]
+        public string Id { get; set; }
+        [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("apps")]
         public IList<IISAppPool> ApplicationPools { get; set; }

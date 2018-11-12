@@ -17,6 +17,7 @@ const hardwareUri = `${appUri}Hardware/GetAll`;
 const iisUri = `${appUri}Iis/`;
 const iisStopUri = `${appUri}Iis/Toggle`;
 const iisWhitelistUri = `${appUri}Iis/WhitelistToggle`;
+const iisRecycleUri = `${iisUri}Recycle/`;
 const servicesStopUri = `${appUri}Links/`;
 
 export function setIisApp(appList) {
@@ -35,6 +36,10 @@ export function whitelistApp(appList) {
   return Axios.post(iisWhitelistUri, appList);
 }
 
+export function recycleApp(appName) {
+  return Axios.post(`${iisRecycleUri}${appName}/`);
+}
+
 export function runTask(name) {
   return Axios.post(runTasksUri, JSON.stringify(name), {
     headers: {
@@ -50,7 +55,6 @@ export function getServices() {
 export function getHardware() {
   return Axios.get(hardwareUri);
 }
-
 
 export function getIisApps(props) {
   const force = !props ? '' : '?force=true';

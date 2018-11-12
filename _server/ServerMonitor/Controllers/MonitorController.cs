@@ -15,31 +15,6 @@ namespace ServerMonitor.Controllers
     public class MonitorController : BaseApi
     {
         [HttpGet]
-        public object Recycle(string name)
-        {
-            try
-            {
-                var mgr = new ServerManager();
-                var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
-
-                if (pool == null)
-                {
-                    return new { Message = "Application pool not found." };
-                }
-
-                pool.Recycle();
-
-                return new { Message = "Application pool succesfully recycled." };
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-                return new { ex.Message, Exception = ex.StackTrace };
-            }
-
-        }
-        
-        [HttpGet]
         [Route("Monitor/GetDiskUsage")]
         public Response GetDiskUsage()
         {
@@ -51,11 +26,11 @@ namespace ServerMonitor.Controllers
                     .Where(x => Path.GetPathRoot(x) != null)
                     .Select(x => new DirectoryInfo(x))
                     .Select(x => new FolderSize
-                        {
-                            Path = x.FullName,
-                            Size = x.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length),
-                            TotalSize = new DriveInfo(Path.GetPathRoot(x.FullName)).TotalSize
-                        }
+                    {
+                        Path = x.FullName,
+                        Size = x.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length),
+                        TotalSize = new DriveInfo(Path.GetPathRoot(x.FullName)).TotalSize
+                    }
                     ).ToList();
 
                 response.Data = data;
@@ -171,7 +146,7 @@ namespace ServerMonitor.Controllers
             {
                 Log.Error(ex.Message);
                 response.Status = Status.Error;
-                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
         }
