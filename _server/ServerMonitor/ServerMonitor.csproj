@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -47,6 +47,12 @@
   <ItemGroup>
     <Reference Include="Cassia, Version=2.0.0.60, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cassia.2.0.0.60\lib\2.0\Cassia.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -108,6 +114,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HardwareController.cs" />
     <Compile Include="Controllers\IisController.cs" />
+    <Compile Include="Controllers\OracleInstanceController.cs" />
+    <Compile Include="Controllers\OracleInstanceDeploymentController.cs" />
+    <Compile Include="Controllers\OracleInstanceReservationController.cs" />
     <Compile Include="Helpers\ApiGatewayHandler.cs" />
     <Compile Include="Helpers\HardwareManager.cs" />
     <Compile Include="Helpers\KeyValueData.cs" />
@@ -127,9 +136,17 @@
     <Compile Include="Models\FolderSize.cs" />
     <Compile Include="Models\IISApplication.cs" />
     <Compile Include="Models\IISAppPool.cs" />
-    <Compile Include="Models\OracleInstanceDetails.cs" />
-    <Compile Include="Models\OracleInstanceReservationRequest.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Oracle\BuildServerDetails.cs" />
+    <Compile Include="Oracle\ConnectionDetail.cs" />
+    <Compile Include="Oracle\OracleInstance.cs" />
+    <Compile Include="Oracle\OracleInstanceBl.cs" />
+    <Compile Include="Oracle\OracleInstanceConnectionDetails.cs" />
+    <Compile Include="Oracle\OracleInstanceDeploymentRequest.cs" />
+    <Compile Include="Oracle\OracleInstanceDetails.cs" />
+    <Compile Include="Oracle\OracleInstanceRepository.cs" />
+    <Compile Include="Oracle\OracleInstanceReservationRequest.cs" />
+    <Compile Include="Oracle\OracleModuleDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
