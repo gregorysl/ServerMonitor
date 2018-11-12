@@ -3,35 +3,33 @@ import filesize from 'filesize';
 import * as types from '../constants/actionTypes';
 
 const diskColumns = [
-  { title: 'Path', dataIndex: 'path', key: 'path' },
+  { Header: 'Path', accessor: 'path' },
   {
-    title: 'Size',
-    dataIndex: 'size',
-    key: 'size',
-    render: size => (size !== '' ? filesize(size) : '')
+    Header: 'Size',
+    accessor: 'size',
+    Cell: size => (size.value !== '' ? filesize(size.value) : '')
   },
   {
-    title: 'Usage',
-    dataIndex: 'usage',
-    key: 'usage',
-    render: usage => `${usage}%`
+    Header: 'Usage',
+    accessor: 'usage',
+    Cell: usage => `${usage.value}%`
   }
 ];
 const tasksColumns = [
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'State', dataIndex: 'state', key: 'state' },
-  { title: 'Last Run Time', dataIndex: 'lastRunTime', key: 'lastRunTime' },
-  { title: 'Last Result', dataIndex: 'lastTaskResult', key: 'lastTaskResult' }
+  { Header: 'Name', accessor: 'name' },
+  { Header: 'State', accessor: 'state' },
+  { Header: 'Last Run Time', accessor: 'lastRunTime' },
+  { Header: 'Last Result', accessor: 'lastTaskResult' }
 ];
 const oracleColumns = [
-  { title: 'name', dataIndex: 'currentBuildName', key: 'currentBuildName' },
-  { title: 'Date', dataIndex: 'currentBuildDate', key: 'currentBuildDate' },
-  { title: 'Instance', dataIndex: 'displayName', key: 'displayName' }
+  { Header: 'Name', accessor: 'currentBuildName' },
+  { Header: 'Date', accessor: 'currentBuildDate' },
+  { Header: 'Instance', accessor: 'displayName' }
 ];
 const sessionsColumns = [
-  { title: 'User', dataIndex: 'user', key: 'user' },
-  { title: 'Login Date', dataIndex: 'loginDate', key: 'loginDate' },
-  { title: 'State', dataIndex: 'state', key: 'state' }
+  { Header: 'User', accessor: 'user' },
+  { Header: 'Login Date', accessor: 'loginDate' },
+  { Header: 'State', accessor: 'state' }
 ];
 
 const hardwareInitialState = [];

@@ -10,7 +10,6 @@ import IisSection from './Iis/IisSection';
 import TaskActionButtons from './TaskActionButtons';
 import OracleToggleButton from './OracleToggleButton';
 import SessionsActionButtons from './SessionsActionButtons';
-import DataTableErrorMessage from './DataTableErrorMessage';
 
 const { Header, Content } = Layout;
 
@@ -24,30 +23,34 @@ const checkErrors = (props, nextProps) => {
     }
   }
 };
-const isDeployingColumn =
-  [{
-    title: 'Reserved',
-    key: 'isReserved',
-    render: x => (<OracleToggleButton {...x} />)
-
-  }, {
-    title: 'Deploying',
-    key: 'isDeploying',
-    render: x => (<Checkbox defaultChecked={x.isDeploying} disabled />)
-
-  }];
-
-const taskAction =
+const isDeployingColumn = [
   {
-    title: 'Action',
-    key: 'x',
-    render: x => (<TaskActionButtons {...x} />)
-  };
-const sessionActions =
-      {
-        key: 'x',
-        render: x => (<SessionsActionButtons {...x} />)
-      };
+    Header: 'Reserved',
+    accessor: 'isReserved',
+    Cell: row => <OracleToggleButton {...row.original} />,
+    width: 100
+  },
+  {
+    Header: 'Deploying',
+    accessor: 'isDeploying',
+    Cell: row => (
+      <Checkbox defaultChecked={row.original.isDeploying} disabled />
+    ),
+    width: 100
+  }
+];
+
+const taskAction = {
+  Header: 'Action',
+  accessor: 'x',
+  Cell: row => <TaskActionButtons {...row.original} />,
+  width: 100
+};
+const sessionActions = {
+  accessor: 'x',
+  Cell: row => <SessionsActionButtons {...row.original} />,
+  width: 100
+};
 
 class App extends Component {
   componentDidMount() {
@@ -66,8 +69,8 @@ class App extends Component {
         <Header>
           <div className="logo" />
         </Header>
-        <Content style={{ padding: '0 50px' }} >
-          <div style={{ background: '#fff', padding: 5, minHeight: 280 }} >
+        <Content style={{ padding: '0 50px' }}>
+          <div style={{ background: '#fff', padding: 5, minHeight: 280 }}>
             <h1>Hardware Monitor</h1>
             <Hardware />
             <ServicesList />
@@ -75,28 +78,17 @@ class App extends Component {
             <DataTable
               {...this.props.oracle}
               title="Oracle Instances"
-              message={(<DataTableErrorMessage title="No Oracle Instances found" />)}
               extraColumns={isDeployingColumn}
-              rowKey="currentBuildName"
             />
-            <DataTable
-              {...this.props.disk}
-              title="Disk Status"
-              message={(<DataTableErrorMessage title="No directories found." />)}
-              rowKey="path"
-            />
+            <DataTable {...this.props.disk} title="Disk Status" />
             <DataTable
               {...this.props.tasks}
               title="Scheduled Tasks"
-              message={(<DataTableErrorMessage title="No tasks found." />)}
               extraColumns={[taskAction]}
-              rowKey="name"
             />
             <DataTable
               {...this.props.sessions}
               title="User Sessions"
-              message={(<DataTableErrorMessage title="No sessions found." />)}
-              rowKey="user"
               extraColumns={[sessionActions]}
             />
           </div>
@@ -146,4 +138,7 @@ const mapDispatchToProps = dispatch => ({
   getOracle: () => dispatch(actions.getOracleAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
