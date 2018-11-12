@@ -6,10 +6,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const apiUri = `${appUri}Monitor/`;
-const oracleUri = `${apiUri}GetOracleInstances`;
+const oracleUri = `${appUri}OracleInstance`;
 const sessionsUri = `${apiUri}GetUserSesssions`;
 const diskUri = `${apiUri}GetDiskUsage`;
-const setOracleUri = `${apiUri}SetOracleInstanceReserved`;
+const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
 const runTasksUri = `${appUri}Tasks/`;
 // const hardwareUri = `${appUri}Hardware/`;
@@ -29,7 +29,7 @@ export function setIisApp(appList) {
 }
 
 export function setOracle(data) {
-  return Axios.post(setOracleUri, data);
+  return Axios.put(setOracleUri, data);
 }
 
 export function whitelistApp(appList) {

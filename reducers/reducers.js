@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import filesize from 'filesize';
+import dateformat from 'dateformat';
 import * as types from '../constants/actionTypes';
 
 const diskColumns = [
@@ -23,7 +24,8 @@ const tasksColumns = [
 ];
 const oracleColumns = [
   { Header: 'Name', accessor: 'currentBuildName' },
-  { Header: 'Date', accessor: 'currentBuildDate' },
+  { Header: 'Date', accessor: 'currentBuildDate',
+    Cell: date => dateformat(date.value, 'dd.mm.yyyy, dddd') },
   { Header: 'Instance', accessor: 'displayName' }
 ];
 const sessionsColumns = [

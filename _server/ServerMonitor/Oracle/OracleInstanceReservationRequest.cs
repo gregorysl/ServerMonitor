@@ -1,4 +1,5 @@
-﻿namespace ServerMonitor.Models
+﻿
+namespace ServerMonitor.Oracle
 {
     public class OracleInstanceReservationRequest
     {
