@@ -1,16 +1,15 @@
 {
   "presets": [
-    "stage-2",
-    "react",
-    "react-boilerplate",
     [
-      "es2015",
+      "@babel/preset-env",
       {
-        "modules": false
+        "useBuiltIns": "entry"
       }
-    ]
+    ],
+    "@babel/preset-react"
   ],
   "plugins": [
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    "@babel/plugin-proposal-class-properties"
   ]
 }

@@ -7,10 +7,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const config = {
   devtool: 'source-map',
 
-  entry: [
-    './index.js',
-    './styles/style.less'
-  ],
+  entry: ['@babel/polyfill', './index.js', './styles/style.less'],
 
   output: {
     filename: 'bundle.js',
@@ -52,8 +49,14 @@ const config = {
       }
     }),
     new webpack.HashedModuleIdsPlugin(),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
-    new ExtractTextPlugin({ filename: 'styles.css', disable: false, allChunks: true }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
+    new ExtractTextPlugin({
+      filename: 'styles.css',
+      disable: false,
+      allChunks: true
+    }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
@@ -71,7 +74,7 @@ const config = {
         loader: 'babel-loader'
       },
       {
-        test: /\.less$/,
+        test: /\.(less|css)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: ['css-loader', 'less-loader']

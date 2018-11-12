@@ -8,6 +8,7 @@ const config = {
   devtool: 'cheap-module-eval-source-map',
 
   entry: [
+    '@babel/polyfill',
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
@@ -18,7 +19,7 @@ const config = {
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, 'dist'),
-    publicPath: ''
+    publicPath: '/'
   },
 
   context: resolve(__dirname, '.'),
