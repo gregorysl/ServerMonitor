@@ -69,7 +69,7 @@ namespace ServerMonitor.Controllers
 
                 pool.Recycle();
 
-                response.AddSuccessNotification("Application pool succesfully recycled.");
+                response.AddSuccessNotification("Application pool successfully recycled.");
                 return response;
             }
             catch (Exception ex)
@@ -83,75 +83,45 @@ namespace ServerMonitor.Controllers
 
         private IList<IISApplication> GetFilteredApps()
         {
+            var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
+            var regexString = ConfigurationManager.AppSettings["NewIISAppPoolRegex"];
+            var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
+            var groupRegex = new Regex(regexString);
             var mgr = new ServerManager();
             var iis = mgr.Sites[0].Applications;
 
-            var appPools = mgr.ApplicationPools.Select(x => new IISAppPool
+            var filteredApplicationPools = mgr.ApplicationPools.Select(x => x.Name)
+                .Where(a => !ignoreList.Contains(a)).ToList();
+
+            var applicationPoolGroupNames = filteredApplicationPools.Where(x => groupRegex.IsMatch(x))
+                .Select(x => groupRegex.Match(x).Captures[0].Value).Distinct().ToList();
+
+            var applications = applicationPoolGroupNames.Select(item => new IISApplication
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = x.Name,
-                Running = x.State == ObjectState.Started,
-                Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
-                    .Select(s => s.Path.Replace("/", string.Empty)).ToList()
-            }).Where(x => x.Apps.Any());
-
-            var applications = GroupAppPools(appPools);
-
-            var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
-            var filteredApps = applications.Where(a => !ignoreList.Contains(a.Name)).ToList();
-
+                Name = item,
+                Url = $"{appRoot}{item}/",
+                ApplicationPools = mgr.ApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x => new IISAppPool
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = x.Name,
+                    Running = x.State == ObjectState.Started,
+                    Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
+                        .Select(s => s.Path.Replace("/", string.Empty)).ToList()
+                }).Where(x => x.Apps.Any()).ToList()
+            }).ToList();
 
             var buildsNode = GetWhitelistItems();
+
             if (buildsNode != null)
             {
-                filteredApps.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
+                applications.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
             }
 
-            filteredApps.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
-            return filteredApps;
-        }
-
-        private static IList<IISApplication> GroupAppPools(IEnumerable<IISAppPool> appPools)
-        {
-            var applications = new List<IISApplication>();
-            var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
-            var regex = new Regex(regexString);
-
-            var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
-            foreach (var appPool in appPools)
-            {
-                var matches = regex.Match(appPool.Name);
-                if (matches.Success)
-                {
-                    var name = string.Empty;
-
-                    for (var i = 1; i < matches.Groups.Count; i++)
-                    {
-                        name = matches.Groups[i].Value;
-                        if (!string.IsNullOrEmpty(name)) break;
-                    }
-
-                    if (string.IsNullOrEmpty(name)) continue;
-
-                    var application = applications.FirstOrDefault(a => a.Name == name);
-                    if (application == null)
-                    {
-                        application = new IISApplication
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = name,
-                            Url = $"{appRoot}{name}/",
-                        };
-                        applications.Add(application);
-                    }
-
-                    application.ApplicationPools.Add(appPool);
-                }
-            }
-
+            applications.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
             return applications;
         }
-
+        
         private static XElement GetWhitelistItems()
         {
             var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
@@ -185,7 +155,7 @@ namespace ServerMonitor.Controllers
                 }
 
                 var state = issToggleConfig.Condition ? "stopped" : "started";
-                response.AddSuccessNotification($"Application pools {state} successfuly.");
+                response.AddSuccessNotification($"Application pools {state} successfully.");
                 return response;
             }
             catch (Exception ex)
@@ -246,7 +216,7 @@ namespace ServerMonitor.Controllers
                 //    }
                 //}
                 var function = issToggleConfig.Condition ? "un" : "";
-                response.AddSuccessNotification($"Application {function}whitelisted successfuly.");
+                response.AddSuccessNotification($"Application {function}whitelisted successfully.");
                 return response;
             }
             catch (Exception ex)
