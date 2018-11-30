@@ -7,40 +7,21 @@ namespace ServerMonitor.Controllers
 {
     public class OracleInstanceReservationController : ApiController
     {
-        protected readonly OracleInstanceBl _oracleInstanceBl;
+        protected readonly OracleInstanceBl OracleInstanceBl;
 
         public OracleInstanceReservationController()
         {
-            _oracleInstanceBl = new OracleInstanceBl();
+            OracleInstanceBl = new OracleInstanceBl();
         }
 
-        // GET: api/OracleDeployment
         public HttpResponseMessage Get()
         {
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "This operation is not allowed.");
         }
-
-        // POST: api/OracleDeployment
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/OracleDeployment/5
+        
         public void Put([FromBody] OracleInstanceReservationRequest value)
         {
-            _oracleInstanceBl.ChangeInstanceReservation(value.Id, value.Reserve);
-        }
-
-        // DELETE: api/OracleDeployment/5
-        public void Delete(int id)
-        {
-        }
-
-        // OPTIONS http-verb handler
-        public HttpResponseMessage OptionsUser()
-        {
-            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
-            return response;
+            OracleInstanceBl.ChangeInstanceReservation(value.Id, value.Reserve);
         }
     }
 }

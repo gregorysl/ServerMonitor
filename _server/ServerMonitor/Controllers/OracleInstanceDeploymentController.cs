@@ -22,7 +22,7 @@ namespace ServerMonitor.Controllers
         }
 
         // GET: api/OracleInstance
-        [Route("api/OracleInstanceDeployment/{buildServerName}")]
+        [Route("OracleInstanceDeployment/{buildServerName}")]
         public HttpResponseMessage Get(string buildServerName)
         {
             var instance = _oracleInstanceBl.GetAvailableInstance(buildServerName);
