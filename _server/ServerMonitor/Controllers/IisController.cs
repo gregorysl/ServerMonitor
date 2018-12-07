@@ -84,7 +84,7 @@ namespace ServerMonitor.Controllers
         private IList<IisApplication> GetFilteredApps()
         {
             var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
-            var regexString = ConfigurationManager.AppSettings["NewIISAppPoolRegex"];
+            var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
             var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
             var groupRegex = new Regex(regexString);
             var mgr = new ServerManager();
