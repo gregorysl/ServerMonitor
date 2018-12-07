@@ -81,7 +81,7 @@ namespace ServerMonitor.Controllers
 
         }
 
-        private IList<IISApplication> GetFilteredApps()
+        private IList<IisApplication> GetFilteredApps()
         {
             var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
             var regexString = ConfigurationManager.AppSettings["NewIISAppPoolRegex"];
@@ -96,14 +96,12 @@ namespace ServerMonitor.Controllers
             var applicationPoolGroupNames = filteredApplicationPools.Where(x => groupRegex.IsMatch(x))
                 .Select(x => groupRegex.Match(x).Captures[0].Value).Distinct().ToList();
 
-            var applications = applicationPoolGroupNames.Select(item => new IISApplication
+            var applications = applicationPoolGroupNames.Select(item => new IisApplication
             {
-                Id = Guid.NewGuid().ToString(),
                 Name = item,
                 Url = $"{appRoot}{item}/",
                 ApplicationPools = mgr.ApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x => new IISAppPool
                 {
-                    Id = Guid.NewGuid().ToString(),
                     Name = x.Name,
                     Running = x.State == ObjectState.Started,
                     Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
