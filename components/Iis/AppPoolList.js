@@ -16,7 +16,7 @@ const AppPoolList = (props) => {
       columns={[
         {
           Header: 'Name',
-          accessor: 'name'
+          accessor: 'key'
         },
         {
           Header: 'State',

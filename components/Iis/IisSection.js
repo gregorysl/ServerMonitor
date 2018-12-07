@@ -25,7 +25,7 @@ class IisSection extends Component {
           sortable={false}
           minRows={1}
           data={this.props.iis.data}
-          defaultSorted={[{ id: 'name' }]}
+          defaultSorted={[{ id: 'key' }]}
           getTdProps={() => ({
             style: {
               display: 'flex',
@@ -36,19 +36,19 @@ class IisSection extends Component {
           columns={[
             {
               Header: 'Name',
-              accessor: 'name',
+              accessor: 'key',
               Cell: row => (
                 <a target="_blank" href={row.original.url}>
-                  {row.original.name}
+                  {row.original.key}
                 </a>
               )
             },
             {
               Header: 'State',
-              accessor: 'running',
+              accessor: 'state',
               Cell: row => (
-                <font className={`state-${row.value ? 'started' : 'stopped'}`}>
-                  {row.value ? 'Started' : 'Stopped'}
+                <font className={`state-${row.original.running ? 'started' : 'stopped'}`}>
+                  {row.value}
                 </font>
               ),
               width: 100
