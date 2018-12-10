@@ -1,5 +1,8 @@
 {
-  "binDir": "./ServerMonitor/bin",
+  "appName": "ServerMonitor",
+  "userName": "pc\\username",
+  "password": "password",
+  "releaseLocation": "c:\\inetpub\\wwwroot\\ServerMonitor",
   "dataSource": "localhost\\SQL",
   "database": "Automation",
   "dbUser": "sa",
