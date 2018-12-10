@@ -34,6 +34,7 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(binDir);
+    CleanDirectory(releaseDir);
 });
 
 Task("Restore-NuGet-Packages")
@@ -90,7 +91,7 @@ Task("Yarn")
 	Yarn.FromPath("./Web").Install();
 	Yarn.FromPath("./Web").RunScript("production");
 });
-Task("Transform-Configs")
+Task("Copy-Install-Script")
 	.Does(() => 
 {
     var installScript = FileReadText("./Setup.ps1")
@@ -98,8 +99,11 @@ Task("Transform-Configs")
                     .Replace("##USERNAME##",settings["userName"].ToString())
                     .Replace("##PASSWORD##",settings["password"].ToString())
                     .Replace("##LOCATION##",settings["releaseLocation"].ToString());
-    FileWriteText("./Release/Setup.ps1",installScript);
-
+    FileWriteText(releaseDir+"/Setup.ps1",installScript);
+});
+Task("Transform-Configs")
+	.Does(() => 
+{
     var fileToTranform = localDir + "/Web.config";
     XmlDocument doc = new XmlDocument();
     doc.Load(fileToTranform);
@@ -162,10 +166,17 @@ Task("Transform-Configs")
 Task("Local")
     .IsDependentOn("Yarn")
 	.IsDependentOn("Prepare-Local-Build");
-	
+
 Task("Default")
+    IsDependentOn("Prepare-Local-Build");
+	
+Task("Api")
+	.IsDependentOn("Prepare-Release-Dir")
+    .IsDependentOn("Copy-Install-Script");
+Task("Package")
     .IsDependentOn("Yarn")
-	.IsDependentOn("Prepare-Release-Dir");
+	.IsDependentOn("Prepare-Release-Dir")
+    .IsDependentOn("Copy-Install-Script");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
