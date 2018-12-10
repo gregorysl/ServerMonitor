@@ -1,106 +1,67 @@
 {
-  "name": "server_monitor",
-  "version": "1.0.0",
-  "scripts": {
-    "stats": "webpack-bundle-analyzer dist/stats.json",
-    "start": "webpack-dev-server",
-    "clean": "./node_modules/.bin/rimraf dist",
-    "production": "cross-env yarn run clean && webpack --config webpack.config.production.js --progress --profile --colors",
-    "lint": "eslint ./app/**/**.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "coverage": "jest --coverage",
-    "precommit": "cross-env yarn run lint && yarn test",
-    "prepush": "cross-env yarn run lint && yarn test",
-    "startP": "concurrently -k -r -s first \"yarn run startP\" \"yarn run lint:watch\"",
-    "lintP": "./node_modules/.bin/eslint .",
-    "lint:watch": "./node_modules/.bin/esw . --watch",
-    "buildP": "parcel build index.js"
-  },
-  "author": "gregorysl",
-  "license": "MIT",
-  "jest": {
-    "setupFiles": [
-      "<rootDir>/config/jest/shim.js"
-    ],
-    "mapCoverage": true,
-    "collectCoverageFrom": [
-      "app/**/*.{js,jsx,ts,tsx}"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/config/jest/assetsTransformer.js"
-    },
-    "testMatch": [
-      "**/?(*.)(spec|test).js?(x)"
-    ],
-    "transform": {
-      "\\.js$": "babel-jest"
-    }
-  },
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts": "2.1.1",
     "antd": "^3.2.1",
     "axios": "^0.18.0",
-    "cross-env": "5.1.2",
     "dateformat": "^3.0.3",
     "filesize": "^3.6.1",
-    "global": "^4.3.2",
     "less": "^2.7.3",
     "moment": "^2.20.1",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-hot-loader": "4.0.1",
-    "react-page-visibility": "^2.0.0",
     "react-redux": "^5.0.6",
+    "react-page-visibility": "^2.0.0",
     "react-table": "^6.8.6",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
-    "webpack-bundle-analyzer": "^2.11.1"
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "node-sass": "^4.10.0",
+    "prettier": "^1.15.2"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.4",
-    "compression-webpack-plugin": "1.1.11",
-    "concurrently": "^3.5.1",
-    "copy-webpack-plugin": "^4.3.1",
-    "css-loader": "^0.28.8",
-    "css-mqpacker": "^6.0.1",
-    "cssnano": "^3.10.0",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
-    "eslint": "^4.18.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.5.1",
-    "eslint-watch": "^3.1.3",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.6",
-    "global": "^4.3.2",
-    "html-webpack-plugin": "2.30.1",
-    "husky": "0.15.0-beta.2",
-    "jest": "22.1.0",
-    "less": "^2.7.3",
-    "less-loader": "^4.0.5",
-    "moment": "^2.20.1",
-    "node-sass": "4.9.3",
-    "open-browser-webpack-plugin": "0.0.5",
-    "react-addons-test-utils": "15.6.2",
-    "react-test-renderer": "16.2.0",
-    "rimraf": "2.6.2",
-    "sass-loader": "6.0.6",
-    "style-loader": "0.19.1",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.10.0"
-  }
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "rules": {
+      "global-require": "off",
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ],
+      "linebreak-style": 0,
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "react/no-unused-prop-types": "warn",
+      "no-unused-vars": "warn",
+      "no-debugger": 0,
+      "no-console": 0,
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ]
+    }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

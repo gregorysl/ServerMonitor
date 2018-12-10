@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Checkbox, notification, Layout } from 'antd';
 import PropTypes from 'prop-types';
-import * as actions from '../actions/actions';
-import ServicesList from './servicesList';
-import Hardware from './Hardware';
-import DataTable from './Iis/DataTable';
-import IisSection from './Iis/IisSection';
-import TaskActionButtons from './TaskActionButtons';
-import OracleToggleButton from './OracleToggleButton';
-import SessionsActionButtons from './SessionsActionButtons';
+import * as actions from './actions/actions';
+import ServicesList from './components/servicesList';
+import Hardware from './components/Hardware';
+import DataTable from './components/Iis/DataTable';
+import IisSection from './components/Iis/IisSection';
+import TaskActionButtons from './components/TaskActionButtons';
+import OracleToggleButton from './components/OracleToggleButton';
+import SessionsActionButtons from './components/SessionsActionButtons';
 
 const { Header, Content } = Layout;
 
