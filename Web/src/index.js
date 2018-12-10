@@ -6,7 +6,7 @@ import './index.css';
 import App from './App';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
-import './styles/style.sass';
+import './styles/style.less';
 
 const Item = (
     <Provider store={store}>
