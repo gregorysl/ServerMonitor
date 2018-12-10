@@ -1,6 +1,7 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 #addin "Cake.Yarn"
 #addin "Cake.FileHelpers"
+#addin "Cake.Powershell"
 #addin nuget:?package=Cake.Json
 #addin nuget:?package=Newtonsoft.Json&version=9.0.1
 using System.Xml;
@@ -77,11 +78,17 @@ Task("Prepare-Release-Dir")
 	CopyDirectory(webDistDir, releaseDir);
 });
 
-Task("Prepare-Local-Build")
+Task("Create-Web-App")
 	.IsDependentOn("Build")
+    .IsDependentOn("Copy-Install-Script")
 	.Does(() => 
 {
-	CopyDirectory(binDir, releaseDir);
+    StartPowershellFile("./Release/Setup.ps1");
+});
+Task("Prepare-Local-Build")
+	.IsDependentOn("Create-Web-App")
+	.Does(() => 
+{
 	CopyDirectory(webDistDir, releaseDir);
 });
 
@@ -168,7 +175,7 @@ Task("Local")
 	.IsDependentOn("Prepare-Local-Build");
 
 Task("Default")
-    IsDependentOn("Prepare-Local-Build");
+    .IsDependentOn("Prepare-Local-Build");
 	
 Task("Api")
 	.IsDependentOn("Prepare-Release-Dir")
