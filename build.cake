@@ -61,10 +61,19 @@ Task("Build")
 });
 
 Task("Prepare-Release-Dir")
-	.IsDependentOn("Build")
+    .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("Transform-Configs")
 	.Does(() => 
 {
-	CopyDirectory(webDistDir, localDir);
+    MSBuild("./ServerMonitor/ServerMonitor.csproj", settings =>
+        settings.UseToolVersion(MSBuildToolVersion.VS2017)
+        .WithTarget("Package")                
+        .WithProperty("TargetFrameworkVersion","4.7.1")
+        .WithProperty("Configuration","Release")
+        .WithProperty("AutoParameterizationWebConfigConnectionStrings", "False")
+        .WithProperty("_PackageTempDir", "../Release")
+        .WithProperty("SolutionDir","./ServerMonitor"));
+	CopyDirectory(webDistDir, releaseDir);
 });
 
 Task("Prepare-Local-Build")
