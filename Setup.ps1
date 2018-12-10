@@ -1,10 +1,13 @@
 Import-Module WebAdministration
-cd IIS:\AppPools\
-
+$initialPath = (Get-Item -Path "./").FullName
 $iisAppPoolName = "##APPNAME##"
 $userName = "##USERNAME##"
 $password = "##PASSWORD##"
 $directoryPath = "##LOCATION##"
+
+Copy-item -Force -Recurse $initialPath -Destination $directoryPath
+
+cd IIS:\AppPools\
 
 if ((Test-Path "$iisAppPoolName" -pathType container)) {
     Remove-WebAppPool $iisAppPoolName
@@ -20,4 +23,4 @@ $app = New-WebApplication -Name $iisAppPoolName -ApplicationPool $iisAppPoolName
 
 Start-WebAppPool $iisAppPoolName
 
-cd d:\
+cd $initialPath
