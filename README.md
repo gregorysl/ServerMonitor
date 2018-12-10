@@ -10,5 +10,24 @@ Simple tool to monitor server resources, manage IIS applications, check disk usa
 
 ## Getting started
 
-1. Run `yarn install` - to install dependencies
-2. Run `yarn run production` to create bundle
+Open `settings.json` file and fill settings
+
+### Local build
+
+1. Run Powershell in main dir
+2. Run command `.\build.ps1 -target Local`
+
+### Production build
+
+1. Run Powershell in main dir
+2. Run command `.\build.ps1 -target Package`
+3. Copy contents of `./Release` to server
+4. Run `.\Setup.ps1`
+5. Finished!
+
+### Other options
+
+`.\build.ps1 -target Api` Builds only API project, and creates package
+`.\build.ps1` Builds only API for local purposes
+
+## Settings explained

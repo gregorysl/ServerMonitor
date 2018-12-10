@@ -1,30 +1,30 @@
 # gitignore
 
-node_modules
-.cache
+Web/node_modules
+Web/.cache
 
 # Only apps should have lockfiles
-yarn.lock
-yarn-error.log
-package-lock.json
-dist
-dist/server_monitor.css
-dist/server_monitor.js
-npm-debug.log
+Web/yarn.lock
+Web/yarn-error.log
+Web/package-lock.json
+Web/dist
+Web/dist/server_monitor.css
+Web/dist/server_monitor.js
+Web/npm-debug.log
 
+Release
+tools
 
-_server/packages
-_server/.vs
-_server/ServerMonitor/ServerMonitor.csproj.user
-_server/ServerMonitor/ServerMonitor.csproj.vspscc
-_server/ServerMonitor/bundle.js
-_server/ServerMonitor/bundle.js.gz
-_server/ServerMonitor/bundle.js.map
-_server/ServerMonitor/styles.css.map
-_server/ServerMonitor/styles.css
-_server/ServerMonitor/styles.css.gz
-_server/ServerMonitor/index.html
-_server/ServerMonitor/bin
-_server/ServerMonitor/obj
-_server/ServerMonitor/Web.config
-_server/ServerMonitor/Web.Debug.config
+packages
+.vs
+ServerMonitor/ServerMonitor.csproj.user
+ServerMonitor/ServerMonitor.csproj.vspscc
+ServerMonitor/bundle.js
+ServerMonitor/bundle.js.gz
+ServerMonitor/bundle.js.map
+ServerMonitor/styles.css.map
+ServerMonitor/styles.css
+ServerMonitor/styles.css.gz
+ServerMonitor/index.html
+ServerMonitor/bin
+ServerMonitor/obj

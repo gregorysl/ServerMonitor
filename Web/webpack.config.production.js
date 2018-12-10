@@ -11,7 +11,7 @@ const config = {
 
   output: {
     filename: 'bundle.js',
-    path: resolve(__dirname, '_server\\ServerMonitor'),
+    path: resolve(__dirname, 'dist'),
     publicPath: '',
     jsonpFunction: 'webpackJsonp'
   },
