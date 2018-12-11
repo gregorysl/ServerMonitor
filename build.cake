@@ -3,6 +3,7 @@
 #addin "Cake.Powershell"
 #addin nuget:?package=Newtonsoft.Json
 using System.Xml;
+using Path = System.IO.Path;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 //////////////////////////////////////////////////////////////////////
@@ -102,11 +103,14 @@ Task("Yarn")
 Task("Copy-Install-Script")
 	.Does(() => 
 {
+    string releaseLocation = (target == "Default" || target == "Local") ?
+					Path.GetFullPath("./ServerMonitor") :
+					settings["releaseLocation"].ToString();
     var installScript = FileReadText("./Setup.ps1")
                     .Replace("##APPNAME##",settings["appName"].ToString())
                     .Replace("##USERNAME##",settings["userName"].ToString())
                     .Replace("##PASSWORD##",settings["password"].ToString())
-                    .Replace("##LOCATION##",settings["releaseLocation"].ToString());
+                    .Replace("##LOCATION##",releaseLocation);
     FileWriteText(releaseDir+"/Setup.ps1",installScript);
 });
 Task("Transform-Configs")
