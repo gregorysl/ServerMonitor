@@ -1,9 +1,7 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 #addin "Cake.Yarn"
 #addin "Cake.FileHelpers"
 #addin "Cake.Powershell"
-#addin nuget:?package=Cake.Json
-#addin nuget:?package=Newtonsoft.Json&version=9.0.1
+#addin nuget:?package=Newtonsoft.Json
 using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,7 +22,7 @@ var settings = JsonConvert.DeserializeObject<JObject>(FileReadText("./settings.j
 var connectionString = "Data Source={0};Initial Catalog={1};Persist Security Info=True;User ID={2};Password={3}";
 var binDir = "./ServerMonitor/bin";
 var localDir = "./ServerMonitor";
-var webDistDir = "./Web/dist";
+var webDistDir = "./Web/public";
 var releaseDir = "./Release";
 
 //////////////////////////////////////////////////////////////////////
@@ -35,7 +33,6 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(binDir);
-    CleanDirectory(releaseDir);
 });
 
 Task("Restore-NuGet-Packages")
@@ -96,8 +93,9 @@ Task("Yarn")
 	.Does(() => 
 {
 	Yarn.FromPath("./Web").Install();
-	Yarn.FromPath("./Web").RunScript("production");
+	Yarn.FromPath("./Web").RunScript("build");
 });
+
 Task("Copy-Install-Script")
 	.Does(() => 
 {
