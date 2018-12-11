@@ -16,7 +16,7 @@ namespace ServerMonitor.Controllers
 {
     public class IisController : BaseApi
     {
-        private static string DbPath => HostingEnvironment.MapPath("~/App_Data/ServerMonitor.db");
+        private static string DbPath => HostingEnvironment.MapPath("~/ServerMonitor.db");
 
         [HttpGet]
         [Route("Iis")]

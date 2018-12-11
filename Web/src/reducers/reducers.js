@@ -1,40 +1,40 @@
-import { combineReducers } from 'redux';
-import filesize from 'filesize';
-import dateformat from 'dateformat';
-import * as types from '../constants/actionTypes';
+import { combineReducers } from "redux";
+import filesize from "filesize";
+import dateformat from "dateformat";
+import * as types from "../constants/actionTypes";
 
 const diskColumns = [
-  { Header: 'Path', accessor: 'path' },
+  { Header: "Path", accessor: "path" },
   {
-    Header: 'Size',
-    accessor: 'size',
-    Cell: size => (size.value !== '' ? filesize(size.value) : '')
+    Header: "Size",
+    accessor: "size",
+    Cell: size => (size.value !== "" ? filesize(size.value) : "")
   },
   {
-    Header: 'Usage',
-    accessor: 'usage',
+    Header: "Usage",
+    accessor: "usage",
     Cell: usage => `${usage.value}%`
   }
 ];
 const tasksColumns = [
-  { Header: 'Name', accessor: 'name' },
-  { Header: 'State', accessor: 'state' },
-  { Header: 'Last Run Time', accessor: 'lastRunTime' },
-  { Header: 'Last Result', accessor: 'lastTaskResult' }
+  { Header: "Name", accessor: "name" },
+  { Header: "State", accessor: "state" },
+  { Header: "Last Run Time", accessor: "lastRunTime" },
+  { Header: "Last Result", accessor: "lastTaskResult" }
 ];
 const oracleColumns = [
-  { Header: 'Name', accessor: 'currentBuildName' },
+  { Header: "Name", accessor: "currentBuildName" },
   {
-    Header: 'Date',
-    accessor: 'currentBuildDate',
-    Cell: date => dateformat(date.value, 'dd.mm.yyyy, dddd')
+    Header: "Date",
+    accessor: "currentBuildDate",
+    Cell: date => dateformat(date.value, "dd.mm.yyyy, dddd")
   },
-  { Header: 'Instance', accessor: 'displayName' }
+  { Header: "Instance", accessor: "displayName" }
 ];
 const sessionsColumns = [
-  { Header: 'User', accessor: 'user' },
-  { Header: 'Login Date', accessor: 'loginDate' },
-  { Header: 'State', accessor: 'state' }
+  { Header: "User", accessor: "user" },
+  { Header: "Login Date", accessor: "loginDate" },
+  { Header: "State", accessor: "state" }
 ];
 
 const hardwareInitialState = [];
@@ -50,14 +50,14 @@ const tableInitialState = {
   errors: [],
   loading: true
 };
-const oracleInstanciesErrorText = 'Oracle Instancies';
-const userSessionsErrorText = 'User Sessions';
-const tasksErrorText = 'Tasks';
-const hardwareErrorText = 'Hardware Monitor';
-const diskUsageErrorText = 'Disk Usage';
-const iisErrorText = 'IIS Applications';
-const linksErrorText = 'Links';
-const noteErrorText = 'Build Notes';
+const oracleInstanciesErrorText = "Oracle Instancies";
+const userSessionsErrorText = "User Sessions";
+const tasksErrorText = "Tasks";
+const hardwareErrorText = "Hardware Monitor";
+const diskUsageErrorText = "Disk Usage";
+const iisErrorText = "IIS Applications";
+const linksErrorText = "Links";
+const noteErrorText = "Build Notes";
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
@@ -180,6 +180,16 @@ function hardwareReducer(state = hardwareInitialState, action) {
 }
 
 function addAllNotifications(stateArray, notifications, message) {
+  if (!notifications) {
+    return [
+      ...stateArray,
+      {
+        message,
+        description: "404",
+        type: "Error"
+      }
+    ];
+  }
   const toAdd = notifications.map(x => ({
     message,
     description: x.message,
@@ -189,7 +199,7 @@ function addAllNotifications(stateArray, notifications, message) {
 }
 
 function errorReducer(state = [], action) {
-  let title = '';
+  let title = "";
   switch (action.type) {
     case types.TASKS_ERROR:
     case types.TASKS_SUCCESS:
@@ -233,9 +243,9 @@ function errorReducer(state = [], action) {
       title = iisErrorText;
       break;
     default:
-      title = '';
+      title = "";
   }
-  if (title === '') return state;
+  if (title === "") return state;
 
   return addAllNotifications(state, action.data.notifications, title);
 }

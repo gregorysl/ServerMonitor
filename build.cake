@@ -1,10 +1,9 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 #addin "Cake.Yarn"
 #addin "Cake.FileHelpers"
 #addin "Cake.Powershell"
-#addin nuget:?package=Cake.Json
-#addin nuget:?package=Newtonsoft.Json&version=9.0.1
+#addin nuget:?package=Newtonsoft.Json
 using System.Xml;
+using Path = System.IO.Path;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 //////////////////////////////////////////////////////////////////////
@@ -24,7 +23,7 @@ var settings = JsonConvert.DeserializeObject<JObject>(FileReadText("./settings.j
 var connectionString = "Data Source={0};Initial Catalog={1};Persist Security Info=True;User ID={2};Password={3}";
 var binDir = "./ServerMonitor/bin";
 var localDir = "./ServerMonitor";
-var webDistDir = "./Web/dist";
+var webDistDir = "./Web/public";
 var releaseDir = "./Release";
 
 //////////////////////////////////////////////////////////////////////
@@ -35,7 +34,6 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(binDir);
-    CleanDirectory(releaseDir);
 });
 
 Task("Restore-NuGet-Packages")
@@ -83,7 +81,10 @@ Task("Create-Web-App")
     .IsDependentOn("Copy-Install-Script")
 	.Does(() => 
 {
-    StartPowershellFile("./Release/Setup.ps1");
+    StartPowershellFile("./Release/Setup.ps1", args =>
+        {
+            args.Append("-copy:$false");
+        });
 });
 Task("Prepare-Local-Build")
 	.IsDependentOn("Create-Web-App")
@@ -96,16 +97,20 @@ Task("Yarn")
 	.Does(() => 
 {
 	Yarn.FromPath("./Web").Install();
-	Yarn.FromPath("./Web").RunScript("production");
+	Yarn.FromPath("./Web").RunScript("build");
 });
+
 Task("Copy-Install-Script")
 	.Does(() => 
 {
+    string releaseLocation = (target == "Default" || target == "Local") ?
+					Path.GetFullPath("./ServerMonitor") :
+					settings["releaseLocation"].ToString();
     var installScript = FileReadText("./Setup.ps1")
                     .Replace("##APPNAME##",settings["appName"].ToString())
                     .Replace("##USERNAME##",settings["userName"].ToString())
                     .Replace("##PASSWORD##",settings["password"].ToString())
-                    .Replace("##LOCATION##",settings["releaseLocation"].ToString());
+                    .Replace("##LOCATION##",releaseLocation);
     FileWriteText(releaseDir+"/Setup.ps1",installScript);
 });
 Task("Transform-Configs")
