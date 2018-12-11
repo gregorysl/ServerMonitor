@@ -80,7 +80,10 @@ Task("Create-Web-App")
     .IsDependentOn("Copy-Install-Script")
 	.Does(() => 
 {
-    StartPowershellFile("./Release/Setup.ps1");
+    StartPowershellFile("./Release/Setup.ps1", args =>
+        {
+            args.Append("-copy:$false");
+        });
 });
 Task("Prepare-Local-Build")
 	.IsDependentOn("Create-Web-App")
