@@ -38,7 +38,7 @@ class IisSection extends Component {
               Header: 'Name',
               accessor: 'key',
               Cell: row => (
-                <a target="_blank" href={row.original.url}>
+                <a target="_blank" rel='noopener noreferrer' href={row.original.url}>
                   {row.original.key}
                 </a>
               )
