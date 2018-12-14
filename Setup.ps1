@@ -1,14 +1,14 @@
 param([switch]$copy = $true)
 
 Import-Module WebAdministration
-$initialPath = (Get-Item -Path "./").FullName
+$initialPath = (Get-Item -Path "./")
 $iisAppPoolName = "##APPNAME##"
 $userName = "##USERNAME##"
 $password = "##PASSWORD##"
 $directoryPath = "##LOCATION##"
 
 if($copy){
-	Copy-item -Force -Recurse $initialPath -Destination $directoryPath
+	Copy-item -Force -Recurse "$initialPath\*" -Destination $directoryPath
 }
 
 cd IIS:\AppPools\
