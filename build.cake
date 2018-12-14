@@ -23,7 +23,7 @@ var settings = JsonConvert.DeserializeObject<JObject>(FileReadText("./settings.j
 var connectionString = "Data Source={0};Initial Catalog={1};Persist Security Info=True;User ID={2};Password={3}";
 var binDir = "./ServerMonitor/bin";
 var localDir = "./ServerMonitor";
-var webDistDir = "./Web/public";
+var webDistDir = "./Web/build";
 var releaseDir = "./Release";
 
 //////////////////////////////////////////////////////////////////////
