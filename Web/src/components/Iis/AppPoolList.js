@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
 import TooltipButon from '../TooltipButon';
+import ActionsButtons from './ActionsButtons';
 
 const AppPoolList = (props) => {
   if (props.items.length === 0) {
@@ -31,11 +32,14 @@ const AppPoolList = (props) => {
           Header: 'Action',
           accessor: 'name',
           Cell: row => (
+            <>
+            <ActionsButtons {...row.original} />
             <TooltipButon
               title="recycle"
               icon="reload"
               click={() => props.recycle(row.value)}
             />
+            </>
           ),
           width: 100
         }
