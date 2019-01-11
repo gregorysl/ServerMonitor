@@ -56,7 +56,7 @@ class IisSection extends Component {
             {
               Header: 'Note',
               accessor: 'note',
-              Cell: row => <NoteControl {...row.original} />,
+              Cell: row => <NoteControl name={row.row.key} note={row.row.note} saveNote={row.saveNote} />,
               width: 400
             },
             {

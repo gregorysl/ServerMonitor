@@ -48,7 +48,6 @@ class NoteControl extends Component {
 
   render() {
     const icon = this.props.note === '' ? 'tag-o' : 'tag';
-    // eslint-disable-next-line react/no-array-index-key
     const note =
       this.props.note &&
       this.props.note.split('\\n').map(item => (
