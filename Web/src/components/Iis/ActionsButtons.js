@@ -10,9 +10,7 @@ const flatten = list => list.reduce((a, b) => a.concat(Array.isArray(b) ? flatte
 const ActionsButtons = (props) => {
   const onSet = () => props.set(props);
   return (
-    <div className="actions-main">
       <StartStopButton running={props.running} click={onSet} />
-    </div>
   );
 };
 
