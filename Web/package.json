@@ -4,10 +4,10 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@craco/craco": "^3.2.0",
     "antd": "^3.2.1",
     "axios": "^0.18.0",
-    "craco-antd": "^1.9.0",
+    "babel-plugin-import": "^1.11.0",
+    "customize-cra": "^0.2.11",
     "dateformat": "^3.0.3",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^3.0.0",
@@ -17,6 +17,7 @@
     "node-sass": "^4.10.0",
     "prettier": "^1.15.2",
     "react": "^16.6.3",
+    "react-app-rewired": "^2.0.3",
     "react-dom": "^16.6.3",
     "react-page-visibility": "^2.0.0",
     "react-redux": "^5.0.6",
@@ -26,9 +27,9 @@
     "redux-saga": "^0.16.0"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
