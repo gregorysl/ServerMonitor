@@ -43,33 +43,5 @@ namespace ServerMonitor.Controllers
                 return response;
             }
         }
-
-        protected static double CalculateFolderSize(string folder)
-        {
-            double folderSize = 0;
-            try
-            {
-                if (!Directory.Exists(folder))
-                    return folderSize;
-                try
-                {
-                    folderSize = Directory.GetFiles(folder)
-                                     .Where(File.Exists)
-                                     .Select(x => new FileInfo(x))
-                                     .Aggregate(folderSize, (current, finfo) => current + finfo.Length) +
-                                 Directory.GetDirectories(folder).Sum(dir => CalculateFolderSize(dir));
-                }
-                catch (NotSupportedException e)
-                {
-                    Log.Error(e.Message);
-                }
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Log.Error(e.Message);
-            }
-
-            return folderSize;
-        }
     }
 }

@@ -11,7 +11,7 @@ const DataTable = ({
   message
 }) => {
   const finalColumns = [...columns, ...extraColumns];
-  return (
+  return (data.length !== 0 ) && (
     <React.Fragment>
       <h1 className="table-title">{title}</h1>
       {message !== '' && <h2>{message}</h2>}

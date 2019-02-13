@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
-using static ServerMonitor.Helpers.HardwareManager;
 
 namespace ServerMonitor.Controllers
 {
