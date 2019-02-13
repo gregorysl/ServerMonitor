@@ -7,7 +7,7 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
-    [RoutePrefix("api/Sessions")]
+    [RoutePrefix("Sessions")]
     public class SessionsController : BaseApi
     {
         [HttpGet]
@@ -63,7 +63,7 @@ namespace ServerMonitor.Controllers
                         return response;
                     }
 
-                    //userSession.Logoff(true);
+                    userSession.Logoff(true);
 
                     var message = $"Session closed for user {userSession.UserName}.";
                     Log.Debug(message);
