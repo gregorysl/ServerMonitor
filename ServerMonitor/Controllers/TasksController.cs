@@ -8,10 +8,10 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
+    [RoutePrefix("Tasks")]
     public class TasksController : BaseApi
     {
-
-        [HttpGet]
+        [Route]
         public Response Get()
         {
             var response = new Response();
@@ -47,9 +47,9 @@ namespace ServerMonitor.Controllers
             return details;
         }
 
-
-        [HttpPost]
-        public Response Post([FromBody] string name)
+        
+        [Route("{name}")]
+        public Response Post(string name)
         {
             var response = new Response();
             try

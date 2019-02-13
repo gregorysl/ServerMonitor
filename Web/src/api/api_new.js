@@ -11,7 +11,6 @@ const sessionsUri = `${appUri}Sessions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
-const runTasksUri = `${appUri}Tasks/`;
 // const hardwareUri = `${appUri}Hardware/`;
 const hardwareUri = `${appUri}Hardware/GetAll`;
 const iisUri = `${appUri}Iis/`;
@@ -40,13 +39,6 @@ export function recycleApp(appName) {
   return Axios.post(`${iisRecycleUri}${appName}/`);
 }
 
-export function runTask(name) {
-  return Axios.post(runTasksUri, JSON.stringify(name), {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-}
 
 export function getServices() {
   return Axios.get(servicesStopUri);
@@ -65,9 +57,6 @@ export function getDisk() {
   return Axios.get(diskUri);
 }
 
-export function getTasks() {
-  return Axios.get(tasksUri);
-}
 
 
 export function getOracleInstancies() {
@@ -84,4 +73,12 @@ export function getUserSessions() {
 
 export function killUser(data) {
   return Axios.delete(`${sessionsUri}/${data}`);
+}
+
+export function getTasks() {
+  return Axios.get(tasksUri);
+}
+
+export function runTask(name) {
+  return Axios.post(`${tasksUri}/${name}`);
 }
