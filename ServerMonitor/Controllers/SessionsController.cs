@@ -10,7 +10,6 @@ namespace ServerMonitor.Controllers
     [RoutePrefix("Sessions")]
     public class SessionsController : BaseApi
     {
-        [HttpGet]
         [Route]
         public Response Get()
         {
@@ -41,8 +40,7 @@ namespace ServerMonitor.Controllers
 
             }
         }
-
-        [HttpDelete]
+        
         [Route("{id}")]
         public Response Delete(int id)
         {
