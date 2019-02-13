@@ -5,8 +5,8 @@ import { killSession } from '../actions/actions';
 import TooltipButon from './TooltipButon';
 
 const SessionsActionButtons = (props) => {
-  const onClick = () => props.set(props.user);
-  return props.state !== 'Active' && (<TooltipButon click={onClick} icon="usergroup-delete" title="Log off user" />);
+  const onClick = () => props.set(props.id);
+  return props.state !== 'Active' && (<TooltipButon click={onClick} icon="user-delete" title="Log off user" />);
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 
 SessionsActionButtons.propTypes = {
   set: PropTypes.func.isRequired,
-  user: PropTypes.string.isRequired
+  id: PropTypes.number.isRequired
 };
 
 export default connect(null, mapDispatchToProps)(SessionsActionButtons);

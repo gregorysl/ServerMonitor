@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${appUri}OracleInstance`;
-const sessionsUri = `${apiUri}GetUserSesssions`;
+const sessionsUri = `${appUri}Sessions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
@@ -69,9 +69,6 @@ export function getTasks() {
   return Axios.get(tasksUri);
 }
 
-export function getUserSessions() {
-  return Axios.get(sessionsUri);
-}
 
 export function getOracleInstancies() {
   return Axios.get(oracleUri);
@@ -81,10 +78,10 @@ export function setNote(data) {
   return Axios.post(`${appUri}Iis/SaveBuildNote`, data);
 }
 
+export function getUserSessions() {
+  return Axios.get(`${sessionsUri}`);
+}
+
 export function killUser(data) {
-  return Axios.post(`${apiUri}DropUserSession/`, JSON.stringify(data), {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+  return Axios.delete(`${sessionsUri}/${data}`);
 }
