@@ -40,7 +40,7 @@ namespace ServerMonitor.Controllers
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
         }
@@ -54,13 +54,14 @@ namespace ServerMonitor.Controllers
             {
                 var mgr = new ServerManager();
                 var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
-                
+
                 if (pool == null)
                 {
                     response.AddErrorNotification("Application pool not found.");
                     response.Status = Status.Error;
                     return response;
-                }else if(pool.State == ObjectState.Stopped)
+                }
+                else if (pool.State == ObjectState.Stopped)
                 {
                     response.AddErrorNotification("Application pool is not started.");
                     response.Status = Status.Error;
@@ -83,24 +84,27 @@ namespace ServerMonitor.Controllers
 
         private IList<IisApplication> GetFilteredApps()
         {
+            var buildCommonName = ConfigurationManager.AppSettings["BuildCommonName"];
             var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
-            var regexString = ConfigurationManager.AppSettings["IISAppPoolRegex"];
             var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
-            var groupRegex = new Regex(regexString);
             var mgr = new ServerManager();
             var iis = mgr.Sites[0].Applications;
 
-            var filteredApplicationPools = mgr.ApplicationPools.Select(x => x.Name)
-                .Where(a => !ignoreList.Contains(a)).ToList();
+            var filteredApplicationPools = mgr.ApplicationPools
+                .Where(a => !ignoreList.Contains(a.Name));
 
-            var applicationPoolGroupNames = filteredApplicationPools.Where(x => groupRegex.IsMatch(x))
-                .Select(x => groupRegex.Match(x).Captures[0].Value).Distinct().ToList();
+            var fapNames = filteredApplicationPools.Select(x => x.Name).ToList();
+            var buildNames = fapNames.Where(a => a.Contains(buildCommonName)).Select(x => x.Replace(buildCommonName, "")).ToList();
 
-            var applications = applicationPoolGroupNames.Select(item => new IisApplication
+
+            var allUsedAppPools = buildNames.Select(a => fapNames.Where(x => x.Contains(a))).SelectMany(x => x).ToList();
+            buildNames.AddRange(fapNames.Except(allUsedAppPools));
+            
+            var applications = buildNames.Select(item => new IisApplication
             {
                 Name = item,
                 Url = $"{appRoot}{item}/",
-                ApplicationPools = mgr.ApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x => new IISAppPool
+                ApplicationPools = filteredApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x => new IISAppPool
                 {
                     Name = x.Name,
                     Running = x.State == ObjectState.Started,
@@ -117,9 +121,9 @@ namespace ServerMonitor.Controllers
             }
 
             applications.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
-            return applications;
+            return applications.OrderBy(x => x.Name).ToList();
         }
-        
+
         private static XElement GetWhitelistItems()
         {
             var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
@@ -141,7 +145,7 @@ namespace ServerMonitor.Controllers
         [Route("Iis/Toggle")]
         public Response Toggle(IssToggleConfig issToggleConfig)
         {
-            var response= new Response();
+            var response = new Response();
             try
             {
                 var mgr = new ServerManager();
@@ -159,7 +163,7 @@ namespace ServerMonitor.Controllers
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message,ex.StackTrace);
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
 
@@ -194,7 +198,7 @@ namespace ServerMonitor.Controllers
                         build.Remove();
                     }
                 }
-                
+
                 using (var file = new StreamWriter(whitelistFile))
                 {
                     whitelist.Save(file);
