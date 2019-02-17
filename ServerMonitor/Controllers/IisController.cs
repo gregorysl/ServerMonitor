@@ -32,7 +32,8 @@ namespace ServerMonitor.Controllers
                     CacheManager.FlushCache(cacheKey);
                     response.AddSuccessNotification("Flushed IIS cache successfully");
                 }
-                var filteredApps = CacheManager.GetObjectFromCache(cacheKey, _cacheLifecycle, GetFilteredApps);
+                //var filteredApps = CacheManager.GetObjectFromCache(cacheKey, _cacheLifecycle, GetFilteredApps);
+                var filteredApps = GetFilteredApps();
                 Log.Debug("GetFilteredApps call success.");
                 response.Data = filteredApps;
                 return response;
@@ -82,61 +83,56 @@ namespace ServerMonitor.Controllers
 
         }
 
-        private IList<IisApplication> GetFilteredApps()
+        private IList<Build> GetFilteredApps()
         {
             var buildCommonName = ConfigurationManager.AppSettings["BuildCommonName"];
-            var ignoreList = ConfigurationManager.AppSettings["IISIgnoreList"].Split('|');
             var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
+            var whitelist = GetWhitelist();
             var mgr = new ServerManager();
             var iis = mgr.Sites[0].Applications;
 
-            var filteredApplicationPools = mgr.ApplicationPools
-                .Where(a => !ignoreList.Contains(a.Name));
+            var filteredApplicationPools = mgr.ApplicationPools;
 
             var fapNames = filteredApplicationPools.Select(x => x.Name).ToList();
             var buildNames = fapNames.Where(a => a.Contains(buildCommonName)).Select(x => x.Replace(buildCommonName, "")).ToList();
 
 
-            var allUsedAppPools = buildNames.Select(a => fapNames.Where(x => x.Contains(a))).SelectMany(x => x).ToList();
-            buildNames.AddRange(fapNames.Except(allUsedAppPools));
-            
-            var applications = buildNames.Select(item => new IisApplication
+            var applications = buildNames.Select(item => new Build
             {
                 Name = item,
                 Url = $"{appRoot}{item}/",
-                ApplicationPools = filteredApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x => new IISAppPool
+                Whitelisted = whitelist.Builds.Any(x=>item==x),
+                ApplicationPools = filteredApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x =>
+                new IISAppPool(iis.First(a => a.ApplicationPoolName == x.Name).VirtualDirectories["/"].PhysicalPath)
                 {
                     Name = x.Name,
-                    Running = x.State == ObjectState.Started,
-                    Apps = iis.Where(a => a.ApplicationPoolName == x.Name)
-                        .Select(s => s.Path.Replace("/", string.Empty)).ToList()
-                }).Where(x => x.Apps.Any()).ToList()
+                    Running = x.State == ObjectState.Started
+                }).ToList()
             }).ToList();
 
-            var buildsNode = GetWhitelistItems();
-
-            if (buildsNode != null)
-            {
-                applications.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, buildsNode));
-            }
+            //applications.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, whitelist.Builds));
 
             applications.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
             return applications.OrderBy(x => x.Name).ToList();
         }
 
-        private static XElement GetWhitelistItems()
+        private Whitelist GetWhitelist()
         {
             var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
             if (!File.Exists(whitelistFile)) return null;
-            var whitelist = XDocument.Load(whitelistFile);
+            var whiteListDoc = XDocument.Load(whitelistFile);
 
-            var buildsNode = whitelist.Descendants("builds").First();
-            return buildsNode;
+            var whiteList = new Whitelist
+            {
+                Builds = whiteListDoc.GetAllValuesByNode("builds"),
+                Services = whiteListDoc.GetAllValuesByNode("services")
+            };
+
+            return whiteList;
         }
 
-        private bool IsWhiteListed(IList<IISAppPool> applicationPools, XElement buildsNode)
+        private bool IsWhiteListed(IList<IISAppPool> applicationPools, List<string> builds)
         {
-            var builds = buildsNode.Descendants("app").Select(x => x.Attribute("value")?.Value);
             var apps = applicationPools.Select(x => x.Name).ToList();
             return builds.Intersect(apps).Count() == apps.Count;
         }

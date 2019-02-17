@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
 namespace ServerMonitor.Models
 {
-    public class IisApplication
+    public class Build
     {
         [JsonProperty("key")]
         public string Name { get; set; }
@@ -19,6 +20,9 @@ namespace ServerMonitor.Models
 
         [JsonProperty("url")]
         public string Url { get; set; }
+
+        public DateTime CreatedDateTime => ApplicationPools.Min(x => x.CreatedDateTime);
+        public int Days => (DateTime.Now - CreatedDateTime).Days;
 
 
         [JsonProperty("running")]
@@ -37,7 +41,7 @@ namespace ServerMonitor.Models
             }
         }
 
-        public IisApplication()
+        public Build()
         {
             ApplicationPools = new List<IISAppPool>();
         }
