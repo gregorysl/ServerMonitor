@@ -120,6 +120,7 @@
     <Compile Include="Helpers\ApiGatewayHandler.cs" />
     <Compile Include="Helpers\HardwareManager.cs" />
     <Compile Include="Helpers\KeyValueData.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Models\IssToggleConfig.cs" />
     <Compile Include="Models\Link.cs" />
     <Compile Include="Controllers\LinksController.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Models\IISApplication.cs" />
     <Compile Include="Models\IISAppPool.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Whitelist.cs" />
     <Compile Include="Oracle\BuildServerDetails.cs" />
     <Compile Include="Oracle\ConnectionDetail.cs" />
     <Compile Include="Oracle\OracleInstance.cs" />
