@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Xml.Linq;
@@ -93,26 +92,25 @@ namespace ServerMonitor.Controllers
 
             var filteredApplicationPools = mgr.ApplicationPools;
 
-            var fapNames = filteredApplicationPools.Select(x => x.Name).ToList();
-            var buildNames = fapNames.Where(a => a.Contains(buildCommonName)).Select(x => x.Replace(buildCommonName, "")).ToList();
-
-
+            var buildNames = filteredApplicationPools
+                            .Select(x => x.Name)
+                            .Where(a => a.Contains(buildCommonName))
+                            .Select(x => x.Replace(buildCommonName, "")).ToList();
+            
             var applications = buildNames.Select(item => new Build
             {
                 Name = item,
                 Url = $"{appRoot}{item}/",
-                Whitelisted = whitelist.Builds.Any(x=>item==x),
+                Whitelisted = whitelist.Builds.Any(x => item == x),
+                Note = GetBuildNote(item),
                 ApplicationPools = filteredApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x =>
-                new IISAppPool(iis.First(a => a.ApplicationPoolName == x.Name).VirtualDirectories["/"].PhysicalPath)
-                {
-                    Name = x.Name,
-                    Running = x.State == ObjectState.Started
-                }).ToList()
+                    new IISAppPool(iis.First(a => a.ApplicationPoolName == x.Name).VirtualDirectories["/"].PhysicalPath)
+                    {
+                        Name = x.Name,
+                        Running = x.State == ObjectState.Started
+                    }).ToList()
             }).ToList();
 
-            //applications.ForEach(ap => ap.Whitelisted = IsWhiteListed(ap.ApplicationPools, whitelist.Builds));
-
-            applications.ForEach(ap => ap.Note = GetBuildNote(ap.Name));
             return applications.OrderBy(x => x.Name).ToList();
         }
 
@@ -129,12 +127,6 @@ namespace ServerMonitor.Controllers
             };
 
             return whiteList;
-        }
-
-        private bool IsWhiteListed(IList<IISAppPool> applicationPools, List<string> builds)
-        {
-            var apps = applicationPools.Select(x => x.Name).ToList();
-            return builds.Intersect(apps).Count() == apps.Count;
         }
 
         [HttpPost]

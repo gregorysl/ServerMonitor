@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Models\Build.cs" />
     <Compile Include="Controllers\HardwareController.cs" />
     <Compile Include="Controllers\IisController.cs" />
     <Compile Include="Controllers\OracleInstanceController.cs" />
@@ -135,7 +136,6 @@
     <Compile Include="Helpers\LinksConfigSection.cs" />
     <Compile Include="Models\BuildNote.cs" />
     <Compile Include="Models\FolderSize.cs" />
-    <Compile Include="Models\IISApplication.cs" />
     <Compile Include="Models\IISAppPool.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Whitelist.cs" />
