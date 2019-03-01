@@ -60,7 +60,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             var harwareList = new List<Hardware>();
 
-            var config = LinksHelper.GetLinks("hardwareList");
+            var config = new SettingsHelper().Get().HardwareList;
 
             if (config == null)
             {
@@ -69,7 +69,7 @@ namespace ServerMonitor.Controllers
                 return response;
             }
 
-            foreach (LinkItem link in config)
+            foreach (ServerData link in config)
             {
                 var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";
                 var responseItem = ApiClient.Get<Response>(linkUrl);

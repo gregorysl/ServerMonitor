@@ -8,13 +8,13 @@ namespace ServerMonitor.Controllers
 {
     public class LinksController : BaseApi
     {
-        private IEnumerable<LinkItem> _linkCollection;
+        private IEnumerable<Link2> _linkCollection;
 
         // GET api/<controller>
         public Response Get()
         {
             var response = new Response();
-            _linkCollection = LinksHelper.GetLinks("links");
+            _linkCollection = new SettingsHelper().Get().Links;
             if (_linkCollection == null)
             {
                 response.Status = Status.Error;
