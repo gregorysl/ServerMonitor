@@ -36,10 +36,10 @@ class IisSection extends Component {
           columns={[
             {
               Header: 'Name',
-              accessor: 'key',
+              accessor: 'name',
               Cell: row => (
-                <a target="_blank" rel='noopener noreferrer' href={row.original.url}>
-                  {row.original.key}
+                <a target="_blank" rel='noopener noreferrer' href={`${window.location.origin}/${row.original.name}/`}>
+                  {row.original.name}
                 </a>
               )
             },
@@ -56,7 +56,7 @@ class IisSection extends Component {
             {
               Header: 'Note',
               accessor: 'note',
-              Cell: row => <NoteControl name={row.row.key} note={row.row.note} saveNote={row.saveNote} />,
+              Cell: row => <NoteControl name={row.row.name} note={row.row.note} saveNote={row.saveNote} />,
               width: 400
             },
             {
@@ -108,11 +108,7 @@ const mapDispatchToProps = dispatch => ({
   getIis: () => dispatch(actions.getIisAction()),
   recycle: name => dispatch(actions.recycleApp(name)),
   whitelist: (item) => {
-    const data = {
-      appPools: flatten(item.apps.map(x => x.children)),
-      condition: item.whitelisted
-    };
-    dispatch(actions.whitelistApp(data));
+    dispatch(actions.whitelistApp(item.name));
   }
 });
 
