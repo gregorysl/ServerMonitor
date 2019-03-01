@@ -1,0 +1,13 @@
+﻿{
+    "hardwareList": [
+      { "name": "Google", "url": "http://localhost/ServerMonitor/" }
+    ],
+    "links": [
+        { "name": "Google", "url": "https://www.google.com/" }
+    ],
+      "WhitelistXmlPath": "c:\\inetpub\\AutoDeployment\\Config\\WhiteListForCleanBuilds.config",
+      "PathsToCheckSize": "C:\\Logs|C:\\inetpub\\wwwroot",
+      "ScheduledTasksToView": "CleanBuilds|CleanUpBuilds",
+      "CacheInSeconds": "3",
+      "IsOracleInstanceManagerEnabled": "true"
+  }
