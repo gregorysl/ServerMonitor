@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,23 +8,12 @@ namespace ServerMonitor.Helpers
 {
     public static class LinksHelper
     {
-
-        public static Link FromConfig(this Link2 link)
-        {
-            return new Link
-            {
-                Name = link.Name,
-                Url = link.Url, 
-                Type = link.Type
-            };
-        }
-
         public static Link GetLinkStatus(Link2 item)
         {
             var credentials = !string.IsNullOrWhiteSpace(item.Username) && !string.IsNullOrWhiteSpace(item.Password)
                 ? new NetworkCredential(item.Username, item.Password)
                 : null;
-            var link = item.FromConfig();
+            var link = new Link(item);
 
             try
             {

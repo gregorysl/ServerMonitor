@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ServerMonitor.Helpers;
 
 namespace ServerMonitor.Models
 {
@@ -14,6 +15,12 @@ namespace ServerMonitor.Models
         public string Type { get; set; }
         [JsonProperty("url")]
         public string Url { get; set; }
-        
+
+        public Link(Link2 link)
+        {
+            Name = link.Name;
+            Url = link.Url;
+            Type = link.Type;
+        }
     }
 }
