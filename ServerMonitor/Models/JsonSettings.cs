@@ -12,8 +12,8 @@ namespace ServerMonitor.Helpers
         public string WhitelistPath { get; set; }
         public string PathsToCheckSize { get; set; }
         public string ScheduledTasksToView { get; set; }
-        public string CacheInSeconds { get; set; }
-        public string IsOracleInstanceManagerEnabled { get; set; }
+        public int CacheInSeconds { get; set; }
+        public bool IsOracleInstanceManagerEnabled { get; set; }
     }
 
     public class ServerData

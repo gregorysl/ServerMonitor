@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32.TaskScheduler;
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Web.Http;
 using ServerMonitor.Helpers;
@@ -34,7 +33,7 @@ namespace ServerMonitor.Controllers
 
         private static object GetScheduledTasks()
         {
-            var tasks = ConfigurationManager.AppSettings["ScheduledTasksToView"];
+            var tasks = new SettingsHelper().Get().ScheduledTasksToView;
             var taskDetails = TaskService.Instance.AllTasks.Where(t => tasks.Contains(t.Name));
             var details = taskDetails.Select(t => new
             {

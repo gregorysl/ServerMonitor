@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
-using Cassia;
-using Microsoft.Web.Administration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
-using ServerMonitor.Oracle;
 
 namespace ServerMonitor.Controllers
 {
@@ -21,7 +16,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var foldersString = ConfigurationManager.AppSettings["PathsToCheckSize"];
+                var foldersString = new SettingsHelper().Get().PathsToCheckSize;
                 var data = foldersString.Split('|')
                     .Where(x => Path.GetPathRoot(x) != null)
                     .Select(x => new DirectoryInfo(x))

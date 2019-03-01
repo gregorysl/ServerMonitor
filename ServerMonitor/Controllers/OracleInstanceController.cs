@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 using ServerMonitor.Oracle;
@@ -20,8 +19,9 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var parsed = bool.TryParse(ConfigurationManager.AppSettings["IsOracleInstanceManagerEnabled"], out var isEnabled);
-                if (parsed && isEnabled)
+
+                var isEnabled = new SettingsHelper().Get().IsOracleInstanceManagerEnabled;
+                if (isEnabled)
                 {
                     Log.Debug("GetAllInstances called.");
                     var instances = OracleInstanceBl.GetAllInstances();
