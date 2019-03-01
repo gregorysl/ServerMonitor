@@ -6,8 +6,13 @@ using System.Linq;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Xml.Linq;
+using System.Xml.Serialization;
+using BuildInspect.Data;
+using BuildInspect.Data.Entities;
+using BuildInspect.Filter;
 using LiteDB;
 using Microsoft.Web.Administration;
+using Newtonsoft.Json;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
@@ -21,6 +26,7 @@ namespace ServerMonitor.Controllers
         [Route("Iis")]
         public Response Get([FromUri]bool force = false)
         {
+
             var cacheKey = "GetFilteredApps";
             var response = new Response();
             try
@@ -33,6 +39,7 @@ namespace ServerMonitor.Controllers
                 }
                 //var filteredApps = CacheManager.GetObjectFromCache(cacheKey, _cacheLifecycle, GetFilteredApps);
                 var filteredApps = GetFilteredApps();
+
                 Log.Debug("GetFilteredApps call success.");
                 response.Data = filteredApps;
                 return response;
@@ -82,53 +89,24 @@ namespace ServerMonitor.Controllers
 
         }
 
-        private IList<Build> GetFilteredApps()
+        private IList<BuildEntity> GetFilteredApps()
         {
-            var buildCommonName = ConfigurationManager.AppSettings["BuildCommonName"];
-            var appRoot = ConfigurationManager.AppSettings["AppRootUrl"].EnsureSlash();
-            var whitelist = GetWhitelist();
-            var mgr = new ServerManager();
-            var iis = mgr.Sites[0].Applications;
 
-            var filteredApplicationPools = mgr.ApplicationPools;
+            var whitelistFile = new SettingsHelper().Get().WhitelistPath;
+            var whitelistProvider = new JsonWhitelistProvider(whitelistFile);
+            var whitelist = whitelistProvider.GetWhitelist();
 
-            var buildNames = filteredApplicationPools
-                            .Select(x => x.Name)
-                            .Where(a => a.Contains(buildCommonName))
-                            .Select(x => x.Replace(buildCommonName, "")).ToList();
+            var buildsProvider = new BasedOnApiEntityExistsBuildsProvider();
+
+            var builds = buildsProvider.GetBuilds().ToList();
+            builds.FillAdditionalData(whitelist);
             
-            var applications = buildNames.Select(item => new Build
-            {
-                Name = item,
-                Url = $"{appRoot}{item}/",
-                Whitelisted = whitelist.Builds.Any(x => item == x),
-                Note = GetBuildNote(item),
-                ApplicationPools = filteredApplicationPools.Where(x => x.Name.StartsWith(item)).Select(x =>
-                    new IISAppPool(iis.First(a => a.ApplicationPoolName == x.Name).VirtualDirectories["/"].PhysicalPath)
-                    {
-                        Name = x.Name,
-                        Running = x.State == ObjectState.Started
-                    }).ToList()
-            }).ToList();
+            var notes = GetAllBuildNotes();
+            builds.ForEach(x=>x.Note = notes.FirstOrDefault(n=>n.BuildName==x.Name)?.Note);
 
-            return applications.OrderBy(x => x.Name).ToList();
+            return builds;
         }
-
-        private Whitelist GetWhitelist()
-        {
-            var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
-            if (!File.Exists(whitelistFile)) return null;
-            var whiteListDoc = XDocument.Load(whitelistFile);
-
-            var whiteList = new Whitelist
-            {
-                Builds = whiteListDoc.GetAllValuesByNode("builds"),
-                Services = whiteListDoc.GetAllValuesByNode("services")
-            };
-
-            return whiteList;
-        }
-
+        
         [HttpPost]
         [Route("Iis/Toggle")]
         public Response Toggle(IssToggleConfig issToggleConfig)
@@ -158,54 +136,31 @@ namespace ServerMonitor.Controllers
         }
 
         [HttpPost]
-        public Response WhitelistToggle(IssToggleConfig issToggleConfig)
+        [Route("IIS/Whitelist/{name}")]
+        public Response WhitelistToggle(string name)
         {
             var response = new Response();
             try
             {
-                var whitelistFile = ConfigurationManager.AppSettings["WhitelistXmlPath"];
-                var whitelist = XDocument.Load(whitelistFile);
+                var whitelistFile = new SettingsHelper().Get().WhitelistPath;
+                var whitelistProvider = new JsonWhitelistProvider(whitelistFile);
+                var whitelist = whitelistProvider.GetWhitelist();
 
-                var buildsNode = whitelist.Descendants("builds").First();
-
-                if (!issToggleConfig.Condition)
+                var isWhitelisted = whitelist.Any(x => x == name);
+                if (isWhitelisted)
                 {
-                    foreach (var appPool in issToggleConfig.AppPools)
-                    {
-                        var poolElement = new XElement("app");
-                        poolElement.SetAttributeValue("value", appPool);
-                        buildsNode.Add(poolElement);
-                    }
+                    whitelist.Remove(name);
                 }
                 else
                 {
-                    var builds = buildsNode.Descendants("app")
-                        .Where(x => issToggleConfig.AppPools.Contains(x.Attribute("value")?.Value)).ToList();
-                    foreach (var build in builds)
-                    {
-                        build.Remove();
-                    }
+                    whitelist.Add(name);
                 }
 
-                using (var file = new StreamWriter(whitelistFile))
-                {
-                    whitelist.Save(file);
-                }
+                var json = JsonConvert.SerializeObject(whitelist);
+                File.WriteAllText(whitelistFile, json);
 
-                //if (application.Name.EndsWith("-O"))
-                //{
-                //    var oracleInstances = GetAllOracleInstances();
-                //    var instance = oracleInstances.FirstOrDefault(i => i.CurrentBuildName == application.Name.Replace("-O", ""));
-                //    if (instance != null)
-                //    {
-                //        SetReserved(new OracleInstanceReservationRequest
-                //        {
-                //            Id = instance.Id,
-                //            Reserve = true
-                //        });
-                //    }
-                //}
-                var function = issToggleConfig.Condition ? "un" : "";
+                var function = isWhitelisted ? "un" : "";
+
                 response.AddSuccessNotification($"Application {function}whitelisted successfully.");
                 return response;
             }
@@ -217,7 +172,15 @@ namespace ServerMonitor.Controllers
             }
 
         }
-
+        
+        protected List<BuildNote> GetAllBuildNotes()
+        {
+            using (var db = new LiteDatabase(DbPath))
+            {
+                var col = db.GetCollection<BuildNote>("BuildNotes").FindAll().ToList();
+                return col;
+            }
+        }
 
         protected string GetBuildNote(string name)
         {
