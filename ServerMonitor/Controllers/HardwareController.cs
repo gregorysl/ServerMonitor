@@ -60,7 +60,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             var harwareList = new List<Hardware>();
 
-            var config = new SettingsHelper().Get().HardwareList;
+            var config = Settings.HardwareList;
 
             if (config == null)
             {

@@ -92,7 +92,7 @@ namespace ServerMonitor.Controllers
         private IList<BuildEntity> GetFilteredApps()
         {
 
-            var whitelistFile = new SettingsHelper().Get().WhitelistPath;
+            var whitelistFile = Settings.WhitelistPath;
             var whitelistProvider = new JsonWhitelistProvider(whitelistFile);
             var whitelist = whitelistProvider.GetWhitelist();
 
@@ -142,7 +142,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var whitelistFile = new SettingsHelper().Get().WhitelistPath;
+                var whitelistFile = Settings.WhitelistPath;
                 var whitelistProvider = new JsonWhitelistProvider(whitelistFile);
                 var whitelist = whitelistProvider.GetWhitelist();
 

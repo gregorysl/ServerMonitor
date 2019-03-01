@@ -14,7 +14,7 @@ namespace ServerMonitor.Controllers
         public Response Get()
         {
             var response = new Response();
-            _linkCollection = new SettingsHelper().Get().Links;
+            _linkCollection = Settings.Links;
             if (_linkCollection == null)
             {
                 response.Status = Status.Error;
