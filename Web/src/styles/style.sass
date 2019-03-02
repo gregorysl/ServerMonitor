@@ -1,7 +1,19 @@
-.ant-card-body 
-  display: table;
-  margin: 0 auto;
-  padding: 15px;
+$primary: #c30e2e;
+  
+html
+  min-height: 100%;
+  position: relative;
+
+body
+  height: 100%;
+
+.layout
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
 
 .ant-card-head-title 
   text-align: center;
@@ -91,3 +103,11 @@ h1
   flex-direction: none;
   justify-content: left;
 
+.settings
+  float: right;
+  color: $primary;
+  font-size: 25px;
+
+.text-colored
+  color: $primary;
+  font-weight: bold;
