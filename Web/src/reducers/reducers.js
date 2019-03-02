@@ -179,6 +179,15 @@ function hardwareReducer(state = hardwareInitialState, action) {
   }
 }
 
+function settingsReducer(state = initialState, action) {
+  switch (action.type) {
+    case types.GET_SETTINGS_SUCCESS:
+      return {data:action.data.data};
+    default:
+      return state;
+  }
+}
+
 function addAllNotifications(stateArray, notifications, message) {
   if (!notifications) {
     return [
@@ -258,7 +267,8 @@ const rootReducer = combineReducers({
   tasks: tasksReducer,
   sessions: sessionsReducer,
   oracle: oracleReducer,
-  errors: errorReducer
+  errors: errorReducer,
+  settings: settingsReducer
 });
 
 export default rootReducer;

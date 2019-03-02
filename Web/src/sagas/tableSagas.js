@@ -153,3 +153,12 @@ export function* setKillUser(props) {
     yield put({ type: types.SESSIONS_KILL_ERROR, data: error.response.data });
   }
 }
+
+export function* getSettings() {
+  try {
+    const { data } = yield call(api.getSettings);
+    yield put({ type: types.GET_SETTINGS_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.GET_SETTINGS_ERROR, data: error.response.data });
+  }
+}

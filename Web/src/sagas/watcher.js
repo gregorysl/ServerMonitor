@@ -57,3 +57,7 @@ export function* watchSetNote() {
 export function* watchKillUser() {
   yield takeLatest(types.SESSIONS_KILL_REQUEST, saga.setKillUser);
 }
+
+export function* watchGetSettings() {
+  yield takeLatest(types.GET_SETTINGS_REQUEST, saga.getSettings);
+}

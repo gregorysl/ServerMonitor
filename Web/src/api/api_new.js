@@ -18,6 +18,7 @@ const iisStopUri = `${appUri}Iis/Toggle`;
 const iisWhitelistUri = `${appUri}Iis/Whitelist`;
 const iisRecycleUri = `${iisUri}Recycle/`;
 const servicesStopUri = `${appUri}Links/`;
+const settingsUri = `${appUri}Settings/`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, JSON.stringify(appList), {
@@ -81,4 +82,8 @@ export function getTasks() {
 
 export function runTask(name) {
   return Axios.post(`${tasksUri}/${name}`);
+}
+
+export function getSettings() {
+  return Axios.get(settingsUri);
 }

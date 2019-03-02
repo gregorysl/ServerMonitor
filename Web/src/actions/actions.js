@@ -62,3 +62,7 @@ export const killSession = name => ({
   type: types.SESSIONS_KILL_REQUEST,
   name
 });
+
+export const getSettings = () => ({
+  type: types.GET_SETTINGS_REQUEST
+});
