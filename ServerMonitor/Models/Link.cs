@@ -16,7 +16,7 @@ namespace ServerMonitor.Models
         [JsonProperty("url")]
         public string Url { get; set; }
 
-        public Link(Link2 link)
+        public Link(UncheckedLink link)
         {
             Name = link.Name;
             Url = link.Url;

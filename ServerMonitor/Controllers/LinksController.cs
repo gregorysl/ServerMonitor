@@ -8,7 +8,7 @@ namespace ServerMonitor.Controllers
 {
     public class LinksController : BaseApi
     {
-        private IEnumerable<Link2> _linkCollection;
+        private IEnumerable<UncheckedLink> _linkCollection;
 
         // GET api/<controller>
         public Response Get()

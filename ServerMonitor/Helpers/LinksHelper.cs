@@ -8,7 +8,7 @@ namespace ServerMonitor.Helpers
 {
     public static class LinksHelper
     {
-        public static Link GetLinkStatus(Link2 item)
+        public static Link GetLinkStatus(UncheckedLink item)
         {
             var credentials = !string.IsNullOrWhiteSpace(item.Username) && !string.IsNullOrWhiteSpace(item.Password)
                 ? new NetworkCredential(item.Username, item.Password)

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BuildInspect.Data;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -6,14 +7,15 @@ namespace ServerMonitor.Helpers
 {
     public class JsonSettings
     {
-        public List<ServerData> HardwareList { get; set; }
-        public List<Link2> Links { get; set; }
+        public List<ServerData> HardwareList { get; set; } = new List<ServerData>();
+        public List<UncheckedLink> Links { get; set; } = new List<UncheckedLink>();
 
-        public string WhitelistPath { get; set; }
         public string PathsToCheckSize { get; set; }
         public string ScheduledTasksToView { get; set; }
+        public string CommonAppName { get; set; }
         public int CacheInSeconds { get; set; }
         public bool IsOracleInstanceManagerEnabled { get; set; }
+        public FilterInput Cleaner { get; set; } = new FilterInput();
     }
 
     public class ServerData
@@ -22,7 +24,7 @@ namespace ServerMonitor.Helpers
         public string Url { get; set; }
     }
 
-    public class Link2 : ServerData
+    public class UncheckedLink : ServerData
     {
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Username { get; set; }
