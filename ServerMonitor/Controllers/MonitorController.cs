@@ -16,8 +16,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var foldersString = Settings.PathsToCheckSize;
-                var data = foldersString.Split('|')
+                var data = Settings.DirsToCheckSize
                     .Where(x => Path.GetPathRoot(x) != null)
                     .Select(x => new DirectoryInfo(x))
                     .Select(x => new FolderSize

@@ -33,7 +33,7 @@ namespace ServerMonitor.Controllers
 
         private static object GetScheduledTasks()
         {
-            var tasks = Settings.ScheduledTasksToView;
+            var tasks = Settings.ScheduledTasks;
             var taskDetails = TaskService.Instance.AllTasks.Where(t => tasks.Contains(t.Name));
             var details = taskDetails.Select(t => new
             {

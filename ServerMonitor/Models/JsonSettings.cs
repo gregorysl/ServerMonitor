@@ -9,9 +9,9 @@ namespace ServerMonitor.Helpers
     {
         public List<ServerData> HardwareList { get; set; } = new List<ServerData>();
         public List<UncheckedLink> Links { get; set; } = new List<UncheckedLink>();
+        public List<string> DirsToCheckSize { get; set; } = new List<string>();
 
-        public string PathsToCheckSize { get; set; }
-        public string ScheduledTasksToView { get; set; }
+        public List<string> ScheduledTasks { get; set; } = new List<string>();
         public string CommonAppName { get; set; }
         public int CacheInSeconds { get; set; }
         public bool IsOracleInstanceManagerEnabled { get; set; }
