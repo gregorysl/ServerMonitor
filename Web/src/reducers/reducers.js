@@ -179,7 +179,7 @@ function hardwareReducer(state = hardwareInitialState, action) {
   }
 }
 
-function settingsReducer(state = initialState, action) {
+function settingsReducer(state = {}, action) {
   switch (action.type) {
     case types.GET_SETTINGS_SUCCESS:
       return {data:action.data.data};
