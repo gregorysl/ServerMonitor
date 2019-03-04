@@ -29,3 +29,5 @@ ServerMonitor/index.html
 ServerMonitor/bin
 ServerMonitor/obj
 ServerMonitor/ServerMonitor.db
+ServerMonitor/settings.json
+ServerMonitor/whitelist.json

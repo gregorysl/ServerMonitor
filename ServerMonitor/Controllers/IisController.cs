@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web.Hosting;
 using System.Web.Http;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using BuildInspect.Data;
 using BuildInspect.Data.Entities;
 using BuildInspect.Filter;
 using LiteDB;
@@ -20,6 +16,7 @@ namespace ServerMonitor.Controllers
 {
     public class IisController : BaseApi
     {
+        private string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
         private static string DbPath => HostingEnvironment.MapPath("~/ServerMonitor.db");
 
         [HttpGet]
@@ -91,9 +88,7 @@ namespace ServerMonitor.Controllers
 
         private IList<BuildEntity> GetFilteredApps()
         {
-
-            var whitelistFile = Settings.WhitelistPath;
-            var whitelistProvider = new JsonWhitelistProvider(whitelistFile);
+            var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
             var whitelist = whitelistProvider.GetWhitelist();
 
             var buildsProvider = new BasedOnApiEntityExistsBuildsProvider();
@@ -142,8 +137,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var whitelistFile = Settings.WhitelistPath;
-                var whitelistProvider = new JsonWhitelistProvider(whitelistFile);
+                var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
                 var whitelist = whitelistProvider.GetWhitelist();
 
                 var isWhitelisted = whitelist.Any(x => x == name);
@@ -157,7 +151,7 @@ namespace ServerMonitor.Controllers
                 }
 
                 var json = JsonConvert.SerializeObject(whitelist);
-                File.WriteAllText(whitelistFile, json);
+                File.WriteAllText(_whitelistPath, json);
 
                 var function = isWhitelisted ? "un" : "";
 
