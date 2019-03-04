@@ -8,9 +8,6 @@ import NoteControl from './NoteControl';
 import ActionsButtons from './ActionsButtons';
 import WhitelistButton from './WhitelistButton';
 
-const flatten = list =>
-  list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
-
 class IisSection extends Component {
   componentDidMount() {
     this.props.getIis();
@@ -79,6 +76,7 @@ class IisSection extends Component {
           ]}
           SubComponent={row => (
             <AppPoolList
+              app={row.original}
               items={row.original.apps}
               recycle={this.props.recycle}
             />
