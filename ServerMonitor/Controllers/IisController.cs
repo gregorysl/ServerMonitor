@@ -89,10 +89,9 @@ namespace ServerMonitor.Controllers
         private IList<BuildEntity> GetFilteredApps()
         {
             var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
+            var buildsProvider = new CommonNameBuildsProvider(Settings.CommonAppName);
+
             var whitelist = whitelistProvider.GetWhitelist();
-
-            var buildsProvider = new BasedOnApiEntityExistsBuildsProvider();
-
             var builds = buildsProvider.GetBuilds().ToList();
             builds.FillAdditionalData(whitelist);
             
