@@ -264,6 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CleanerController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Models\JsonSettings.cs" />
