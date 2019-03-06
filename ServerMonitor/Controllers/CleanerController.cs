@@ -23,7 +23,7 @@ namespace ServerMonitor.Controllers
             var filterHandler = new FilterHandler(whitelistProvider, buildsProvider);
             var buildsToRemove = filterHandler.Execute(Settings.Cleaner);
 
-            response.Data = buildsToRemove.Select(x=>x.Name).ToList();
+            response.Data = buildsToRemove.SelectMany(x=>x.Apps).Select(x=>x.Name).ToList();
             return response;
         }
 
