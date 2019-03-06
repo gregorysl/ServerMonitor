@@ -1,4 +1,5 @@
-﻿using BuildInspect.Filter;
+﻿using BuildInspect.Data;
+using BuildInspect.Filter;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 using System.Linq;
@@ -24,7 +25,16 @@ namespace ServerMonitor.Controllers
 
             response.Data = buildsToRemove.Select(x=>x.Name).ToList();
             return response;
+        }
 
+
+        [Route]
+        public Response Put(FilterInput cleanerSettings)
+        {
+            var response = new Response();
+            Settings.Cleaner = cleanerSettings;
+            new SettingsHelper().Save(Settings);
+            return response;
         }
     }
 }

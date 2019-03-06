@@ -13,5 +13,11 @@ namespace ServerMonitor.Helpers
             var sett = JsonConvert.DeserializeObject<JsonSettings>(json);
             return sett;
         }
+
+        public void Save(JsonSettings settings)
+        {
+            var json = JsonConvert.SerializeObject(settings);
+            File.WriteAllText(_path, json);
+        }
     }
 }
