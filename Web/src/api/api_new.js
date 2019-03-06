@@ -1,7 +1,7 @@
-import Axios from 'axios';
+import Axios from "axios";
 
-let appUri = 'http://localhost/ServerMonitor/';
-if (process.env.NODE_ENV === 'production') {
+let appUri = "http://localhost/ServerMonitor/";
+if (process.env.NODE_ENV === "production") {
   appUri = document.location.href;
 }
 
@@ -19,11 +19,12 @@ const iisWhitelistUri = `${appUri}Iis/Whitelist`;
 const iisRecycleUri = `${iisUri}Recycle/`;
 const servicesStopUri = `${appUri}Links/`;
 const settingsUri = `${appUri}Settings/`;
+const cleanerUri = `${appUri}Cleaner/`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, JSON.stringify(appList), {
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     }
   });
 }
@@ -40,7 +41,6 @@ export function recycleApp(appName) {
   return Axios.post(`${iisRecycleUri}${appName}/`);
 }
 
-
 export function getServices() {
   return Axios.get(servicesStopUri);
 }
@@ -50,15 +50,13 @@ export function getHardware() {
 }
 
 export function getIisApps(props) {
-  const force = !props ? '' : '?force=true';
+  const force = !props ? "" : "?force=true";
   return Axios.get(iisUri + force);
 }
 
 export function getDisk() {
   return Axios.get(diskUri);
 }
-
-
 
 export function getOracleInstancies() {
   return Axios.get(oracleUri);
@@ -86,4 +84,8 @@ export function runTask(name) {
 
 export function getSettings() {
   return Axios.get(settingsUri);
+}
+
+export function setCleanerSettings(settings) {
+  return Axios.put(cleanerUri, settings);
 }

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Icon, Layout } from "antd";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Home from "./Home";
-import Settings from "./Settings";
+import Settings from "./CleanerSettings";
 import * as actions from "./actions/actions";
 
 const { Header, Content } = Layout;
@@ -31,7 +31,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route
               path="/settings"
-              render={() => <Settings settings={this.props.settings.data} />}
+              render={() => <Settings settings={this.props.settings.data} save={this.props.setCleanerSettings} />}
             />
           </Content>
         </Layout>
@@ -46,7 +46,8 @@ const mapStateToProps = state => (
   });
 
 const mapDispatchToProps = dispatch => ({
-  getSettings: () => dispatch(actions.getSettings())
+  getSettings: () => dispatch(actions.getSettings()),
+  setCleanerSettings: (settings) => dispatch(actions.setCleanerSettings(settings))
 });
 
 export default connect(

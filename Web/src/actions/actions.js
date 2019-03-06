@@ -66,3 +66,8 @@ export const killSession = name => ({
 export const getSettings = () => ({
   type: types.GET_SETTINGS_REQUEST
 });
+
+export const setCleanerSettings = (settings) => ({
+  type: types.SET_CLEANER_REQUEST,
+  settings
+});

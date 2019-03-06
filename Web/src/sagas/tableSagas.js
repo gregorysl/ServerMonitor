@@ -162,3 +162,13 @@ export function* getSettings() {
     yield put({ type: types.GET_SETTINGS_ERROR, data: error.response.data });
   }
 }
+
+export function* setCleanerSettings(props) {
+  try {
+    const { data } = yield call(api.setCleanerSettings, props.settings);
+    yield put({ type: types.GET_SETTINGS_REQUEST });
+    yield put({ type: types.SET_CLEANER_SUCCESS, data });
+  } catch (error) {
+    yield put({ type: types.SET_CLEANER_ERROR, data: error.response.data });
+  }
+}
