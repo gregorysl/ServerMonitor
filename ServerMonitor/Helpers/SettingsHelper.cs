@@ -16,7 +16,7 @@ namespace ServerMonitor.Helpers
 
         public void Save(JsonSettings settings)
         {
-            var json = JsonConvert.SerializeObject(settings);
+            var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(_path, json);
         }
     }
