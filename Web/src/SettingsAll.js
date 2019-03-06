@@ -1,23 +1,23 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
-import ListInputField from './components/Settings/ListInputField';
+import ListInputField from "./components/SettingsAll/ListInputField";
 
-let uuid = 0;
-class Settings extends Component {
+let dirsId = 0;
+class SettingsAll extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      productKeys: []
+      dirsKeys: []
     };
     this.remove = this.remove.bind(this);
     this.add = this.add.bind(this);
   }
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.productKeys.length === 0) {
+    if (prevState.dirsKeys.length === 0) {
       if (nextProps.settings != null) {
         const pk = Object.keys(nextProps.settings.dirsToCheckSize);
-        uuid = pk ? +pk.sort()[pk.length - 1] + 1 : 0;
-        return { productKeys: pk || [] };
+        dirsId = pk ? +pk.sort()[pk.length - 1] + 1 : 0;
+        return { dirsKeys: pk || [] };
       }
     }
     return prevState;
@@ -32,62 +32,45 @@ class Settings extends Component {
   }
 
   remove(k) {
-    const { productKeys } = this.state;
-    if (productKeys.length === 1) {
+    debugger;
+    const { dirsKeys } = this.state;
+    if (dirsKeys.length === 1) {
       return;
     }
     this.setState({
-      productKeys: productKeys.filter(key => key !== k)
+      dirsKeys: dirsKeys.filter(key => key !== k)
     });
   }
 
   add() {
-    const { productKeys } = this.state;
-    const nextKeys = productKeys.concat(uuid);
-    uuid++;
+    const { dirsKeys } = this.state;
+    const nextKeys = dirsKeys.concat(dirsId);
+    dirsId++;
 
     this.setState({
-      productKeys: nextKeys
+      dirsKeys: nextKeys
     });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const productKeys = this.state.productKeys;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 4 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 20 }
-      }
-    };
-    const formItems = productKeys.map((k, i) => (
-      <Form.Item
-        colon={i === 0}
-        {...formItemLayout}
-        required={false}
-        key={k}
-      >
+    const dirsKeys = this.state.dirsKeys;
+    const formItems = dirsKeys.map((k, i) => (
+      <Form.Item required={false} key={k}>
         {getFieldDecorator(`dirsToCheck[${k}]`, {})(
-            <ListInputField  index={k}
-            productKeys={productKeys.length}
-            removeClick={this.remove}/>
+          <ListInputField index={k} removeClick={this.remove} />
         )}
       </Form.Item>
     ));
     return (
       <div style={{ background: "#fff", padding: 5, height: "100%" }}>
-        <h1>Settings</h1>
+        <h1>SettingsAll</h1>
         <span>{JSON.stringify(this.props.settings, null, 4)}</span>
         <Form onSubmit={this.handleSubmit} className="login-form">
           {formItems}
-          <Form.Item label=" " colon={false} {...formItemLayout}>
-            <Button type="dashed" onClick={this.add}>
-              <Icon type="plus" /> Dodaj Składnik
-            </Button>
-          </Form.Item>
+          <Button type="dashed" onClick={this.add}>
+            <Icon type="plus" />
+            Add
+          </Button>
           <Form.Item>
             {getFieldDecorator("commonAppName", {
               rules: [{ required: true }]
@@ -126,4 +109,4 @@ export default Form.create({
     }
     return formData;
   }
-})(Settings);
+})(SettingsAll);
