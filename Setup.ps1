@@ -8,7 +8,7 @@ $password = "##PASSWORD##"
 $directoryPath = "##LOCATION##"
 
 if($copy){
-	Copy-item -Force -Recurse "$initialPath\*" -Destination $directoryPath
+	Copy-item -Force -Recurse $initialPath -Destination $directoryPath
 }
 
 cd IIS:\AppPools\
