@@ -1,7 +1,7 @@
-#addin "Cake.Yarn"
 #addin "Cake.FileHelpers"
 #addin "Cake.Powershell"
 #addin nuget:?package=Newtonsoft.Json
+#addin nuget:?package=Cake.Npm
 using System.Xml;
 using Path = System.IO.Path;
 using Newtonsoft.Json;
@@ -93,11 +93,14 @@ Task("Prepare-Local-Build")
 	CopyDirectory(webDistDir, releaseDir);
 });
 
-Task("Yarn")
+Task("Npm")
 	.Does(() => 
 {
-	Yarn.FromPath("./Web").Install();
-	Yarn.FromPath("./Web").RunScript("build");
+    Action<NpmRunScriptSettings> sett  = settings => settings.FromPath("web/");
+
+    NpmInstall(settings);
+    CleanDirectory(webDistDir);
+    NpmRunScript("build", sett);
 });
 
 Task("Copy-Install-Script")
@@ -144,7 +147,7 @@ Task("Transform-Configs")
 //////////////////////////////////////////////////////////////////////
 
 Task("Local")
-    .IsDependentOn("Yarn")
+    .IsDependentOn("Npm")
 	.IsDependentOn("Prepare-Local-Build");
 
 Task("Default")
@@ -154,7 +157,7 @@ Task("Api")
 	.IsDependentOn("Prepare-Release-Dir")
     .IsDependentOn("Copy-Install-Script");
 Task("Package")
-    .IsDependentOn("Yarn")
+    .IsDependentOn("Npm")
 	.IsDependentOn("Prepare-Release-Dir")
     .IsDependentOn("Copy-Install-Script");
 
