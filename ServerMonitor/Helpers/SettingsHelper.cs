@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Web.Hosting;
 
@@ -6,6 +7,14 @@ namespace ServerMonitor.Helpers
 {
     public class SettingsHelper
     {
+        readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            },
+            Formatting = Formatting.Indented
+        };
         private string _path = HostingEnvironment.MapPath("~/settings.json");
         public JsonSettings Get()
         {
@@ -16,7 +25,7 @@ namespace ServerMonitor.Helpers
 
         public void Save(JsonSettings settings)
         {
-            var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(settings, serializerSettings);
             File.WriteAllText(_path, json);
         }
     }
