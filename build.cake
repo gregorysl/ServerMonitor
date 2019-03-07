@@ -96,11 +96,9 @@ Task("Prepare-Local-Build")
 Task("Npm")
 	.Does(() => 
 {
-    Action<NpmRunScriptSettings> sett  = settings => settings.FromPath("web/");
-
-    NpmInstall(settings);
+    NpmInstall(s => s.FromPath("web"));
     CleanDirectory(webDistDir);
-    NpmRunScript("build", sett);
+    NpmRunScript("build", s => s.FromPath("web"));
 });
 
 Task("Copy-Install-Script")
