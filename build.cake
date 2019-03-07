@@ -121,7 +121,6 @@ Task("Transform-Configs")
     doc.Load(fileToTranform);
 
     var configurationNode = doc.ChildNodes[1];
-    var webConfigTokens = settings["webConfig"];
 
     var connectionNode = configurationNode.SelectSingleNode("connectionStrings/add");
     if (connectionNode?.Attributes != null)
@@ -131,42 +130,11 @@ Task("Transform-Configs")
             settings["database"], settings["dbUser"], settings["dbPassword"]);
     }
 
-    var appSettings = configurationNode.SelectSingleNode("appSettings");
-    appSettings.RemoveAll();
-    foreach (var appsetting in webConfigTokens["appSettings"])
-    {
-        var item = appsetting as JProperty;
-        var xEl = doc.CreateElement("add");
-        xEl.SetAttribute("key", item.Name);
-        xEl.SetAttribute("value", item.Value.ToString());
-        appSettings.AppendChild(xEl);
-    }
+    var webConfigTokens = settings["webConfig"];
+    var json = JsonConvert.SerializeObject(webConfigTokens, Newtonsoft.Json.Formatting.Indented);
+    FileWriteText(localDir + "/settings.json",json);
 
-    var linksList = configurationNode.SelectSingleNode("links");
-    linksList.RemoveAll();
-    foreach (var link in webConfigTokens["links"])
-    {
-        var xEl = doc.CreateElement("add");
-        xEl.SetAttribute("name", link["name"].ToString());
-        xEl.SetAttribute("url", link["url"].ToString());
-        if (link["username"] != null)
-            xEl.SetAttribute("username", link["username"].ToString());
-        if (link["password"] != null)
-            xEl.SetAttribute("password", link["password"].ToString());
-        if (link["type"] != null)
-            xEl.SetAttribute("type", link["type"].ToString());
-        linksList.AppendChild(xEl);
-    }
-
-    var hardwareList = configurationNode.SelectSingleNode("hardwareList");
-    hardwareList.RemoveAll();
-    foreach (var link in webConfigTokens["hardwareList"])
-    {
-        var xEl = doc.CreateElement("add");
-        xEl.SetAttribute("name", link["name"].ToString());
-        xEl.SetAttribute("url", link["url"].ToString());
-        hardwareList.AppendChild(xEl);
-    }
+    
 
     doc.Save(fileToTranform);
 });

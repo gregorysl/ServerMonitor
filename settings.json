@@ -9,18 +9,27 @@
   "dbPassword": "password",
   "webConfig": {
     "hardwareList": [
-      { "name": "Google", "url": "http://localhost/ServerMonitor/" }
+      {
+        "name": "Google",
+        "url": "http://localhost/ServerMonitor/"
+      }
     ],
-    "links": [{ "name": "Google", "url": "https://www.google.com/" }],
-    "appSettings": {
-      "AppRootUrl": "http://localhost",
-      "IISAppPoolRegex": "(.*R.+\\d{1,}(?:-O)?)",
-      "IISIgnoreList": ".NET v4.5 Classic|.NET v4.5|Classic .NET AppPool|.NET v2.0 Classic|.NET v2.0|ServerMonitor|DefaultAppPool",
-      "WhitelistXmlPath": "c:\\inetpub\\AutoDeployment\\Config\\WhiteListForCleanBuilds.config",
-      "PathsToCheckSize": "C:\\Logs|C:\\inetpub\\wwwroot",
-      "ScheduledTasksToView": "CleanBuilds|CleanUpBuilds",
-      "CacheInSeconds": "3",
-      "IsOracleInstanceManagerEnabled": "true"
+    "links": [
+      {
+        "type": "General",
+        "name": "Google",
+        "url": "https://www.google.com/"
+      }
+    ],
+    "dirsToCheckSize": ["C:\\Logs", "C:\\inetpub\\wwwroot"],
+    "scheduledTasks": ["CleanBuilds", "CleanUpBuilds"],
+    "commonAppName": ".Api.Entity",
+    "cacheInSeconds": 3,
+    "isOracleInstanceManagerEnabled": true,
+    "cleaner": {
+      "useWhiteList": true,
+      "beforeDays": 2,
+      "excludeNLast": 1
     }
   }
 }
