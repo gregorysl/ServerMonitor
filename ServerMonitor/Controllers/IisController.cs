@@ -16,7 +16,7 @@ namespace ServerMonitor.Controllers
 {
     public class IisController : BaseApi
     {
-        private string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
+        private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
         private static string DbPath => HostingEnvironment.MapPath("~/ServerMonitor.db");
 
         [HttpGet]
@@ -34,8 +34,7 @@ namespace ServerMonitor.Controllers
                     CacheManager.FlushCache(cacheKey);
                     response.AddSuccessNotification("Flushed IIS cache successfully");
                 }
-                //var filteredApps = CacheManager.GetObjectFromCache(cacheKey, _cacheLifecycle, GetFilteredApps);
-                var filteredApps = GetFilteredApps();
+                var filteredApps = CacheManager.GetObjectFromCache(cacheKey, _cacheLifecycle, GetFilteredApps);
 
                 Log.Debug("GetFilteredApps call success.");
                 response.Data = filteredApps;
