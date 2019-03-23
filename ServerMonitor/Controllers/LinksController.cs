@@ -1,40 +1,49 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
+    [RoutePrefix("Links")]
     public class LinksController : BaseApi
     {
-        private IEnumerable<UncheckedLink> _linkCollection;
 
-        // GET api/<controller>
+        [Route]
         public Response Get()
         {
             var response = new Response();
-            _linkCollection = Settings.Links;
-            if (_linkCollection == null)
+            var links = Settings.Links;
+            if (links == null)
             {
                 response.Status = Status.Error;
                 response.AddErrorNotification("Configuration of links missing");
                 return response;
             }
 
-            var links = CacheManager.GetObjectFromCache("Links", _cacheLifecycle, GetLinksStatus);
-
             response.Data = links;
             return response;
         }
 
-        private IList<Link> GetLinksStatus()
+        [Route]
+        public async Task<Response> Post(string url)
         {
-            var links = new List<Link>();
-            var tasksToWait = _linkCollection.Select(link => Task.Run(() => { links.Add(LinksHelper.GetLinkStatus(link)); })).ToArray();
-            Task.WaitAll(tasksToWait.Where(t => t.Status == TaskStatus.Running).ToArray());
+            var response = new Response();
+            var links = Settings.Links;
+            if (links == null)
+            {
+                response.Status = Status.Error;
+                response.AddErrorNotification("Configuration of links missing");
+                return response;
+            }
 
-            return links.OrderBy(x=>x.Name).ToList();
+            var sentLinkData = links.First(x => x.Url == url);
+            var data = await Task.Run(() => LinksHelper.GetLinkStatus(sentLinkData));
+
+            response.Data = data;
+            return response;
         }
+
     }
 }

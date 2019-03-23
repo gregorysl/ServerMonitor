@@ -21,7 +21,7 @@ class ServicesList extends Component {
     const columns = Math.floor(24 / types.length);
     types.forEach((element) => {
       const items = this.props.service.data.filter(x => x.type === element);
-      const inner = items.map(x => (<ServiceItem {...x} name={x.key} />));
+      const inner = items.map(x => (<ServiceItem {...x} key={x.name} />));
       const car = (
         <Col span={columns} key={element}>
           <Card title={element}>

@@ -17,7 +17,7 @@ const iisUri = `${appUri}Iis/`;
 const iisStopUri = `${appUri}Iis/Toggle`;
 const iisWhitelistUri = `${appUri}Iis/Whitelist`;
 const iisRecycleUri = `${iisUri}Recycle/`;
-const servicesStopUri = `${appUri}Links/`;
+const linksUri = `${appUri}Links/`;
 const settingsUri = `${appUri}Settings/`;
 const cleanerUri = `${appUri}Cleaner/`;
 
@@ -42,7 +42,7 @@ export function recycleApp(appName) {
 }
 
 export function getServices() {
-  return Axios.get(servicesStopUri);
+  return Axios.get(linksUri);
 }
 
 export function getHardware() {
@@ -88,4 +88,8 @@ export function getSettings() {
 
 export function setCleanerSettings(settings) {
   return Axios.put(cleanerUri, settings);
+}
+
+export function checkLink(url) {
+  return Axios.post(`${linksUri}?url=${url}`);
 }
