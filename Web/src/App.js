@@ -28,11 +28,12 @@ class App extends Component {
             </Link>
           </Header>
           <Content style={{ padding: "0 50px" }}>
-            <Route exact path="/" component={Home} />
             <Route
-              path="/settings"
+              exact
+              path="/settings" 
               render={() => <Settings settings={this.props.settings.data} save={this.props.setCleanerSettings} />}
             />
+            <Route component={Home} />
           </Content>
         </Layout>
       </Router>
