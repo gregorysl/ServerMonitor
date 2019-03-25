@@ -5,6 +5,7 @@ import "react-table/react-table.css";
 import PropTypes from "prop-types";
 import TooltipButon from "../TooltipButon";
 import ActionsButtons from "./ActionsButtons";
+import ApplicationStatus from './ApplicationStatus';
 
 const AppPoolList = props => {
   if (props.items.length === 0) {
@@ -25,11 +26,7 @@ const AppPoolList = props => {
           {
             Header: "State",
             accessor: "running",
-            Cell: row => (
-              <font className={`state-${row.value ? "started" : "stopped"}`}>
-                {row.value ? "Started" : "Stopped"}
-              </font>
-            )
+            Cell: row => <ApplicationStatus running={row.value} text={row.value ? "Started" : "Stopped"} />
           },
           {
             Header: "Action",
