@@ -31,7 +31,7 @@ namespace ServerMonitor.Controllers
             }
         }
 
-        private static object GetScheduledTasks()
+        private object GetScheduledTasks()
         {
             var tasks = Settings.ScheduledTasks;
             var taskDetails = TaskService.Instance.AllTasks.Where(t => tasks.Contains(t.Name));
@@ -46,7 +46,7 @@ namespace ServerMonitor.Controllers
             return details;
         }
 
-        
+
         [Route("{name}")]
         public Response Post(string name)
         {

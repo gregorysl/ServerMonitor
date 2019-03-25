@@ -49,7 +49,6 @@ namespace ServerMonitor.Controllers
 
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(link.Url, UriKind.Absolute);
                     client.Timeout = TimeSpan.FromSeconds(5);
 
                     if (!string.IsNullOrWhiteSpace(link.Username) && !string.IsNullOrWhiteSpace(link.Password))
@@ -59,7 +58,8 @@ namespace ServerMonitor.Controllers
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encoded);
                     }
 
-                    var linkResponse = await client.GetAsync(client.BaseAddress);
+                    var request = new HttpRequestMessage(HttpMethod.Head, new Uri(link.Url));
+                    var linkResponse = await client.SendAsync(request);
 
                     resultLink.Message = linkResponse.StatusCode.ToString();
                     resultLink.Working = linkResponse.IsSuccessStatusCode;
