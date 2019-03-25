@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Icon, Layout } from "antd";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Home from "./Home";
-import Settings from "./CleanerSettings";
+import Settings from "./components/Settings/LinksSettings";
 import * as actions from "./actions/actions";
 
 const { Header, Content } = Layout;
