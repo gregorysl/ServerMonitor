@@ -23,7 +23,7 @@ const ServiceItem = props => {
     setLoading(false);
     setMessage(linkData.message);
     setStatus(linkData.working ? "#87d068" : "#f50");
-  });
+  },[url]);
 
   return (
     <Tooltip title={message}>
