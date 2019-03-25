@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Net;
+using System.Web;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -27,6 +28,9 @@ namespace ServerMonitor
                     routeTemplate: "{controller}/{name}",
                     defaults: new { name = RouteParameter.Optional }
                 );
+
+                ServicePointManager.ServerCertificateValidationCallback +=
+                    (sender, cert, chain, sslPolicyErrors) => true;
             });
         }
     }
