@@ -70,7 +70,7 @@ class ListInputField extends Component {
         </Col>
         <Col sm={24} md={2}>
           <Button onClick={this.remove} type='danger'>
-            Usuń
+            Remove
           </Button>
         </Col>
       </Row>

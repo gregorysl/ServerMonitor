@@ -29,7 +29,7 @@ class LinksSettings extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        this.saveSettings(values);
+        // this.saveSettings(values);
       }
     });
   }
@@ -89,9 +89,9 @@ class LinksSettings extends Component {
           className='login-form'
         >
           {" "}
-          <FormItem label=' ' colon={false} {...formItemLayout}>
+          <FormItem >
             <Button type='dashed' onClick={this.add}>
-              <Icon type='plus' /> Dodaj Składnik
+              <Icon type='plus' />Add Link
             </Button>
           </FormItem>
           {formItems}
