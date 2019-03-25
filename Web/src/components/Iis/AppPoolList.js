@@ -1,5 +1,6 @@
 import React from "react";
 import ReactTable from "react-table";
+import dateformat from "dateformat";
 import "react-table/react-table.css";
 import PropTypes from "prop-types";
 import TooltipButon from "../TooltipButon";
@@ -11,7 +12,7 @@ const AppPoolList = props => {
   }
   return (
     <>
-      <h3>Days old: {props.app.daysOld} created build date {props.app.createdDateTime.split("T")[0]}</h3>
+      <h3>{props.app.daysOld} days old, created {dateformat(props.app.createdDateTime, "dd.mm.yyyy, dddd")}</h3>
       <ReactTable
         showPagination={false}
         minRows={1}
