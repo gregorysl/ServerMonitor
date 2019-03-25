@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, Row, Col } from "antd";
 import ServiceItem from "./ServiceItem";
 
@@ -7,22 +7,21 @@ function onlyUnique(value, index, self) {
 }
 
 const ServicesList = props => {
-  const cards = [];
   const types = props.links.data.map(x => x.type).filter(onlyUnique);
-  types.forEach(element => {
-    const items = props.links.data.filter(x => x.type === element);
-    const inner = items.map(x => <ServiceItem {...x} key={x.name} />);
-    const columnCard = (
-      <Col xs={24} sm={12} md={12} lg={6} key={element}>
-        <Card title={element}>{inner}</Card>
+  const data = types.map(t => {
+    const items = props.links.data
+      .filter(x => x.type === t)
+      .map(x => <ServiceItem {...x} key={x.name} />);
+    return (
+      <Col xs={24} sm={12} md={12} lg={6} key={t}>
+        <Card title={t}>{items}</Card>
       </Col>
     );
-    cards.push(columnCard);
   });
   return (
     <React.Fragment>
       <h1>Component Status</h1>
-      <Row>{cards}</Row>
+      <Row>{data}</Row>
     </React.Fragment>
   );
 };
