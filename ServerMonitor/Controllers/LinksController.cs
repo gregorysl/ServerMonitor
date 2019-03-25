@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using ServerMonitor.Helpers;
@@ -14,7 +19,7 @@ namespace ServerMonitor.Controllers
         public Response Get()
         {
             var response = new Response();
-            var links = Settings.Links;
+            var links = new SettingsHelper().Get().Links;
             if (links == null)
             {
                 response.Status = Status.Error;
@@ -30,7 +35,7 @@ namespace ServerMonitor.Controllers
         public async Task<Response> Post(string url)
         {
             var response = new Response();
-            var links = Settings.Links;
+            var links = new SettingsHelper().Get().Links;
             if (links == null)
             {
                 response.Status = Status.Error;
@@ -38,11 +43,43 @@ namespace ServerMonitor.Controllers
                 return response;
             }
 
-            var sentLinkData = links.First(x => x.Url == url);
-            var data = await Task.Run(() => LinksHelper.GetLinkStatus(sentLinkData));
+            var link = links.First(x => x.Url == url);
+            var resultLink = new Link(link);
+            try
+            {
 
-            response.Data = data;
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(link.Url, UriKind.Absolute);
+                    client.Timeout = TimeSpan.FromSeconds(5);
+
+                    if (!string.IsNullOrWhiteSpace(link.Username) && !string.IsNullOrWhiteSpace(link.Password))
+                    {
+                        var encoded =
+                            Convert.ToBase64String(Encoding.ASCII.GetBytes($"{link.Username}:{link.Password}"));
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encoded);
+                    }
+
+                    var linkResponse = await client.GetAsync(client.BaseAddress);
+
+                    resultLink.Message = linkResponse.StatusCode.ToString();
+                    resultLink.Working = linkResponse.IsSuccessStatusCode;
+                }
+            }
+            catch (Exception e)
+            {
+                resultLink.Working = false;
+                resultLink.Message = GatherExceptions(e);
+            }
+
+            response.Data = resultLink;
             return response;
+        }
+
+        private static string GatherExceptions(Exception e)
+        {
+            var exception = $"{e.Message}\\r\\n";
+            return e.InnerException != null ? exception + GatherExceptions(e.InnerException) : exception;
         }
 
     }

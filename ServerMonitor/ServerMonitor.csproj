@@ -143,7 +143,6 @@
     <Compile Include="Helpers\ApiClient.cs" />
     <Compile Include="Helpers\BaseApi.cs" />
     <Compile Include="Helpers\CacheManager.cs" />
-    <Compile Include="Helpers\LinksHelper.cs" />
     <Compile Include="Models\BuildNote.cs" />
     <Compile Include="Models\FolderSize.cs" />
     <Compile Include="Models\IISAppPool.cs" />
