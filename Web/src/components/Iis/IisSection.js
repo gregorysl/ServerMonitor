@@ -7,6 +7,7 @@ import AppPoolList from './AppPoolList';
 import NoteControl from './NoteControl';
 import ActionsButtons from './ActionsButtons';
 import WhitelistButton from './WhitelistButton';
+import ApplicationStatus from './ApplicationStatus';
 
 class IisSection extends Component {
   componentDidMount() {
@@ -43,11 +44,7 @@ class IisSection extends Component {
             {
               Header: 'State',
               accessor: 'state',
-              Cell: row => (
-                <font className={`state-${row.original.running ? 'started' : 'stopped'}`}>
-                  {row.value}
-                </font>
-              ),
+              Cell: row => <ApplicationStatus running={row.value} text={row.value} />,              
               width: 100
             },
             {

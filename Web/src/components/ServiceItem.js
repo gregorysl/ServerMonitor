@@ -1,25 +1,44 @@
-import React from 'react';
-import { Tooltip, Tag } from 'antd';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import { checkLink } from "../api/api_new";
+import { Tooltip, Tag, Spin, Icon } from "antd";
+import PropTypes from "prop-types";
 
+function useEffectAsync(effect, inputs) {
+  useEffect(() => {
+    effect();
+  }, inputs);
+}
 
-const ServiceItem = props => (
-  <Tooltip title={props.message}>
+const antIcon = <Icon type="loading" spin />;
 
-    <Tag color={props.working ? '#87d068' : '#f50'} >
-      <a className="service-link" target="blank" href={props.url}>
-        {props.name}
-      </a>
-    </Tag>
+const ServiceItem = props => {
+  const [message, setMessage] = useState();
+  const [status, setStatus] = useState();
+  const [loading, setLoading] = useState(true);
+  const url = props.url;
 
-  </Tooltip>
-);
+  useEffectAsync(async () => {
+    const result = await checkLink(url);
+    const linkData = result.data.data;
+    setLoading(false);
+    setMessage(linkData.message);
+    setStatus(linkData.working ? "#87d068" : "#f50");
+  },[url]);
+
+  return (
+    <Tooltip title={message}>
+      <Tag color={status}>
+        <a className="service-link" target="blank" href={props.url}>
+          {loading && <Spin size="small" indicator={antIcon} />}
+          {props.name}
+        </a>
+      </Tag>
+    </Tooltip>
+  );
+};
 
 ServiceItem.propTypes = {
-  url: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
-  working: PropTypes.bool.isRequired
+  url: PropTypes.string.isRequired
 };
 
 export default ServiceItem;

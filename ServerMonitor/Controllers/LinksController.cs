@@ -1,40 +1,85 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
+    [RoutePrefix("Links")]
     public class LinksController : BaseApi
     {
-        private IEnumerable<UncheckedLink> _linkCollection;
 
-        // GET api/<controller>
+        [Route]
         public Response Get()
         {
             var response = new Response();
-            _linkCollection = Settings.Links;
-            if (_linkCollection == null)
+            var links = new SettingsHelper().Get().Links;
+            if (links == null)
             {
                 response.Status = Status.Error;
                 response.AddErrorNotification("Configuration of links missing");
                 return response;
             }
 
-            var links = CacheManager.GetObjectFromCache("Links", _cacheLifecycle, GetLinksStatus);
-
             response.Data = links;
             return response;
         }
 
-        private IList<Link> GetLinksStatus()
+        [Route]
+        public async Task<Response> Post(string url)
         {
-            var links = new List<Link>();
-            var tasksToWait = _linkCollection.Select(link => Task.Run(() => { links.Add(LinksHelper.GetLinkStatus(link)); })).ToArray();
-            Task.WaitAll(tasksToWait.Where(t => t.Status == TaskStatus.Running).ToArray());
+            var response = new Response();
+            var links = new SettingsHelper().Get().Links;
+            if (links == null)
+            {
+                response.Status = Status.Error;
+                response.AddErrorNotification("Configuration of links missing");
+                return response;
+            }
 
-            return links.OrderBy(x=>x.Name).ToList();
+            var link = links.First(x => x.Url == url);
+            var resultLink = new Link(link);
+            try
+            {
+
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(5);
+
+                    if (!string.IsNullOrWhiteSpace(link.Username) && !string.IsNullOrWhiteSpace(link.Password))
+                    {
+                        var encoded =
+                            Convert.ToBase64String(Encoding.ASCII.GetBytes($"{link.Username}:{link.Password}"));
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encoded);
+                    }
+
+                    var request = new HttpRequestMessage(HttpMethod.Head, new Uri(link.Url));
+                    var linkResponse = await client.SendAsync(request);
+
+                    resultLink.Message = linkResponse.StatusCode.ToString();
+                    resultLink.Working = linkResponse.IsSuccessStatusCode;
+                }
+            }
+            catch (Exception e)
+            {
+                resultLink.Working = false;
+                resultLink.Message = GatherExceptions(e);
+            }
+
+            response.Data = resultLink;
+            return response;
         }
+
+        private static string GatherExceptions(Exception e)
+        {
+            var exception = $"{e.Message}\\r\\n";
+            return e.InnerException != null ? exception + GatherExceptions(e.InnerException) : exception;
+        }
+
     }
 }

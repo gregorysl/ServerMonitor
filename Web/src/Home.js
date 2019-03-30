@@ -56,6 +56,7 @@ class Home extends Component {
     this.props.getSessions();
     this.props.getHardwareUsage();
     this.props.getOracle();
+    this.props.getLinks();
   }
   componentWillReceiveProps(nextProps) {
     checkErrors(this.props.errors, nextProps.errors);
@@ -66,7 +67,7 @@ class Home extends Component {
       <div style={{ background: "#fff", padding: 5, height: "100%" }}>
         <h1>Hardware Monitor</h1>
         <Hardware />
-        <ServicesList />
+        <ServicesList links={this.props.links} />
         <IisSection />
         {!this.props.oracle.isDisabled && (
           <DataTable
@@ -108,6 +109,10 @@ Home.propTypes = {
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
   }).isRequired,
+  links: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.array.isRequired
+  }).isRequired,
   oracle: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.object),
     errors: PropTypes.arrayOf(PropTypes.string),
@@ -122,6 +127,7 @@ const mapStateToProps = state => ({
   sessions: state.sessions,
   disk: state.disk,
   oracle: state.oracle,
+  links: state.service,
   errors: state.errors
 });
 
@@ -129,7 +135,8 @@ const mapDispatchToProps = dispatch => ({
   getTasks: () => dispatch(actions.getTasksAction()),
   getSessions: () => dispatch(actions.getSessionsAction()),
   getHardwareUsage: () => dispatch(actions.getDiskUsageAction()),
-  getOracle: () => dispatch(actions.getOracleAction())
+  getOracle: () => dispatch(actions.getOracleAction()),
+  getLinks: () => dispatch(actions.getServicesAction())
 });
 
 export default connect(

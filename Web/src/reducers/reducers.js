@@ -179,10 +179,19 @@ function hardwareReducer(state = hardwareInitialState, action) {
   }
 }
 
-function settingsReducer(state = {}, action) {
+function settingsReducer(
+  state = {
+    hardwareList: [],
+    links: [],
+    dirsToCheckSize: [],
+    scheduledTasks: [],
+    cleaner: {}
+  },
+  action
+) {
   switch (action.type) {
     case types.GET_SETTINGS_SUCCESS:
-      return {data:action.data.data};
+      return { ...action.data.data };
     default:
       return state;
   }

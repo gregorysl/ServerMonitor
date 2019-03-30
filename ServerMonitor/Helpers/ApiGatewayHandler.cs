@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ServerMonitor.Models;
@@ -22,7 +21,7 @@ namespace ServerMonitor.Helpers
             {
                 var msg = await response.Content.ReadAsStringAsync();
 
-                var notification = new JavaScriptSerializer().Deserialize<Notification>(msg);
+                var notification = JsonConvert.DeserializeObject<Notification>(msg);
                 notification.Status = Status.Error;
                 return new HttpResponseMessage
                 {

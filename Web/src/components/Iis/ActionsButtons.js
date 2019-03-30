@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => ({
   set: (item) => {
     const data =
     {
-      appPools: item.children ? item.children : flatten(item.apps.map(x => x.children)),
+      appPools: item.apps ? flatten(item.apps.map(x => x.name)): [item.name],
       condition: item.running
     };
     dispatch(setIisAction(data));

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web.Http;
-using System.Web.Query.Dynamic;
 using log4net;
 
 namespace ServerMonitor.Helpers
@@ -21,7 +20,7 @@ namespace ServerMonitor.Helpers
                 catch (Exception ex)
                 {
                     Log.Error(ex);
-                    throw new ParseException("Error parsing CacheInSeconds appSetting. Value has to be integer.", 0);
+                    throw new Exception("Error parsing CacheInSeconds appSetting. Value has to be integer.");
                 }
             }
         }

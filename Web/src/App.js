@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Icon, Layout } from "antd";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from "./Home";
-import Settings from "./CleanerSettings";
+import Settings from "./Set";
 import * as actions from "./actions/actions";
 
 const { Header, Content } = Layout;
@@ -15,24 +15,32 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Layout className="layout">
+        <Layout className='layout'>
           <Header>
-            <div className="logo" />
+            <div className='logo' />
 
-            <Link className="text-colored" to="/">
+            <Link className='text-colored' to='/'>
               Home
             </Link>
 
-            <Link className="settings" to="/settings">
-              <Icon type="setting" />
+            <Link className='settings' to='/settings'>
+              <Icon type='setting' />
             </Link>
           </Header>
           <Content style={{ padding: "0 50px" }}>
-            <Route exact path="/" component={Home} />
-            <Route
-              path="/settings"
-              render={() => <Settings settings={this.props.settings.data} save={this.props.setCleanerSettings} />}
-            />
+            <Switch>
+              <Route
+                exact
+                path='/settings'
+                render={() => (
+                  <Settings
+                  settings={this.props.settings}
+                    save={this.props.setCleanerSettings}
+                  />
+                )}
+              />
+              <Route component={Home} />
+            </Switch>
           </Content>
         </Layout>
       </Router>
@@ -40,14 +48,13 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    settings: state.settings
-  });
+const mapStateToProps = state => ({
+  settings: state.settings
+});
 
 const mapDispatchToProps = dispatch => ({
   getSettings: () => dispatch(actions.getSettings()),
-  setCleanerSettings: (settings) => dispatch(actions.setCleanerSettings(settings))
+  setCleanerSettings: settings => dispatch(actions.setCleanerSettings(settings))
 });
 
 export default connect(
