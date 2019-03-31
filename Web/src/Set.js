@@ -19,12 +19,30 @@ const ColField = ({ name, component, label, md }) => (
 );
 const RemoveButton = ({ fields, index }) => (
   <Col sm={24} md={2}>
-    <Button onClick={() => fields.remove(index)} type='danger'>
+    <Button icon='delete' onClick={() => fields.remove(index)} type='danger'>
       Remove
     </Button>
   </Col>
 );
 
+const AddButton = ({ push, click }) => {
+  return (
+    <Button icon='plus' onClick={click}>
+      Add
+    </Button>
+  );
+};
+const CardHeader = ({ push, click, title, subtitle }) => (
+  <Row type='flex' style={{ alignItems: "center" }} gutter={16}>
+    <Col sm={24} md={3}>
+      <AddButton push={push} click={click} />
+    </Col>
+    <Col>
+      <h3 className='card-header-title'>{title}</h3>
+      <h5>{subtitle}</h5>
+    </Col>
+  </Row>
+);
 const linksSection = ({ fields }) =>
   fields.map((member, index) => (
     <Row key={index}>
@@ -75,37 +93,39 @@ let Sets = props => (
       return (
         <form onSubmit={handleSubmit}>
           <Card
-            title='Additional servers'
-            extra={
-              <Button onClick={() => push("hardwareList", {})}>Add</Button>
+            title={
+              <CardHeader
+                click={() => push("hardwareList", {})}
+                name='hardwareList'
+                title='Additional servers'
+                subtitle='(this will add more tabs to Hardware section)'
+              />
             }
           >
             <FieldArray name='hardwareList'>{hardwareSection}</FieldArray>
           </Card>
           <Card
-            title='Components to check'
-            extra={<Button onClick={() => push("links", {})}>Add</Button>}
+            title={
+              <CardHeader
+                click={() => push("links", {})}
+                name='links'
+                title='Components to check'
+                subtitle='(add data for services avaibility you want to check)'
+              />
+            }
           >
             <FieldArray name='links'>{linksSection}</FieldArray>
           </Card>
 
           <Card
             title='Directories to show size'
-            extra={
-              <Button onClick={() => push("dirsToCheckSize", "")}>
-                Add
-              </Button>
-            }
+            extra={<AddButton push={push} name='dirsToCheckSize' />}
           >
             <FieldArray name='dirsToCheckSize'>{dirsSection}</FieldArray>
           </Card>
           <Card
             title='Scheduled tasks'
-            extra={
-              <Button onClick={() => push("scheduledTasks", "")}>
-                Add
-              </Button>
-            }
+            extra={<AddButton push={push} name='scheduledTasks' />}
           >
             <FieldArray name='scheduledTasks'>{dirsSection}</FieldArray>
           </Card>
