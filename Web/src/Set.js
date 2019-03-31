@@ -3,10 +3,22 @@ import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
 
-import { Button, Input, Row, Col, Card } from "antd";
+import { Button, Input, Row, Col, Card, Checkbox, InputNumber } from "antd";
 
 const renderField = ({ input, label, type }) => (
   <Input {...input} type={type} placeholder={label} />
+);
+const numberField = ({ input, label, type }) => (
+  <InputNumber {...input} type={type} placeholder={label} />
+);
+const checkboxComponent = ({ input: { onChange, value }, meta, ...rest }) => (
+  <Checkbox
+    {...rest}
+    checked={!!value}
+    onToggle={(event, isInputChecked) => onChange(isInputChecked)}
+  >
+    Use whitelist
+  </Checkbox>
 );
 const ColField = ({ name, component, label, md }) => (
   <Col sm={24} md={md}>
@@ -25,28 +37,38 @@ const RemoveButton = ({ fields, index }) => (
   </Col>
 );
 
-const AddButton = ({ push, click }) => {
+const AddButton = ({  click }) => {
   return (
     <Button icon='plus' onClick={click}>
       Add
     </Button>
   );
 };
-const FullCard = ({ push, name, title, subtitle, section, newItem = {} }) => (
+const FullCard = ({
+  push,
+  name,
+  title,
+  subtitle,
+  newItem = {},
+  disableAdd,
+  children
+}) => (
   <Card
     title={
       <Row type='flex' style={{ alignItems: "center" }} gutter={16}>
         <Col sm={24} md={3}>
-          <AddButton push={push} click={() => push(name, newItem)} />
+          {!disableAdd && (
+            <AddButton push={push} click={() => push(name, newItem)} />
+          )}
         </Col>
         <Col>
-          <h3 className='card-header-title'>{title}</h3>
-          <h5>{subtitle}</h5>
+          <h3 className='card-header-title align-left'>{title}</h3>
+          <h5 className='align-left'>{subtitle}</h5>
         </Col>
       </Row>
     }
   >
-    <FieldArray name={name}>{section}</FieldArray>
+    {children}
   </Card>
 );
 const linksSection = ({ fields }) =>
@@ -76,7 +98,7 @@ const dirsSection = ({ fields }) =>
     </Row>
   ));
 const onSubmit = async values => {
-  window.alert(JSON.stringify(values, 0, 2));
+  console.log(JSON.stringify(values, 0, 2));
 };
 
 let Sets = props => (
@@ -99,27 +121,50 @@ let Sets = props => (
       return (
         <form onSubmit={handleSubmit}>
           <FullCard
+            disableAdd
+            title='Cleaner configuration'
+            subtitle='(settings for ansible cleaner configuration)'
+          >
+            <Field
+              name={`cleaner.useWhiteList`}
+              component={checkboxComponent}
+            />
+            <Field
+              name={`cleaner.beforeDays`}
+              component={numberField}
+              placeholder='Last Name'
+            />
+            <Field
+              name={`cleaner.excludeNLast`}
+              component={numberField}
+              placeholder='Number of last builds to exclude'
+            />
+          </FullCard>
+          <FullCard
             push={push}
             name='hardwareList'
             title='Additional servers'
             subtitle='(this will add more tabs to Hardware section)'
-            section={hardwareSection}
-          />
+          >
+            <FieldArray name='hardwareList'>{hardwareSection}</FieldArray>
+          </FullCard>
           <FullCard
             push={push}
             name='links'
             title='Components to check'
             subtitle='(add data for services avaibility you want to check)'
-            section={linksSection}
-          />
+          >
+            <FieldArray name='links'>{linksSection}</FieldArray>
+          </FullCard>
           <FullCard
             push={push}
             name='dirsToCheckSize'
             title='Directories'
             subtitle='(will check size occupied)'
-            section={dirsSection}
             newItem={""}
-          />
+          >
+            <FieldArray name='dirsToCheckSize'>{dirsSection}</FieldArray>
+          </FullCard>
           <FullCard
             push={push}
             name='scheduledTasks'
@@ -127,7 +172,9 @@ let Sets = props => (
             subtitle='( )'
             section={dirsSection}
             newItem={""}
-          />
+          >
+            <FieldArray name='scheduledTasks'>{dirsSection}</FieldArray>
+          </FullCard>
           <Row>
             <Col sm={24} md={12}>
               <Button
