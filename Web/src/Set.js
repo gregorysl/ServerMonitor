@@ -3,7 +3,7 @@ import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
 
-import { Button, Input, Row, Col } from "antd";
+import { Button, Input, Row, Col, Card } from "antd";
 
 const renderField = ({ input, label, type }) => (
   <Input {...input} type={type} placeholder={label} />
@@ -17,11 +17,13 @@ const ColField = ({ name, component, label, md }) => (
     />
   </Col>
 );
-const RemoveButton = ({fields,index})=>(<Col sm={24} md={2}>
-  <Button onClick={() => fields.remove(index)} type='danger'>
-    Remove
-  </Button>
-</Col>);
+const RemoveButton = ({ fields, index }) => (
+  <Col sm={24} md={2}>
+    <Button onClick={() => fields.remove(index)} type='danger'>
+      Remove
+    </Button>
+  </Col>
+);
 
 const linksSection = ({ fields }) =>
   fields.map((member, index) => (
@@ -72,14 +74,41 @@ let Sets = props => (
     }) => {
       return (
         <form onSubmit={handleSubmit}>
-          <Button onClick={() => push("hardwareList", {})}>Add Link</Button>
-          <FieldArray name='hardwareList'>{hardwareSection}</FieldArray>
-          <Button onClick={() => push("links", {})}>Add Link</Button>
-          <FieldArray name='links'>{linksSection}</FieldArray>
-          <Button onClick={() => push("dirsToCheckSize", "")}>Add Link</Button>
-          <FieldArray name='dirsToCheckSize'>{dirsSection}</FieldArray>
-          <Button onClick={() => push("scheduledTasks", "")}>Add Link</Button>
-          <FieldArray name='scheduledTasks'>{dirsSection}</FieldArray>
+          <Card
+            title='Additional servers'
+            extra={
+              <Button onClick={() => push("hardwareList", {})}>Add</Button>
+            }
+          >
+            <FieldArray name='hardwareList'>{hardwareSection}</FieldArray>
+          </Card>
+          <Card
+            title='Components to check'
+            extra={<Button onClick={() => push("links", {})}>Add</Button>}
+          >
+            <FieldArray name='links'>{linksSection}</FieldArray>
+          </Card>
+
+          <Card
+            title='Directories to show size'
+            extra={
+              <Button onClick={() => push("dirsToCheckSize", "")}>
+                Add
+              </Button>
+            }
+          >
+            <FieldArray name='dirsToCheckSize'>{dirsSection}</FieldArray>
+          </Card>
+          <Card
+            title='Scheduled tasks'
+            extra={
+              <Button onClick={() => push("scheduledTasks", "")}>
+                Add
+              </Button>
+            }
+          >
+            <FieldArray name='scheduledTasks'>{dirsSection}</FieldArray>
+          </Card>
 
           <div className='buttons'>
             <button type='submit' disabled={submitting || pristine}>
