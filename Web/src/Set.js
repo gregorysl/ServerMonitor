@@ -32,7 +32,7 @@ const AddButton = ({ push, click }) => {
     </Button>
   );
 };
-const FullCard = ({ push, name, title, subtitle, section, newItem }) => (
+const FullCard = ({ push, name, title, subtitle, section, newItem = {} }) => (
   <Card
     title={
       <Row type='flex' style={{ alignItems: "center" }} gutter={16}>
@@ -104,7 +104,6 @@ let Sets = props => (
             title='Additional servers'
             subtitle='(this will add more tabs to Hardware section)'
             section={hardwareSection}
-            newItem={{}}
           />
           <FullCard
             push={push}
@@ -112,7 +111,6 @@ let Sets = props => (
             title='Components to check'
             subtitle='(add data for services avaibility you want to check)'
             section={linksSection}
-            newItem={{}}
           />
           <FullCard
             push={push}
