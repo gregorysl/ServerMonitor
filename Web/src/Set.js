@@ -32,18 +32,10 @@ const ColField = ({ name, component, label, md }) => (
 const RemoveButton = ({ fields, index }) => (
   <Col sm={24} md={2}>
     <Button icon='delete' onClick={() => fields.remove(index)} type='danger'>
-      Remove
     </Button>
   </Col>
 );
 
-const AddButton = ({  click }) => {
-  return (
-    <Button icon='plus' onClick={click}>
-      Add
-    </Button>
-  );
-};
 const FullCard = ({
   push,
   name,
@@ -58,7 +50,9 @@ const FullCard = ({
       <Row type='flex' style={{ alignItems: "center" }} gutter={16}>
         <Col sm={24} md={3}>
           {!disableAdd && (
-            <AddButton push={push} click={() => push(name, newItem)} />
+            <Button icon='plus' onClick={() => push(name, newItem)}>
+              Add
+            </Button>
           )}
         </Col>
         <Col>
@@ -129,16 +123,16 @@ let Sets = props => (
               name={`cleaner.useWhiteList`}
               component={checkboxComponent}
             />
-            <Field
-              name={`cleaner.beforeDays`}
-              component={numberField}
-              placeholder='Last Name'
-            />
-            <Field
-              name={`cleaner.excludeNLast`}
-              component={numberField}
-              placeholder='Number of last builds to exclude'
-            />
+            <Row>
+              <label>Cleaner can remove builds older than (days)</label>
+              <Field name={`cleaner.beforeDays`} component={numberField} />
+            </Row>
+            <Row>
+              <label>
+                Exclude following number of latest builds from being cleaned:{" "}
+              </label>
+              <Field name={`cleaner.excludeNLast`} component={numberField} />
+            </Row>
           </FullCard>
           <FullCard
             push={push}
