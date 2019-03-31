@@ -128,18 +128,22 @@ let Sets = props => (
             section={dirsSection}
             newItem={""}
           />
-          <div className='buttons'>
-            <button type='submit' disabled={submitting || pristine}>
-              Submit
-            </button>
-            <button
-              type='button'
-              onClick={reset}
-              disabled={submitting || pristine}
-            >
-              Reset
-            </button>
-          </div>
+          <Row>
+            <Col sm={24} md={12}>
+              <Button
+                type='primary'
+                htmlType='submit'
+                disabled={submitting || pristine}
+              >
+                Save settings
+              </Button>
+            </Col>
+            <Col sm={24} md={12}>
+              <Button onClick={reset} disabled={submitting || pristine}>
+                Reset
+              </Button>
+            </Col>
+          </Row>
         </form>
       );
     }}
