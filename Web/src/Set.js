@@ -32,16 +32,22 @@ const AddButton = ({ push, click }) => {
     </Button>
   );
 };
-const CardHeader = ({ push, click, title, subtitle }) => (
-  <Row type='flex' style={{ alignItems: "center" }} gutter={16}>
-    <Col sm={24} md={3}>
-      <AddButton push={push} click={click} />
-    </Col>
-    <Col>
-      <h3 className='card-header-title'>{title}</h3>
-      <h5>{subtitle}</h5>
-    </Col>
-  </Row>
+const FullCard = ({ push, name, title, subtitle, section, newItem }) => (
+  <Card
+    title={
+      <Row type='flex' style={{ alignItems: "center" }} gutter={16}>
+        <Col sm={24} md={3}>
+          <AddButton push={push} click={() => push(name, newItem)} />
+        </Col>
+        <Col>
+          <h3 className='card-header-title'>{title}</h3>
+          <h5>{subtitle}</h5>
+        </Col>
+      </Row>
+    }
+  >
+    <FieldArray name={name}>{section}</FieldArray>
+  </Card>
 );
 const linksSection = ({ fields }) =>
   fields.map((member, index) => (
@@ -92,44 +98,38 @@ let Sets = props => (
     }) => {
       return (
         <form onSubmit={handleSubmit}>
-          <Card
-            title={
-              <CardHeader
-                click={() => push("hardwareList", {})}
-                name='hardwareList'
-                title='Additional servers'
-                subtitle='(this will add more tabs to Hardware section)'
-              />
-            }
-          >
-            <FieldArray name='hardwareList'>{hardwareSection}</FieldArray>
-          </Card>
-          <Card
-            title={
-              <CardHeader
-                click={() => push("links", {})}
-                name='links'
-                title='Components to check'
-                subtitle='(add data for services avaibility you want to check)'
-              />
-            }
-          >
-            <FieldArray name='links'>{linksSection}</FieldArray>
-          </Card>
-
-          <Card
-            title='Directories to show size'
-            extra={<AddButton push={push} name='dirsToCheckSize' />}
-          >
-            <FieldArray name='dirsToCheckSize'>{dirsSection}</FieldArray>
-          </Card>
-          <Card
+          <FullCard
+            push={push}
+            name='hardwareList'
+            title='Additional servers'
+            subtitle='(this will add more tabs to Hardware section)'
+            section={hardwareSection}
+            newItem={{}}
+          />
+          <FullCard
+            push={push}
+            name='links'
+            title='Components to check'
+            subtitle='(add data for services avaibility you want to check)'
+            section={linksSection}
+            newItem={{}}
+          />
+          <FullCard
+            push={push}
+            name='dirsToCheckSize'
+            title='Directories'
+            subtitle='(will check size occupied)'
+            section={dirsSection}
+            newItem={""}
+          />
+          <FullCard
+            push={push}
+            name='scheduledTasks'
             title='Scheduled tasks'
-            extra={<AddButton push={push} name='scheduledTasks' />}
-          >
-            <FieldArray name='scheduledTasks'>{dirsSection}</FieldArray>
-          </Card>
-
+            subtitle='( )'
+            section={dirsSection}
+            newItem={""}
+          />
           <div className='buttons'>
             <button type='submit' disabled={submitting || pristine}>
               Submit
