@@ -17,6 +17,7 @@ tools
 
 packages
 .vs
+.idea
 ServerMonitor/ServerMonitor.csproj.user
 ServerMonitor/ServerMonitor.csproj.vspscc
 ServerMonitor/bundle.js
