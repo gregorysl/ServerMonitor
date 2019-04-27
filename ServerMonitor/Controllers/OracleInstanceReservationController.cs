@@ -5,23 +5,26 @@ using ServerMonitor.Oracle;
 
 namespace ServerMonitor.Controllers
 {
+    [RoutePrefix("OracleInstanceReservation")]
     public class OracleInstanceReservationController : ApiController
     {
-        protected readonly OracleInstanceBl OracleInstanceBl;
+        private readonly OracleInstanceBl _oracleInstanceBl;
 
         public OracleInstanceReservationController()
         {
-            OracleInstanceBl = new OracleInstanceBl();
+            _oracleInstanceBl = new OracleInstanceBl();
         }
 
+        [Route]
         public HttpResponseMessage Get()
         {
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "This operation is not allowed.");
         }
         
+        [Route]
         public void Put([FromBody] OracleInstanceReservationRequest value)
         {
-            OracleInstanceBl.ChangeInstanceReservation(value.Id, value.Reserve);
+            _oracleInstanceBl.ChangeInstanceReservation(value.Id, value.Reserve);
         }
     }
 }

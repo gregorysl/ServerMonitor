@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Web.Http;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 using ServerMonitor.Oracle;
 
 namespace ServerMonitor.Controllers
 {
+    [RoutePrefix("OracleInstance")]
     public class OracleInstanceController : BaseApi
     {
-        protected readonly OracleInstanceBl OracleInstanceBl;
+        private readonly OracleInstanceBl OracleInstanceBl;
 
         public OracleInstanceController()
         {
             OracleInstanceBl = new OracleInstanceBl();
         }
 
+        [Route]
         public Response Get()
         {
             var response = new Response();
