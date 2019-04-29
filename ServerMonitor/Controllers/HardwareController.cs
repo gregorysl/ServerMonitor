@@ -8,6 +8,7 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
+    [RoutePrefix("Hardware")]
     public class HardwareController : BaseApi
     {
         [HttpGet]
@@ -30,8 +31,7 @@ namespace ServerMonitor.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("Hardware/GetAll")]
+        [Route("GetAll")]
         public Response GetAll()
         {
             var response = new Response();

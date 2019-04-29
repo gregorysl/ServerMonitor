@@ -14,13 +14,13 @@ using ServerMonitor.Models;
 
 namespace ServerMonitor.Controllers
 {
+    [RoutePrefix("IIS")]
     public class IisController : BaseApi
     {
         private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
         private static string DbPath => HostingEnvironment.MapPath("~/ServerMonitor.db");
 
-        [HttpGet]
-        [Route("Iis")]
+        [Route]
         public Response Get([FromUri]bool force = false)
         {
 
