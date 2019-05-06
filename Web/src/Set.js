@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
-import { setCleanerSettings } from './actions/actions';
+import { setSettings } from './actions/actions';
 import { FieldArray } from "react-final-form-arrays";
 
 import { Button, Input, Row, Col, Card, Checkbox, InputNumber } from "antd";
@@ -185,7 +185,7 @@ let Sets = props => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setSettings: settings => dispatch(setCleanerSettings(settings))
+  setSettings: settings => dispatch(setSettings(settings))
 });
 
 

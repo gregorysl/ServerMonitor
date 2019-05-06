@@ -8,9 +8,8 @@ export const getHardwareAction = () => ({
   type: types.GET_HARDWARE_DATA_REQUEST
 });
 
-export const getIisAction = data => ({
-  type: types.GET_IIS_APPS_REQUEST,
-  data
+export const getIisAction = () => ({
+  type: types.GET_IIS_APPS_REQUEST
 });
 
 export const setIisAction = appList => ({
@@ -63,11 +62,12 @@ export const killSession = name => ({
   name
 });
 
-export const getSettings = () => ({
-  type: types.GET_SETTINGS_REQUEST
+export const getSettings = (force) => ({
+  type: types.GET_SETTINGS_REQUEST,
+  force
 });
 
-export const setCleanerSettings = (settings) => ({
-  type: types.SET_CLEANER_REQUEST,
+export const setSettings = (settings) => ({
+  type: types.SET_SETTINGS_REQUEST,
   settings
 });

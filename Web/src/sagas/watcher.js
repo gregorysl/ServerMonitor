@@ -63,5 +63,5 @@ export function* watchGetSettings() {
 }
 
 export function* watchSetCleanerSettings() {
-  yield takeLatest(types.SET_CLEANER_REQUEST, saga.setCleanerSettings);
+  yield takeLatest(types.SET_SETTINGS_REQUEST, saga.setSettings);
 }

@@ -49,9 +49,8 @@ export function getHardware() {
   return Axios.get(hardwareUri);
 }
 
-export function getIisApps(props) {
-  const force = !props ? "" : "?force=true";
-  return Axios.get(iisUri + force);
+export function getIisApps() {
+  return Axios.get(iisUri);
 }
 
 export function getDisk() {
@@ -82,11 +81,12 @@ export function runTask(name) {
   return Axios.post(`${tasksUri}/${name}`);
 }
 
-export function getSettings() {
+export function getSettings(force) {
+  const force = !!force ? "?force=true": "";
   return Axios.get(settingsUri);
 }
 
-export function setCleanerSettings(settings) {
+export function setSettings(settings) {
   return Axios.put(cleanerUri, settings);
 }
 

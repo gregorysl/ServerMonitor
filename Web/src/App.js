@@ -35,7 +35,7 @@ class App extends Component {
                 render={() => (
                   <Settings
                   settings={this.props.settings}
-                    save={this.props.setCleanerSettings}
+                    save={this.props.setSettings}
                   />
                 )}
               />
@@ -54,7 +54,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getSettings: () => dispatch(actions.getSettings()),
-  setCleanerSettings: settings => dispatch(actions.setCleanerSettings(settings))
+  setSettings: settings => dispatch(actions.setSettings(settings))
 });
 
 export default connect(
