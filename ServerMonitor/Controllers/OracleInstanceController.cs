@@ -23,7 +23,7 @@ namespace ServerMonitor.Controllers
             try
             {
 
-                var isEnabled = Settings.IsOracleInstanceManagerEnabled;
+                var isEnabled = Settings.Data.IsOracleInstanceManagerEnabled;
                 if (isEnabled)
                 {
                     Log.Debug("GetAllInstances called.");

@@ -21,21 +21,13 @@ namespace ServerMonitor.Controllers
         private static string DbPath => HostingEnvironment.MapPath("~/ServerMonitor.db");
 
         [Route]
-        public Response Get([FromUri]bool force = false)
+        public Response Get()
         {
-
-            var cacheKey = "GetFilteredApps";
             var response = new Response();
             try
             {
                 Log.Debug("GetFilteredApps called.");
-                if (force)
-                {
-                    CacheManager.FlushCache(cacheKey);
-                    response.AddSuccessNotification("Flushed IIS cache successfully");
-                }
                 var filteredApps = GetFilteredApps();
-
                 Log.Debug("GetFilteredApps call success.");
                 response.Data = filteredApps;
                 return response;
@@ -88,7 +80,7 @@ namespace ServerMonitor.Controllers
         private IList<BuildEntity> GetFilteredApps()
         {
             var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
-            var buildsProvider = new CommonNameBuildsProvider(Settings.CommonAppName);
+            var buildsProvider = new CommonNameBuildsProvider(Settings.Data.CommonAppName);
 
             var whitelist = whitelistProvider.GetWhitelist();
             var builds = buildsProvider.GetBuilds().ToList();

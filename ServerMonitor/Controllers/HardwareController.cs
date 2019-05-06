@@ -35,7 +35,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             var hardwareList = new List<Hardware>();
 
-            var config = Settings.HardwareList;
+            var config = Settings.Data.HardwareList;
 
             if (config == null)
             {

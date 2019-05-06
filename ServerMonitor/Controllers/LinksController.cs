@@ -18,7 +18,7 @@ namespace ServerMonitor.Controllers
         public Response Get()
         {
             var response = new Response();
-            var links = Settings.Links;
+            var links = Settings.Data.Links;
             if (links == null)
             {
                 response.Status = Status.Error;
@@ -34,7 +34,7 @@ namespace ServerMonitor.Controllers
         public async Task<Response> Post(string url)
         {
             var response = new Response();
-            var links = Settings.Links;
+            var links = Settings.Data.Links;
             if (links == null)
             {
                 response.Status = Status.Error;
