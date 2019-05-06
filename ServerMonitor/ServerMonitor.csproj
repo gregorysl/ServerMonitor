@@ -239,7 +239,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CleanerController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Helpers\SettingsHelper.cs" />
+    <Compile Include="Helpers\SettingsHandler.cs" />
     <Compile Include="Models\JsonSettings.cs" />
     <Compile Include="Models\Build.cs" />
     <Compile Include="Controllers\HardwareController.cs" />

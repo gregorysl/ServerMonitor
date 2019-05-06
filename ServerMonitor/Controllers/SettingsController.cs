@@ -10,10 +10,8 @@ namespace ServerMonitor.Controllers
         [Route]
         public Response Get()
         {
-            var response = new Response();
-            response.Data = Settings;
+            var response = new Response {Data = SettingsInstance};
             return response;
-
         }
     }
 }

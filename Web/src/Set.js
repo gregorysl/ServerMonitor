@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
+import { setCleanerSettings } from './actions/actions';
 import { FieldArray } from "react-final-form-arrays";
 
 import { Button, Input, Row, Col, Card, Checkbox, InputNumber } from "antd";
@@ -12,25 +14,17 @@ const numberField = ({ input, label, type }) => (
   <InputNumber {...input} type={type} placeholder={label} />
 );
 const checkboxComponent = ({ input: { onChange, value }, meta, ...rest }) => (
-  <Checkbox
-    {...rest}
-    checked={!!value}
-    onToggle={(event, isInputChecked) => onChange(isInputChecked)}
-  >
+  <Checkbox {...rest} checked={!!value} onChange={(e, isChkd) => onChange(isChkd)} >
     Use whitelist
   </Checkbox>
 );
 const ColField = ({ name, component, label, md }) => (
-  <Col sm={24} md={md}>
-    <Field
-      name={name}
-      component={component ? component : renderField}
-      label={label}
-    />
+  <Col xs={24} sm={12} md={md}>
+    <Field name={name} component={component ? component : renderField} label={label} />
   </Col>
 );
 const RemoveButton = ({ fields, index }) => (
-  <Col sm={24} md={2}>
+  <Col xs={24} sm={12} md={2}>
     <Button icon='delete' onClick={() => fields.remove(index)} type='danger'>
     </Button>
   </Col>
@@ -91,24 +85,23 @@ const dirsSection = ({ fields }) =>
       <RemoveButton fields={fields} index={index} />
     </Row>
   ));
-const onSubmit = async values => {
-  console.log(JSON.stringify(values, 0, 2));
-};
 
-let Sets = props => (
-  <Form
-    onSubmit={onSubmit}
+
+let Sets = props => {
+  const submita = (values) => props.setSettings(values);
+  return  <Form
+    onSubmit={submita}
     mutators={{
       ...arrayMutators
     }}
     initialValues={props.settings}
     render={({
       form: {
+        reset,
         mutators: { push, pop }
       },
       handleSubmit,
       pristine,
-      reset,
       submitting,
       values
     }) => {
@@ -180,7 +173,7 @@ let Sets = props => (
               </Button>
             </Col>
             <Col sm={24} md={12}>
-              <Button onClick={reset} disabled={submitting || pristine}>
+              <Button onClick={reset} disabled={submitting || pristine} type="danger">
                 Reset
               </Button>
             </Col>
@@ -189,6 +182,12 @@ let Sets = props => (
       );
     }}
   />
-);
+};
 
-export default Sets;
+const mapDispatchToProps = dispatch => ({
+  setSettings: settings => dispatch(setCleanerSettings(settings))
+});
+
+
+export default connect(null, mapDispatchToProps)(Sets);
+

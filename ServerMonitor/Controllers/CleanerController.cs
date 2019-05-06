@@ -11,7 +11,7 @@ namespace ServerMonitor.Controllers
     [RoutePrefix("Cleaner")]
     public class CleanerController : BaseApi
     {
-        private string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
+        private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
         [Route]
         public Response Get()
         {
@@ -29,11 +29,12 @@ namespace ServerMonitor.Controllers
 
 
         [Route]
-        public Response Put(FilterInput cleanerSettings)
+        public Response Put(JsonSettings settings)
         {
             var response = new Response();
-            Settings.Cleaner = cleanerSettings;
-            new SettingsHelper().Save(Settings);
+            //Instance = settings;
+            SettingsInstance.Save(settings);
+            //new SettingsHandler().Save(Settings);
             return response;
         }
     }
