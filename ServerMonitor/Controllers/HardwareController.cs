@@ -17,9 +17,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var hardwareManager = new HardwareManager();
-                var hardware = CacheManager.GetObjectFromCache("IISApplications", _cacheLifecycle, hardwareManager.GetHardware);
-                response.Data = hardware;
+                response.Data = new HardwareManager().GetHardware();
                 return response;
             }
             catch (Exception ex)

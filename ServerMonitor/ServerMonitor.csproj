@@ -165,7 +165,6 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.Extensions.4.1.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
       <Private>True</Private>
@@ -261,7 +260,6 @@
     </Compile>
     <Compile Include="Helpers\ApiClient.cs" />
     <Compile Include="Helpers\BaseApi.cs" />
-    <Compile Include="Helpers\CacheManager.cs" />
     <Compile Include="Models\BuildNote.cs" />
     <Compile Include="Models\FolderSize.cs" />
     <Compile Include="Models\IISAppPool.cs" />

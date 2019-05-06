@@ -17,7 +17,7 @@ namespace ServerMonitor.Controllers
             try
             {
                 Log.Debug("GetScheduledTasks called.");
-                var details = CacheManager.GetObjectFromCache("ScheduledTasks", _cacheLifecycle, GetScheduledTasks);
+                var details = GetScheduledTasks();
                 Log.Debug("GetScheduledTasks call success.");
                 response.Data = details;
                 return response;

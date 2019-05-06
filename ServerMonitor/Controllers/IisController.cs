@@ -34,7 +34,7 @@ namespace ServerMonitor.Controllers
                     CacheManager.FlushCache(cacheKey);
                     response.AddSuccessNotification("Flushed IIS cache successfully");
                 }
-                var filteredApps = CacheManager.GetObjectFromCache(cacheKey, _cacheLifecycle, GetFilteredApps);
+                var filteredApps = GetFilteredApps();
 
                 Log.Debug("GetFilteredApps call success.");
                 response.Data = filteredApps;
