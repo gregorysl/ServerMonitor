@@ -5,7 +5,7 @@ Simple tool to monitor server resources, manage IIS applications, check disk usa
 ## Screenshot
 
 <h1 align="center">
-  <img src="screenshot.png?raw=true" alt="Server Monitor"/></a>
+  <img src="screenshot.png?raw=true" alt="Server Monitor"/>
 </h1>
 
 ## Getting started

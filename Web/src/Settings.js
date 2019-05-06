@@ -87,7 +87,7 @@ const dirsSection = ({ fields }) =>
   ));
 
 
-let Sets = props => {
+let Settings = props => {
   const submita = (values) => props.setSettings(values);
   return  <Form
     onSubmit={submita}
@@ -189,5 +189,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(null, mapDispatchToProps)(Sets);
+export default connect(null, mapDispatchToProps)(Settings);
 
