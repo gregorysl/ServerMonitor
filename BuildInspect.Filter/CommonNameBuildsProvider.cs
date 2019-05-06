@@ -23,7 +23,7 @@ namespace BuildInspect.Filter
 
         public IEnumerable<BuildEntity> GetBuilds()
         {
-            List<Application> iisApps = new List<Application>();
+            List<Application> iisApps;
 
             using (var identity = WindowsIdentity.GetCurrent())
             {

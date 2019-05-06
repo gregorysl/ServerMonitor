@@ -83,7 +83,7 @@ namespace ServerMonitor.Controllers
             var buildsProvider = new CommonNameBuildsProvider(Settings.Data.CommonAppName);
 
             var whitelist = whitelistProvider.GetWhitelist();
-            var builds = buildsProvider.GetBuilds().ToList();
+            var builds = buildsProvider.GetBuilds().OrderBy(x=>x.Name).ToList();
             builds.FillAdditionalData(whitelist);
             
             var notes = GetAllBuildNotes();
