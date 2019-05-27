@@ -15,10 +15,12 @@ const ServiceItem = props => {
   const [message, setMessage] = useState();
   const [status, setStatus] = useState();
   const [loading, setLoading] = useState(true);
+  
   const url = props.url;
+  const data = props;
 
   useEffectAsync(async () => {
-    const result = await checkLink(url);
+    const result = await checkLink(data);
     const linkData = result.data.data;
     setLoading(false);
     setMessage(linkData.message);
@@ -30,7 +32,7 @@ const ServiceItem = props => {
       <Tag color={status}>
         <a className="service-link" target="blank" href={props.url}>
           {loading && <Spin size="small" indicator={antIcon} />}
-          {props.name}
+          {props.type}
         </a>
       </Tag>
     </Tooltip>

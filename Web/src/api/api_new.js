@@ -87,9 +87,13 @@ export function getSettings(force) {
 }
 
 export function setSettings(settings) {
-  return Axios.put(cleanerUri, settings);
+  return Axios.put(settingsUri, settings);
 }
 
-export function checkLink(url) {
-  return Axios.post(`${linksUri}?url=${url}`);
+export function checkLink(data) {
+  return Axios.post(`${linksUri}`, data);
+}
+
+export function getServerLinks(url) {
+  return Axios.get(`${url}Settings`);
 }
