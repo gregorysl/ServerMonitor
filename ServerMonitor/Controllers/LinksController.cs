@@ -31,7 +31,7 @@ namespace ServerMonitor.Controllers
         }
 
         [Route]
-        public async Task<Response> Post(string url)
+        public async Task<Response> Post(UncheckedLink link)
         {
             var response = new Response();
             var links = Settings.Data.Links;
@@ -42,7 +42,6 @@ namespace ServerMonitor.Controllers
                 return response;
             }
 
-            var link = links.First(x => x.Url == url);
             var resultLink = new Link(link);
             try
             {
