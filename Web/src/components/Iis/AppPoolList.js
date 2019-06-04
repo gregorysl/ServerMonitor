@@ -37,7 +37,7 @@ const AppPoolList = props => {
                 <TooltipButon
                   title="recycle"
                   icon="reload"
-                  click={() => props.recycle(row.value)}
+                  click={() => props.recycle(row.value,props.url)}
                 />
               </>
             ),

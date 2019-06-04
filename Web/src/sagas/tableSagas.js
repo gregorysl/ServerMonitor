@@ -62,7 +62,7 @@ export function* setIisAppWhitelist(props) {
 }
 export function* setIisAppRecycle(props) {
   try {
-    const { data } = yield call(api.recycleApp, props.name);
+    const { data } = yield call(api.recycleApp, props);
     yield put({ type: types.GET_IIS_RECYCLE_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST });
   } catch (error) {

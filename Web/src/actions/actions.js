@@ -38,9 +38,10 @@ export const whitelistApp = (name,url) => ({
   name,
   url
 });
-export const recycleApp = name => ({
+export const recycleApp = (name,url)  => ({
   type: types.GET_IIS_RECYCLE_REQUEST,
-  name
+  name,
+  url
 });
 
 export const runTask = name => ({
