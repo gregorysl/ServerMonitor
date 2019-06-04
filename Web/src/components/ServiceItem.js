@@ -3,12 +3,6 @@ import { checkLink } from "../api/api_new";
 import { Tooltip, Tag, Spin, Icon } from "antd";
 import PropTypes from "prop-types";
 
-function useEffectAsync(effect, inputs) {
-  useEffect(() => {
-    effect();
-  }, inputs);
-}
-
 const antIcon = <Icon type="loading" spin />;
 
 const ServiceItem = props => {
@@ -19,13 +13,16 @@ const ServiceItem = props => {
   const url = props.url;
   const data = props;
 
-  useEffectAsync(async () => {
-    const result = await checkLink(data);
-    const linkData = result.data.data;
-    setLoading(false);
-    setMessage(linkData.message);
-    setStatus(linkData.working ? "#87d068" : "#f50");
-  },[url]);
+  useEffect(() => {
+    async function fetchData() {
+      const result = await checkLink(data);
+      const linkData = result.data.data;
+      setLoading(false);
+      setMessage(linkData.message);
+      setStatus(linkData.working ? "#87d068" : "#f50");
+    }
+    fetchData();
+  }, [data, url]);
 
   return (
     <Tooltip title={message}>
