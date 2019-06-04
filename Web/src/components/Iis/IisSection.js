@@ -64,7 +64,7 @@ class IisSection extends Component {
             {
               Header: 'Action',
               accessor: 'x',
-              Cell: row => <ActionsButtons {...row.original} />,
+              Cell: row => <ActionsButtons {...row.original} url={location} />,
               width: 100
             }
           ]}

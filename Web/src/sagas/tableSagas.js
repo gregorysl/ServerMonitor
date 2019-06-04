@@ -40,7 +40,7 @@ export function* getIisData(props) {
 
 export function* setIisApp(props) {
   try {
-    const { data } = yield call(api.setIisApp, props.appList);
+    const { data } = yield call(api.setIisApp, props);
     yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST, data: true });
   } catch (error) {

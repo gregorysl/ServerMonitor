@@ -13,20 +13,15 @@ const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
 // const hardwareUri = `${appUri}Hardware/`;
 const hardwareUri = `${appUri}Hardware/GetAll`;
-const iisStopUri = `${appUri}Iis/Toggle`;
 const linksUri = `${appUri}Links/`;
 const settingsUri = `${appUri}Settings/`;
 
-export function setIisApp(appList) {
-  return Axios.post(iisStopUri, JSON.stringify(appList), {
+export function setIisApp(props) {
+  return Axios.post(`${props.url}/Iis/Toggle`, JSON.stringify(props.appList), {
     headers: {
       "Content-Type": "application/json"
     }
   });
-}
-
-export function setOracle(data) {
-  return Axios.put(setOracleUri, data);
 }
 
 export function whitelistApp(props) {
@@ -57,6 +52,10 @@ export function getDisk() {
 
 export function getOracleInstancies() {
   return Axios.get(oracleUri);
+}
+
+export function setOracle(data) {
+  return Axios.put(setOracleUri, data);
 }
 
 export function setNote(data) {

@@ -12,9 +12,21 @@ export const getIisAction = () => ({
   type: types.GET_IIS_APPS_REQUEST
 });
 
-export const setIisAction = appList => ({
+export const setIisAction = (appList,url) => ({
   type: types.GET_IIS_TOGGLE_REQUEST,
-  appList
+  appList,
+  url
+});
+
+export const whitelistApp = (name,url) => ({
+  type: types.GET_IIS_WHITELIST_REQUEST,
+  name,
+  url
+});
+export const recycleApp = (name,url)  => ({
+  type: types.GET_IIS_RECYCLE_REQUEST,
+  name,
+  url
 });
 
 export const getDiskUsageAction = () => ({
@@ -31,17 +43,6 @@ export const getSessionsAction = () => ({
 
 export const getOracleAction = () => ({
   type: types.ORACLE_REQUEST
-});
-
-export const whitelistApp = (name,url) => ({
-  type: types.GET_IIS_WHITELIST_REQUEST,
-  name,
-  url
-});
-export const recycleApp = (name,url)  => ({
-  type: types.GET_IIS_RECYCLE_REQUEST,
-  name,
-  url
 });
 
 export const runTask = name => ({
