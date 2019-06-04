@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import * as actions from '../../actions/actions';
 import AppPoolList from './AppPoolList';
@@ -10,19 +9,17 @@ import WhitelistButton from './WhitelistButton';
 import ApplicationStatus from './ApplicationStatus';
 
 class IisSection extends Component {
-  componentDidMount() {
-    this.props.getIis();
-  }
+  
   render() {
+    console.log(this.props.iisData.homeUrl);
     return (
       <React.Fragment>
-        <h1 className="table-title">IIS Applications</h1>
         <ReactTable
           showPagination={false}
           noDataText="No IIS applications found"
           sortable={false}
           minRows={1}
-          data={this.props.iis.data}
+          data={this.props.iisData.data}
           defaultSorted={[{ id: 'key' }]}
           getTdProps={() => ({
             style: {
@@ -84,23 +81,19 @@ class IisSection extends Component {
   }
 }
 
-IisSection.propTypes = {
-  getIis: PropTypes.func.isRequired,
-  iis: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-    loading: PropTypes.bool.isRequired
-  }).isRequired,
-  whitelist: PropTypes.func.isRequired,
-  recycle: PropTypes.func.isRequired
-};
+// IisSection.propTypes = {
+//   iis: PropTypes.shape({
+//     data: PropTypes.arrayOf(PropTypes.object).isRequired
+//   }).isRequired,
+//   whitelist: PropTypes.func.isRequired,
+//   recycle: PropTypes.func.isRequired
+// };
 
 const mapStateToProps = state => ({
   iis: state.table
 });
 
 const mapDispatchToProps = dispatch => ({
-  getIis: () => dispatch(actions.getIisAction()),
   recycle: name => dispatch(actions.recycleApp(name)),
   whitelist: (item) => {
     dispatch(actions.whitelistApp(item.name));
