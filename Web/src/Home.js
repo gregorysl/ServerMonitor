@@ -6,7 +6,7 @@ import * as actions from "./actions/actions";
 import ServicesList from "./components/servicesList";
 import Hardware from "./components/Hardware";
 import DataTable from "./components/Iis/DataTable";
-import IisSection from "./components/Iis/IisSection";
+import IisMaster from "./components/Iis/IisMaster";
 import TaskActionButtons from "./components/TaskActionButtons";
 import OracleToggleButton from "./components/OracleToggleButton";
 import SessionsActionButtons from "./components/SessionsActionButtons";
@@ -54,7 +54,7 @@ class Home extends Component {
   componentDidMount() {
     this.props.getTasks();
     this.props.getSessions();
-    this.props.getHardwareUsage();
+    // this.props.getHardwareUsage();
     this.props.getOracle();
   }
   componentWillReceiveProps(nextProps) {
@@ -67,7 +67,7 @@ class Home extends Component {
         <h1>Hardware Monitor</h1>
         <Hardware />
         <ServicesList settings={this.props.settings} />
-        <IisSection />
+        <IisMaster settings={this.props.settings}  />
         {!this.props.oracle.isDisabled && (
           <DataTable
             {...this.props.oracle}

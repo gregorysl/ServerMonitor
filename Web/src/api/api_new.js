@@ -13,13 +13,12 @@ const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
 // const hardwareUri = `${appUri}Hardware/`;
 const hardwareUri = `${appUri}Hardware/GetAll`;
-const iisUri = `${appUri}Iis/`;
+const iisUri = `${appUri}Iis/`; //TODO DELETE
 const iisStopUri = `${appUri}Iis/Toggle`;
 const iisWhitelistUri = `${appUri}Iis/Whitelist`;
 const iisRecycleUri = `${iisUri}Recycle/`;
 const linksUri = `${appUri}Links/`;
 const settingsUri = `${appUri}Settings/`;
-const cleanerUri = `${appUri}Cleaner/`;
 
 export function setIisApp(appList) {
   return Axios.post(iisStopUri, JSON.stringify(appList), {
@@ -49,8 +48,9 @@ export function getHardware() {
   return Axios.get(hardwareUri);
 }
 
-export function getIisApps() {
-  return Axios.get(iisUri);
+export function getIisApps(prefix) {
+const url = prefix? prefix:appUri;
+  return Axios.get(`${url}Iis/`);
 }
 
 export function getDisk() {
@@ -96,4 +96,10 @@ export function checkLink(data) {
 
 export function getServerLinks(url) {
   return Axios.get(`${url}Settings`);
+}
+
+export function asd(urls) {
+  
+  const promises = urls.map(x => Axios.get(x.url));
+  return Axios.all(promises);
 }
