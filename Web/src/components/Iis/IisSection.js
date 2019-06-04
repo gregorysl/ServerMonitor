@@ -9,9 +9,8 @@ import WhitelistButton from './WhitelistButton';
 import ApplicationStatus from './ApplicationStatus';
 
 class IisSection extends Component {
-  
   render() {
-    console.log(this.props.iisData.homeUrl);
+    const location = this.props.iisData.homeUrl.split("/").splice(0,3).join("/");
     return (
       <React.Fragment>
         <ReactTable
@@ -33,7 +32,7 @@ class IisSection extends Component {
               Header: 'Name',
               accessor: 'name',
               Cell: row => (
-                <a target="_blank" rel='noopener noreferrer' href={`${window.location.origin}/${row.original.name}/`}>
+                <a target="_blank" rel='noopener noreferrer' href={`${location}/${row.original.name}/`}>
                   {row.original.name}
                 </a>
               )
@@ -57,6 +56,7 @@ class IisSection extends Component {
                 <WhitelistButton
                   {...row.original}
                   click={this.props.whitelist}
+                  url={location}
                 />
               ),
               width: 100
@@ -73,6 +73,7 @@ class IisSection extends Component {
               app={row.original}
               items={row.original.apps}
               recycle={this.props.recycle}
+              url={location}
             />
           )}
         />
@@ -94,10 +95,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  recycle: name => dispatch(actions.recycleApp(name)),
-  whitelist: (item) => {
-    dispatch(actions.whitelistApp(item.name));
-  }
+  recycle: (name, url) => dispatch(actions.recycleApp(name, url)),
+  whitelist: (item, url) => dispatch(actions.whitelistApp(item.name, url))
 });
 
 export default connect(

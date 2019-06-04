@@ -15,7 +15,6 @@ const tasksUri = `${appUri}Tasks/`;
 const hardwareUri = `${appUri}Hardware/GetAll`;
 const iisUri = `${appUri}Iis/`; //TODO DELETE
 const iisStopUri = `${appUri}Iis/Toggle`;
-const iisWhitelistUri = `${appUri}Iis/Whitelist`;
 const iisRecycleUri = `${iisUri}Recycle/`;
 const linksUri = `${appUri}Links/`;
 const settingsUri = `${appUri}Settings/`;
@@ -32,8 +31,10 @@ export function setOracle(data) {
   return Axios.put(setOracleUri, data);
 }
 
-export function whitelistApp(app) {
-  return Axios.post(`${iisWhitelistUri}/${app}`);
+export function whitelistApp(props) {
+  const iisWhitelistUri = `${props.url}/Iis/Whitelist`;
+  //TODO FIX CORS
+  return Axios.post(`${iisWhitelistUri}/${props.name}`);
 }
 
 export function recycleApp(appName) {

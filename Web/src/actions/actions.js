@@ -33,9 +33,10 @@ export const getOracleAction = () => ({
   type: types.ORACLE_REQUEST
 });
 
-export const whitelistApp = list => ({
+export const whitelistApp = (name,url) => ({
   type: types.GET_IIS_WHITELIST_REQUEST,
-  list
+  name,
+  url
 });
 export const recycleApp = name => ({
   type: types.GET_IIS_RECYCLE_REQUEST,

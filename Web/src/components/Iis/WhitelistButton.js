@@ -5,7 +5,7 @@ import { Tooltip, Checkbox } from 'antd';
 
 const WhitelistButton = (props) => {
   const title = props.whitelisted ? 'Remove from whitelist' : 'Whitelist';
-  const click = () => props.click(props);
+  const click = () => props.click(props,props.url);
   return (
     <Tooltip title={title} >
       <Checkbox className="icon-hand" onClick={click} checked={props.whitelisted} />
