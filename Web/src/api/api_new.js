@@ -59,7 +59,7 @@ export function setOracle(data) {
 }
 
 export function setNote(data) {
-  return Axios.post(`${appUri}Iis/SaveBuildNote`, data);
+  return Axios.post(`${appUri}BuildNote`, data);
 }
 
 export function getUserSessions() {
