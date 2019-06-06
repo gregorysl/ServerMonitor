@@ -242,7 +242,6 @@
     <Compile Include="Helpers\NoteHelper.cs" />
     <Compile Include="Helpers\SettingsHandler.cs" />
     <Compile Include="Models\JsonSettings.cs" />
-    <Compile Include="Models\Build.cs" />
     <Compile Include="Controllers\HardwareController.cs" />
     <Compile Include="Controllers\IisController.cs" />
     <Compile Include="Controllers\OracleInstanceController.cs" />
@@ -264,7 +263,6 @@
     <Compile Include="Helpers\BaseApi.cs" />
     <Compile Include="Models\BuildNote.cs" />
     <Compile Include="Models\FolderSize.cs" />
-    <Compile Include="Models\IISAppPool.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Oracle\BuildServerDetails.cs" />
     <Compile Include="Oracle\ConnectionDetail.cs" />
