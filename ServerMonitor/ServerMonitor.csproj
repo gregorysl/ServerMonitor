@@ -239,6 +239,7 @@
     <Compile Include="Controllers\BuildNoteController.cs" />
     <Compile Include="Controllers\CleanerController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Helpers\NoteHelper.cs" />
     <Compile Include="Helpers\SettingsHandler.cs" />
     <Compile Include="Models\JsonSettings.cs" />
     <Compile Include="Models\Build.cs" />

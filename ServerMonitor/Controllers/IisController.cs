@@ -86,7 +86,7 @@ namespace ServerMonitor.Controllers
             var builds = buildsProvider.GetBuilds().OrderBy(x=>x.Name).ToList();
             builds.FillAdditionalData(whitelist);
             
-            var notes = GetAllBuildNotes();
+            var notes = new NoteHelper().GetAll();
             builds.ForEach(x=>x.Note = notes.FirstOrDefault(n=>n.BuildName==x.Name)?.Note);
 
             return builds;
@@ -120,9 +120,8 @@ namespace ServerMonitor.Controllers
 
         }
 
-        [HttpPost]
-        [Route("IIS/Whitelist/{name}")]
-        public Response WhitelistToggle(string name)
+        [Route]
+        public Response Post([FromBody]string name)
         {
             var response = new Response();
             try
@@ -156,90 +155,5 @@ namespace ServerMonitor.Controllers
             }
 
         }
-        
-        protected List<BuildNote> GetAllBuildNotes()
-        {
-            using (var db = new LiteDatabase(DbPath))
-            {
-                var col = db.GetCollection<BuildNote>("BuildNotes").FindAll().ToList();
-                return col;
-            }
-        }
-
-        protected string GetBuildNote(string name)
-        {
-            using (var db = new LiteDatabase(DbPath))
-            {
-                var col = db.GetCollection<BuildNote>("BuildNotes");
-
-                var note = col.Find(c => c.BuildName == name).FirstOrDefault();
-                return note?.Note;
-            }
-        }
-
-        protected void SetBuildNote(string buildName, string note)
-        {
-            using (var db = new LiteDatabase(DbPath))
-            {
-                var col = db.GetCollection<BuildNote>("BuildNotes");
-
-                var buildNote = col.Find(c => c.BuildName == buildName).FirstOrDefault();
-
-                if (buildNote == null)
-                {
-                    col.Insert(new BuildNote
-                    {
-                        Id = new Guid(),
-                        BuildName = buildName,
-                        Note = note
-                    });
-                }
-                else
-                {
-                    buildNote.Note = note;
-                    col.Update(buildNote);
-                }
-
-                col.EnsureIndex(x => x.BuildName);
-            }
-        }
-
-        [HttpPost]
-        [Route("Iis/SaveBuildNote")]
-        public Response SaveBuildNote([FromBody]KeyValueData<string> data)
-        {
-            var response = new Response();
-            try
-            {
-                SetBuildNote(data.Key, data.Value);
-                response.AddSuccessNotification("Application note saved succesfully.");
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message, ex.StackTrace);
-                return response;
-            }
-        }
-
-        [HttpGet]
-        public Response GetBuildNotes(string name)
-        {
-            var response = new Response();
-            try
-            {
-                var buildNote = GetBuildNote(name);
-                response.Data = buildNote;
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message, ex.StackTrace);
-                return response;
-            }
-        }
-
     }
 }
