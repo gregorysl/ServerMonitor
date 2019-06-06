@@ -6,7 +6,6 @@ using System.Web.Hosting;
 using System.Web.Http;
 using BuildInspect.Data.Entities;
 using BuildInspect.Filter;
-using LiteDB;
 using Microsoft.Web.Administration;
 using Newtonsoft.Json;
 using ServerMonitor.Helpers;
@@ -18,8 +17,6 @@ namespace ServerMonitor.Controllers
     public class IisController : BaseApi
     {
         private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
-        private static string DbPath => HostingEnvironment.MapPath("~/ServerMonitor.db");
-
         [Route]
         public Response Get()
         {
