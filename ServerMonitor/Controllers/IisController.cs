@@ -17,6 +17,7 @@ namespace ServerMonitor.Controllers
     public class IisController : BaseApi
     {
         private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
+
         [Route]
         public Response Get()
         {
@@ -80,77 +81,58 @@ namespace ServerMonitor.Controllers
             var buildsProvider = new CommonNameBuildsProvider(Settings.Data.CommonAppName);
 
             var whitelist = whitelistProvider.GetWhitelist();
-            var builds = buildsProvider.GetBuilds().OrderBy(x=>x.Name).ToList();
+            var builds = buildsProvider.GetBuilds().OrderBy(x => x.Name).ToList();
             builds.FillAdditionalData(whitelist);
-            
+
             var notes = new NoteHelper().GetAll();
-            builds.ForEach(x=>x.Note = notes.FirstOrDefault(n=>n.BuildName==x.Name)?.Note);
+            builds.ForEach(x => x.Note = notes.FirstOrDefault(n => n.BuildName == x.Name)?.Note);
 
             return builds;
         }
-        
-        [HttpPost]
-        [Route("Iis/Toggle")]
-        public Response Toggle(IssToggleConfig issToggleConfig)
-        {
-            var response = new Response();
-            try
-            {
-                var mgr = new ServerManager();
-                var pools = mgr.ApplicationPools.Where(app => issToggleConfig.AppPools.Contains(app.Name));
-
-                foreach (var pool in pools)
-                {
-                    var newState = issToggleConfig.Condition ? pool.Stop() : pool.Start();
-                }
-
-                var state = issToggleConfig.Condition ? "stopped" : "started";
-                response.AddSuccessNotification($"Application pools {state} successfully.");
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message, ex.StackTrace);
-                return response;
-            }
-
-        }
 
         [Route]
-        public Response Post([FromBody]string name)
+        public Response Post(IisAction action)
         {
             var response = new Response();
-            try
+            switch (action.Action)
             {
-                var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
-                var whitelist = whitelistProvider.GetWhitelist();
+                case "Toggle":
+                    var mgr = new ServerManager();
+                    var buildAppPools = action.Build.Apps.Select(x => x.Pool).ToList();
+                    var pools = mgr.ApplicationPools.Where(app => buildAppPools.Contains(app.Name));
 
-                var isWhitelisted = whitelist.Any(x => x == name);
-                if (isWhitelisted)
-                {
-                    whitelist.Remove(name);
-                }
-                else
-                {
-                    whitelist.Add(name);
-                }
+                    foreach (var pool in pools)
+                    {
+                        var newState = pool.State == ObjectState.Started ? pool.Stop() : pool.Start();
+                    }
 
-                var json = JsonConvert.SerializeObject(whitelist);
-                File.WriteAllText(_whitelistPath, json);
+                    response.AddSuccessNotification($"Application pools toggled successfully.");
+                    break;
+                case "Whitelist":
+                    var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
+                    var whitelist = whitelistProvider.GetWhitelist();
 
-                var function = isWhitelisted ? "un" : "";
+                    var buildName = action.Build.Name;
+                    var isWhitelisted = whitelist.Any(x => x == buildName);
+                    if (isWhitelisted)
+                    {
+                        whitelist.Remove(buildName);
+                    }
+                    else
+                    {
+                        whitelist.Add(buildName);
+                    }
 
-                response.AddSuccessNotification($"Application {function}whitelisted successfully.");
-                return response;
+                    var json = JsonConvert.SerializeObject(whitelist);
+                    File.WriteAllText(_whitelistPath, json);
+
+                    var function = isWhitelisted ? "un" : "";
+
+                    response.AddSuccessNotification($"Application {function}whitelisted successfully.");
+                    break;
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-                response.AddErrorNotification(ex.Message, ex.StackTrace);
-                return response;
-            }
 
+            return response;
         }
     }
 }

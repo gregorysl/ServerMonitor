@@ -13,6 +13,13 @@ namespace BuildInspect.Data.Entities
             DirectoryInfo appDir = GetAppDirectory(dir);
             CreatedDateTime = appDir?.CreationTime;
         }
+        [JsonConstructor]
+        public ApplicationEntity(string name, string pool, bool running)
+        {
+            Name = name;
+            Pool = pool;
+            Running = running;
+        }
         public ApplicationEntity(string name, DateTime created)
         {
             Name = name.TrimStart('/');

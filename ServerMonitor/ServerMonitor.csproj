@@ -241,6 +241,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Helpers\NoteHelper.cs" />
     <Compile Include="Helpers\SettingsHandler.cs" />
+    <Compile Include="Models\IisAction.cs" />
     <Compile Include="Models\JsonSettings.cs" />
     <Compile Include="Controllers\HardwareController.cs" />
     <Compile Include="Controllers\IisController.cs" />
