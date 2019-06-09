@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Icon, Input } from 'antd';
-import { setNote } from '../../actions/actions';
 
 class NoteControl extends Component {
   constructor(props) {
@@ -38,19 +35,15 @@ class NoteControl extends Component {
   }
   confirmNote() {
     this.setState({ isEditMode: !this.state.isEditMode });
-
-    const data = {
-      key: this.props.name,
-      value: this.state.value
-    };
-    this.props.saveNote(data);
+    this.props.org.note = this.state.value;
+    this.props.click(this.props.org, this.props.url, this.props.refresh, "Note");
   }
 
   render() {
     const icon = this.props.note === '' ? 'tag-o' : 'tag';
     const note =
-      this.props.note &&
-      this.props.note.split('\\n').map(item => (
+      this.props.org.note &&
+      this.props.org.note.split('\\n').map(item => (
         <span key={item}>
           {item}
           <br />
@@ -80,20 +73,4 @@ class NoteControl extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  saveNote: (data) => {
-    dispatch(setNote(data));
-  }
-});
-NoteControl.defaultProps = { note: '' };
-
-NoteControl.propTypes = {
-  note: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  saveNote: PropTypes.func.isRequired
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(NoteControl);
+export default NoteControl;

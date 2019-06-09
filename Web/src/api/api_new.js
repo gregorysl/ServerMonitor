@@ -53,10 +53,6 @@ export function setOracle(data) {
   return Axios.put(setOracleUri, data);
 }
 
-export function setNote(data) {
-  return Axios.post(`${appUri}BuildNote`, data);
-}
-
 export function getUserSessions() {
   return Axios.get(`${sessionsUri}`);
 }

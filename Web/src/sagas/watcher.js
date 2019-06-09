@@ -42,16 +42,8 @@ export function* watchRunTask() {
   yield takeLatest(types.TASKS_RUN_REQUEST, saga.runTask);
 }
 
-export function* watchIisWhitelist() {
-  yield takeLatest(types.GET_IIS_WHITELIST_REQUEST, saga.setIisAppWhitelist);
-}
-
 export function* watchSetOracle() {
   yield takeLatest(types.TOGGLE_ORACLE_REQUEST, saga.setOracle);
-}
-
-export function* watchSetNote() {
-  yield takeLatest(types.SET_NOTE_REQUEST, saga.setNote);
 }
 
 export function* watchKillUser() {

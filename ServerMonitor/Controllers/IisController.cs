@@ -130,6 +130,11 @@ namespace ServerMonitor.Controllers
 
                     response.AddSuccessNotification($"Application {function}whitelisted successfully.");
                     break;
+                case "Note":
+                    var notes = new NoteHelper();
+                    notes.Save(action.Build.Name, action.Build.Note);
+                    response.AddSuccessNotification("Application note saved succesfully.");
+                    break;
             }
 
             return response;

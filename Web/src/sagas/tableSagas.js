@@ -48,18 +48,6 @@ export function* setIisApp(props) {
   }
 }
 
-export function* setIisAppWhitelist(props) {
-  try {
-    const { data } = yield call(api.whitelistApp, props);
-    yield put({ type: types.GET_IIS_WHITELIST_SUCCESS, data });
-    yield put({ type: types.GET_IIS_APPS_REQUEST });
-  } catch (error) {
-    yield put({
-      type: types.GET_IIS_WHITELIST_ERROR,
-      data: error.response.data
-    });
-  }
-}
 export function* setIisAppRecycle(props) {
   try {
     const { data } = yield call(api.recycleApp, props);
@@ -131,16 +119,6 @@ export function* runTask(props) {
     yield put({ type: types.TASKS_REQUEST });
   } catch (error) {
     yield put({ type: types.TASKS_RUN_ERROR, data: error.response.data });
-  }
-}
-
-export function* setNote(props) {
-  try {
-    const { data } = yield call(api.setNote, props.data);
-    yield put({ type: types.SET_NOTE_SUCCESS, data });
-    yield put({ type: types.GET_IIS_APPS_REQUEST });
-  } catch (error) {
-    yield put({ type: types.SET_NOTE_ERROR, data: error.response.data });
   }
 }
 

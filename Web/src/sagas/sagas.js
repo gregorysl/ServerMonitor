@@ -12,9 +12,7 @@ const sagas = [
   fork(watch.watchSessions),
   fork(watch.watchOracle),
   fork(watch.watchRunTask),
-  fork(watch.watchIisWhitelist),
   fork(watch.watchSetOracle),
-  fork(watch.watchSetNote),
   fork(watch.watchKillUser),
   fork(watch.watchGetSettings),
   fork(watch.watchSetCleanerSettings)
