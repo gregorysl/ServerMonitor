@@ -13,20 +13,15 @@ const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
 // const hardwareUri = `${appUri}Hardware/`;
 const hardwareUri = `${appUri}Hardware/GetAll`;
-const linksUri = `${appUri}Links/`;
+const linksUri = `${appUri}Links`;
 const settingsUri = `${appUri}Settings/`;
 
 export function setIisApp(props) {
-  return Axios.post(`${props.url}/Iis/Toggle`, JSON.stringify(props.appList), {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
+  return Axios.post(`${props.url}/ServerMonitor/Iis`, props.appList);
 }
 
 export function whitelistApp(props) {
-  //TODO FIX CORS
-  return Axios.post(`${props.url}/Iis/Whitelist/${props.name}`);
+  return Axios.post(`${props.url}/ServerMonitor/Iis/`,props.name);
 }
 
 export function recycleApp(props) {

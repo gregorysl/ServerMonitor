@@ -6,14 +6,17 @@ import "react-table/react-table.css";
 import IisSection from "./IisSection";
 
 const commonName = "?iisCommonName=";
+const noExpander = () => ({ "data-qnt": 0 });
 
 const IisServicesList = props => {
   const [iisData, setIisData] = useState([]);
+  const [forceRefresh, setforceRefresh] = useState(false);
 
   useEffect(() => {
     const urls = props.settings.hardwareList.map(x => ({
       key: x.name,
-      url: `${x.url}Iis/${commonName}${x.name}`
+      url: `${x.url}Iis/${commonName}${x.name}`,
+      ref: forceRefresh
     }));
     async function fetchData(urls) {
       const result = await asd(urls);
@@ -23,9 +26,10 @@ const IisServicesList = props => {
         data: a.data.data
       }));
       setIisData(newData);
+      setforceRefresh(false);
     }
     fetchData(urls);
-  }, [props.settings]);
+  }, [forceRefresh, props.settings]);
 
   const expandedRows = iisData.map((x, i) => i + 1);
   return (
@@ -36,7 +40,7 @@ const IisServicesList = props => {
         showPagination={false}
         TheadComponent={()=>null}
         noDataText='No IIS applications found'
-        getTrProps={() => ({ "data-qnt": 0 })}
+        getTrProps={noExpander}
         data={iisData}
         columns={[
           {
@@ -46,7 +50,7 @@ const IisServicesList = props => {
           }
         ]}
         expanded={expandedRows}
-        SubComponent={row => <IisSection iisData={row.original} />}
+        SubComponent={row => <IisSection iisData={row.original} refresh={setforceRefresh} />}
       />
     </Row>
   );

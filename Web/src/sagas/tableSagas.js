@@ -42,7 +42,7 @@ export function* setIisApp(props) {
   try {
     const { data } = yield call(api.setIisApp, props);
     yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, data });
-    yield put({ type: types.GET_IIS_APPS_REQUEST, data: true });
+    // yield put({ type: types.GET_IIS_APPS_REQUEST, data: true });
   } catch (error) {
     yield put({ type: types.GET_IIS_TOGGLE_ERROR, data: error.response.data });
   }

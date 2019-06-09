@@ -46,17 +46,14 @@ class IisSection extends Component {
             {
               Header: 'Note',
               accessor: 'note',
-              Cell: row => <NoteControl name={row.row.name} note={row.row.note} saveNote={row.saveNote} />,
+              Cell: row => <NoteControl name={row.row.name} note={row.row.note} saveNote={row.saveNote} org={row.original} url={location} />,
               width: 400
             },
             {
               Header: 'Reserved',
               accessor: 'whitelisted',
               Cell: row => (
-                <WhitelistButton
-                  {...row.original}
-                  click={this.props.whitelist}
-                  url={location}
+                <WhitelistButton {...row.original} click={this.props.set} org={row.original} url={location} refresh={this.props.refresh}
                 />
               ),
               width: 100
@@ -64,7 +61,7 @@ class IisSection extends Component {
             {
               Header: 'Action',
               accessor: 'x',
-              Cell: row => <ActionsButtons {...row.original} url={location} />,
+              Cell: row => <ActionsButtons {...row.original} org={row.original} url={location} refresh={this.props.refresh} />,
               width: 100
             }
           ]}
@@ -96,7 +93,16 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   recycle: (name, url) => dispatch(actions.recycleApp(name, url)),
-  whitelist: (item, url) => dispatch(actions.whitelistApp(item.name, url))
+  whitelist: (item, url) => dispatch(actions.whitelistApp(item.name, url)),
+  set: (item, url, refresh) => {
+    const data =
+    {
+      build: item,
+      action: "Whitelist"
+    };
+    dispatch(actions.setIisAction(data,url));
+    refresh(true);
+  }
 });
 
 export default connect(
