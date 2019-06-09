@@ -76,13 +76,6 @@ class IisSection extends Component {
   }
 }
 
-// IisSection.propTypes = {
-//   iis: PropTypes.shape({
-//     data: PropTypes.arrayOf(PropTypes.object).isRequired
-//   }).isRequired,
-//   whitelist: PropTypes.func.isRequired,
-//   recycle: PropTypes.func.isRequired
-// };
 
 const mapStateToProps = state => ({
   iis: state.table
@@ -90,7 +83,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   recycle: (name, url) => dispatch(actions.recycleApp(name, url)),
-  whitelist: (item, url) => dispatch(actions.whitelistApp(item.name, url)),
   set: (item, url, refresh, action) => {
     const data =
     {
