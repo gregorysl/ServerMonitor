@@ -4,7 +4,7 @@ import dateformat from "dateformat";
 import "react-table/react-table.css";
 import PropTypes from "prop-types";
 import TooltipButon from "../TooltipButon";
-import ActionsButtons from "./ActionsButtons";
+import StartStopButton from './StartStopButton';
 import ApplicationStatus from './ApplicationStatus';
 
 const AppPoolList = props => {
@@ -33,7 +33,7 @@ const AppPoolList = props => {
             accessor: "name",
             Cell: row => (
               <>
-                <ActionsButtons {...row.original} />
+                <StartStopButton {...row.original} />
                 <TooltipButon
                   title="recycle"
                   icon="reload"

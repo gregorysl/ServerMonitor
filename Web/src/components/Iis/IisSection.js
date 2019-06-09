@@ -4,7 +4,7 @@ import ReactTable from 'react-table';
 import * as actions from '../../actions/actions';
 import AppPoolList from './AppPoolList';
 import NoteControl from './NoteControl';
-import ActionsButtons from './ActionsButtons';
+import StartStopButton from './StartStopButton';
 import WhitelistButton from './WhitelistButton';
 import ApplicationStatus from './ApplicationStatus';
 
@@ -52,16 +52,13 @@ class IisSection extends Component {
             {
               Header: 'Reserved',
               accessor: 'whitelisted',
-              Cell: row => (
-                <WhitelistButton {...row.original} click={this.props.set} org={row.original} url={location} refresh={this.props.refresh}
-                />
-              ),
+              Cell: row => <WhitelistButton click={this.props.set} org={row.original} url={location} refresh={this.props.refresh} whitelisted={row.original.whitelisted} />,
               width: 100
             },
             {
               Header: 'Action',
               accessor: 'x',
-              Cell: row => <ActionsButtons {...row.original} org={row.original} url={location} refresh={this.props.refresh} />,
+              Cell: row => <StartStopButton click={this.props.set} org={row.original} url={location} refresh={this.props.refresh} running={row.original.running} />,
               width: 100
             }
           ]}
@@ -94,11 +91,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   recycle: (name, url) => dispatch(actions.recycleApp(name, url)),
   whitelist: (item, url) => dispatch(actions.whitelistApp(item.name, url)),
-  set: (item, url, refresh) => {
+  set: (item, url, refresh, action) => {
     const data =
     {
       build: item,
-      action: "Whitelist"
+      action: action
     };
     dispatch(actions.setIisAction(data,url));
     refresh(true);
