@@ -63,7 +63,7 @@ class IisSection extends Component {
                   refresh={this.props.refresh}
                 />
               ),
-              width: 400
+              width: 310
             },
             {
               Header: "Actions",

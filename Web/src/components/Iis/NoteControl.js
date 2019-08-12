@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Icon, Input } from "antd";
+import { Input, Icon } from "antd";
 
 class NoteControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.org.note,
-      isEditMode: false
+      value: props.org.note
     };
     this.confirmNote = this.confirmNote.bind(this);
     this.setEditMode = this.setEditMode.bind(this);
@@ -15,7 +14,6 @@ class NoteControl extends Component {
 
   setEditMode() {
     this.setState({
-      isEditMode: !this.state.isEditMode,
       value: this.props.org.note
     });
   }
@@ -34,52 +32,38 @@ class NoteControl extends Component {
     }
   }
   confirmNote() {
-    this.setState({ isEditMode: !this.state.isEditMode });
-    this.props.org.note = this.state.value;
-    this.props.click(
-      this.props.org,
-      this.props.url,
-      this.props.refresh,
-      "Note"
-    );
+    if (this.props.org.note !== this.state.value) {
+      this.props.org.note = this.state.value;
+      this.props.click(
+        this.props.org,
+        this.props.url,
+        this.props.refresh,
+        "Note"
+      );
+    }
   }
 
   render() {
     const noteProp = this.props.org.note;
     const iconFill = !noteProp || noteProp.length === 0 ? null : "filled";
-    const note =
-      noteProp &&
-      noteProp.split("\\n").map(item => (
-        <span key={item}>
-          {item}
-          <br />
-        </span>
-      ));
-    return this.state.isEditMode ? (
-      <div>
-        <Input
-          className='tag-input'
-          placeholder='Note'
-          type='text'
-          value={this.state.value}
-          onPressEnter={this.confirmNote}
-          onChange={evt => this.updateInputValue(evt)}
-          onKeyDown={this.handleKeyPress}
-          prefix={<Icon type='edit' theme={null} />}
-        />
-        <Icon className='icon-hand' onClick={this.confirmNote} type='check' />
-        <Icon className='icon-hand' onClick={this.setEditMode} type='close' />
-      </div>
-    ) : (
-      <div>
-        <Icon
-          className='icon-hand'
-          onClick={this.setEditMode}
-          type='edit'
-          theme={iconFill}
-        />
-        {note}
-      </div>
+    return (
+      <Input
+        className='tag-input clear-input'
+        type='text'
+        value={this.state.value}
+        onPressEnter={this.confirmNote}
+        onBlur={this.confirmNote}
+        onChange={evt => this.updateInputValue(evt)}
+        onKeyDown={this.handleKeyPress}
+        onClick={this.setEditMode}
+        prefix={
+          <Icon
+            style={{ fontSize: "25px", marginLeft:"-10px" }}
+            type='highlight'
+            theme={iconFill}
+          />
+        }
+      />
     );
   }
 }
