@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, Checkbox } from 'antd';
+import { Tooltip, Icon } from 'antd';
 
 
 const WhitelistButton = (props) => {
@@ -8,7 +8,7 @@ const WhitelistButton = (props) => {
   const click = () => props.click(props.org, props.url, props.refresh, "Whitelist");
   return (
     <Tooltip title={title} >
-      <Checkbox className="icon-hand" onClick={click} checked={props.whitelisted} />
+      <Icon className="icon-hand" onClick={click} type="save" theme={props.whitelisted ? "filled" : "outlined"}  />
     </Tooltip>
   );
 };
