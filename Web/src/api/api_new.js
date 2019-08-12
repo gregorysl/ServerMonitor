@@ -2,7 +2,12 @@ import Axios from "axios";
 
 let appUri = "http://localhost/ServerMonitor/";
 if (process.env.NODE_ENV === "production") {
-  appUri = document.location.href;
+  let href = document.location.href;
+  const hashLocation = href.indexOf("#");
+  if (hashLocation !== -1) {
+    href = href.substring(0, href.indexOf("#"));
+  }
+  appUri = href;
 }
 
 const apiUri = `${appUri}Monitor/`;
@@ -17,11 +22,11 @@ const linksUri = `${appUri}Links`;
 const settingsUri = `${appUri}Settings/`;
 
 export function setIisApp(props) {
-  return Axios.post(`${props.url}/ServerMonitor/Iis`, props.appList);
+  return Axios.post(`${props.url}/Iis`, props.appList);
 }
 
 export function whitelistApp(props) {
-  return Axios.post(`${props.url}/ServerMonitor/Iis/`,props.name);
+  return Axios.post(`${props.url}/Iis/`, props.name);
 }
 
 export function recycleApp(props) {
@@ -37,7 +42,7 @@ export function getHardware() {
 }
 
 export function getIisApps(prefix) {
-const url = prefix? prefix:appUri;
+  const url = prefix ? prefix : appUri;
   return Axios.get(`${url}Iis/`);
 }
 
@@ -87,7 +92,6 @@ export function getServerLinks(url) {
 }
 
 export function asd(urls) {
-  
   const promises = urls.map(x => Axios.get(x.url));
   return Axios.all(promises);
 }
