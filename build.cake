@@ -66,7 +66,7 @@ Task("Prepare-Release-Dir")
 	.Does(() => 
 {
     MSBuild("./ServerMonitor/ServerMonitor.csproj", settings =>
-        settings.UseToolVersion(MSBuildToolVersion.VS2017)
+        settings.UseToolVersion(MSBuildToolVersion.VS2019)
         .WithTarget("Package")                
         .WithProperty("TargetFrameworkVersion","4.7.1")
         .WithProperty("Configuration","Release")
@@ -133,7 +133,7 @@ Task("Transform-Configs")
 
     var webConfigTokens = settings["webConfig"];
     var json = JsonConvert.SerializeObject(webConfigTokens, Newtonsoft.Json.Formatting.Indented);
-    FileWriteText(localDir + "/settings.json",json);
+    FileWriteText(releaseDir + "/settings.json",json);
 
     
 
