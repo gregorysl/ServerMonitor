@@ -1,15 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TooltipButon from '../TooltipButon';
+import React from "react";
+import PropTypes from "prop-types";
+import TooltipButton from "../TooltipButton";
 
-
-const StartStopButton = (props) => {
-  const title = props.running ? 'stop' : 'start';
-  const icon = props.running ? 'close-square-o' : 'play-square-o';
+const StartStopButton = props => {
+  const tooltip = props.running ? "Stop" : "Start";
+  const icon = props.running ? "close-square-o" : "play-square-o";
   const click = () => props.click(props.org, props.url, props.refresh, "Toggle");
-  return (
-    <TooltipButon title={title} click={click} icon={icon} />
-  );
+  return <TooltipButton tooltip={tooltip} click={click} icon={icon} />;
 };
 
 StartStopButton.propTypes = {

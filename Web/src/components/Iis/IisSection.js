@@ -5,8 +5,8 @@ import * as actions from "../../actions/actions";
 import AppPoolList from "./AppPoolList";
 import NoteControl from "./NoteControl";
 import StartStopButton from "./StartStopButton";
-import WhitelistButton from "./WhitelistButton";
 import ApplicationStatus from "./ApplicationStatus";
+import ActionPanel from "./ActionPanel";
 
 class IisSection extends Component {
   render() {
@@ -66,29 +66,16 @@ class IisSection extends Component {
               width: 400
             },
             {
-              Header: "Reserved",
-              accessor: "whitelisted",
-              Cell: row => (
-                <WhitelistButton
-                  click={this.props.set}
-                  org={row.original}
-                  url={location}
-                  refresh={this.props.refresh}
-                  whitelisted={row.original.whitelisted}
-                />
-              ),
-              width: 100
-            },
-            {
-              Header: "Action",
+              Header: "Actions",
               accessor: "x",
               Cell: row => (
-                <StartStopButton
+                <ActionPanel
                   click={this.props.set}
                   org={row.original}
                   url={location}
                   refresh={this.props.refresh}
                   running={row.original.running}
+                  whitelisted={row.original.whitelisted}
                 />
               ),
               width: 100
