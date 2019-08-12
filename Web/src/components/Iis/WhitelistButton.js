@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, Icon } from 'antd';
+import TooltipButton from '../TooltipButton';
 
 
 const WhitelistButton = (props) => {
-  const title = props.whitelisted ? 'Remove from whitelist' : 'Whitelist';
+  const tooltip = props.whitelisted ? 'Remove from whitelist' : 'Whitelist';
   const click = () => props.click(props.org, props.url, props.refresh, "Whitelist");
   return (
-    <Tooltip title={title} >
-      <Icon className="icon-hand" onClick={click} type="save" theme={props.whitelisted ? "filled" : "outlined"}  />
-    </Tooltip>
+    <TooltipButton tooltip={tooltip} click={click} icon="save" theme={props.whitelisted ? "filled" : "outlined"}  />
   );
 };
 
