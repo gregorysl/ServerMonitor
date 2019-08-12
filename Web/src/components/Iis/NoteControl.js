@@ -65,7 +65,7 @@ class NoteControl extends Component {
           onPressEnter={this.confirmNote}
           onChange={evt => this.updateInputValue(evt)}
           onKeyDown={this.handleKeyPress}
-          prefix={<Icon type='tag' theme={null} />}
+          prefix={<Icon type='edit' theme={null} />}
         />
         <Icon className='icon-hand' onClick={this.confirmNote} type='check' />
         <Icon className='icon-hand' onClick={this.setEditMode} type='close' />
@@ -75,7 +75,7 @@ class NoteControl extends Component {
         <Icon
           className='icon-hand'
           onClick={this.setEditMode}
-          type='tag'
+          type='edit'
           theme={iconFill}
         />
         {note}
