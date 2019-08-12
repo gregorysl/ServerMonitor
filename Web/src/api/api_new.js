@@ -25,10 +25,6 @@ export function setIisApp(props) {
   return Axios.post(`${props.url}/Iis`, props.appList);
 }
 
-export function whitelistApp(props) {
-  return Axios.post(`${props.url}/Iis/`, props.name);
-}
-
 export function recycleApp(props) {
   return Axios.post(`${props.url}/Iis/Recycle/${props.name}/`);
 }
@@ -91,7 +87,7 @@ export function getServerLinks(url) {
   return Axios.get(`${url}Settings`);
 }
 
-export function asd(urls) {
+export function getAllUrls(urls) {
   const promises = urls.map(x => Axios.get(x.url));
   return Axios.all(promises);
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row } from "antd";
-import { asd } from "../../api/api_new";
+import { getAllUrls } from "../../api/api_new";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import IisSection from "./IisSection";
@@ -19,7 +19,7 @@ const IisServicesList = props => {
       ref: forceRefresh
     }));
     async function fetchData(urls) {
-      const result = await asd(urls);
+      const result = await getAllUrls(urls);
       const newData = result.map(a => ({
         key: a.request.responseURL.split(commonName)[1],
         homeUrl: a.request.responseURL.split(commonName)[0],
