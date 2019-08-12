@@ -48,7 +48,7 @@ class IisSection extends Component {
               Header: "State",
               accessor: "state",
               Cell: row => (
-                <ApplicationStatus running={row.value} text={row.value} />
+                <ApplicationStatus running={row.original.running} text={row.original.state} />
               ),
               width: 100
             },
