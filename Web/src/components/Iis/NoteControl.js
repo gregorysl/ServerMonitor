@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Icon, Input } from 'antd';
+import React, { Component } from "react";
+import { Icon, Input } from "antd";
 
 class NoteControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.note,
+      value: props.org.note,
       isEditMode: false
     };
     this.confirmNote = this.confirmNote.bind(this);
@@ -16,7 +16,7 @@ class NoteControl extends Component {
   setEditMode() {
     this.setState({
       isEditMode: !this.state.isEditMode,
-      value: this.props.note
+      value: this.props.org.note
     });
   }
 
@@ -27,7 +27,7 @@ class NoteControl extends Component {
   }
 
   handleKeyPress(event) {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       this.confirmNote();
     } else if (event.keyCode === 27) {
       this.setEditMode();
@@ -36,14 +36,20 @@ class NoteControl extends Component {
   confirmNote() {
     this.setState({ isEditMode: !this.state.isEditMode });
     this.props.org.note = this.state.value;
-    this.props.click(this.props.org, this.props.url, this.props.refresh, "Note");
+    this.props.click(
+      this.props.org,
+      this.props.url,
+      this.props.refresh,
+      "Note"
+    );
   }
 
   render() {
-    const icon = this.props.note === '' ? 'tag-o' : 'tag';
+    const noteProp = this.props.org.note;
+    const iconFill = !noteProp || noteProp.length === 0 ? null : "filled";
     const note =
-      this.props.org.note &&
-      this.props.org.note.split('\\n').map(item => (
+      noteProp &&
+      noteProp.split("\\n").map(item => (
         <span key={item}>
           {item}
           <br />
@@ -52,21 +58,26 @@ class NoteControl extends Component {
     return this.state.isEditMode ? (
       <div>
         <Input
-          className="tag-input"
-          placeholder="Note"
-          type="text"
+          className='tag-input'
+          placeholder='Note'
+          type='text'
           value={this.state.value}
           onPressEnter={this.confirmNote}
           onChange={evt => this.updateInputValue(evt)}
           onKeyDown={this.handleKeyPress}
-          prefix={<Icon type="tag" />}
+          prefix={<Icon type='tag' theme={null} />}
         />
-        <Icon className="icon-hand" onClick={this.confirmNote} type="check" />
-        <Icon className="icon-hand" onClick={this.setEditMode} type="close" />
+        <Icon className='icon-hand' onClick={this.confirmNote} type='check' />
+        <Icon className='icon-hand' onClick={this.setEditMode} type='close' />
       </div>
     ) : (
       <div>
-        <Icon className="icon-hand" onClick={this.setEditMode} type={icon} />
+        <Icon
+          className='icon-hand'
+          onClick={this.setEditMode}
+          type='tag'
+          theme={iconFill}
+        />
         {note}
       </div>
     );
