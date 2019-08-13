@@ -2,7 +2,6 @@ import React from "react";
 import ReactTable from "react-table";
 import dateformat from "dateformat";
 import "react-table/react-table.css";
-import PropTypes from "prop-types";
 import TooltipButton from "../TooltipButton";
 import StartStopButton from "./StartStopButton";
 import ApplicationStatus from "./ApplicationStatus";
@@ -30,7 +29,7 @@ const AppPoolList = props => {
           {
             Header: "State",
             accessor: "running",
-            Cell: row => <ApplicationStatus state={row.value ? "Running" : "Stopped"} />
+            Cell: row => <ApplicationStatus state={row.value ? "Running" : "Stopped"} {...row.original} />
           },
           {
             Header: "Action",
@@ -39,7 +38,7 @@ const AppPoolList = props => {
               <>
                 <StartStopButton
                   click={props.click}
-                  org={props.org}
+                  org={{apps:[row.original]}}
                   url={props.url}
                   refresh={props.refresh}
                   running={props.org.running}
@@ -57,11 +56,6 @@ const AppPoolList = props => {
       />
     </>
   );
-};
-
-AppPoolList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  recycle: PropTypes.func.isRequired
 };
 
 export default AppPoolList;
