@@ -3,9 +3,9 @@ import ReactTable from "react-table";
 import dateformat from "dateformat";
 import "react-table/react-table.css";
 import PropTypes from "prop-types";
-import TooltipButon from "../TooltipButon";
-import StartStopButton from './StartStopButton';
-import ApplicationStatus from './ApplicationStatus';
+import TooltipButton from "../TooltipButton";
+import StartStopButton from "./StartStopButton";
+import ApplicationStatus from "./ApplicationStatus";
 
 const AppPoolList = props => {
   if (props.items.length === 0) {
@@ -13,9 +13,13 @@ const AppPoolList = props => {
   }
   return (
     <>
-      <h3>{props.app.daysOld} days old, created {dateformat(props.app.createdDateTime, "dd.mm.yyyy, dddd")}</h3>
+      <h3>
+        {props.org.daysOld} days old, created
+        {dateformat(props.org.createdDateTime, " dd.mm.yyyy, dddd")}
+      </h3>
       <ReactTable
         showPagination={false}
+        sortable={false}
         minRows={1}
         data={props.items}
         columns={[
@@ -26,31 +30,30 @@ const AppPoolList = props => {
           {
             Header: "State",
             accessor: "running",
-            Cell: row => <ApplicationStatus running={row.value} text={row.value ? "Started" : "Stopped"} />
+            Cell: row => <ApplicationStatus state={row.value ? "Running" : "Stopped"} />
           },
           {
             Header: "Action",
             accessor: "name",
             Cell: row => (
               <>
-                <StartStopButton {...row.original} />
-                <TooltipButon
-                  title="recycle"
-                  icon="reload"
-                  click={() => props.recycle(row.value,props.url)}
+                <StartStopButton
+                  click={props.click}
+                  org={props.org}
+                  url={props.url}
+                  refresh={props.refresh}
+                  running={props.org.running}
+                />
+                <TooltipButton
+                  tooltip='recycle'
+                  icon='reload'
+                  click={() => props.recycle(row.value, props.url)}
                 />
               </>
             ),
             width: 100
           }
         ]}
-        SubComponent={row => (
-          <div className="app-pool-children">
-            {row.original.children.map(x => (
-              <span key={x}>{x}</span>
-            ))}
-          </div>
-        )}
       />
     </>
   );

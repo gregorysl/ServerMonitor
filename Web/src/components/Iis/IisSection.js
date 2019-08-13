@@ -49,10 +49,8 @@ class IisSection extends Component {
               Header: "State",
               accessor: "state",
               className: "state",
-              Cell: row => (
-                <ApplicationStatus org={row.original} running={row.original.running} text={row.original.state} />
-              ),
-              width: 100
+              Cell: row => <ApplicationStatus state={row.original.state} cleanerMark={row.original.cleanerMark} />,
+              width: 200
             },
             {
               Header: "Note",
