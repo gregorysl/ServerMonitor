@@ -75,6 +75,11 @@ Task("Prepare-Release-Dir")
         .WithProperty("_PackageTempDir", "../Release")
         .WithProperty("SolutionDir","./ServerMonitor"));
 	CopyDirectory(webDistDir, releaseDir);
+
+    var webConfigTokens = settings["webConfig"];
+    var json = JsonConvert.SerializeObject(webConfigTokens, Newtonsoft.Json.Formatting.Indented);
+    FileWriteText(releaseDir + "/settings.json",json);
+
 });
 
 Task("Create-Web-App")
@@ -115,15 +120,10 @@ Task("Copy-Install-Script")
                     .Replace("##LOCATION##",releaseLocation);
     FileWriteText(releaseDir+"/Setup.ps1",installScript);
 });
+
 Task("Transform-Configs")
 	.Does(() => 
 {
-    if (DirectoryExists(releaseDir))
-    {
-        DeleteDirectory(releaseDir,true);
-    }
-    CreateDirectory(releaseDir);
-    
     var fileToTranform = localDir + "/Web.config";
     XmlDocument doc = new XmlDocument();
     doc.Load(fileToTranform);
@@ -138,14 +138,9 @@ Task("Transform-Configs")
             settings["database"], settings["dbUser"], settings["dbPassword"]);
     }
 
-    var webConfigTokens = settings["webConfig"];
-    var json = JsonConvert.SerializeObject(webConfigTokens, Newtonsoft.Json.Formatting.Indented);
-    FileWriteText(releaseDir + "/settings.json",json);
-
-    
-
     doc.Save(fileToTranform);
 });
+
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
