@@ -29,7 +29,12 @@ const AppPoolList = props => {
           {
             Header: "State",
             accessor: "running",
-            Cell: row => <ApplicationStatus state={row.value ? "Running" : "Stopped"} {...row.original} />
+            Cell: row => (
+              <ApplicationStatus
+                state={row.value ? "Running" : "Stopped"}
+                {...row.original}
+              />
+            )
           },
           {
             Header: "Action",
@@ -38,16 +43,18 @@ const AppPoolList = props => {
               <>
                 <StartStopButton
                   click={props.click}
-                  org={{apps:[row.original]}}
+                  org={{ apps: [row.original] }}
                   url={props.url}
                   refresh={props.refresh}
                   running={props.org.running}
                 />
-                <TooltipButton
-                  tooltip='recycle'
-                  icon='reload'
-                  click={() => props.recycle(row.value, props.url)}
-                />
+                {row.original.running && (
+                  <TooltipButton
+                    tooltip='recycle'
+                    icon='reload'
+                    click={() => props.recycle(row.value, props.url)}
+                  />
+                )}
               </>
             ),
             width: 100
