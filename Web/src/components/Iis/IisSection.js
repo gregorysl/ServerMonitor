@@ -23,6 +23,7 @@ class IisSection extends Component {
           minRows={1}
           data={this.props.iisData.data}
           defaultSorted={[{ id: "key" }]}
+          className="-highlight"
           getTdProps={() => ({
             style: {
               display: "flex",
@@ -47,8 +48,9 @@ class IisSection extends Component {
             {
               Header: "State",
               accessor: "state",
+              className: "state",
               Cell: row => (
-                <ApplicationStatus running={row.original.running} text={row.original.state} />
+                <ApplicationStatus org={row.original} running={row.original.running} text={row.original.state} />
               ),
               width: 100
             },

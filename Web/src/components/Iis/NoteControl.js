@@ -59,7 +59,7 @@ class NoteControl extends Component {
         prefix={
           <Icon
             style={{ fontSize: "25px", marginLeft:"-10px" }}
-            type='highlight'
+            type='message'
             theme={iconFill}
           />
         }

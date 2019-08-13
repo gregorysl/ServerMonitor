@@ -16,7 +16,7 @@ const ServiceItem = props => {
   useEffect(() => {
     async function fetchData() {
       const result = await checkLink(data);
-      const linkData = result.data.data;
+      const linkData = (result===null||result===undefined) ? []: result.data.data;
       setLoading(false);
       setMessage(linkData.message);
       setStatus(linkData.working ? "#87d068" : "#f50");
