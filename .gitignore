@@ -34,3 +34,8 @@ ServerMonitor/whitelist.json
 */bin
 */obj
 *.user
+
+
+# Cake - Uncomment if you are using it
+tools/**
+!tools/packages.config

@@ -1,7 +1,8 @@
-#addin "Cake.FileHelpers"
-#addin "Cake.Powershell"
-#addin nuget:?package=Newtonsoft.Json
-#addin nuget:?package=Cake.Npm
+#addin nuget:?package=Cake.FileHelpers&version=3.2.0
+#addin nuget:?package=Cake.Npm&version=0.17.0
+#addin nuget:?package=Cake.Powershell&version=0.4.8
+#addin nuget:?package=Newtonsoft.Json&version=12.0.2
+
 using System.Xml;
 using Path = System.IO.Path;
 using Newtonsoft.Json;
@@ -117,6 +118,12 @@ Task("Copy-Install-Script")
 Task("Transform-Configs")
 	.Does(() => 
 {
+    if (DirectoryExists(releaseDir))
+    {
+        DeleteDirectory(releaseDir,true);
+    }
+    CreateDirectory(releaseDir);
+    
     var fileToTranform = localDir + "/Web.config";
     XmlDocument doc = new XmlDocument();
     doc.Load(fileToTranform);
