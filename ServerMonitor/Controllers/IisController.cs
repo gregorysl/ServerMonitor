@@ -25,9 +25,9 @@ namespace ServerMonitor.Controllers
             try
             {
                 Log.Debug("GetFilteredApps called.");
-                var filteredApps = GetFilteredApps();
+                var iisHandler = new IisHandler();
+                response.Data = iisHandler.GetFilteredApps();
                 Log.Debug("GetFilteredApps call success.");
-                response.Data = filteredApps;
                 return response;
             }
             catch (Exception ex)
@@ -73,21 +73,6 @@ namespace ServerMonitor.Controllers
                 return response;
             }
 
-        }
-
-        private IList<BuildEntity> GetFilteredApps()
-        {
-            var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
-            var buildsProvider = new CommonNameBuildsProvider(Settings.Data.CommonAppName);
-
-            var whitelist = whitelistProvider.GetWhitelist();
-            var builds = buildsProvider.GetBuilds().OrderBy(x => x.Name).ToList();
-            builds.FillAdditionalData(whitelist);
-
-            var notes = new NoteHelper().GetAll();
-            builds.ForEach(x => x.Note = notes.FirstOrDefault(n => n.BuildName == x.Name)?.Note);
-
-            return builds;
         }
 
         [Route]

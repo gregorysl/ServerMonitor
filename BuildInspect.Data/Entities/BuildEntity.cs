@@ -19,6 +19,7 @@ namespace BuildInspect.Data.Entities
         public string Note { get; set; }
         public List<ApplicationEntity> Apps { get; set; }
         public bool Whitelisted { get; set; }
+        public bool CleanerMark { get; set; }
         public DateTime? CreatedDateTime => Apps.Max(a => a.CreatedDateTime);
         public string State =>
                        Apps.All(a => a.Running) ? "Running"

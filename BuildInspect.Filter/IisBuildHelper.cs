@@ -7,7 +7,8 @@ namespace BuildInspect.Filter
 {
     public static class IisBuildHelper
     {
-        public static void FillAdditionalData(this IEnumerable<BuildEntity> builds, IEnumerable<string> whitelist = null)
+        public static void FillAdditionalData(this IEnumerable<BuildEntity> builds,
+            IEnumerable<string> whitelist = null)
         {
             var appPools = new List<ApplicationPool>();
             using (var serverManager = new ServerManager())
@@ -19,7 +20,7 @@ namespace BuildInspect.Filter
             {
                 build.Whitelisted = whitelist.Any(x => x == build.Name);
                 var apNames = build.Apps.Select(a => a.Pool);
-                foreach(var app in build.Apps)
+                foreach (var app in build.Apps)
                 {
                     var pool = appPools.FirstOrDefault(x => x.Name == app.Pool);
                     app.Running = pool.State == ObjectState.Started;
