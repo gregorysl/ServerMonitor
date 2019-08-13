@@ -11,7 +11,14 @@ namespace BuildInspect.Data.Entities
             Name = name.TrimStart('/');
             Pool = applicationPoolName;
             DirectoryInfo appDir = GetAppDirectory(dir);
-            CreatedDateTime = appDir?.CreationTime;
+            if (appDir == null)
+            {
+                PathExists = false;
+            }
+            else
+            {
+                CreatedDateTime = appDir.CreationTime;
+            }
         }
         [JsonConstructor]
         public ApplicationEntity(string name, string pool, bool running)
@@ -31,14 +38,17 @@ namespace BuildInspect.Data.Entities
         public string Pool { get; }
 
         [JsonIgnore]
-        public DateTime? CreatedDateTime { get; }
-        public bool Running { get; set; }
+        public DateTime CreatedDateTime { get; } = DateTime.MinValue;
+
+        public bool Running { get; set; } = true;
+        public bool PathExists { get; set; }
+
 
         private DirectoryInfo GetAppDirectory(string physicalPath)
         {
             physicalPath = Environment.ExpandEnvironmentVariables(physicalPath);
             var dir = new DirectoryInfo(physicalPath);
-            return !dir.Exists ? null : dir;
+            return dir.Exists ? dir : null;
         }
         public override string ToString()
         {
