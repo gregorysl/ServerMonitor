@@ -26,7 +26,7 @@ export function setIisApp(props) {
 }
 
 export function recycleApp(props) {
-  return Axios.post(`${props.url}/Iis/Recycle/${props.name}/`);
+  return Axios.post(`${props.url}/Iis?name=${props.name}`);
 }
 
 export function getServices() {

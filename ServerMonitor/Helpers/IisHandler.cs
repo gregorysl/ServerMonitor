@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Hosting;
 using BuildInspect.Data.Entities;
 using BuildInspect.Filter;
+using Microsoft.Web.Administration;
 
 namespace ServerMonitor.Helpers
 {
@@ -42,6 +43,18 @@ namespace ServerMonitor.Helpers
             builds.ForEach(x => x.Note = notes.FirstOrDefault(n => n.BuildName == x.Name)?.Note);
 
             return builds;
+        }
+
+        public bool RecycleAppPool(string name)
+        {
+            var mgr = new ServerManager();
+            var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
+            if (pool == null || pool.State == ObjectState.Stopped)
+            {
+                return false;
+            }
+            pool.Recycle();
+            return true;
         }
     }
 }
