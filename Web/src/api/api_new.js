@@ -21,6 +21,9 @@ const hardwareUri = `${appUri}Hardware/GetAll`;
 const linksUri = `${appUri}Links`;
 const settingsUri = `${appUri}Settings/`;
 
+export function getIisApp(url) {
+  return Axios.get(`${url}Iis`);
+}
 export function setIisApp(props) {
   return Axios.post(`${props.url}/Iis`, props.appList);
 }
@@ -85,9 +88,4 @@ export function checkLink(data) {
 
 export function getServerLinks(url) {
   return Axios.get(`${url}Settings`);
-}
-
-export function getAllUrls(urls) {
-  const promises = urls.map(x => Axios.get(x.url));
-  return Axios.all(promises);
 }
