@@ -4,9 +4,9 @@ import ReactTable from "react-table";
 import * as actions from "../../actions/actions";
 import AppPoolList from "./AppPoolList";
 import NoteControl from "./NoteControl";
-import StartStopButton from "./StartStopButton";
 import ApplicationStatus from "./ApplicationStatus";
 import ActionPanel from "./ActionPanel";
+import AppName from "./AppName";
 
 class IisSection extends Component {
   render() {
@@ -23,7 +23,7 @@ class IisSection extends Component {
           minRows={1}
           data={this.props.iisData.data}
           defaultSorted={[{ id: "key" }]}
-          className="-highlight"
+          className='-highlight'
           getTdProps={() => ({
             style: {
               display: "flex",
@@ -36,20 +36,24 @@ class IisSection extends Component {
               Header: "Name",
               accessor: "name",
               Cell: row => (
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${location}/${row.original.name}/`}
-                >
-                  {row.original.name}
-                </a>
+                <AppName
+                  location={location}
+                  name={row.original.name}
+                  running={row.original.running}
+                  org={row.original}
+                />
               )
             },
             {
               Header: "State",
               accessor: "state",
               className: "state",
-              Cell: row => <ApplicationStatus state={row.original.state} cleanerMark={row.original.cleanerMark} />,
+              Cell: row => (
+                <ApplicationStatus
+                  state={row.original.state}
+                  cleanerMark={row.original.cleanerMark}
+                />
+              ),
               width: 200
             },
             {
