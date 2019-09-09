@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactTable from 'react-table';
-import PropTypes from 'prop-types';
+import React from "react";
+import ReactTable from "react-table";
+import PropTypes from "prop-types";
 
 const DataTable = ({
   data,
@@ -11,26 +11,28 @@ const DataTable = ({
   message
 }) => {
   const finalColumns = [...columns, ...extraColumns];
-  return (data.length !== 0 ) && (
-    <React.Fragment>
-      <h1 className="table-title">{title}</h1>
-      {message !== '' && <h2>{message}</h2>}
-      <ReactTable
-        showPagination={false}
-        sortable={false}
-        loading={loading}
-        data={data}
-        columns={finalColumns}
-        minRows={1}
-      />
-    </React.Fragment>
+  return (
+    data.length !== 0 && (
+      <React.Fragment>
+        <h1 className="table-title">{title}</h1>
+        {message !== "" && <h2>{message}</h2>}
+        <ReactTable
+          showPagination={false}
+          sortable={false}
+          loading={loading}
+          data={data}
+          columns={finalColumns}
+          minRows={1}
+        />
+      </React.Fragment>
+    )
   );
 };
 
 DataTable.defaultProps = {
   extraColumns: [],
   loading: false,
-  message: ''
+  message: ""
 };
 
 DataTable.propTypes = {

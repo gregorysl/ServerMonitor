@@ -29,12 +29,12 @@ const IisSection = props => {
     <React.Fragment>
       <ReactTable
         showPagination={false}
-        noDataText='No IIS applications found'
+        noDataText="No IIS applications found"
         sortable={false}
         minRows={1}
         data={iisData}
         defaultSorted={[{ id: "key" }]}
-        className='-highlight'
+        className="-highlight"
         getTdProps={() => ({
           style: {
             display: "flex",

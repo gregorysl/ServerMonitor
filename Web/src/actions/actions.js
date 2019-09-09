@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from "../constants/actionTypes";
 
 export const getServicesAction = () => ({
   type: types.GET_SERVICES_DATA_REQUEST
@@ -12,13 +12,13 @@ export const getIisAction = () => ({
   type: types.GET_IIS_APPS_REQUEST
 });
 
-export const setIisAction = (appList,url) => ({
+export const setIisAction = (appList, url) => ({
   type: types.GET_IIS_TOGGLE_REQUEST,
   appList,
   url
 });
 
-export const recycleApp = (name,url)  => ({
+export const recycleApp = (name, url) => ({
   type: types.GET_IIS_RECYCLE_REQUEST,
   name,
   url
@@ -55,12 +55,12 @@ export const killSession = name => ({
   name
 });
 
-export const getSettings = (force) => ({
+export const getSettings = force => ({
   type: types.GET_SETTINGS_REQUEST,
   force
 });
 
-export const setSettings = (settings) => ({
+export const setSettings = settings => ({
   type: types.SET_SETTINGS_REQUEST,
   settings
 });

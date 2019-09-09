@@ -9,14 +9,15 @@ const ServiceItem = props => {
   const [message, setMessage] = useState();
   const [status, setStatus] = useState();
   const [loading, setLoading] = useState(true);
-  
+
   const url = props.url;
   const data = props;
 
   useEffect(() => {
     async function fetchData() {
       const result = await checkLink(data);
-      const linkData = (result===null||result===undefined) ? []: result.data.data;
+      const linkData =
+        result === null || result === undefined ? [] : result.data.data;
       setLoading(false);
       setMessage(linkData.message);
       setStatus(linkData.working ? "#87d068" : "#f50");

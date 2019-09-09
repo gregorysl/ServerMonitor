@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const TooltipButton = props => (
   <Tooltip title={props.tooltip}>
     <Icon
-      className='icon-hand'
+      className="icon-hand"
       onClick={props.click}
       type={props.icon}
       theme={props.theme}

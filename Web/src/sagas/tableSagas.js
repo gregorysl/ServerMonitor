@@ -1,6 +1,6 @@
-import { put, call } from 'redux-saga/effects';
-import * as api from '../api/api_new';
-import * as types from '../constants/actionTypes';
+import { put, call } from "redux-saga/effects";
+import * as api from "../api/api_new";
+import * as types from "../constants/actionTypes";
 
 export function* getServicesData({ payload }) {
   try {
@@ -62,7 +62,7 @@ export function* setOracle(props) {
   try {
     const { data } = yield call(api.setOracle, props.data);
     const type =
-      data.status === 'Success'
+      data.status === "Success"
         ? types.TOGGLE_ORACLE_SUCCESS
         : types.TOGGLE_ORACLE_ERROR;
     yield put({ type, data });
@@ -76,7 +76,7 @@ export function* getDiskUsageData() {
   try {
     const { data } = yield call(api.getDisk);
     yield put({ type: types.DISK_USAGE_SUCCESS, data });
-  } catch (error) {    
+  } catch (error) {
     yield put({ type: types.DISK_USAGE_ERROR, data: error.response.data });
   }
 }
@@ -85,7 +85,7 @@ export function* getTasksData() {
   try {
     const { data } = yield call(api.getTasks);
     const type =
-      data.status === 'Success' ? types.TASKS_SUCCESS : types.TASKS_ERROR;
+      data.status === "Success" ? types.TASKS_SUCCESS : types.TASKS_ERROR;
     yield put({ type, data });
   } catch (error) {
     yield put({ type: types.TASKS_ERROR, data: error.response.data });
@@ -105,7 +105,7 @@ export function* getOracleData() {
   try {
     const { data } = yield call(api.getOracleInstancies);
     const type =
-      data.status === 'Success' ? types.ORACLE_SUCCESS : types.ORACLE_ERROR;
+      data.status === "Success" ? types.ORACLE_SUCCESS : types.ORACLE_ERROR;
     yield put({ type, data });
   } catch (error) {
     yield put({ type: types.ORACLE_ERROR, data: error.response.data });

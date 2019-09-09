@@ -48,8 +48,8 @@ class NoteControl extends Component {
     const iconFill = !noteProp || noteProp.length === 0 ? null : "filled";
     return (
       <Input
-        className='tag-input clear-input'
-        type='text'
+        className="tag-input clear-input"
+        type="text"
         value={this.state.value}
         onPressEnter={this.confirmNote}
         onBlur={this.confirmNote}
@@ -58,8 +58,8 @@ class NoteControl extends Component {
         onClick={this.setEditMode}
         prefix={
           <Icon
-            style={{ fontSize: "25px", marginLeft:"-10px" }}
-            type='message'
+            style={{ fontSize: "25px", marginLeft: "-10px" }}
+            type="message"
             theme={iconFill}
           />
         }

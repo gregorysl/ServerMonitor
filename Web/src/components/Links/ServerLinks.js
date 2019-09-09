@@ -8,8 +8,8 @@ import ServiceItem from "../ServiceItem";
 const antIcon = <Icon type="loading" spin />;
 
 const ServerLinks = props => {
-//   const [message, setMessage] = useState();
-//   const [status, setStatus] = useState();
+  //   const [message, setMessage] = useState();
+  //   const [status, setStatus] = useState();
   const [loading, setLoading] = useState(true);
   const [links, setLinks] = useState([]);
   const url = props.url;
@@ -18,22 +18,25 @@ const ServerLinks = props => {
     async function fetchData() {
       const result = await getServerLinks(url);
       const linkData = result.data.data.links;
-  
-    // setMessage(linkData.message);
-    // setStatus(linkData.working ? "#87d068" : "#f50");
+
+      // setMessage(linkData.message);
+      // setStatus(linkData.working ? "#87d068" : "#f50");
       setLoading(false);
-      setLinks(linkData)
+      setLinks(linkData);
     }
     fetchData();
   }, [url]);
-  const title =  (<a className="service-link" target="blank" href={props.url}>
-         {loading && <Spin size="small" indicator={antIcon} />}
-         {props.name}
-       </a>);
+  const title = (
+    <a className="service-link" target="blank" href={props.url}>
+      {loading && <Spin size="small" indicator={antIcon} />}
+      {props.name}
+    </a>
+  );
   const data = links.map(x => <ServiceItem {...x} key={x.type} />);
-  return (<Col xs={24} sm={12} md={12} lg={6} key={props.type}>
-        <Card title={title}>{data}</Card>
-      </Col>
+  return (
+    <Col xs={24} sm={12} md={12} lg={6} key={props.type}>
+      <Card title={title}>{data}</Card>
+    </Col>
   );
 };
 

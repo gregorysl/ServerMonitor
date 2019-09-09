@@ -5,7 +5,8 @@ import TooltipButton from "../TooltipButton";
 const StartStopButton = props => {
   const tooltip = props.running ? "Stop" : "Start";
   const icon = props.running ? "close-circle" : "play-circle";
-  const click = () => props.click(props.org, props.url, props.refresh, "Toggle");
+  const click = () =>
+    props.click(props.org, props.url, props.refresh, "Toggle");
   return <TooltipButton tooltip={tooltip} click={click} icon={icon} />;
 };
 

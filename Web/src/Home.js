@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Checkbox, notification } from "antd";
 import PropTypes from "prop-types";
-import * as actions from "./actions/actions";
+// import * as actions from "./actions/actions";
 import ServicesList from "./components/servicesList";
 import Hardware from "./components/Hardware";
 import DataTable from "./components/Iis/DataTable";
@@ -65,9 +65,9 @@ class Home extends Component {
     return (
       <div style={{ background: "#fff", padding: 5, height: "100%" }}>
         <h1>Hardware Monitor</h1>
-        <Hardware />
-        <ServicesList settings={this.props.settings} />
-        <IisMaster settings={this.props.settings}  />
+        {/* <Hardware /> */}
+        {/* <ServicesList settings={this.props.settings} /> */}
+        <IisMaster settings={this.props.settings} />
         {!this.props.oracle.isDisabled && (
           <DataTable
             {...this.props.oracle}
@@ -127,11 +127,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTasks: () => dispatch(actions.getTasksAction()),
-  getSessions: () => dispatch(actions.getSessionsAction()),
-  getHardwareUsage: () => dispatch(actions.getDiskUsageAction()),
-  getOracle: () => dispatch(actions.getOracleAction()),
-  getLinks: () => dispatch(actions.getServicesAction())
+  getTasks: () => {}, //dispatch(actions.getTasksAction()),
+  getSessions: () => {}, //dispatch(actions.getSessionsAction()),
+  getHardwareUsage: () => {}, //dispatch(actions.getDiskUsageAction()),
+  getOracle: () => {}, //dispatch(actions.getOracleAction()),
+  getLinks: () => {} //dispatch(actions.getServicesAction())
 });
 
 export default connect(

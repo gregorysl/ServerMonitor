@@ -15,26 +15,26 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Layout className='layout'>
+        <Layout className="layout">
           <Header>
-            <div className='logo' />
+            <div className="logo" />
 
-            <Link className='text-colored' to='/'>
+            <Link className="text-colored" to="/">
               Home
             </Link>
 
-            <Link className='settings' to='/settings'>
-              <Icon type='setting' />
+            <Link className="settings" to="/settings">
+              <Icon type="setting" />
             </Link>
           </Header>
           <Content style={{ padding: "0 50px" }}>
             <Switch>
               <Route
                 exact
-                path='/settings'
+                path="/settings"
                 render={() => (
                   <Settings
-                  settings={this.props.settings}
+                    settings={this.props.settings}
                     save={this.props.setSettings}
                   />
                 )}

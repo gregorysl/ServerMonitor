@@ -3,7 +3,6 @@ import { Row } from "antd";
 import "react-table/react-table.css";
 import IisSection from "./IisSection";
 
-
 const IisServicesList = props => {
   const data = props.settings.hardwareList.map(x => (
     <Row key={x.name}>
@@ -13,7 +12,7 @@ const IisServicesList = props => {
   ));
   return (
     <Row>
-      <h1 className='table-title'>IIS Applications</h1>
+      <h1 className="table-title">IIS Applications</h1>
       {data}
     </Row>
   );

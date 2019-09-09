@@ -1,5 +1,5 @@
-import { all, fork } from 'redux-saga/effects';
-import * as watch from './watcher';
+import { all, fork } from "redux-saga/effects";
+import * as watch from "./watcher";
 
 const sagas = [
   fork(watch.watchGetServices),
@@ -18,6 +18,6 @@ const sagas = [
   fork(watch.watchSetCleanerSettings)
 ];
 
-export default function* () {
+export default function*() {
   yield all(sagas);
 }

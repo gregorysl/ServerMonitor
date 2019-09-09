@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import PageVisibility from 'react-page-visibility';
-import { Tabs } from 'antd';
-import { getHardwareAction } from '../actions/actions';
-import HardwareItem from './HardwareItem';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import PageVisibility from "react-page-visibility";
+import { Tabs } from "antd";
+import { getHardwareAction } from "../actions/actions";
+import HardwareItem from "./HardwareItem";
 
 const { TabPane } = Tabs;
 
@@ -40,7 +40,7 @@ class Hardware extends Component {
     ));
     return (
       <PageVisibility onChange={this.handleVisibilityChange}>
-        <Tabs tabPosition="left" style={{ padding: 5 }} >
+        <Tabs tabPosition="left" style={{ padding: 5 }}>
           {components}
         </Tabs>
       </PageVisibility>
