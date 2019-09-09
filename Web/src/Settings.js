@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { setSettings } from "./actions/actions";
@@ -98,14 +98,16 @@ const dirsSection = ({ fields }) =>
   ));
 
 let Settings = props => {
-  const submita = values => props.setSettings(values);
+  const settings = useSelector(state => state.settings);
+  const dispatch = useDispatch();
+  const submita = values => dispatch(setSettings(values));
   return (
     <Form
       onSubmit={submita}
       mutators={{
         ...arrayMutators
       }}
-      initialValues={props.settings}
+      initialValues={settings}
       render={({
         form: {
           reset,
@@ -200,11 +202,4 @@ let Settings = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  setSettings: settings => dispatch(setSettings(settings))
-});
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(Settings);
+export default Settings;
