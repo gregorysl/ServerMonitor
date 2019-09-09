@@ -190,7 +190,7 @@ function settingsReducer(
 ) {
   switch (action.type) {
     case types.GET_SETTINGS_SUCCESS:
-      return { ...action.data.data };
+      return { ...action.data.data, loaded: true };
     default:
       return state;
   }

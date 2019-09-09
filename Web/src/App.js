@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon, Layout } from "antd";
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from "./Home";
@@ -7,57 +7,33 @@ import Settings from "./Settings";
 import * as actions from "./actions/actions";
 
 const { Header, Content } = Layout;
-
-class App extends Component {
-  componentDidMount() {
-    this.props.getSettings();
+const App = props => {
+  const result = useSelector(state => state.settings);
+  const dispatch = useDispatch();
+  if (!result.loaded) {
+    dispatch(actions.getSettings());
   }
-  render() {
-    return (
-      <Router>
-        <Layout className="layout">
-          <Header>
-            <div className="logo" />
+  return (
+    <Router>
+      <Layout className="layout">
+        <Header>
+          <div className="logo" />
+          <Link className="text-colored" to="/">
+            Home
+          </Link>
+          <Link className="settings" to="/settings">
+            <Icon type="setting" />
+          </Link>
+        </Header>
+        <Content style={{ padding: "0 50px" }}>
+          <Switch>
+            <Route exact path="/settings" component={Settings} />
+            <Route component={Home} />
+          </Switch>
+        </Content>
+      </Layout>
+    </Router>
+  );
+};
 
-            <Link className="text-colored" to="/">
-              Home
-            </Link>
-
-            <Link className="settings" to="/settings">
-              <Icon type="setting" />
-            </Link>
-          </Header>
-          <Content style={{ padding: "0 50px" }}>
-            <Switch>
-              <Route
-                exact
-                path="/settings"
-                render={() => (
-                  <Settings
-                    settings={this.props.settings}
-                    save={this.props.setSettings}
-                  />
-                )}
-              />
-              <Route component={Home} />
-            </Switch>
-          </Content>
-        </Layout>
-      </Router>
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  settings: state.settings
-});
-
-const mapDispatchToProps = dispatch => ({
-  getSettings: () => dispatch(actions.getSettings()),
-  setSettings: settings => dispatch(actions.setSettings(settings))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default App;
