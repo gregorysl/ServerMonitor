@@ -195,6 +195,20 @@ function settingsReducer(
       return state;
   }
 }
+function refreshReducer(state = {}, { type, url }) {
+  switch (type) {
+    case types.GET_IIS_APPS_REQUEST:
+      const newState = { ...state };
+      const act = newState[url];
+      if (!act) {
+        newState[url] = 0;
+      }
+      newState[url]++;
+      return newState;
+    default:
+      return state;
+  }
+}
 
 function addAllNotifications(stateArray, notifications, message) {
   if (!notifications) {
@@ -262,6 +276,7 @@ function errorReducer(state = [], action) {
 }
 
 const rootReducer = combineReducers({
+  refresh: refreshReducer,
   table: tableReducer,
   service: servicesReducer,
   hardware: hardwareReducer,

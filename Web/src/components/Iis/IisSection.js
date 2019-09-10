@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getIisApp } from "../../api/api_new";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import ReactTable from "react-table";
-import * as actions from "../../actions/actions";
 import AppPoolList from "./AppPoolList";
 import NoteControl from "./NoteControl";
 import ApplicationStatus from "./ApplicationStatus";
@@ -11,19 +10,17 @@ import AppName from "./AppName";
 
 const IisSection = props => {
   const [iisData, setIisData] = useState([]);
-  const [forceRefresh, setforceRefresh] = useState(false);
-
+  const refresh = useSelector(state => state.refresh[props.url]);
   useEffect(() => {
-    async function fetchData(url, name) {
+    async function fetchData(url) {
       const result = await getIisApp(url);
       setIisData(result.data.data);
-      setforceRefresh(false);
     }
-    fetchData(props.url, forceRefresh);
-  }, [forceRefresh, props.url]);
+    fetchData(props.url);
+  }, [props.url, refresh]);
   const location = props.url
     .split("/")
-    .splice(0, 4)
+    .splice(0, 3)
     .join("/");
   return (
     <React.Fragment>
@@ -51,7 +48,6 @@ const IisSection = props => {
                 location={location}
                 name={row.original.name}
                 running={row.original.running}
-                org={row.original}
               />
             )
           },
@@ -70,14 +66,7 @@ const IisSection = props => {
           {
             Header: "Note",
             accessor: "note",
-            Cell: row => (
-              <NoteControl
-                click={props.set}
-                org={row.original}
-                url={location}
-                refresh={setforceRefresh}
-              />
-            ),
+            Cell: row => <NoteControl org={row.original} url={props.url} />,
             width: 310
           },
           {
@@ -85,10 +74,8 @@ const IisSection = props => {
             accessor: "x",
             Cell: row => (
               <ActionPanel
-                click={props.set}
                 org={row.original}
-                url={location}
-                refresh={setforceRefresh}
+                url={props.url}
                 running={row.original.running}
                 whitelisted={row.original.whitelisted}
               />
@@ -98,12 +85,9 @@ const IisSection = props => {
         ]}
         SubComponent={row => (
           <AppPoolList
-            click={props.set}
             org={row.original}
-            url={location}
-            refresh={setforceRefresh}
+            url={props.url}
             items={row.original.apps}
-            recycle={props.recycle}
           />
         )}
       />
@@ -111,23 +95,4 @@ const IisSection = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  iis: state.table
-});
-
-const mapDispatchToProps = dispatch => ({
-  recycle: (name, url) => dispatch(actions.recycleApp(name, url)),
-  set: (item, url, refresh, action) => {
-    const data = {
-      build: item,
-      action: action
-    };
-    dispatch(actions.setIisAction(data, url));
-    refresh(true);
-  }
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IisSection);
+export default IisSection;
