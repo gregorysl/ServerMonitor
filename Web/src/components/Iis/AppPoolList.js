@@ -1,12 +1,17 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import ReactTable from "react-table";
 import dateformat from "dateformat";
 import "react-table/react-table.css";
 import TooltipButton from "../TooltipButton";
 import StartStopButton from "./StartStopButton";
 import ApplicationStatus from "./ApplicationStatus";
+import * as actions from "../../actions/actions";
 
 const AppPoolList = props => {
+  const dispatch = useDispatch();
+  const toggle = data => dispatch(actions.setIisAction(data, props.url));
+  const recycle = value => dispatch(actions.recycleApp(value, props.url));
   if (props.items.length === 0) {
     return <h1>No IIS applications found.</h1>;
   }
@@ -42,17 +47,15 @@ const AppPoolList = props => {
             Cell: row => (
               <>
                 <StartStopButton
-                  click={props.click}
-                  org={{ apps: [row.original] }}
-                  url={props.url}
-                  refresh={props.refresh}
-                  running={props.org.running}
+                  build={{ apps: [row.original] }}
+                  click={toggle}
+                  running={row.original.running}
                 />
                 {row.original.running && (
                   <TooltipButton
                     tooltip="recycle"
                     icon="reload"
-                    click={() => props.recycle(row.value, props.url)}
+                    click={() => recycle(row.value)}
                   />
                 )}
               </>
