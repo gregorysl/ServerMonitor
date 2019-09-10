@@ -7,19 +7,14 @@ import WhitelistButton from "./WhitelistButton";
 const ActionPanel = props => {
   const dispatch = useDispatch();
 
-  const click = action =>
-    dispatch(
-      actions.setIisAction(
-        {
-          build: props.org,
-          action
-        },
-        props.url
-      )
-    );
+  const click = data => dispatch(actions.setIisAction(data, props.url));
   return (
     <div style={{ display: "block" }}>
-      <StartStopButton click={click} running={props.running} />
+      <StartStopButton
+        build={props.org}
+        click={click}
+        running={props.running}
+      />
       <WhitelistButton click={click} whitelisted={props.whitelisted} />
     </div>
   );

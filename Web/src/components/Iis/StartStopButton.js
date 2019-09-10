@@ -2,11 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import TooltipButton from "../TooltipButton";
 
-const StartStopButton = props => {
-  const tooltip = props.running ? "Stop" : "Start";
-  const icon = props.running ? "close-circle" : "play-circle";
-  const click = () => props.click("Toggle");
-  return <TooltipButton tooltip={tooltip} click={click} icon={icon} />;
+const StartStopButton = ({ running, click, build }) => {
+  const tooltip = running ? "Stop" : "Start";
+  const icon = running ? "close-circle" : "play-circle";
+  const toggle = () =>
+    click({
+      build,
+      action: "Toggle"
+    });
+  return <TooltipButton tooltip={tooltip} click={toggle} icon={icon} />;
 };
 
 StartStopButton.propTypes = {
