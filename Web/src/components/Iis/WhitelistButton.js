@@ -2,12 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 import TooltipButton from "../TooltipButton";
 
-const WhitelistButton = props => {
-  const tooltip = props.whitelisted ? "Remove from whitelist" : "Whitelist";
-  const theme = props.whitelisted ? "filled" : "outlined";
-  const click = () => props.click("Whitelist");
+const WhitelistButton = ({ whitelisted, click, build }) => {
+  const tooltip = whitelisted ? "Remove from whitelist" : "Whitelist";
+  const theme = whitelisted ? "filled" : "outlined";
+  const whitelist = () =>
+    click({
+      build,
+      action: "Whitelist"
+    });
   return (
-    <TooltipButton tooltip={tooltip} click={click} icon="lock" theme={theme} />
+    <TooltipButton
+      tooltip={tooltip}
+      click={whitelist}
+      icon="lock"
+      theme={theme}
+    />
   );
 };
 

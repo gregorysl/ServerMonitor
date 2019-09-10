@@ -15,7 +15,11 @@ const ActionPanel = props => {
         click={click}
         running={props.running}
       />
-      <WhitelistButton click={click} whitelisted={props.whitelisted} />
+      <WhitelistButton
+        build={props.org}
+        click={click}
+        whitelisted={props.whitelisted}
+      />
     </div>
   );
 };
