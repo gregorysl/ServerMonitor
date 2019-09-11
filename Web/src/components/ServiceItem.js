@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { checkLink } from "../api/api_new";
 import { Tooltip, Tag, Spin, Icon } from "antd";
-import PropTypes from "prop-types";
 
 const antIcon = <Icon type="loading" spin />;
 
-const ServiceItem = props => {
+const ServiceItem = ({ data, url }) => {
   const [message, setMessage] = useState();
   const [status, setStatus] = useState();
   const [loading, setLoading] = useState(true);
 
-  const url = props.url;
-  const data = props;
-
   useEffect(() => {
     async function fetchData() {
-      const result = await checkLink(data);
+      const result = await checkLink(data, url);
       const linkData =
         result === null || result === undefined ? [] : result.data.data;
       setLoading(false);
@@ -28,17 +24,13 @@ const ServiceItem = props => {
   return (
     <Tooltip title={message}>
       <Tag color={status}>
-        <a className="service-link" target="blank" href={props.url}>
+        <a className="service-link" target="blank" href={data.url}>
           {loading && <Spin size="small" indicator={antIcon} />}
-          {props.type}
+          {data.name}
         </a>
       </Tag>
     </Tooltip>
   );
-};
-
-ServiceItem.propTypes = {
-  url: PropTypes.string.isRequired
 };
 
 export default ServiceItem;

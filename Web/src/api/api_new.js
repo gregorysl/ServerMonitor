@@ -18,7 +18,6 @@ const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
 // const hardwareUri = `${appUri}Hardware/`;
 const hardwareUri = `${appUri}Hardware/GetAll`;
-const linksUri = `${appUri}Links`;
 const settingsUri = `${appUri}Settings/`;
 
 export function getIisApp(url) {
@@ -30,10 +29,6 @@ export function setIisApp(props) {
 
 export function recycleApp(props) {
   return Axios.post(`${props.url}/Iis?name=${props.name}`);
-}
-
-export function getServices() {
-  return Axios.get(linksUri);
 }
 
 export function getHardware() {
@@ -82,8 +77,8 @@ export function setSettings(settings) {
   return Axios.put(settingsUri, settings);
 }
 
-export function checkLink(data) {
-  return Axios.post(`${linksUri}`, data);
+export function checkLink(data, url) {
+  return Axios.post(`${url}Links`, data);
 }
 
 export function getServerLinks(url) {

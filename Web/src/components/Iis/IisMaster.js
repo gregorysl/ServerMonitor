@@ -9,7 +9,7 @@ const IisServicesList = props => {
     <Row key={x.name}>
       <Row>
         <h3>{x.name}</h3>
-        <ServerLinks {...x} key={x.name} url={x.url} />
+        <ServerLinks key={x.name} url={x.url} />
       </Row>
       <Row>
         <IisSection name={x.name} url={x.url} />
