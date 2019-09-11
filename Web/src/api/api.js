@@ -114,30 +114,6 @@ const range = len => {
   return arr;
 };
 
-export function getServices() {
-  return [
-    {
-      key: "Fdim",
-      working: false,
-      message:
-        "An error occurred while sending the request.\\r\\nThe remote name could not be resolved: 'propp-jav.com'\\r\\n",
-      url: "https://propp-jav.com:8083/MessageBroker/ping"
-    },
-    {
-      key: "ElasticSearch",
-      working: false,
-      message: "Unauthorized",
-      url: "https://localhost:9200/"
-    },
-    {
-      key: "Google",
-      working: true,
-      message: "OK",
-      url: "https://www.google.com/"
-    }
-  ];
-}
-
 export function getHardware() {
   return range(2).map(d => ({
     key: `Server ${d}`,

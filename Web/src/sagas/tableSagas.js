@@ -2,18 +2,6 @@ import { put, call } from "redux-saga/effects";
 import * as api from "../api/api_new";
 import * as types from "../constants/actionTypes";
 
-export function* getServicesData({ payload }) {
-  try {
-    const { data } = yield call(api.getServices, payload);
-    yield put({ type: types.GET_SERVICES_DATA_SUCCESS, data });
-  } catch (error) {
-    yield put({
-      type: types.GET_SERVICES_DATA_ERROR,
-      data: error.response.data
-    });
-  }
-}
-
 export function* getHardwareData() {
   try {
     const { data } = yield call(api.getHardware);

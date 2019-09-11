@@ -2,7 +2,6 @@ import { all, fork } from "redux-saga/effects";
 import * as watch from "./watcher";
 
 const sagas = [
-  fork(watch.watchGetServices),
   fork(watch.watchGetHardware),
   fork(watch.watchGetIis),
   fork(watch.watchSetIis),

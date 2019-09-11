@@ -38,11 +38,6 @@ const sessionsColumns = [
 ];
 
 const hardwareInitialState = [];
-const initialState = {
-  data: [],
-  errors: [],
-  loading: true
-};
 
 const tableInitialState = {
   columns: [],
@@ -155,15 +150,6 @@ function oracleReducer(state = tableInitialState, action) {
   }
 }
 
-function servicesReducer(state = initialState, action) {
-  switch (action.type) {
-    case types.GET_SERVICES_DATA_SUCCESS:
-      return { ...state, data: action.data.data, loading: false };
-    default:
-      return state;
-  }
-}
-
 function hardwareReducer(state = hardwareInitialState, action) {
   switch (action.type) {
     case types.GET_HARDWARE_DATA_SUCCESS:
@@ -237,10 +223,6 @@ function errorReducer(state = [], action) {
     case types.GET_HARDWARE_DATA_ERROR:
       title = hardwareErrorText;
       break;
-    case types.GET_SERVICES_DATA_SUCCESS:
-    case types.GET_SERVICES_DATA_ERROR:
-      title = linksErrorText;
-      break;
     case types.ORACLE_ERROR:
     case types.TOGGLE_ORACLE_ERROR:
     case types.TOGGLE_ORACLE_SUCCESS:
@@ -273,7 +255,6 @@ function errorReducer(state = [], action) {
 const rootReducer = combineReducers({
   refresh: refreshReducer,
   table: tableReducer,
-  service: servicesReducer,
   hardware: hardwareReducer,
   disk: diskUsageReducer,
   tasks: tasksReducer,
