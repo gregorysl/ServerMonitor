@@ -48,7 +48,7 @@ const tableInitialState = {
   columns: [],
   data: [],
   errors: [],
-  loading: true
+  loaded: false
 };
 const oracleInstanciesErrorText = "Oracle Instancies";
 const userSessionsErrorText = "User Sessions";
@@ -114,12 +114,7 @@ function sessionsReducer(state = tableInitialState, action) {
         ...state,
         data: action.data.data,
         columns: sessionsColumns,
-        loading: false
-      };
-    case types.SESSIONS_KILL_REQUEST:
-      return {
-        ...state,
-        loading: true
+        loaded: true
       };
     default:
       return state;

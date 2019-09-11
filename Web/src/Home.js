@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Checkbox, notification } from "antd";
 import PropTypes from "prop-types";
-// import * as actions from "./actions/actions";
+import * as actions from "./actions/actions";
 import ServicesList from "./components/servicesList";
 import Hardware from "./components/Hardware";
 import DataTable from "./components/Iis/DataTable";
 import IisMaster from "./components/Iis/IisMaster";
 import TaskActionButtons from "./components/TaskActionButtons";
 import OracleToggleButton from "./components/OracleToggleButton";
-import SessionsActionButtons from "./components/SessionsActionButtons";
+import SessionsPanel from "./components/SessionsPanel";
 
 const checkErrors = (props, nextProps) => {
   if (props.length < nextProps.length) {
@@ -44,16 +44,10 @@ const taskAction = {
   Cell: row => <TaskActionButtons {...row.original} />,
   width: 100
 };
-const sessionActions = {
-  accessor: "x",
-  Cell: row => <SessionsActionButtons {...row.original} />,
-  width: 100
-};
 
 class Home extends Component {
   componentDidMount() {
     this.props.getTasks();
-    this.props.getSessions();
     // this.props.getHardwareUsage();
     this.props.getOracle();
   }
@@ -81,25 +75,16 @@ class Home extends Component {
           title="Scheduled Tasks"
           extraColumns={[taskAction]}
         />
-        <DataTable
-          {...this.props.sessions}
-          title="User Sessions"
-          extraColumns={[sessionActions]}
-        />
+        <SessionsPanel />
       </div>
     );
   }
 }
 Home.defaultProps = { isDisabled: true, data: [], columns: [] };
 Home.propTypes = {
-  getSessions: PropTypes.func.isRequired,
   getTasks: PropTypes.func.isRequired,
   getHardwareUsage: PropTypes.func.isRequired,
   getOracle: PropTypes.func.isRequired,
-  sessions: PropTypes.shape({
-    data: PropTypes.array.isRequired,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  }).isRequired,
   tasks: PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -119,7 +104,6 @@ Home.propTypes = {
 
 const mapStateToProps = state => ({
   tasks: state.tasks,
-  sessions: state.sessions,
   disk: state.disk,
   oracle: state.oracle,
   settings: state.settings,
@@ -128,7 +112,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getTasks: () => {}, //dispatch(actions.getTasksAction()),
-  getSessions: () => {}, //dispatch(actions.getSessionsAction()),
   getHardwareUsage: () => {}, //dispatch(actions.getDiskUsageAction()),
   getOracle: () => {}, //dispatch(actions.getOracleAction()),
   getLinks: () => {} //dispatch(actions.getServicesAction())
