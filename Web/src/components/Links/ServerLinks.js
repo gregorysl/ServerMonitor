@@ -5,8 +5,6 @@ import { Card, Col, Spin, Icon } from "antd";
 // import PropTypes from "prop-types";
 import ServiceItem from "../ServiceItem";
 
-const antIcon = <Icon type="loading" spin />;
-
 const ServerLinks = props => {
   //   const [message, setMessage] = useState();
   //   const [status, setStatus] = useState();
@@ -26,16 +24,10 @@ const ServerLinks = props => {
     }
     fetchData();
   }, [url]);
-  const title = (
-    <a className="service-link" target="blank" href={props.url}>
-      {loading && <Spin size="small" indicator={antIcon} />}
-      {props.name}
-    </a>
-  );
   const data = links.map(x => <ServiceItem {...x} key={x.type} />);
   return (
     <Col xs={24} sm={12} md={12} lg={6} key={props.type}>
-      <Card title={title}>{data}</Card>
+      {data}
     </Col>
   );
 };

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Checkbox, notification } from "antd";
 import PropTypes from "prop-types";
 import * as actions from "./actions/actions";
-import ServicesList from "./components/servicesList";
 import Hardware from "./components/Hardware";
 import DataTable from "./components/Iis/DataTable";
 import IisMaster from "./components/Iis/IisMaster";
@@ -60,7 +59,6 @@ class Home extends Component {
       <div style={{ background: "#fff", padding: 5, height: "100%" }}>
         <h1>Hardware Monitor</h1>
         {/* <Hardware /> */}
-        {/* <ServicesList settings={this.props.settings} /> */}
         <IisMaster settings={this.props.settings} />
         {!this.props.oracle.isDisabled && (
           <DataTable
@@ -113,8 +111,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getTasks: () => {}, //dispatch(actions.getTasksAction()),
   getHardwareUsage: () => {}, //dispatch(actions.getDiskUsageAction()),
-  getOracle: () => {}, //dispatch(actions.getOracleAction()),
-  getLinks: () => {} //dispatch(actions.getServicesAction())
+  getOracle: () => {} //dispatch(actions.getOracleAction()),
 });
 
 export default connect(
