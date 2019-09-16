@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { connect, useSelector } from "react-redux";
 import { Checkbox, notification } from "antd";
 import PropTypes from "prop-types";
 import * as actions from "./actions/actions";
@@ -10,16 +10,6 @@ import TaskActionButtons from "./components/TaskActionButtons";
 import OracleToggleButton from "./components/OracleToggleButton";
 import SessionsPanel from "./components/SessionsPanel";
 
-const checkErrors = (props, nextProps) => {
-  if (props.length < nextProps.length) {
-    const item = nextProps[nextProps.length - 1];
-    if (item.type === "Success") {
-      notification.success(item);
-    } else {
-      notification.error(item);
-    }
-  }
-};
 const isDeployingColumn = [
   {
     Header: "Reserved",
@@ -44,40 +34,46 @@ const taskAction = {
   width: 100
 };
 
-class Home extends Component {
-  componentDidMount() {
-    this.props.getTasks();
-    // this.props.getHardwareUsage();
-    this.props.getOracle();
-  }
-  componentWillReceiveProps(nextProps) {
-    checkErrors(this.props.errors, nextProps.errors);
-  }
+const Home = props => {
+  const errors = useSelector(state => state.errors);
+  const settings = useSelector(state => state.settings);
+  // componentDidMount() {
+  //   this.props.getTasks();
+  //   this.props.getHardwareUsage();
+  //   this.props.getOracle();
+  // }
+  useEffect(() => {
+    errors.data.forEach(item => {
+      if (item.type === "Success") {
+        notification.success(item);
+      } else {
+        notification.error(item);
+      }
+    });
+  }, [errors]);
 
-  render() {
-    return (
-      <div style={{ background: "#fff", padding: 5, height: "100%" }}>
-        <h1>Hardware Monitor</h1>
-        {/* <Hardware /> */}
-        <IisMaster settings={this.props.settings} />
-        {!this.props.oracle.isDisabled && (
-          <DataTable
-            {...this.props.oracle}
-            title="Oracle Instances"
-            extraColumns={isDeployingColumn}
-          />
-        )}
-        <DataTable {...this.props.disk} title="Disk Status" />
+  return (
+    <div style={{ background: "#fff", padding: 5, height: "100%" }}>
+      <h1>Hardware Monitor</h1>
+      {/* <Hardware /> */}
+      <IisMaster settings={settings} />
+      {!props.oracle.isDisabled && (
         <DataTable
-          {...this.props.tasks}
-          title="Scheduled Tasks"
-          extraColumns={[taskAction]}
+          {...props.oracle}
+          title="Oracle Instances"
+          extraColumns={isDeployingColumn}
         />
-        <SessionsPanel />
-      </div>
-    );
-  }
-}
+      )}
+      <DataTable {...props.disk} title="Disk Status" />
+      <DataTable
+        {...props.tasks}
+        title="Scheduled Tasks"
+        extraColumns={[taskAction]}
+      />
+      <SessionsPanel />
+    </div>
+  );
+};
 Home.defaultProps = { isDisabled: true, data: [], columns: [] };
 Home.propTypes = {
   getTasks: PropTypes.func.isRequired,
@@ -96,15 +92,13 @@ Home.propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     columns: PropTypes.arrayOf(PropTypes.object),
     isDisabled: PropTypes.bool
-  }).isRequired,
-  errors: PropTypes.arrayOf(PropTypes.object).isRequired
+  }).isRequired
 };
 
 const mapStateToProps = state => ({
   tasks: state.tasks,
   disk: state.disk,
   oracle: state.oracle,
-  settings: state.settings,
   errors: state.errors
 });
 

@@ -51,7 +51,6 @@ const tasksErrorText = "Tasks";
 const hardwareErrorText = "Hardware Monitor";
 const diskUsageErrorText = "Disk Usage";
 const iisErrorText = "IIS Applications";
-const linksErrorText = "Links";
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
@@ -192,25 +191,30 @@ function refreshReducer(state = {}, { type, url }) {
 }
 
 function addAllNotifications(stateArray, notifications, message) {
+  let id = stateArray.id;
   if (!notifications) {
-    return [
-      ...stateArray,
-      {
-        message,
-        description: "404",
-        type: "Error"
-      }
-    ];
+    return {
+      id: id + 1,
+      data: [
+        ...stateArray,
+        {
+          message,
+          description: "404",
+          type: "Error"
+        }
+      ]
+    };
   }
   const toAdd = notifications.map(x => ({
+    id: id++,
     message,
     description: x.message,
     type: x.status
   }));
-  return [...stateArray, ...toAdd];
+  return { id: id + 1, data: [...toAdd] };
 }
 
-function errorReducer(state = [], action) {
+function errorReducer(state = { id: 0, data: [] }, action) {
   let title = "";
   switch (action.type) {
     case types.TASKS_ERROR:
