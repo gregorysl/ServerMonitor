@@ -28,7 +28,7 @@ const NoteControl = props => {
       value={note}
       onPressEnter={confirmNote}
       onBlur={confirmNote}
-      onChange={evt => setValue(evt.target.note)}
+      onChange={evt => setValue(evt.target.value)}
       onKeyDown={handleKeyPress}
       prefix={
         <Icon
