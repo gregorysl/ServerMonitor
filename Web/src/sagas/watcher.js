@@ -1,4 +1,4 @@
-import { takeLatest } from "redux-saga/effects";
+import { takeLatest, takeEvery } from "redux-saga/effects";
 import * as saga from "./tableSagas";
 import * as types from "../constants/actionTypes";
 
@@ -7,7 +7,7 @@ export function* watchGetHardware() {
 }
 
 export function* watchGetIis() {
-  yield takeLatest(types.GET_IIS_APPS_REQUEST, saga.getIisData);
+  yield takeEvery(types.GET_IIS_APPS_REQUEST, saga.getIisData);
 }
 
 export function* watchSetIis() {

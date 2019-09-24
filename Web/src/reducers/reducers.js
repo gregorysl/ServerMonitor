@@ -41,9 +41,9 @@ const hardwareInitialState = [];
 
 const tableInitialState = {
   columns: [],
+  keys: [],
   data: [],
-  errors: [],
-  loaded: false
+  errors: []
 };
 const oracleInstanciesErrorText = "Oracle Instancies";
 const userSessionsErrorText = "User Sessions";
@@ -54,10 +54,23 @@ const iisErrorText = "IIS Applications";
 
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
-    case types.GET_IIS_TOGGLE_REQUEST:
-      return { ...state, loading: true };
     case types.GET_IIS_APPS_SUCCESS:
-      return { ...state, data: action.data.data, loading: false };
+      let newKeys = [...state.keys];
+      let newData = [...state.data];
+      let keyIndex = newKeys.indexOf(action.url);
+      if (keyIndex !== -1) {
+        newKeys.splice(keyIndex, 1);
+        newData.splice(keyIndex, 1);
+      }
+      newKeys.push(action.url);
+      newData.push(action.data.data);
+
+      let newState = {
+        ...state,
+        keys: newKeys,
+        data: newData
+      };
+      return newState;
     default:
       return state;
   }

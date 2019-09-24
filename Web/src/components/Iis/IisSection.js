@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { getIisApp } from "../../api/api_new";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../actions/actions";
 import ReactTable from "react-table";
 import AppPoolList from "./AppPoolList";
 import NoteControl from "./NoteControl";
@@ -9,15 +9,15 @@ import ActionPanel from "./ActionPanel";
 import AppName from "./AppName";
 
 const IisSection = props => {
-  const [iisData, setIisData] = useState([]);
-  const refresh = useSelector(state => state.refresh[props.url]);
+  const iisData = useSelector(state => {
+    const key = state.table.keys.indexOf(props.url);
+    if (key === -1) return [];
+    else return state.table.data[key];
+  });
+  const dispatch = useDispatch();
   useEffect(() => {
-    async function fetchData(url) {
-      const result = await getIisApp(url);
-      setIisData(result.data.data);
-    }
-    fetchData(props.url);
-  }, [props.url, refresh]);
+    dispatch(actions.getIisAction(props.url));
+  }, [dispatch, props.url]);
   const location = props.url
     .split("/")
     .splice(0, 3)

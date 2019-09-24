@@ -19,10 +19,25 @@ export function* getHardwareData() {
 
 export function* getIisData(props) {
   try {
-    const { data } = yield call(api.getIisApps, props.data);
-    yield put({ type: types.GET_IIS_APPS_SUCCESS, data });
+    const { data } = yield call(api.getIisApp, props.url);
+
+    yield put({
+      type: types.GET_IIS_APPS_SUCCESS,
+      data,
+      url: props.url
+    });
   } catch (error) {
-    yield put({ type: types.GET_IIS_APPS_ERROR, data: error.response.data });
+    yield put({
+      type: types.GET_IIS_APPS_ERROR,
+      data: {
+        notifications: [
+          {
+            message: `${error.message} ${props.url}`,
+            type: "Error"
+          }
+        ]
+      }
+    });
   }
 }
 
