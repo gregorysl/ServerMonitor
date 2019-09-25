@@ -16,9 +16,9 @@ const IisSection = props => {
   }, [dispatch, props.url]);
   const click = data => dispatch(actions.setIisAction(data, props.url));
   const displayData = iisData.map(x => (
-    <AppCard x={x} click={click} url={props.url} />
+    <AppCard key={x.name} x={x} click={click} url={props.url} />
   ));
-  return <Row>{displayData}</Row>;
+  return <Row gutter={16}>{displayData}</Row>;
 };
 
 export default IisSection;

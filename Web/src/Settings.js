@@ -51,6 +51,7 @@ const FullCard = ({
   children
 }) => (
   <Card
+    className="settings-card"
     title={
       <Row type="flex" style={{ alignItems: "center" }} gutter={16}>
         <Col sm={24} md={3}>
