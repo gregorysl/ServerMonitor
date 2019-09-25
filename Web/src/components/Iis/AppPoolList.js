@@ -15,7 +15,7 @@ const AppPoolList = props => {
   }
   const data = props.items.map(x => (
     <Row key={x.name}>
-      <Col span={14}>
+      <Col span={15}>
         {x.name && x.pool && x.name !== x.pool && (
           <Tooltip title="Application pool has different name than IIS application. Check your configuration for errors">
             <Icon className="icon-large" type="warning" />
@@ -26,9 +26,10 @@ const AppPoolList = props => {
       <Col span={5}>
         <ApplicationStatus state={x.running ? "Running" : "Stopped"} {...x} />
       </Col>
-      <Col span={5}>
+      <Col span={4}>
         <TooltipButton
           tooltip={x.running ? "Stop" : "Start"}
+          type="default"
           click={() =>
             toggle({
               build: { apps: [x] },
@@ -39,6 +40,7 @@ const AppPoolList = props => {
         />
         {x.running && (
           <TooltipButton
+            type="default"
             tooltip="recycle"
             icon="reload"
             click={() => {
