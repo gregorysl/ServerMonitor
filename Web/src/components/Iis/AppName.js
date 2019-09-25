@@ -1,18 +1,14 @@
 import React from "react";
 
-const AppName = props => {
-  const item = props.running ? (
-    <a
-      target="_blank"
-      rel="noopener noreferrer"
-      href={`${props.location}/${props.name}/`}
-    >
-      {props.name}
+const AppName = ({ name, running, location }) => {
+  const title = <span className="app-title">{name}</span>;
+  return running ? (
+    <a target="_blank" rel="noopener noreferrer" href={`${location}/${name}/`}>
+      {title}
     </a>
   ) : (
-    <p>{props.name}</p>
+    title
   );
-  return item;
 };
 
 export default AppName;
