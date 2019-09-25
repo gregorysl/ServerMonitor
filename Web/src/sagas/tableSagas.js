@@ -55,7 +55,7 @@ export function* setIisAppRecycle(props) {
   try {
     const { data } = yield call(api.recycleApp, props);
     yield put({ type: types.GET_IIS_RECYCLE_SUCCESS, data });
-    yield put({ type: types.GET_IIS_APPS_REQUEST });
+    yield put({ type: types.GET_IIS_APPS_REQUEST, url: props.url });
   } catch (error) {
     yield put({ type: types.GET_IIS_RECYCLE_ERROR, data: error.response.data });
   }
