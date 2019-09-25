@@ -1,16 +1,14 @@
 import React from "react";
 import { Row } from "antd";
-import "react-table/react-table.css";
+// import "react-table/react-table.css";
 import ServerLinks from "../Links/ServerLinks";
 import IisSection from "./IisSection";
 
 const IisServicesList = props => {
   const data = props.settings.hardwareList.map(x => (
-    <Row key={x.name}>
-      <Row>
-        <h3>{x.name}</h3>
-        <ServerLinks key={x.name} url={x.url} />
-      </Row>
+    <Row key={x.name} style={{ marginBottom: 10 }}>
+      <span className="app-title">{x.name}</span>
+      <ServerLinks key={x.name} url={x.url} />
       <Row>
         <IisSection name={x.name} url={x.url} />
       </Row>

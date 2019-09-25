@@ -1,26 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useTable, useExpanded } from "react-table";
-import * as actions from "../../actions/actions";
-import { Row, Col, Card, Icon, Tooltip, Button } from "antd";
-// import ReactTable from "react-table";
+import React, { useState } from "react";
+import { Row, Col, Card, Button } from "antd";
 import AppPoolList from "./AppPoolList";
 import NoteControl from "./NoteControl";
 import ApplicationStatus from "./ApplicationStatus";
-import ActionPanel from "./ActionPanel";
 import StartStopButton from "./StartStopButton";
 import WhitelistButton from "./WhitelistButton";
 import AppName from "./AppName";
 import WarningIcon from "../WarningIcon";
 
 const { Meta } = Card;
-// const
+const ActionToggleButton = ({ isClicked, click, text, icon }) => (
+  <Button
+    icon={icon}
+    size="small"
+    type={isClicked ? "primary" : "default"}
+    onClick={click}
+  >
+    {text}
+  </Button>
+);
 
 const AppCard = ({ x, click, location, url }) => {
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(false);
   return (
-    <Col className="gutter-row" span={6} key={x.name}>
+    <Col span={6} key={x.name}>
       <Card
         className={x.running ? "" : "stopped"}
         style={{ margin: "0 5px 5px 0" }}
@@ -31,23 +35,18 @@ const AppCard = ({ x, click, location, url }) => {
             click={click}
             whitelisted={x.whitelisted}
           />,
-          <Button
+          <ActionToggleButton
+            click={() => setEditing(!editing)}
+            isClicked={editing}
+            text="Edit"
             icon="edit"
-            size="small"
-            theme={editing ? "twoTone" : "outlined"}
-            onClick={() => setEditing(!editing)}
-            type={editing ? "primary" : "default"}
-          >
-            Edit
-          </Button>,
-          <Button
-            size="small"
+          />,
+          <ActionToggleButton
+            click={() => setExpanded(!expanded)}
+            isClicked={expanded}
+            text="Details"
             icon="unordered-list"
-            type={expanded ? "primary" : "default"}
-            onClick={() => setExpanded(!expanded)}
-          >
-            Details
-          </Button>
+          />
         ]}
       >
         <Meta

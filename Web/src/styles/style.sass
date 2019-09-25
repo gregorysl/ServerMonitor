@@ -20,19 +20,12 @@ html
   
   &.red 
     background-color: #fb9898;
-  
-
-
-h3 > a 
-  color: black;
-
 
 .ant-tabs-vertical.ant-tabs-left > .ant-tabs-content 
   padding-left: 0;
 
 
 .icon-hand 
-  float: left;
   cursor: pointer;
   font-size: 25px;
   margin-right: 5px
@@ -62,11 +55,6 @@ h1
 .ant-list-bordered .ant-list-header 
   padding: 8px 8px;
 
-
-.ant-card-head 
-  min-height: auto;
-
-
 .tag-input 
   float: left !important;
   width: auto;
@@ -74,18 +62,14 @@ h1
 .tag-input > input 
   width: 300px;
 
-
 .chart-card > .ant-card-body 
   padding: 0;
-
 
 .state-started 
   color: green;
 
-
 .state-stopped 
   color: red;
-
 
 .app-pool-children 
   padding-left: 40px;
@@ -111,9 +95,6 @@ h1
 .align-left
   text-align: left;
 
-.rt-tr[data-qnt="0"] > .rt-expandable
-  visibility: hidden;
-
 .clear-input>input
   border-width: 0;
   
@@ -123,4 +104,33 @@ h1
   padding: 4px 11px;
 
 .state
-  flex-direction: "row"
+  flex-direction: "row";
+
+.ant-card-body
+  padding: 5px;
+
+.ant-card-actions > li
+  margin: 0;
+
+.app-title
+  font-size: 20px;
+  margin-right: 5px;
+
+.ant-card.stopped > .ant-card-body
+  background-color: #fff1f0;
+
+.ant-btn.locked
+  color: white;
+  background-color: #87d068;
+
+.ant-btn.unlocked
+  background-color: #f5222d;
+  color: white;
+
+.ant-btn.stopped
+  background-color: #f5222d;
+  border-color: #ffa39e;
+  
+.ant-btn.started
+  background-color: #87d068;
+  border-color: #d9d9d9;
