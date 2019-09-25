@@ -15,12 +15,8 @@ const IisSection = props => {
     dispatch(actions.getIisAction(props.url));
   }, [dispatch, props.url]);
   const click = data => dispatch(actions.setIisAction(data, props.url));
-  const location = props.url
-    .split("/")
-    .splice(0, 3)
-    .join("/");
   const displayData = iisData.map(x => (
-    <AppCard x={x} click={click} location={location} url={props.url} />
+    <AppCard x={x} click={click} url={props.url} />
   ));
   return <Row>{displayData}</Row>;
 };

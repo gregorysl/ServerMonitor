@@ -20,9 +20,13 @@ const ActionToggleButton = ({ isClicked, click, text, icon }) => (
   </Button>
 );
 
-const AppCard = ({ x, click, location, url }) => {
+const AppCard = ({ x, click, url }) => {
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(false);
+  const location = url
+    .split("/")
+    .splice(0, 3)
+    .join("/");
   return (
     <Col span={6} key={x.name}>
       <Card
