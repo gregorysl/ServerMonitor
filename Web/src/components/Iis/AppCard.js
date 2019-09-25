@@ -68,7 +68,12 @@ const AppCard = ({ x, click, location, url }) => {
                   cleanerMark={x.cleanerMark}
                 />
               </Row>
-              <NoteControl org={x} url={url} editing={editing} />
+              <NoteControl
+                org={x}
+                url={url}
+                editing={editing}
+                setEditing={setEditing}
+              />
             </>
           }
           description={
