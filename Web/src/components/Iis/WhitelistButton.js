@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import TooltipButton from "../TooltipButton";
 
 const WhitelistButton = ({ whitelisted, click, build }) => {
-  const tooltip = whitelisted ? "Remove from whitelist" : "Whitelist";
-  const theme = whitelisted ? "filled" : "outlined";
+  const tooltip = whitelisted ? "Unlock" : "Lock";
+  const styles = whitelisted ? "locked" : "unlocked";
   const whitelist = () =>
     click({
       build,
@@ -13,9 +13,11 @@ const WhitelistButton = ({ whitelisted, click, build }) => {
   return (
     <TooltipButton
       tooltip={tooltip}
+      type="default"
+      text={tooltip}
       click={whitelist}
       icon="lock"
-      theme={theme}
+      styles={styles}
     />
   );
 };

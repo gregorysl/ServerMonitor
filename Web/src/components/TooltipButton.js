@@ -1,27 +1,29 @@
 import React from "react";
-import { Icon, Tooltip } from "antd";
+import { Button, Tooltip } from "antd";
 import PropTypes from "prop-types";
 
 const TooltipButton = props => (
   <Tooltip title={props.tooltip}>
-    <Icon
-      className="icon-hand"
+    <Button
+      className={props.styles}
+      size="small"
+      type={props.type}
       onClick={props.click}
-      type={props.icon}
-      theme={props.theme}
-    />
+      icon={props.icon}
+    >
+      {props.text}
+    </Button>
   </Tooltip>
 );
 
 TooltipButton.defaultProps = {
   click: null,
-  theme: "outlined"
+  type: "primary"
 };
 
 TooltipButton.propTypes = {
   icon: PropTypes.string.isRequired,
   tooltip: PropTypes.string.isRequired,
-  theme: PropTypes.string,
   click: PropTypes.func
 };
 
