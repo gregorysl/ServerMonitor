@@ -1,15 +1,12 @@
 import React from "react";
 
-import { Tag, Icon, Tooltip } from "antd";
+import { Tag } from "antd";
 
-const ApplicationStatus = props => {
-  const color = props.state === "Stopped" ? "red" : "gold";
-  return (
-    props.state !== "Running" && (
-      <Tag width={100} color={color}>
-        {props.state}
-      </Tag>
-    )
+const ApplicationStatus = ({ state }) =>
+  state !== "Running" && (
+    <Tag width={100} color={state === "Stopped" ? "red" : "gold"}>
+      {state}
+    </Tag>
   );
-};
+
 export default ApplicationStatus;
