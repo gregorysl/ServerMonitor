@@ -18,7 +18,11 @@ const IisSection = props => {
   const displayData = iisData.map(x => (
     <AppCard key={x.name} x={x} click={click} url={props.url} />
   ));
-  return <Row gutter={16}>{displayData}</Row>;
+  return (
+    <Row type="flex" gutter={16}>
+      {displayData}
+    </Row>
+  );
 };
 
 export default IisSection;
