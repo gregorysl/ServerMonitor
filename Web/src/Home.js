@@ -40,7 +40,9 @@ const Home = props => {
   const errors = useSelector(state => state.errors);
   const settings = useSelector(state => state.settings);
   const tasks = useSelector(state => state.tasks);
-  console.log(tasks);
+  const disk = useSelector(state => state.disk);
+  const oracle = useSelector(state => state.oracle);
+  console.log(oracle);
 
   // componentDidMount() {
   //   this.props.getHardwareUsage();
@@ -49,16 +51,10 @@ const Home = props => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(actions.getTasksAction());
-  }, [dispatch, tasks.loaded]);
-  useEffect(() => {
-    errors.data.forEach(item => {
-      if (item.type === "Success") {
-        notification.success(item);
-      } else {
-        notification.error(item);
-      }
-    });
-  }, [errors]);
+    dispatch(actions.getDiskUsageAction());
+    dispatch(actions.getOracleAction());
+  }, [dispatch, tasks.loaded, disk.loaded, oracle.loaded]);
+
   useEffect(() => {
     errors.data.forEach(item => {
       if (item.type === "Success") {
@@ -80,27 +76,23 @@ const Home = props => {
           title="Oracle Instances"
           extraColumns={isDeployingColumn}
         />
-      )}
-      <DataTable {...props.disk} title="Disk Status" />
-       */}
+      )}*/}
+      {/*<DataTable {...disk} title="Disk Status" rowKey="path" />
+
       <DataTable
         {...props.tasks}
+         rowKey="name"
         title="Scheduled Tasks"
         extraColumns={[taskAction]}
       />
-      {/* <SessionsPanel /> */}
+       <SessionsPanel /> */}
     </div>
   );
 };
 Home.defaultProps = { isDisabled: true, data: [], columns: [] };
 Home.propTypes = {
-  getTasks: PropTypes.func.isRequired,
   getHardwareUsage: PropTypes.func.isRequired,
   getOracle: PropTypes.func.isRequired,
-  disk: PropTypes.shape({
-    data: PropTypes.array.isRequired,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  }).isRequired,
   oracle: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.object),
     errors: PropTypes.arrayOf(PropTypes.string),
@@ -110,8 +102,6 @@ Home.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  tasks: state.tasks,
-  disk: state.disk,
   oracle: state.oracle,
   errors: state.errors
 });

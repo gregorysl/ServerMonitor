@@ -4,16 +4,17 @@ import dateformat from "dateformat";
 import * as types from "../constants/actionTypes";
 
 const diskColumns = [
-  { title: "Path", dataIndex: "path" },
+  { title: "Path", dataIndex: "path", key: "path" },
   {
     title: "Size",
     dataIndex: "size",
-    Cell: size => (size.value !== "" ? filesize(size.value) : "")
+    render: size => (size !== "" ? filesize(size) : "")
   },
   {
     title: "Usage",
     dataIndex: "usage",
-    Cell: usage => `${usage.value}%`
+    key: "usage",
+    render: usage => `${usage}%`
   }
 ];
 const tasksColumns = [
@@ -83,7 +84,7 @@ function diskUsageReducer(state = tableInitialState, action) {
         ...state,
         ...action.data,
         columns: diskColumns,
-        loading: false
+        loaded: true
       };
     default:
       return state;
@@ -133,7 +134,7 @@ function oracleReducer(state = tableInitialState, action) {
       if (!action.data.data) {
         return {
           isDisabled: true,
-          loading: false
+          loaded: true
         };
       }
 
@@ -142,19 +143,19 @@ function oracleReducer(state = tableInitialState, action) {
         data: action.data.data,
         columns: oracleColumns,
         isDisabled: false,
-        loading: false
+        loaded: true
       };
 
     case types.ORACLE_ERROR:
       return {
         ...state,
         isDisabled: true,
-        loading: false
+        loaded: true
       };
     case types.TOGGLE_ORACLE_REQUEST:
       return {
         ...state,
-        loading: true
+        loaded: false
       };
     default:
       return state;

@@ -2,14 +2,14 @@ import React from "react";
 import { Table } from "antd";
 import PropTypes from "prop-types";
 
-const DataTable = ({ title, data, columns, extraColumns, loaded }) => {
+const DataTable = ({ title, data, columns, extraColumns, loaded, rowKey }) => {
   const finalColumns = [...columns, ...extraColumns];
   return (
     <React.Fragment>
       <h1 className="table-title">{title}</h1>
       <Table
         loading={!loaded}
-        rowKey="id"
+        rowKey={rowKey}
         pagination={false}
         columns={finalColumns}
         dataSource={data}
@@ -19,7 +19,8 @@ const DataTable = ({ title, data, columns, extraColumns, loaded }) => {
 };
 
 DataTable.defaultProps = {
-  extraColumns: []
+  extraColumns: [],
+  rowKey: "id"
 };
 
 DataTable.propTypes = {
