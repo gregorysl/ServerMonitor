@@ -8,11 +8,13 @@ const SessionsPanel = props => {
   const dispatch = useDispatch();
   const sessions = useSelector(state => state.sessions);
   const sessionActions = {
-    accessor: "x",
-    Cell: row =>
-      row.original.state !== "Active" && (
+    title: "Action",
+    key: "x",
+    render: (text, row) =>
+      row.state !== "Active" && (
         <TooltipButton
-          click={() => dispatch(actions.killSession(row.original.id))}
+          type="default"
+          click={() => dispatch(actions.killSession(row.id))}
           icon="user-delete"
           tooltip="Log off user"
         />

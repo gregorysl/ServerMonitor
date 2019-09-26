@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import * as actions from "./actions/actions";
 import { Checkbox, notification } from "antd";
 import PropTypes from "prop-types";
-import * as actions from "./actions/actions";
-import Hardware from "./components/Hardware";
+// import * as actions from "./actions/actions";
+// import Hardware from "./components/Hardware";
 import DataTable from "./components/Iis/DataTable";
 import IisMaster from "./components/Iis/IisMaster";
 import TaskActionButtons from "./components/TaskActionButtons";
@@ -12,36 +13,52 @@ import SessionsPanel from "./components/SessionsPanel";
 
 const isDeployingColumn = [
   {
-    Header: "Reserved",
-    accessor: "isReserved",
-    Cell: row => <OracleToggleButton {...row.original} />,
+    title: "Reserved",
+    key: "isReserved",
+    dataIndex: "isReserved",
+    render: (value, row) => <OracleToggleButton {...row} />,
     width: 100
   },
   {
-    Header: "Deploying",
-    accessor: "isDeploying",
-    Cell: row => (
-      <Checkbox defaultChecked={row.original.isDeploying} disabled />
-    ),
+    title: "Deploying",
+    key: "isDeploying",
+    dataIndex: "isDeploying",
+    render: value => <Checkbox defaultChecked={value} disabled />,
     width: 100
   }
 ];
 
 const taskAction = {
-  Header: "Action",
-  accessor: "x",
-  Cell: row => <TaskActionButtons {...row.original} />,
+  title: "Action",
+  key: "x",
+  dataIndex: "x",
+  render: (value, row) => <TaskActionButtons {...row} />,
   width: 100
 };
 
 const Home = props => {
   const errors = useSelector(state => state.errors);
   const settings = useSelector(state => state.settings);
+  const tasks = useSelector(state => state.tasks);
+  console.log(tasks);
+
   // componentDidMount() {
-  //   this.props.getTasks();
   //   this.props.getHardwareUsage();
   //   this.props.getOracle();
   // }
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(actions.getTasksAction());
+  }, [dispatch, tasks.loaded]);
+  useEffect(() => {
+    errors.data.forEach(item => {
+      if (item.type === "Success") {
+        notification.success(item);
+      } else {
+        notification.error(item);
+      }
+    });
+  }, [errors]);
   useEffect(() => {
     errors.data.forEach(item => {
       if (item.type === "Success") {
@@ -57,7 +74,7 @@ const Home = props => {
       <h1>Hardware Monitor</h1>
       {/* <Hardware /> */}
       <IisMaster settings={settings} />
-      {!props.oracle.isDisabled && (
+      {/* {!props.oracle.isDisabled && (
         <DataTable
           {...props.oracle}
           title="Oracle Instances"
@@ -65,12 +82,13 @@ const Home = props => {
         />
       )}
       <DataTable {...props.disk} title="Disk Status" />
+       */}
       <DataTable
         {...props.tasks}
         title="Scheduled Tasks"
         extraColumns={[taskAction]}
       />
-      <SessionsPanel />
+      {/* <SessionsPanel /> */}
     </div>
   );
 };
@@ -79,10 +97,6 @@ Home.propTypes = {
   getTasks: PropTypes.func.isRequired,
   getHardwareUsage: PropTypes.func.isRequired,
   getOracle: PropTypes.func.isRequired,
-  tasks: PropTypes.shape({
-    data: PropTypes.array.isRequired,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired
-  }).isRequired,
   disk: PropTypes.shape({
     data: PropTypes.array.isRequired,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -103,7 +117,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTasks: () => {}, //dispatch(actions.getTasksAction()),
   getHardwareUsage: () => {}, //dispatch(actions.getDiskUsageAction()),
   getOracle: () => {} //dispatch(actions.getOracleAction()),
 });

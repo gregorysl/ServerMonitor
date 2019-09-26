@@ -4,37 +4,37 @@ import dateformat from "dateformat";
 import * as types from "../constants/actionTypes";
 
 const diskColumns = [
-  { Header: "Path", accessor: "path" },
+  { title: "Path", dataIndex: "path" },
   {
-    Header: "Size",
-    accessor: "size",
+    title: "Size",
+    dataIndex: "size",
     Cell: size => (size.value !== "" ? filesize(size.value) : "")
   },
   {
-    Header: "Usage",
-    accessor: "usage",
+    title: "Usage",
+    dataIndex: "usage",
     Cell: usage => `${usage.value}%`
   }
 ];
 const tasksColumns = [
-  { Header: "Name", accessor: "name" },
-  { Header: "State", accessor: "state" },
-  { Header: "Last Run Time", accessor: "lastRunTime" },
-  { Header: "Last Result", accessor: "lastTaskResult" }
+  { title: "Name", dataIndex: "name", key: "name" },
+  { title: "State", dataIndex: "state", key: "state" },
+  { title: "Last Run Time", dataIndex: "lastRunTime", key: "lastRunTime" },
+  { title: "Last Result", dataIndex: "lastTaskResult", key: "lastTaskResult" }
 ];
 const oracleColumns = [
-  { Header: "Name", accessor: "currentBuildName" },
+  { title: "Name", dataIndex: "currentBuildName" },
   {
-    Header: "Date",
-    accessor: "currentBuildDate",
+    title: "Date",
+    dataIndex: "currentBuildDate",
     Cell: date => dateformat(date.value, "dd.mm.yyyy, dddd")
   },
-  { Header: "Instance", accessor: "displayName" }
+  { title: "Instance", dataIndex: "displayName" }
 ];
 const sessionsColumns = [
-  { Header: "User", accessor: "user" },
-  { Header: "Login Date", accessor: "loginDate" },
-  { Header: "State", accessor: "state" }
+  { title: "User", dataIndex: "user", key: "user" },
+  { title: "Login Date", dataIndex: "loginDate", key: "loginDate" },
+  { title: "State", dataIndex: "state", key: "state" }
 ];
 
 const hardwareInitialState = [];
@@ -97,17 +97,16 @@ function tasksReducer(state = tableInitialState, action) {
         ...state,
         data: action.data.data,
         columns: tasksColumns,
-        loading: false
+        loaded: true
       };
     case types.TASKS_RUN_REQUEST:
       return {
-        ...state,
-        loading: true
+        ...state
       };
     case types.TASKS_ERROR:
       return {
         ...state,
-        loading: false
+        loaded: true
       };
     default:
       return state;
