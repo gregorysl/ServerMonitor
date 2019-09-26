@@ -63,12 +63,7 @@ export function* setIisAppRecycle(props) {
 
 export function* setOracle(props) {
   try {
-    const { data } = yield call(api.setOracle, props.data);
-    const type =
-      data.status === "Success"
-        ? types.TOGGLE_ORACLE_SUCCESS
-        : types.TOGGLE_ORACLE_ERROR;
-    yield put({ type, data });
+    yield call(api.setOracle, props.data);
     yield put({ type: types.ORACLE_REQUEST });
   } catch (error) {
     yield put({ type: types.TOGGLE_ORACLE_ERROR, data: error.response.data });

@@ -133,7 +133,6 @@ function oracleReducer(state = tableInitialState, action) {
     case types.ORACLE_SUCCESS:
       if (!action.data.data) {
         return {
-          isDisabled: true,
           loaded: true
         };
       }
@@ -142,14 +141,12 @@ function oracleReducer(state = tableInitialState, action) {
         ...state,
         data: action.data.data,
         columns: oracleColumns,
-        isDisabled: false,
         loaded: true
       };
 
     case types.ORACLE_ERROR:
       return {
         ...state,
-        isDisabled: true,
         loaded: true
       };
     case types.TOGGLE_ORACLE_REQUEST:

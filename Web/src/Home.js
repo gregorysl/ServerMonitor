@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "./actions/actions";
 import { Checkbox, notification } from "antd";
-import PropTypes from "prop-types";
-// import * as actions from "./actions/actions";
-// import Hardware from "./components/Hardware";
 import DataTable from "./components/Iis/DataTable";
 import IisMaster from "./components/Iis/IisMaster";
 import TaskActionButtons from "./components/TaskActionButtons";
@@ -37,19 +34,10 @@ const taskAction = {
 };
 
 const Home = props => {
-  const errors = useSelector(state => state.errors);
-  const settings = useSelector(state => state.settings);
-  const tasks = useSelector(state => state.tasks);
-  const disk = useSelector(state => state.disk);
-  const oracle = useSelector(state => state.oracle);
-  console.log(oracle);
-
-  // componentDidMount() {
-  //   this.props.getHardwareUsage();
-  //   this.props.getOracle();
-  // }
+  const { errors, settings, tasks, disk, oracle } = useSelector(state => state);
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log("qwe");
     dispatch(actions.getTasksAction());
     dispatch(actions.getDiskUsageAction());
     dispatch(actions.getOracleAction());
@@ -70,48 +58,23 @@ const Home = props => {
       <h1>Hardware Monitor</h1>
       {/* <Hardware /> */}
       <IisMaster settings={settings} />
-      {/* {!props.oracle.isDisabled && (
-        <DataTable
-          {...props.oracle}
-          title="Oracle Instances"
-          extraColumns={isDeployingColumn}
-        />
-      )}*/}
-      {/*<DataTable {...disk} title="Disk Status" rowKey="path" />
+      <DataTable
+        {...oracle}
+        title="Oracle Instances"
+        extraColumns={isDeployingColumn}
+      />
+      <DataTable {...disk} title="Disk Status" rowKey="path" />
 
       <DataTable
-        {...props.tasks}
-         rowKey="name"
+        {...tasks}
+        rowKey="name"
         title="Scheduled Tasks"
         extraColumns={[taskAction]}
       />
-       <SessionsPanel /> */}
+      <SessionsPanel />
     </div>
   );
 };
 Home.defaultProps = { isDisabled: true, data: [], columns: [] };
-Home.propTypes = {
-  getHardwareUsage: PropTypes.func.isRequired,
-  getOracle: PropTypes.func.isRequired,
-  oracle: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.object),
-    errors: PropTypes.arrayOf(PropTypes.string),
-    columns: PropTypes.arrayOf(PropTypes.object),
-    isDisabled: PropTypes.bool
-  }).isRequired
-};
 
-const mapStateToProps = state => ({
-  oracle: state.oracle,
-  errors: state.errors
-});
-
-const mapDispatchToProps = dispatch => ({
-  getHardwareUsage: () => {}, //dispatch(actions.getDiskUsageAction()),
-  getOracle: () => {} //dispatch(actions.getOracleAction()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default Home;
