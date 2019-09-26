@@ -13,7 +13,9 @@ const isDeployingColumn = [
     title: "Reserved",
     key: "isReserved",
     dataIndex: "isReserved",
-    render: (value, row) => <OracleToggleButton {...row} />,
+    render: (value, row) => (
+      <OracleToggleButton id={row.id} isReserved={value} />
+    ),
     width: 100
   },
   {
