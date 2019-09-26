@@ -28,7 +28,7 @@ const AppCard = ({ x, click, url }) => {
     .splice(0, 3)
     .join("/");
   return (
-    <Col span={6} key={x.name}>
+    <Col xs={24} sm={12} md={12} lg={8} xl={6} key={x.name}>
       <Card
         className={x.running ? "" : "stopped"}
         style={{ margin: "8px 0" }}
