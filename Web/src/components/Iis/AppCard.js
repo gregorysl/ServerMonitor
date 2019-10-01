@@ -8,7 +8,6 @@ import WhitelistButton from "./WhitelistButton";
 import AppName from "./AppName";
 import WarningIcon from "../WarningIcon";
 
-const { Meta } = Card;
 const ActionToggleButton = ({ isClicked, click, text, icon }) => (
   <Button
     icon={icon}
@@ -33,7 +32,6 @@ const AppCard = ({ x, click, url }) => {
         className={x.running ? "" : "stopped"}
         style={{ margin: "8px 0" }}
         actions={[
-          <StartStopButton build={x} click={click} running={x.running} />,
           <WhitelistButton
             build={x}
             click={click}
@@ -52,38 +50,32 @@ const AppCard = ({ x, click, url }) => {
             icon="unordered-list"
           />
         ]}
-      >
-        <Meta
-          title={
-            <>
-              <Row>
-                <WarningIcon
-                  show={x.cleanerMark}
-                  text="This build matches criteria to be cleaned on next run"
-                />
-                <AppName
-                  location={location}
-                  name={x.name}
-                  org={x}
-                  running={x.running}
-                />
-                <ApplicationStatus
-                  state={x.state}
-                  cleanerMark={x.cleanerMark}
-                />
-              </Row>
-              <NoteControl
-                org={x}
-                url={url}
-                editing={editing}
-                setEditing={setEditing}
+        title={
+          <>
+            <Row>
+              <WarningIcon
+                show={x.cleanerMark}
+                text="This build matches criteria to be cleaned on next run"
               />
-            </>
-          }
-          description={
-            expanded && <AppPoolList org={x} url={url} items={x.apps} />
-          }
-        />
+              <AppName
+                location={location}
+                name={x.name}
+                org={x}
+                running={x.running}
+              />
+              <ApplicationStatus state={x.state} cleanerMark={x.cleanerMark} />
+            </Row>
+            <NoteControl
+              org={x}
+              url={url}
+              editing={editing}
+              setEditing={setEditing}
+            />
+          </>
+        }
+        extra={<StartStopButton build={x} click={click} running={x.running} />}
+      >
+        {expanded && <AppPoolList org={x} url={url} items={x.apps} />}
       </Card>
     </Col>
   );
