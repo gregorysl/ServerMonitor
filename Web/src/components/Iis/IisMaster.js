@@ -1,6 +1,5 @@
 import React from "react";
 import { Row } from "antd";
-// import "react-table/react-table.css";
 import ServerLinks from "../Links/ServerLinks";
 import IisSection from "./IisSection";
 
