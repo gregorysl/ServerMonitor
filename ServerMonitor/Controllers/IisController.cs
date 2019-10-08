@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Hosting;
 using System.Web.Http;
-using BuildInspect.Filter;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
@@ -11,8 +10,6 @@ namespace ServerMonitor.Controllers
     [RoutePrefix("IIS")]
     public class IisController : BaseApi
     {
-        private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
-        //private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.xml");
         private readonly IisHandler _handler;
         public IisController()
         {

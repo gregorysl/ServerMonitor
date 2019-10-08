@@ -13,6 +13,12 @@ const renderField = ({ input, label, type }) => (
 const numberField = ({ input, label, type }) => (
   <InputNumber {...input} type={type} placeholder={label} />
 );
+
+const Condition = ({ when, is, children }) => (
+  <Field name={when} subscription={{ value: true }}>
+    {({ input: { value } }) => (+value === is ? children : null)}
+  </Field>
+);
 const checkboxComponent = ({ input: { onChange, value }, meta, ...rest }) => (
   <Checkbox
     {...rest}
@@ -131,7 +137,7 @@ let Settings = props => {
                 component={checkboxComponent}
               />
               <Row>
-                <label>Cleaner can remove builds older than (days)</label>
+                <label>Cleaner can remove builds older than (days): </label>
                 <Field name={`cleaner.beforeDays`} component={numberField} />
               </Row>
               <Row>
@@ -140,6 +146,29 @@ let Settings = props => {
                 </label>
                 <Field name={`cleaner.excludeNLast`} component={numberField} />
               </Row>
+              <Row>
+                <label>Whitelist type: </label>
+                <Field name="cleaner.whitelistType" component="select">
+                  <option value={0}>XML</option>
+                  <option value={1}>JSON</option>
+                </Field>
+              </Row>
+              <label>Whitelist path: </label>
+              <Condition when="cleaner.whitelistType" is={0}>
+                <Field
+                  name="cleaner.xmlWhitelistPath"
+                  component={renderField}
+                  type="text"
+                />
+              </Condition>
+              <Condition when={`cleaner.whitelistType`} is={1}>
+                <Field
+                  name="cleaner.jsonWhitelistPath"
+                  component={renderField}
+                  type="text"
+                />
+              </Condition>
+              <pre>{JSON.stringify(values, 0, 2)}</pre>
             </FullCard>
             <FullCard
               push={push}
