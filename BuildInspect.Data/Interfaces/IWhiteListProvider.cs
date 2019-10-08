@@ -4,6 +4,10 @@ namespace BuildInspect.Data.Interfaces
 {
     public interface IWhitelistProvider
     {
-        List<string> GetWhitelist();
+        void Load();
+        void Save();
+        List<string> Get();
+        bool Toggle(string name);
+
     }
 }

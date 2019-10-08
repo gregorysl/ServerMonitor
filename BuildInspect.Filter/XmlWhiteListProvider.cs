@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using BuildInspect.Data.Interfaces;
-using System.Collections.Generic;
 
 namespace BuildInspect.Filter
 {
     public class XmlWhitelistProvider : IWhitelistProvider
     {
         private readonly string _path;
+        private Whitelist _whitelist;
         private static ILogManager LogManager => new NLogManger();
 
         public XmlWhitelistProvider(string path)
@@ -17,29 +20,92 @@ namespace BuildInspect.Filter
             _path = path;
         }
 
-        public List<string> GetWhitelist()
+        public void Load()
+        {
+            Whitelist whitelist;
+            var file = new FileInfo(_path);
+            if (!file.Exists)
+            {
+                Directory.CreateDirectory(file.Directory.FullName);
+                var xml = new XDocument(new XElement("whiteList", new XElement("builds")));
+                xml.Save(_path);
+            }
+
+            using (var streamReader = new StreamReader(_path))
+            {
+                var serializer = new XmlSerializer(typeof(Whitelist));
+
+                whitelist = (Whitelist)serializer.Deserialize(streamReader);
+            }
+
+            _whitelist = whitelist;
+        }
+
+        public List<string> Get()
         {
             try
             {
-                var whiteListDoc = XDocument.Load(_path);
-                return whiteListDoc.Descendants("builds").First().Descendants("app")
-                        .Select(x => x.Attribute("value")?.Value).ToList();
+                Load();
+                return _whitelist.Builds.Select(x => x.Value).ToList();
             }
-            catch (NullReferenceException e)
-            {
-                LogManager.Critical(e.Message);
-                throw;
-            }
-            catch (FileNotFoundException e)
-            {
-                LogManager.Critical(e.Message);
-                throw;
-            }
-            catch (ArgumentNullException e)
+            catch (Exception e)
             {
                 LogManager.Critical(e.Message);
                 throw;
             }
         }
+
+        public void Save()
+        {    
+            var serializer = new XmlSerializer(_whitelist.GetType());
+            using (var stream = new MemoryStream())
+            {
+                serializer.Serialize(stream, _whitelist);
+                stream.Position = 0;
+                var xmlDocument = new XmlDocument();
+                xmlDocument.Load(stream);
+                xmlDocument.Save(_path);
+            }
+        }
+
+        public bool Toggle(string name)
+        {
+            Load();
+            var searchedItem = _whitelist.Builds.FirstOrDefault(x => x.Value == name);
+            var isWhitelisted = searchedItem != null;
+            if (isWhitelisted)
+            {
+                _whitelist.Builds.Remove(searchedItem);
+            }
+            else
+            {
+                _whitelist.Builds.Add(new WhiteListApp{Value = name});
+            }
+            Save();
+            return !isWhitelisted;
+        }
     }
+
+
+    [Serializable, XmlRoot("whiteList")]
+    public class Whitelist
+    {
+        [XmlArray("builds")]
+        [XmlArrayItem("app")]
+        public List<WhiteListApp> Builds { get; set; }
+    }
+
+    public class WhiteListApp
+    {
+        [XmlAttribute("value")]
+        public string Value { get; set; }
+        public override string ToString()
+        {
+            return Value;
+        }
+    }
+
+
+
+
 }
