@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Web.Hosting;
+using BuildInspect.Data;
 
 namespace ServerMonitor.Helpers
 {
@@ -16,13 +17,13 @@ namespace ServerMonitor.Helpers
         }
 
         public static SettingsHandler Instance => _instance ?? (_instance = new SettingsHandler());
-
-        private static readonly string _path = HostingEnvironment.MapPath("~/settings.json");
+        
+        private static readonly string Path = HostingEnvironment.MapPath("~/settings.json");
 
         public void Get()
         {
-            EnsureFileExist(_path);
-            var json = File.ReadAllText(_path);
+            EnsureFileExist(Path);
+            var json = File.ReadAllText(Path);
             var sett = JsonConvert.DeserializeObject<JsonSettings>(json);
             Data = sett;
         }
@@ -37,7 +38,7 @@ namespace ServerMonitor.Helpers
                 },
                 Formatting = Formatting.Indented
             });
-            File.WriteAllText(_path, json);
+            File.WriteAllText(Path, json);
             Get();
         }
 
@@ -45,9 +46,17 @@ namespace ServerMonitor.Helpers
         {
             var fileInfo = new FileInfo(path);
             if (fileInfo.Exists) return;
-            Directory.CreateDirectory(fileInfo.Directory.FullName);
+            if (fileInfo.Directory != null) Directory.CreateDirectory(fileInfo.Directory.FullName);
             File.Create(path).Close();
-            Save(new JsonSettings());
+            var defaultSettings = new JsonSettings
+            {
+                Cleaner = new FilterInput
+                {
+                    WhitelistType = WhitelistType.Json,
+                    JsonWhitelistPath = HostingEnvironment.MapPath("~/whitelist.json")
+                }
+            };
+            Save(defaultSettings);
         }
     }
 }

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web.Hosting;
 using System.Web.Http;
-using BuildInspect.Data.Entities;
 using BuildInspect.Filter;
-using Microsoft.Web.Administration;
-using Newtonsoft.Json;
 using ServerMonitor.Helpers;
 using ServerMonitor.Models;
 
@@ -17,6 +12,12 @@ namespace ServerMonitor.Controllers
     public class IisController : BaseApi
     {
         private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
+        //private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.xml");
+        private readonly IisHandler _handler;
+        public IisController()
+        {
+            _handler = new IisHandler();
+        }
 
         [Route]
         public Response Get()
@@ -25,8 +26,7 @@ namespace ServerMonitor.Controllers
             try
             {
                 Log.Debug("GetFilteredApps called.");
-                var iisHandler = new IisHandler();
-                response.Data = iisHandler.GetFilteredApps();
+                response.Data = _handler.GetFilteredApps();
                 Log.Debug("GetFilteredApps call success.");
                 return response;
             }
@@ -44,8 +44,7 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
-                var iisHandler = new IisHandler();
-                var result = iisHandler.RecycleAppPool(name);
+                var result = _handler.RecycleAppPool(name);
                 if (result)
                 {
                     response.AddSuccessNotification("Application pool successfully recycled.");
@@ -72,36 +71,16 @@ namespace ServerMonitor.Controllers
             switch (action.Action)
             {
                 case "Toggle":
-                    var mgr = new ServerManager();
+                    
                     var buildAppPools = action.Build.Apps.Select(x => x.Pool).ToList();
-                    var pools = mgr.ApplicationPools.Where(app => buildAppPools.Contains(app.Name));
+                    _handler.Toggle(buildAppPools);
 
-                    foreach (var pool in pools)
-                    {
-                        var newState = pool.State == ObjectState.Started ? pool.Stop() : pool.Start();
-                    }
-
-                    response.AddSuccessNotification($"Application pools toggled successfully.");
+                    response.AddSuccessNotification("Application pools toggled successfully.");
                     break;
                 case "Whitelist":
-                    var whitelistProvider = new JsonWhitelistProvider(_whitelistPath);
-                    var whitelist = whitelistProvider.GetWhitelist();
-
-                    var buildName = action.Build.Name;
-                    var isWhitelisted = whitelist.Any(x => x == buildName);
-                    if (isWhitelisted)
-                    {
-                        whitelist.Remove(buildName);
-                    }
-                    else
-                    {
-                        whitelist.Add(buildName);
-                    }
-
-                    var json = JsonConvert.SerializeObject(whitelist);
-                    File.WriteAllText(_whitelistPath, json);
-
-                    var function = isWhitelisted ? "un" : "";
+                    var whitelistProvider = new WhitelistHandler().Provider;
+                    var isWhitelisted = whitelistProvider.Toggle(action.Build.Name);
+                    var function = isWhitelisted ? "" : "un";
 
                     response.AddSuccessNotification($"Application {function}whitelisted successfully.");
                     break;

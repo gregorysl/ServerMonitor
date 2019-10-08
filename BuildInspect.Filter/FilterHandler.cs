@@ -20,7 +20,7 @@ namespace BuildInspect.Filter
         {
             var all = _buildsProvider.GetBuilds();
             var toRemoveBuilds = _buildsProvider.GetBuilds();
-            var whitelisted = _whitelistProvider.GetWhitelist();
+            var whitelisted = _whitelistProvider.Get();
 
             bool daysSelected = input.BeforeDays != null;
             bool countSelected = input.ExcludeNLast != null;

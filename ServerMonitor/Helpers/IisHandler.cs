@@ -10,19 +10,18 @@ namespace ServerMonitor.Helpers
     public class IisHandler
     {
         private readonly SettingsHandler _settings = SettingsHandler.Instance;
-        private readonly string _whitelistPath = HostingEnvironment.MapPath("~/whitelist.json");
         private readonly CommonNameBuildsProvider _commonNameBuildsProvider;
-        private readonly JsonWhitelistProvider _jsonWhitelistProvider;
+        private readonly WhitelistHandler _whitelistHandler;
 
         public IisHandler()
         {
             _commonNameBuildsProvider = new CommonNameBuildsProvider(_settings.Data.CommonAppName);
-            _jsonWhitelistProvider = new JsonWhitelistProvider(_whitelistPath);
+            _whitelistHandler = new WhitelistHandler();
         }
 
         public List<BuildEntity> GetBuildsToClean()
         {
-            var filterHandler = new FilterHandler(_jsonWhitelistProvider, _commonNameBuildsProvider);
+            var filterHandler = new FilterHandler(_whitelistHandler.Provider, _commonNameBuildsProvider);
             var buildsToRemove = filterHandler.Execute(_settings.Data.Cleaner);
 
             return buildsToRemove;
@@ -33,7 +32,7 @@ namespace ServerMonitor.Helpers
         {
             var builds = _commonNameBuildsProvider.GetBuilds().OrderBy(x => x.Name).ToList();
 
-            var whitelist = _jsonWhitelistProvider.GetWhitelist();
+            var whitelist = _whitelistHandler.Provider.Get();
             builds.FillAdditionalData(whitelist);
 
             var cleanList = GetBuildsToClean();
@@ -55,6 +54,19 @@ namespace ServerMonitor.Helpers
             }
             pool.Recycle();
             return true;
+        }
+
+        public void Toggle(List<string> list)
+        {
+            using (var mgr = new ServerManager())
+            {
+                var pools = mgr.ApplicationPools.Where(app => list.Contains(app.Name));
+
+                foreach (var pool in pools)
+                {
+                    var newState = pool.State == ObjectState.Started ? pool.Stop() : pool.Start();
+                }
+            }
         }
     }
 }
