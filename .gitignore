@@ -39,3 +39,4 @@ ServerMonitor/whitelist.json
 # Cake - Uncomment if you are using it
 tools/**
 !tools/packages.config
+ServerMonitor/whitelist.xml
