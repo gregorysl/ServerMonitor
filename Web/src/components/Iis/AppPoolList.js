@@ -44,7 +44,6 @@ const AppPoolList = props => {
             tooltip="recycle"
             icon="reload"
             click={() => {
-              // debugger;
               recycle(x.name);
             }}
           />

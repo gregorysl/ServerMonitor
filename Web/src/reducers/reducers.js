@@ -133,6 +133,7 @@ function oracleReducer(state = tableInitialState, action) {
     case types.ORACLE_SUCCESS:
       if (!action.data.data) {
         return {
+          columns: oracleColumns,
           loaded: true
         };
       }
@@ -147,6 +148,7 @@ function oracleReducer(state = tableInitialState, action) {
     case types.ORACLE_ERROR:
       return {
         ...state,
+        columns: oracleColumns,
         loaded: true
       };
     case types.TOGGLE_ORACLE_REQUEST:
