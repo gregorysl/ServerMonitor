@@ -14,11 +14,6 @@ const numberField = ({ input, label, type }) => (
   <InputNumber {...input} type={type} placeholder={label} />
 );
 
-const Condition = ({ when, is, children }) => (
-  <Field name={when} subscription={{ value: true }}>
-    {({ input: { value } }) => (+value === is ? children : null)}
-  </Field>
-);
 const checkboxComponent = ({ input: { onChange, value }, meta, ...rest }) => (
   <Checkbox
     {...rest}
@@ -127,15 +122,7 @@ let Settings = props => {
       }) => {
         return (
           <form onSubmit={handleSubmit}>
-            <FullCard
-              disableAdd
-              title="Cleaner configuration"
-              subtitle="(settings for ansible cleaner configuration)"
-            >
-              <Field
-                name={`cleaner.useWhiteList`}
-                component={checkboxComponent}
-              />
+            <Card className="cleaner" title="Cleaner configuration">
               <Row>
                 <label>Cleaner can remove builds older than (days): </label>
                 <Field name={`cleaner.beforeDays`} component={numberField} />
@@ -146,6 +133,10 @@ let Settings = props => {
                 </label>
                 <Field name={`cleaner.excludeNLast`} component={numberField} />
               </Row>
+              <Field
+                name={`cleaner.useWhiteList`}
+                component={checkboxComponent}
+              />
               <Row>
                 <label>Whitelist type: </label>
                 <Field name="cleaner.whitelistType" component="select">
@@ -153,23 +144,22 @@ let Settings = props => {
                   <option value={1}>JSON</option>
                 </Field>
               </Row>
-              <label>Whitelist path: </label>
-              <Condition when="cleaner.whitelistType" is={0}>
+              <label>Path: </label>
+              {+values.cleaner.whitelistType === 0 && (
                 <Field
                   name="cleaner.xmlWhitelistPath"
                   component={renderField}
                   type="text"
                 />
-              </Condition>
-              <Condition when={`cleaner.whitelistType`} is={1}>
+              )}
+              {+values.cleaner.whitelistType === 1 && (
                 <Field
                   name="cleaner.jsonWhitelistPath"
                   component={renderField}
                   type="text"
                 />
-              </Condition>
-              <pre>{JSON.stringify(values, 0, 2)}</pre>
-            </FullCard>
+              )}
+            </Card>
             <FullCard
               push={push}
               name="hardwareList"
