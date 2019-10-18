@@ -242,6 +242,7 @@
     <Compile Include="Entities\ApplicationEntity.cs" />
     <Compile Include="Entities\BuildEntity.cs" />
     <Compile Include="Entities\FilterInput.cs" />
+    <Compile Include="Entities\Hardware.cs" />
     <Compile Include="FilterBy.cs" />
     <Compile Include="FilterHandler.cs" />
     <Compile Include="Helpers\BuildEntityComparer.cs" />
@@ -262,7 +263,6 @@
     <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Helpers\ApiGatewayHandler.cs" />
     <Compile Include="Helpers\HardwareManager.cs" />
-    <Compile Include="Helpers\KeyValueData.cs" />
     <Compile Include="Entities\IssToggleConfig.cs" />
     <Compile Include="Entities\Link.cs" />
     <Compile Include="Controllers\LinksController.cs" />
@@ -272,7 +272,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ApiClient.cs" />
-    <Compile Include="Helpers\BaseApi.cs" />
+    <Compile Include="Controllers\BaseApi.cs" />
     <Compile Include="Entities\BuildNote.cs" />
     <Compile Include="Entities\FolderSize.cs" />
     <Compile Include="Entities\Response.cs" />
