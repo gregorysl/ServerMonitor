@@ -252,8 +252,8 @@
     <Compile Include="Interfaces\IBuildsProvider.cs" />
     <Compile Include="Interfaces\IWhiteListProvider.cs" />
     <Compile Include="JsonWhitelistProvider.cs" />
-    <Compile Include="Models\IisAction.cs" />
-    <Compile Include="Models\JsonSettings.cs" />
+    <Compile Include="Entities\IisAction.cs" />
+    <Compile Include="Entities\JsonSettings.cs" />
     <Compile Include="Controllers\HardwareController.cs" />
     <Compile Include="Controllers\IisController.cs" />
     <Compile Include="Controllers\OracleInstanceController.cs" />
@@ -263,8 +263,8 @@
     <Compile Include="Helpers\ApiGatewayHandler.cs" />
     <Compile Include="Helpers\HardwareManager.cs" />
     <Compile Include="Helpers\KeyValueData.cs" />
-    <Compile Include="Models\IssToggleConfig.cs" />
-    <Compile Include="Models\Link.cs" />
+    <Compile Include="Entities\IssToggleConfig.cs" />
+    <Compile Include="Entities\Link.cs" />
     <Compile Include="Controllers\LinksController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
@@ -273,9 +273,9 @@
     </Compile>
     <Compile Include="Helpers\ApiClient.cs" />
     <Compile Include="Helpers\BaseApi.cs" />
-    <Compile Include="Models\BuildNote.cs" />
-    <Compile Include="Models\FolderSize.cs" />
-    <Compile Include="Models\Response.cs" />
+    <Compile Include="Entities\BuildNote.cs" />
+    <Compile Include="Entities\FolderSize.cs" />
+    <Compile Include="Entities\Response.cs" />
     <Compile Include="Oracle\BuildServerDetails.cs" />
     <Compile Include="Oracle\ConnectionDetail.cs" />
     <Compile Include="Oracle\OracleInstance.cs" />
@@ -292,6 +292,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

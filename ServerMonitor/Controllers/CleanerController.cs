@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using ServerMonitor.Helpers;
-using ServerMonitor.Models;
+using ServerMonitor.Entities;
 using System.Web.Http;
 
 namespace ServerMonitor.Controllers

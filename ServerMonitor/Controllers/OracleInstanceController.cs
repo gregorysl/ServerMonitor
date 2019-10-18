@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 using ServerMonitor.Helpers;
-using ServerMonitor.Models;
+using ServerMonitor.Entities;
 using ServerMonitor.Oracle;
 
 namespace ServerMonitor.Controllers

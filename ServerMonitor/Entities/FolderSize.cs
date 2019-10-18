@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServerMonitor.Models
+namespace ServerMonitor.Entities
 {
     public class FolderSize
     {

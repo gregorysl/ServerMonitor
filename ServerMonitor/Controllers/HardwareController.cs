@@ -4,7 +4,7 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServerMonitor.Helpers;
-using ServerMonitor.Models;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Controllers
 {

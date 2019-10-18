@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ServerMonitor.Models
+namespace ServerMonitor.Entities
 {
     public class IssToggleConfig
     {

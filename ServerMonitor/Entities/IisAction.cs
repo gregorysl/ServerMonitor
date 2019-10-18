@@ -1,6 +1,6 @@
 ﻿using ServerMonitor.Entities;
 
-namespace ServerMonitor.Models
+namespace ServerMonitor.Entities
 {
     public class IisAction
     {

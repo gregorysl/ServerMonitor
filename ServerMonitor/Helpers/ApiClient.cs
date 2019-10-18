@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
-using ServerMonitor.Models;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Helpers
 {
