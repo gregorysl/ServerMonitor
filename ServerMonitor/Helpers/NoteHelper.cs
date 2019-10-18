@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Hosting;
 using LiteDB;
-using ServerMonitor.Models;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Helpers
 {

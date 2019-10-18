@@ -1,7 +1,8 @@
 ﻿using System.Web.Http;
 using log4net;
+using ServerMonitor.Helpers;
 
-namespace ServerMonitor.Helpers
+namespace ServerMonitor.Controllers
 {
     public class BaseApi : ApiController
     {

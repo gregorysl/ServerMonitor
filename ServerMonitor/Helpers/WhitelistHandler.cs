@@ -1,6 +1,6 @@
-﻿using BuildInspect.Data;
-using BuildInspect.Data.Interfaces;
-using BuildInspect.Filter;
+﻿
+using ServerMonitor.Entities;
+using ServerMonitor.Interfaces;
 
 namespace ServerMonitor.Helpers
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using LiteDB;
 
-namespace ServerMonitor.Models
+namespace ServerMonitor.Entities
 {
     public class BuildNote
     {

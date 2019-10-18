@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Http;
-using ServerMonitor.Helpers;
-using ServerMonitor.Models;
+using ServerMonitor.Entities;
 using ServerMonitor.Oracle;
 
 namespace ServerMonitor.Controllers
@@ -9,11 +8,11 @@ namespace ServerMonitor.Controllers
     [RoutePrefix("OracleInstance")]
     public class OracleInstanceController : BaseApi
     {
-        private readonly OracleInstanceBl OracleInstanceBl;
+        private readonly OracleInstanceBl _oracleInstanceBl;
 
         public OracleInstanceController()
         {
-            OracleInstanceBl = new OracleInstanceBl();
+            _oracleInstanceBl = new OracleInstanceBl();
         }
 
         [Route]
@@ -27,7 +26,7 @@ namespace ServerMonitor.Controllers
                 if (isEnabled)
                 {
                     Log.Debug("GetAllInstances called.");
-                    var instances = OracleInstanceBl.GetAllInstances();
+                    var instances = _oracleInstanceBl.GetAllInstances();
                     Log.Debug("GetAllInstances call success.");
                     response.Data = instances;
                 }

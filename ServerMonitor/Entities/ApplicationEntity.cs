@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace BuildInspect.Data.Entities
+namespace ServerMonitor.Entities
 {
     public class ApplicationEntity
     {

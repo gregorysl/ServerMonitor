@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualBasic.Devices;
-using ServerMonitor.Controllers;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Helpers
 {
@@ -12,7 +12,6 @@ namespace ServerMonitor.Helpers
     {
         private readonly ComputerInfo _computerInfo = new ComputerInfo();
         private static PerformanceCounter CpuCounter { get; set; }
-        private static readonly ComputerInfo ComputerInfo = new ComputerInfo();
         private readonly DriveInfo _driveInfo = DriveInfo.GetDrives().First(x => x.Name == "C:\\");
 
         public Hardware GetHardware()

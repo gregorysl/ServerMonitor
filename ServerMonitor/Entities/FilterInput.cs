@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BuildInspect.Data
+namespace ServerMonitor.Entities
 {
     //[JsonObject(ItemNullValueHandling = NullValueHandling.Include)]
     [JsonObject]

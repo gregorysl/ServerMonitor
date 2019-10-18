@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Web.Hosting;
 using System.Web.Http;
 using ServerMonitor.Helpers;
-using ServerMonitor.Models;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Controllers
 {

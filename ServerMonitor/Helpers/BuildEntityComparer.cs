@@ -1,8 +1,7 @@
-﻿using BuildInspect.Data.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ServerMonitor.Entities;
 
-
-namespace BuildInspect.Data.Helpers
+namespace ServerMonitor.Helpers
 {
     public class BuildEntityComparer : IEqualityComparer<BuildEntity>
     {
@@ -15,7 +14,7 @@ namespace BuildInspect.Data.Helpers
 
         public bool Equals(BuildEntity x, BuildEntity y)
         {
-            return x.Name == y.Name;
+            return x?.Name == y?.Name;
         }
 
         public int GetHashCode(BuildEntity obj)

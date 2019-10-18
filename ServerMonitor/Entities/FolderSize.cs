@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServerMonitor.Models
+namespace ServerMonitor.Entities
 {
     public class FolderSize
     {
@@ -8,12 +8,6 @@ namespace ServerMonitor.Models
         public double Size { get; set; }
         public double TotalSize { get; set; }
 
-        public double Usage
-        {
-            get
-            {
-                return Math.Round((Size / TotalSize) * 100, 2);
-            }
-        }
+        public double Usage => Math.Round((Size / TotalSize) * 100, 2);
     }
 }

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace ServerMonitor.Models
+namespace ServerMonitor.Entities
 {
     public class Response
     {

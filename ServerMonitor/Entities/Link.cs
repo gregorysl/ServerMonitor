@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using ServerMonitor.Helpers;
 
-namespace ServerMonitor.Models
+namespace ServerMonitor.Entities
 {
     public class Link
     {

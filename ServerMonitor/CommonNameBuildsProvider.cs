@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using BuildInspect.Data.Entities;
-using BuildInspect.Data.Interfaces;
+using log4net;
 using Microsoft.Web.Administration;
+using ServerMonitor.Entities;
+using ServerMonitor.Interfaces;
 
-namespace BuildInspect.Filter
+namespace ServerMonitor
 {
     public class CommonNameBuildsProvider : IBuildsProvider
     {
-        private const string DEFAULT_WEB_SITE = "Default Web Site";
+        protected static readonly ILog Log = LogManager.GetLogger(typeof(CommonNameBuildsProvider));
+        private const string DefaultWebSite = "Default Web Site";
 
-        private static ILogManager LogManager => new NLogManger();
 
         private readonly string _commonName;
 
@@ -30,7 +31,7 @@ namespace BuildInspect.Filter
                 var principal = new WindowsPrincipal(identity);
                 if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
-                    LogManager.Error("Cannot read server manager configs due to insufficient permissions!");
+                    Log.Error("Cannot read server manager configs due to insufficient permissions!");
                     throw new UnauthorizedAccessException();
                 }
             }
@@ -38,12 +39,12 @@ namespace BuildInspect.Filter
             {
                 using (var serverManager = new ServerManager())
                 {
-                    iisApps = serverManager.Sites[DEFAULT_WEB_SITE].Applications.ToList();
+                    iisApps = serverManager.Sites[DefaultWebSite].Applications.ToList();
                 }
             }
             catch (Exception e)
             {
-                LogManager.Critical($"There was a problem with loading applications from IIS! { e.Message }");
+                Log.Fatal($"There was a problem with loading applications from IIS! { e.Message }");
                 throw;
             }
 
@@ -55,7 +56,7 @@ namespace BuildInspect.Filter
 
             if (builds == null)
             {
-                LogManager.Error($"{ _commonName } service was not found in IIS!");
+                Log.Error($"{ _commonName } service was not found in IIS!");
                 throw new KeyNotFoundException();
             }
 
