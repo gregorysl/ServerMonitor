@@ -11,7 +11,7 @@ namespace ServerMonitor.Helpers
         {
             var settings = SettingsHandler.Instance.Data;
             Provider = settings.Cleaner.WhitelistType == WhitelistType.Xml
-                ? (IWhitelistProvider) new XmlWhitelistProvider(settings.Cleaner.XmlWhitelistPath)
+                ? new XmlWhitelistProvider(settings.Cleaner.XmlWhitelistPath)
                 : (IWhitelistProvider) new JsonWhitelistProvider(settings.Cleaner.JsonWhitelistPath);
         }
     }

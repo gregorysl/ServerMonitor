@@ -44,8 +44,12 @@ namespace ServerMonitor.Helpers
 
         public bool RecycleAppPool(string name)
         {
-            var mgr = new ServerManager();
-            var pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
+            ApplicationPool pool;
+            using (var mgr = new ServerManager())
+            {
+                pool = mgr.ApplicationPools.FirstOrDefault(app => app.Name == name);
+            }
+            
             if (pool == null || pool.State == ObjectState.Stopped)
             {
                 return false;
@@ -67,9 +71,9 @@ namespace ServerMonitor.Helpers
             }
         }
         public void FillAdditionalData(IEnumerable<BuildEntity> builds,
-            IEnumerable<string> whitelist = null)
+            List<string> whitelist)
         {
-            var appPools = new List<ApplicationPool>();
+            List<ApplicationPool> appPools;
             using (var serverManager = new ServerManager())
             {
                 appPools = serverManager.ApplicationPools.ToList();
@@ -82,7 +86,7 @@ namespace ServerMonitor.Helpers
                 foreach (var app in build.Apps)
                 {
                     var pool = appPools.FirstOrDefault(x => x.Name == app.Pool);
-                    app.Running = pool.State == ObjectState.Started;
+                    app.Running = pool?.State == ObjectState.Started;
                 }
             }
         }

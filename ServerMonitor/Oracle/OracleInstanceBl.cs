@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace ServerMonitor.Oracle
@@ -52,22 +51,6 @@ namespace ServerMonitor.Oracle
             });
         }
 
-        public IEnumerable<OracleInstanceDetails> GetBuildServerInstances(string buildServerName)
-        {
-            var instances = OracleInstanceRepository.GetBuildServerInstances(buildServerName);
-            return instances.Select(i => new OracleInstanceDetails
-            {
-                Id = i.Id,
-                IsReserved = i.IsReserved,
-                CurrentBuildName = i.CurrentBuildName,
-                CurrentBuildDate = i.CurrentBuildDate,
-                Name = i.Name,
-                DisplayName = i.DisplayName,
-                Sid = i.Sid,
-                Service = i.Service
-            });
-        }
-
         public void ChangeInstanceReservation(int instanceId, bool reserve)
         {
             if (reserve)
@@ -82,24 +65,15 @@ namespace ServerMonitor.Oracle
 
         public bool ChangeInstanceDeployInProgress(int instanceId, bool isDeploying, string buildName)
         {
-            try
+            if (isDeploying)
             {
-                if (isDeploying)
-                {
-                    return OracleInstanceRepository.SetDeployInProgress(instanceId);
-                }
-                else
-                {
-                    OracleInstanceRepository.UnsetDeployInProgress(instanceId);
-                    OracleInstanceRepository.SetCurrentBuildDate(instanceId);
-                    OracleInstanceRepository.SetCurrentBuildName(instanceId, buildName);
-                    return true;
-                }
+                return OracleInstanceRepository.SetDeployInProgress(instanceId);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            OracleInstanceRepository.UnsetDeployInProgress(instanceId);
+            OracleInstanceRepository.SetCurrentBuildDate(instanceId);
+            OracleInstanceRepository.SetCurrentBuildName(instanceId, buildName);
+            return true;
         }
     }
 }

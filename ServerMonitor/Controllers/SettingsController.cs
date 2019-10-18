@@ -1,5 +1,4 @@
-﻿using ServerMonitor.Helpers;
-using ServerMonitor.Entities;
+﻿using ServerMonitor.Entities;
 using System.Web.Http;
 
 namespace ServerMonitor.Controllers

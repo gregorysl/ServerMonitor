@@ -1,6 +1,4 @@
-﻿using ServerMonitor.Entities;
-
-namespace ServerMonitor.Entities
+﻿namespace ServerMonitor.Entities
 {
     public class IisAction
     {

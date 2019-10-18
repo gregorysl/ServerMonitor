@@ -12,7 +12,7 @@ namespace ServerMonitor
     public class CommonNameBuildsProvider : IBuildsProvider
     {
         protected static readonly ILog Log = LogManager.GetLogger(typeof(CommonNameBuildsProvider));
-        private const string DEFAULT_WEB_SITE = "Default Web Site";
+        private const string DefaultWebSite = "Default Web Site";
 
 
         private readonly string _commonName;
@@ -39,7 +39,7 @@ namespace ServerMonitor
             {
                 using (var serverManager = new ServerManager())
                 {
-                    iisApps = serverManager.Sites[DEFAULT_WEB_SITE].Applications.ToList();
+                    iisApps = serverManager.Sites[DefaultWebSite].Applications.ToList();
                 }
             }
             catch (Exception e)

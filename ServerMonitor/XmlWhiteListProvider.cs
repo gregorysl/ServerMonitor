@@ -25,7 +25,7 @@ namespace ServerMonitor
         {
             Whitelist whitelist;
             var file = new FileInfo(_path);
-            if (!file.Exists)
+            if (file.Directory !=null && !file.Exists)
             {
                 Directory.CreateDirectory(file.Directory.FullName);
                 var xml = new XDocument(new XElement("whiteList", new XElement("builds")));

@@ -25,14 +25,6 @@ namespace ServerMonitor.Oracle
 
             return oracleInstances.FirstOrDefault()?.OracleInstance;
         }
-
-        public IEnumerable<OracleInstance> GetBuildServerInstances(string buildServerName)
-        {
-            return Context.OracleInstances
-                .Where(i => i.BuildServerDetails.Name == buildServerName)
-                .ToList();
-        }
-
         public IEnumerable<OracleInstance> GetAllInstances()
         {
             return Context.OracleInstances.ToList();

@@ -12,7 +12,6 @@ namespace ServerMonitor.Helpers
     {
         private readonly ComputerInfo _computerInfo = new ComputerInfo();
         private static PerformanceCounter CpuCounter { get; set; }
-        private static readonly ComputerInfo ComputerInfo = new ComputerInfo();
         private readonly DriveInfo _driveInfo = DriveInfo.GetDrives().First(x => x.Name == "C:\\");
 
         public Hardware GetHardware()

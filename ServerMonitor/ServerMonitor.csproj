@@ -263,7 +263,6 @@
     <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Helpers\ApiGatewayHandler.cs" />
     <Compile Include="Helpers\HardwareManager.cs" />
-    <Compile Include="Entities\IssToggleConfig.cs" />
     <Compile Include="Entities\Link.cs" />
     <Compile Include="Controllers\LinksController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />

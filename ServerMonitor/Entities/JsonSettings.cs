@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using ServerMonitor.Entities;
+using Newtonsoft.Json;
 
-namespace ServerMonitor.Helpers
+namespace ServerMonitor.Entities
 {
     public class JsonSettings
     {

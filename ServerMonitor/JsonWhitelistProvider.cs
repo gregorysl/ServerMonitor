@@ -22,7 +22,7 @@ namespace ServerMonitor
         public void Load()
         {
             var file = new FileInfo(_path);
-            if (!file.Exists)
+            if (file.Directory != null && !file.Exists)
             {
                 Directory.CreateDirectory(file.Directory.FullName);
                 File.Create(_path).Close();
