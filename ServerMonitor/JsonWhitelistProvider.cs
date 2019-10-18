@@ -1,17 +1,18 @@
-﻿using BuildInspect.Data.Interfaces;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using log4net;
+using ServerMonitor.Interfaces;
 
-namespace BuildInspect.Filter
+namespace ServerMonitor
 {
     public class JsonWhitelistProvider : IWhitelistProvider
     {
+        protected static readonly ILog Log = LogManager.GetLogger(typeof(JsonWhitelistProvider));
         private readonly string _path;
         private List<string> _whitelist;
-        private static ILogManager LogManager => new NLogManger();
 
         public JsonWhitelistProvider(string path)
         {
@@ -39,7 +40,7 @@ namespace BuildInspect.Filter
             }
             catch (Exception e)
             {
-                LogManager.Critical(e.Message);
+                Log.Fatal(e.Message);
                 throw;
             }
         }

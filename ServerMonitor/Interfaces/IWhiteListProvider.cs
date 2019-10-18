@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BuildInspect.Data.Interfaces
+namespace ServerMonitor.Interfaces
 {
     public interface IWhitelistProvider
     {

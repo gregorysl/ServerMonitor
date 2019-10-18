@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using BuildInspect.Data.Entities;
+using ServerMonitor.Entities;
 
-namespace BuildInspect.Data.Interfaces
+namespace ServerMonitor.Interfaces
 {
     public interface IBuildsProvider
     {

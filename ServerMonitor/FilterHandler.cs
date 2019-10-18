@@ -1,11 +1,10 @@
-﻿using BuildInspect.Data;
-using BuildInspect.Data.Entities;
-using BuildInspect.Data.Helpers;
-using BuildInspect.Data.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ServerMonitor.Entities;
+using ServerMonitor.Helpers;
+using ServerMonitor.Interfaces;
 
-namespace BuildInspect.Filter
+namespace ServerMonitor
 {
     public class FilterHandler
     {

@@ -1,6 +1,6 @@
-﻿using BuildInspect.Data;
-using BuildInspect.Data.Interfaces;
-using BuildInspect.Filter;
+﻿
+using ServerMonitor.Entities;
+using ServerMonitor.Interfaces;
 
 namespace ServerMonitor.Helpers
 {
@@ -11,7 +11,7 @@ namespace ServerMonitor.Helpers
         {
             var settings = SettingsHandler.Instance.Data;
             Provider = settings.Cleaner.WhitelistType == WhitelistType.Xml
-                ? new XmlWhitelistProvider(settings.Cleaner.XmlWhitelistPath)
+                ? (IWhitelistProvider) new XmlWhitelistProvider(settings.Cleaner.XmlWhitelistPath)
                 : (IWhitelistProvider) new JsonWhitelistProvider(settings.Cleaner.JsonWhitelistPath);
         }
     }

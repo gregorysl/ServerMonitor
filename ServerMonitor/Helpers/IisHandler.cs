@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web.Hosting;
-using BuildInspect.Data.Entities;
-using BuildInspect.Filter;
 using Microsoft.Web.Administration;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Helpers
 {
@@ -33,7 +31,7 @@ namespace ServerMonitor.Helpers
             var builds = _commonNameBuildsProvider.GetBuilds().OrderBy(x => x.Name).ToList();
 
             var whitelist = _whitelistHandler.Provider.Get();
-            builds.FillAdditionalData(whitelist);
+            FillAdditionalData(builds, whitelist);
 
             var cleanList = GetBuildsToClean();
             builds.ForEach(x => x.CleanerMark = cleanList.FirstOrDefault(c => c.Name == x.Name) != null);
@@ -65,6 +63,26 @@ namespace ServerMonitor.Helpers
                 foreach (var pool in pools)
                 {
                     var newState = pool.State == ObjectState.Started ? pool.Stop() : pool.Start();
+                }
+            }
+        }
+        public void FillAdditionalData(IEnumerable<BuildEntity> builds,
+            IEnumerable<string> whitelist = null)
+        {
+            var appPools = new List<ApplicationPool>();
+            using (var serverManager = new ServerManager())
+            {
+                appPools = serverManager.ApplicationPools.ToList();
+            }
+
+            foreach (var build in builds)
+            {
+                build.Whitelisted = whitelist.Any(x => x == build.Name);
+                var apNames = build.Apps.Select(a => a.Pool);
+                foreach (var app in build.Apps)
+                {
+                    var pool = appPools.FirstOrDefault(x => x.Name == app.Pool);
+                    app.Running = pool.State == ObjectState.Started;
                 }
             }
         }

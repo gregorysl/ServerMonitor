@@ -5,15 +5,16 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using BuildInspect.Data.Interfaces;
+using log4net;
+using ServerMonitor.Interfaces;
 
-namespace BuildInspect.Filter
+namespace ServerMonitor
 {
     public class XmlWhitelistProvider : IWhitelistProvider
     {
+        protected static readonly ILog Log = LogManager.GetLogger(typeof(XmlWhitelistProvider));
         private readonly string _path;
         private Whitelist _whitelist;
-        private static ILogManager LogManager => new NLogManger();
 
         public XmlWhitelistProvider(string path)
         {
@@ -50,7 +51,7 @@ namespace BuildInspect.Filter
             }
             catch (Exception e)
             {
-                LogManager.Critical(e.Message);
+                Log.Fatal(e.Message);
                 throw;
             }
         }

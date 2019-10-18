@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BuildInspect.Data.Entities
+namespace ServerMonitor.Entities
 {
     public class BuildEntity
     {

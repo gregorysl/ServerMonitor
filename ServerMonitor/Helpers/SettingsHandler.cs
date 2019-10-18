@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Web.Hosting;
-using BuildInspect.Data;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Helpers
 {

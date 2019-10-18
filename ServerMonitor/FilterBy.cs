@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BuildInspect.Data.Entities;
-using BuildInspect.Data.Interfaces;
+using ServerMonitor.Entities;
 
-namespace BuildInspect.Filter
+namespace ServerMonitor
 {
     public static class FilterBy
     {
-        private static ILogManager LogManager => new NLogManger();
         public static IEnumerable<BuildEntity> GetBuildsToRemoveByWhiteList(IEnumerable<BuildEntity> builds, IEnumerable<string> whiteBuilds)
         {
             return builds.Where(b => whiteBuilds.All(w => w != b.Name));

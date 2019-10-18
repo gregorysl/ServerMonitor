@@ -236,12 +236,22 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonNameBuildsProvider.cs" />
     <Compile Include="Controllers\CleanerController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Entities\ApplicationEntity.cs" />
+    <Compile Include="Entities\BuildEntity.cs" />
+    <Compile Include="Entities\FilterInput.cs" />
+    <Compile Include="FilterBy.cs" />
+    <Compile Include="FilterHandler.cs" />
+    <Compile Include="Helpers\BuildEntityComparer.cs" />
     <Compile Include="Helpers\IisHandler.cs" />
     <Compile Include="Helpers\NoteHelper.cs" />
     <Compile Include="Helpers\SettingsHandler.cs" />
     <Compile Include="Helpers\WhitelistHandler.cs" />
+    <Compile Include="Interfaces\IBuildsProvider.cs" />
+    <Compile Include="Interfaces\IWhiteListProvider.cs" />
+    <Compile Include="JsonWhitelistProvider.cs" />
     <Compile Include="Models\IisAction.cs" />
     <Compile Include="Models\JsonSettings.cs" />
     <Compile Include="Controllers\HardwareController.cs" />
@@ -277,19 +287,10 @@
     <Compile Include="Oracle\OracleInstanceReservationRequest.cs" />
     <Compile Include="Oracle\OracleModuleDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlWhiteListProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BuildInspect.Data\BuildInspect.Data.csproj">
-      <Project>{970C5262-0059-4894-A7E0-4B7E3FFD91FE}</Project>
-      <Name>BuildInspect.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BuildInspect.Filter\BuildInspect.Filter.csproj">
-      <Project>{07844931-A1A4-4065-8A7A-787CAB9215D7}</Project>
-      <Name>BuildInspect.Filter</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

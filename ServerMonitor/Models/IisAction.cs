@@ -1,4 +1,4 @@
-﻿using BuildInspect.Data.Entities;
+﻿using ServerMonitor.Entities;
 
 namespace ServerMonitor.Models
 {

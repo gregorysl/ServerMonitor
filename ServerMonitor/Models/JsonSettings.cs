@@ -1,7 +1,7 @@
-﻿using BuildInspect.Data;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using ServerMonitor.Entities;
 
 namespace ServerMonitor.Helpers
 {
