@@ -1,44 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { setIisAction } from "../../actions/actions";
-import { Input } from "antd";
+import { Typography } from "antd";
 
-const NoteControl = props => {
-  const [note, setValue] = useState(props.org.note);
+const { Paragraph } = Typography;
+
+const NoteControl = ({ org, url }) => {
   const dispatch = useDispatch();
 
-  const handleKeyPress = event => {
-    if (event.key === "Enter") {
-      confirmNote();
-      props.setEditing(false);
-    } else if (event.keyCode === 27) {
-      setValue(props.org.note);
+  const confirmNote = value => {
+    if (org.note !== value) {
+      org.note = value;
+      dispatch(setIisAction({ build: org, action: "Note" }, url));
     }
   };
-  const confirmNote = () => {
-    if (props.org.note !== note) {
-      props.org.note = note;
-      dispatch(setIisAction({ build: props.org, action: "Note" }, props.url));
-    }
-  };
-  if (props.editing)
-    return (
-      <Input
-        className="tag-input clear-input"
-        type="text"
-        size="small"
-        value={note}
-        onPressEnter={confirmNote}
-        onBlur={confirmNote}
-        onChange={evt => setValue(evt.target.value)}
-        onKeyDown={handleKeyPress}
-      />
-    );
-  else {
-    const noteToShow =
-      !note || note === "" ? "Click Edit to add description" : note;
-    return <span className="build-note">{noteToShow}</span>;
-  }
+  const noteToShow = !org.note || org.note === "" ? "No description" : org.note;
+
+  return (
+    <Paragraph className="build-note" editable={{ onChange: confirmNote }}>
+      {noteToShow}
+    </Paragraph>
+  );
 };
 
 export default NoteControl;
