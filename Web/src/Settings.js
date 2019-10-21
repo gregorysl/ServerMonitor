@@ -120,6 +120,10 @@ let Settings = props => {
         submitting,
         values
       }) => {
+        const pathType =
+          +values.cleaner.whitelistType === 0
+            ? "cleaner.xmlWhitelistPath"
+            : "cleaner.jsonWhitelistPath";
         return (
           <form onSubmit={handleSubmit}>
             <Card className="cleaner" title="Cleaner configuration">
@@ -145,20 +149,7 @@ let Settings = props => {
                 </Field>
               </Row>
               <label>Path: </label>
-              {+values.cleaner.whitelistType === 0 && (
-                <Field
-                  name="cleaner.xmlWhitelistPath"
-                  component={renderField}
-                  type="text"
-                />
-              )}
-              {+values.cleaner.whitelistType === 1 && (
-                <Field
-                  name="cleaner.jsonWhitelistPath"
-                  component={renderField}
-                  type="text"
-                />
-              )}
+              <Field name={pathType} component={renderField} type="text" />
             </Card>
             <FullCard
               push={push}
