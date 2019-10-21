@@ -6,7 +6,7 @@ import IisSection from "./IisSection";
 
 const IisServicesList = props => {
   const data = props.settings.hardwareList.map(x => (
-    <div key={x.name} style={{ marginBottom: 10 }}>
+    <div key={x.name} style={{ marginBottom: 5 }}>
       <Row type="flex" justify="left">
         <Row>
           <Row>

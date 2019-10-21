@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col, Typography } from "antd";
-import PageVisibility from "react-page-visibility";
+import { usePageVisibility } from "react-page-visibility";
 import { getHardwareAction } from "../actions/actions";
 import { AreaChart, Area, YAxis } from "recharts";
 
@@ -20,17 +20,18 @@ const ResponsiveAreaChart = ({ data, dataKey, color }) => (
 );
 const Hardware = props => {
   const dispatch = useDispatch();
+  const isVisible = usePageVisibility();
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch(getHardwareAction(props.name, props.url));
+      isVisible && dispatch(getHardwareAction(props.name, props.url));
     }, 5000);
     return () => clearInterval(interval);
-  }, [dispatch, props.key, props.name, props.url]);
+  }, [dispatch, isVisible, props.name, props.url]);
   const hardware = useSelector(state => state.hardware[props.name]);
 
   return !hardware ? null : (
     <Row style={{ marginLeft: "auto" }} type="flex" justify="start">
-      <Col span={4} style={{ display: "flex", margin: 10, width: 120 }}>
+      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
         <ResponsiveAreaChart
           data={hardware.data}
           dataKey="CPU"
@@ -42,7 +43,7 @@ const Hardware = props => {
           <Text>{hardware.current[0].value}%</Text>
         </Row>
       </Col>
-      <Col span={4} style={{ display: "flex", margin: 10, width: 120 }}>
+      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
         <ResponsiveAreaChart
           data={hardware.data}
           dataKey="RAM"
@@ -54,7 +55,7 @@ const Hardware = props => {
           <Text>{hardware.current[1].value}%</Text>
         </Row>
       </Col>
-      <Col span={4} style={{ display: "flex", margin: 10, width: 120 }}>
+      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
         <ResponsiveAreaChart
           data={hardware.data}
           dataKey="HDD"

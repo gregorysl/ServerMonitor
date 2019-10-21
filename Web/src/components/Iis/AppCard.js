@@ -30,7 +30,7 @@ const AppCard = ({ x, click, url }) => {
     <Col xs={24} sm={12} md={12} lg={8} xl={6} key={x.name}>
       <Card
         className={x.running ? "" : "stopped"}
-        style={{ margin: "8px 0" }}
+        style={{ marginBottom: 8 }}
         actions={[
           <WhitelistButton
             build={x}
