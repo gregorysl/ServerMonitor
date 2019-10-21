@@ -14,8 +14,10 @@ namespace ServerMonitor.Oracle
         public DateTime CurrentBuildDate { get; set; }
         public bool IsReserved { get; set; }
         public bool IsDeployInProgress { get; set; }
+        public int ConnectionDetailsId { get; set; }
         [ForeignKey("ConnectionDetailsId")]
         public ConnectionDetails ConnectionDetails { get; set; }
+        public int BuildServerDetailsId { get; set; }
         [ForeignKey("BuildServerDetailsId")]
         public BuildServerDetails BuildServerDetails { get; set; }
     }

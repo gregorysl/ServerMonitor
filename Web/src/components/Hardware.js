@@ -1,60 +1,74 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import PageVisibility from "react-page-visibility";
-import { Tabs } from "antd";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Row, Col, Typography } from "antd";
+import { usePageVisibility } from "react-page-visibility";
 import { getHardwareAction } from "../actions/actions";
-import HardwareItem from "./HardwareItem";
+import { AreaChart, Area, YAxis } from "recharts";
 
-const { TabPane } = Tabs;
+const { Text } = Typography;
 
-class Hardware extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: true
-    };
-    this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
-    this.dispatchChange = this.dispatchChange.bind(this);
-  }
+const ResponsiveAreaChart = ({ data, dataKey, color }) => (
+  <AreaChart
+    height={40}
+    width={60}
+    data={data}
+    margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+  >
+    <YAxis type="number" domain={[0, 100]} hide />
+    <Area type="monotone" dataKey={dataKey} stroke={color} fill={color} />
+  </AreaChart>
+);
+const Hardware = props => {
+  const dispatch = useDispatch();
+  const isVisible = usePageVisibility();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      isVisible && dispatch(getHardwareAction(props.name, props.url));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [dispatch, isVisible, props.name, props.url]);
+  const hardware = useSelector(state => state.hardware[props.name]);
 
-  componentDidMount() {
-    setInterval(this.dispatchChange, 5000);
-  }
-
-  handleVisibilityChange(visible) {
-    this.setState({ visible });
-  }
-
-  dispatchChange() {
-    if (this.state.visible) {
-      this.props.dispatch(getHardwareAction());
-    }
-  }
-
-  render() {
-    const components = this.props.data.map(x => (
-      <TabPane tab={x.key} key={x.key}>
-        <HardwareItem item={x} />
-      </TabPane>
-    ));
-    return (
-      <PageVisibility onChange={this.handleVisibilityChange}>
-        <Tabs tabPosition="left" style={{ padding: 5 }}>
-          {components}
-        </Tabs>
-      </PageVisibility>
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  data: state.hardware
-});
-
-Hardware.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired
+  return !hardware ? null : (
+    <Row style={{ marginLeft: "auto" }} type="flex" justify="start">
+      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
+        <ResponsiveAreaChart
+          data={hardware.data}
+          dataKey="CPU"
+          color="#8884d8"
+        />
+        <Row style={{ marginLeft: 12 }}>
+          <Text strong>CPU</Text>
+          <br />
+          <Text>{hardware.current[0].value}%</Text>
+        </Row>
+      </Col>
+      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
+        <ResponsiveAreaChart
+          data={hardware.data}
+          dataKey="RAM"
+          color="#8884d8"
+        />
+        <Row style={{ marginLeft: 12 }}>
+          <Text strong>RAM</Text>
+          <br />
+          <Text>{hardware.current[1].value}%</Text>
+        </Row>
+      </Col>
+      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
+        <ResponsiveAreaChart
+          data={hardware.data}
+          dataKey="HDD"
+          color="#8884d8"
+        />
+        <Row style={{ marginLeft: 12 }}>
+          <Text strong>HDD</Text>
+          <br />
+          <Text>{hardware.current[2].value}%</Text>
+        </Row>
+      </Col>
+    </Row>
+  );
 };
 
-export default connect(mapStateToProps)(Hardware);
+export default Hardware;

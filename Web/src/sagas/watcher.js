@@ -3,7 +3,7 @@ import * as saga from "./tableSagas";
 import * as types from "../constants/actionTypes";
 
 export function* watchGetHardware() {
-  yield takeLatest(types.GET_HARDWARE_DATA_REQUEST, saga.getHardwareData);
+  yield takeEvery(types.GET_HARDWARE_DATA_REQUEST, saga.getHardwareData);
 }
 
 export function* watchGetIis() {

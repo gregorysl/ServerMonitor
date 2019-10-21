@@ -16,8 +16,6 @@ const sessionsUri = `${appUri}Sessions`;
 const diskUri = `${apiUri}GetDiskUsage`;
 const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
-// const hardwareUri = `${appUri}Hardware/`;
-const hardwareUri = `${appUri}Hardware/GetAll`;
 const settingsUri = `${appUri}Settings/`;
 
 export function getIisApp(url) {
@@ -31,8 +29,8 @@ export function recycleApp(props) {
   return Axios.post(`${props.url}/Iis?name=${props.name}`);
 }
 
-export function getHardware() {
-  return Axios.get(hardwareUri);
+export function getHardware(url) {
+  return Axios.get(`${url}Hardware`);
 }
 
 export function getIisApps(prefix) {
