@@ -2,17 +2,25 @@ import { put, call } from "redux-saga/effects";
 import * as api from "../api/api_new";
 import * as types from "../constants/actionTypes";
 
-export function* getHardwareData() {
+export function* getHardwareData(props) {
   try {
-    const { data } = yield call(api.getHardware);
-    if (data.data.constructor === Object) {
-      data.data = [data.data];
-    }
-    yield put({ type: types.GET_HARDWARE_DATA_SUCCESS, data });
+    const { data } = yield call(api.getHardware, props.url);
+    yield put({
+      type: types.GET_HARDWARE_DATA_SUCCESS,
+      data,
+      name: props.name
+    });
   } catch (error) {
     yield put({
       type: types.GET_HARDWARE_DATA_ERROR,
-      data: error.response.data
+      data: {
+        notifications: [
+          {
+            message: `${error.message} ${props.url}`,
+            type: "Error"
+          }
+        ]
+      }
     });
   }
 }

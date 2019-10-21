@@ -1,7 +1,9 @@
 import * as types from "../constants/actionTypes";
 
-export const getHardwareAction = () => ({
-  type: types.GET_HARDWARE_DATA_REQUEST
+export const getHardwareAction = (name, url) => ({
+  type: types.GET_HARDWARE_DATA_REQUEST,
+  name,
+  url
 });
 
 export const getIisAction = url => ({
