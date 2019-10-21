@@ -161,10 +161,23 @@ function oracleReducer(state = tableInitialState, action) {
   }
 }
 
-function hardwareReducer(state = hardwareInitialState, action) {
+function hardwareReducer(state = {}, action) {
   switch (action.type) {
     case types.GET_HARDWARE_DATA_SUCCESS:
-      return [...action.data.data];
+      const newState = { ...state };
+      const data = action.data.data;
+      if (Object.keys(newState).indexOf(action.name) === -1) {
+        newState[action.name] = { data: [] };
+      }
+      var current = newState[action.name].data;
+      let newItem = {};
+      for (var x in data) {
+        newItem[data[x].key] = data[x].value;
+      }
+      current.push(newItem);
+      newState[action.name].data = current.slice(-10);
+      newState[action.name].current = data;
+      return newState;
     default:
       return state;
   }
