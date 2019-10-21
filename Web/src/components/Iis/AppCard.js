@@ -21,7 +21,6 @@ const ActionToggleButton = ({ isClicked, click, text, icon }) => (
 
 const AppCard = ({ x, click, url }) => {
   const [expanded, setExpanded] = useState(false);
-  const [editing, setEditing] = useState(false);
   const location = url
     .split("/")
     .splice(0, 3)
@@ -36,12 +35,6 @@ const AppCard = ({ x, click, url }) => {
             build={x}
             click={click}
             whitelisted={x.whitelisted}
-          />,
-          <ActionToggleButton
-            click={() => setEditing(!editing)}
-            isClicked={editing}
-            text="Edit"
-            icon="edit"
           />,
           <ActionToggleButton
             click={() => setExpanded(!expanded)}
@@ -65,12 +58,7 @@ const AppCard = ({ x, click, url }) => {
               />
               <ApplicationStatus state={x.state} cleanerMark={x.cleanerMark} />
             </Row>
-            <NoteControl
-              org={x}
-              url={url}
-              editing={editing}
-              setEditing={setEditing}
-            />
+            <NoteControl org={x} url={url} />
           </>
         }
         extra={<StartStopButton build={x} click={click} running={x.running} />}
