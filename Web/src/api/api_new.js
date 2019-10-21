@@ -66,9 +66,8 @@ export function runTask(name) {
   return Axios.post(`${tasksUri}/${name}`);
 }
 
-export function getSettings(force) {
-  const forceParam = !!force ? "?force=true" : "";
-  return Axios.get(settingsUri + forceParam);
+export function getSettings() {
+  return Axios.get(settingsUri);
 }
 
 export function setSettings(settings) {
