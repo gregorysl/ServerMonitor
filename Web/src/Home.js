@@ -39,7 +39,6 @@ const Home = props => {
   const { errors, settings, tasks, disk, oracle } = useSelector(state => state);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("qwe");
     dispatch(actions.getTasksAction());
     dispatch(actions.getDiskUsageAction());
     dispatch(actions.getOracleAction());
@@ -58,7 +57,6 @@ const Home = props => {
   return (
     <div style={{ background: "#fff", padding: 5, height: "100%" }}>
       <h1>Hardware Monitor</h1>
-      {/* <Hardware /> */}
       <IisMaster settings={settings} />
       <DataTable
         {...oracle}
