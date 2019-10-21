@@ -186,6 +186,10 @@ let Settings = props => {
             >
               <FieldArray name="scheduledTasks">{dirsSection}</FieldArray>
             </FullCard>
+            <Card className="other" title="Additional Settings">
+              <label>Group Apps by following name: </label>
+              <Field name="commonAppName" component={renderField} type="text" />
+            </Card>
             <Row>
               <Col sm={24} md={12}>
                 <Button
