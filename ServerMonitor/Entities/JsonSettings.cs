@@ -11,7 +11,7 @@ namespace ServerMonitor.Entities
         public List<string> DirsToCheckSize { get; set; } = new List<string>();
 
         public List<string> ScheduledTasks { get; set; } = new List<string>();
-        public string CommonAppName { get; set; }
+        public string CommonAppName { get; set; } = "Api";
         public int CacheInSeconds { get; set; }
         public bool IsOracleInstanceManagerEnabled { get; set; }
         public FilterInput Cleaner { get; set; } = new FilterInput();
