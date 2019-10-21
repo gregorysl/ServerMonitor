@@ -14,17 +14,14 @@ namespace ServerMonitor.Helpers
         private static PerformanceCounter CpuCounter { get; set; }
         private readonly DriveInfo _driveInfo = DriveInfo.GetDrives().First(x => x.Name == "C:\\");
 
-        public Hardware GetHardware()
+        public List<Data<double>> GetHardware()
         {
-            var hardware = new Hardware
+            var hardware = new List<Data<double>>
             {
-                Name = Environment.MachineName,
-                Data = new List<Data<double>>
-                {
-                    new Data<double> {Name = "CPU", Value = CpuUsage()},
-                    new Data<double> {Name = "RAM", Value = MemoryUsage(), Text = TotalMemory().ToString()},
-                    new Data<double> {Name = "HDD", Value = DiskUsage(), Text = TotalDiskSpace().ToString()}
-                }
+                new Data<double> {Name = "CPU", Value = CpuUsage()},
+                new Data<double> {Name = "RAM", Value = MemoryUsage(), Text = TotalMemory().ToString()},
+                new Data<double> {Name = "HDD", Value = DiskUsage(), Text = TotalDiskSpace().ToString()}
+
             };
             return hardware;
         }
