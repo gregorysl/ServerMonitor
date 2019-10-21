@@ -21,6 +21,11 @@ namespace ServerMonitor.Controllers
             var response = new Response();
             try
             {
+                if (string.IsNullOrWhiteSpace(Settings.Data.CommonAppName))
+                {
+                    response.AddErrorNotification("CommonAppName setting is missing");
+                    return response;
+                }
                 Log.Debug("GetFilteredApps called.");
                 response.Data = _handler.GetFilteredApps();
                 Log.Debug("GetFilteredApps call success.");
