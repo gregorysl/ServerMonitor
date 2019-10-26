@@ -53,3 +53,7 @@ export function* watchGetSettings() {
 export function* watchSetCleanerSettings() {
   yield takeLatest(types.SET_SETTINGS_REQUEST, saga.setSettings);
 }
+
+export function* watchGetHeartbeat() {
+  yield takeLatest(types.GET_HEARTBEAT_REQUEST, saga.getHeartbeat);
+}

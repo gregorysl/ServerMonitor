@@ -81,3 +81,6 @@ export function checkLink(data, url) {
 export function getServerLinks(url) {
   return Axios.get(`${url}Settings`);
 }
+export function getHeartbeat(url) {
+  return Axios.get(`${url}heartbeat`);
+}

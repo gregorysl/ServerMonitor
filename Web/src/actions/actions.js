@@ -62,3 +62,9 @@ export const setSettings = settings => ({
   type: types.SET_SETTINGS_REQUEST,
   settings
 });
+
+export const getHeartbeat = (name, url) => ({
+  type: types.GET_HEARTBEAT_REQUEST,
+  name,
+  url
+});

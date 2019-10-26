@@ -167,3 +167,25 @@ export function* setSettings(props) {
     yield put({ type: types.SET_SETTINGS_ERROR, data: error.response.data });
   }
 }
+
+export function* getHeartbeat(props) {
+  try {
+    const data = yield call(api.getHeartbeat, props.url);
+    debugger;
+    if (data.status === 200) {
+      yield put({ type: types.GET_HEARTBEAT_SUCCESS, data: props.name });
+    }
+  } catch (error) {
+    yield put({
+      type: types.GET_HEARTBEAT_ERROR,
+      data: {
+        notifications: [
+          {
+            message: `${error.message} ${props.url}`,
+            type: "Error"
+          }
+        ]
+      }
+    });
+  }
+}
