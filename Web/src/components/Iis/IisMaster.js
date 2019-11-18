@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "antd";
+import { Row } from "antd";
 import ServerLinks from "../Links/ServerLinks";
 import Hardware from "../Hardware";
 import IisSection from "./IisSection";
