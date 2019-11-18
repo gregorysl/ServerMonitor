@@ -2,168 +2,169 @@ import { put, call } from "redux-saga/effects";
 import * as api from "../api/api_new";
 import * as types from "../constants/actionTypes";
 
+function prepareErrorObject(notifications, type) {
+  const notify = notifications.map(x => {
+    return { message: x.message, type: "Error" };
+  });
+  return {
+    type: type,
+    data: {
+      notifications: notify
+    }
+  };
+}
+
 export function* getHardwareData(props) {
-  try {
-    const { data } = yield call(api.getHardware, props.url);
+  const data = yield call(api.getHardware, props.url);
+  if (data.status !== 200) {
+    const errorType = types.GET_HARDWARE_DATA_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({
       type: types.GET_HARDWARE_DATA_SUCCESS,
       data,
       name: props.name
     });
-  } catch (error) {
-    yield put({
-      type: types.GET_HARDWARE_DATA_ERROR,
-      data: {
-        notifications: [
-          {
-            message: `${error.message} ${props.url}`,
-            type: "Error"
-          }
-        ]
-      }
-    });
   }
 }
 
 export function* getIisData(props) {
-  try {
-    const { data } = yield call(api.getIisApp, props.url);
-    if (data.status === "Error") {
-      const notify = data.notifications.map(x => {
-        return { message: x.message, type: "Error" };
-      });
-      yield put({
-        type: types.GET_IIS_APPS_ERROR,
-        data: {
-          notifications: notify
-        }
-      });
-    } else {
-      yield put({
-        type: types.GET_IIS_APPS_SUCCESS,
-        data,
-        url: props.url
-      });
-    }
-  } catch (error) {
+  const data = yield call(api.getIisApp, props.url);
+  if (data.status !== 200) {
+    const errorType = types.GET_IIS_APPS_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({
-      type: types.GET_IIS_APPS_ERROR,
-      data: {
-        notifications: [
-          {
-            message: `${error.message} ${props.url}`,
-            type: "Error"
-          }
-        ]
-      }
+      type: types.GET_IIS_APPS_SUCCESS,
+      data,
+      url: props.url
     });
   }
 }
 
 export function* setIisApp(props) {
-  try {
-    const { data } = yield call(api.setIisApp, props);
+  const data = yield call(api.setIisApp, props);
+  if (data.status !== 200) {
+    const errorType = types.GET_IIS_TOGGLE_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({ type: types.GET_IIS_TOGGLE_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST, url: props.url });
-  } catch (error) {
-    yield put({ type: types.GET_IIS_TOGGLE_ERROR, data: error.response.data });
   }
 }
 
 export function* setIisAppRecycle(props) {
-  try {
-    const { data } = yield call(api.recycleApp, props);
+  const data = yield call(api.recycleApp, props);
+  if (data.status !== 200) {
+    const errorType = types.GET_IIS_RECYCLE_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({ type: types.GET_IIS_RECYCLE_SUCCESS, data });
     yield put({ type: types.GET_IIS_APPS_REQUEST, url: props.url });
-  } catch (error) {
-    yield put({ type: types.GET_IIS_RECYCLE_ERROR, data: error.response.data });
   }
 }
 
 export function* setOracle(props) {
-  try {
-    yield call(api.setOracle, props.data);
+  const data = yield call(api.setOracle, props.data);
+  if (data.status !== 200) {
+    const errorType = types.TOGGLE_ORACLE_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({ type: types.ORACLE_REQUEST });
-  } catch (error) {
-    yield put({ type: types.TOGGLE_ORACLE_ERROR, data: error.response.data });
   }
 }
 
 export function* getDiskUsageData() {
-  try {
-    const { data } = yield call(api.getDisk);
-    yield put({ type: types.DISK_USAGE_SUCCESS, data });
-  } catch (error) {
-    yield put({ type: types.DISK_USAGE_ERROR, data: error.response.data });
+  const data = yield call(api.getDisk);
+  if (data.status !== 200) {
+    const errorType = types.DISK_USAGE_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
+    yield put({
+      type: types.DISK_USAGE_SUCCESS,
+      data
+    });
   }
 }
 
 export function* getTasksData() {
-  try {
-    const { data } = yield call(api.getTasks);
-    const type =
-      data.status === "Success" ? types.TASKS_SUCCESS : types.TASKS_ERROR;
-    yield put({ type, data });
-  } catch (error) {
-    yield put({ type: types.TASKS_ERROR, data: error.response.data });
+  const data = yield call(api.getTasks);
+  if (data.status !== 200) {
+    const errorType = types.TASKS_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
+    yield put({
+      type: types.TASKS_SUCCESS,
+      data
+    });
   }
 }
 
 export function* getSessionsData() {
-  try {
-    const { data } = yield call(api.getUserSessions);
-    yield put({ type: types.SESSIONS_SUCCESS, data });
-  } catch (error) {
-    yield put({ type: types.SESSIONS_ERROR, data: error.response.data });
+  const data = yield call(api.getUserSessions);
+  if (data.status !== 200) {
+    const errorType = types.SESSIONS_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
+    yield put({
+      type: types.SESSIONS_SUCCESS,
+      data
+    });
   }
 }
 
 export function* getOracleData() {
-  try {
-    const { data } = yield call(api.getOracleInstancies);
-    const type =
-      data.status === "Success" ? types.ORACLE_SUCCESS : types.ORACLE_ERROR;
-    yield put({ type, data });
-  } catch (error) {
-    yield put({ type: types.ORACLE_ERROR, data: error.response.data });
+  const data = yield call(api.getOracleInstancies);
+  if (data.status !== 200) {
+    const errorType = types.ORACLE_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
+    yield put({
+      type: types.ORACLE_SUCCESS,
+      data
+    });
   }
 }
 
 export function* runTask(props) {
-  try {
-    const { data } = yield call(api.runTask, props.name);
+  const data = yield call(api.runTask, props.name);
+  if (data.status !== 200) {
+    const errorType = types.TASKS_RUN_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({ type: types.TASKS_RUN_SUCCESS, data });
     yield put({ type: types.TASKS_REQUEST });
-  } catch (error) {
-    yield put({ type: types.TASKS_RUN_ERROR, data: error.response.data });
   }
 }
 
 export function* setKillUser(props) {
-  try {
-    const { data } = yield call(api.killUser, props.name);
+  const data = yield call(api.killUser, props.name);
+  if (data.status !== 200) {
+    const errorType = types.SESSIONS_KILL_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({ type: types.SESSIONS_KILL_SUCCESS, data });
     yield put({ type: types.SESSIONS_REQUEST });
-  } catch (error) {
-    yield put({ type: types.SESSIONS_KILL_ERROR, data: error.response.data });
   }
 }
 
 export function* getSettings() {
-  try {
-    const { data } = yield call(api.getSettings);
+  const data = yield call(api.getSettings);
+  if (data.status !== 200) {
+    const errorType = types.GET_SETTINGS_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({ type: types.GET_SETTINGS_SUCCESS, data });
-  } catch (error) {
-    yield put({ type: types.GET_SETTINGS_ERROR, data: error.response.data });
   }
 }
 
 export function* setSettings(props) {
-  try {
-    const { data } = yield call(api.setSettings, props.settings);
+  const data = yield call(api.setSettings, props.settings);
+  if (data.status !== 200) {
+    const errorType = types.GET_SETTINGS_ERROR;
+    yield put(prepareErrorObject(errorType, data.notifications));
+  } else {
     yield put({ type: types.GET_SETTINGS_REQUEST, force: true });
     yield put({ type: types.SET_SETTINGS_SUCCESS, data });
-  } catch (error) {
-    yield put({ type: types.SET_SETTINGS_ERROR, data: error.response.data });
   }
 }

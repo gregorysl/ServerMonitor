@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getServerLinks } from "../../api/api_new";
+import { getSettings } from "../../api/api_new";
 import ServiceItem from "../ServiceItem";
 
 const ServerLinks = ({ url }) => {
@@ -7,8 +7,9 @@ const ServerLinks = ({ url }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const result = await getServerLinks(url);
-      const linkData = result.data.data.links;
+      const settingsUrl = `${url}Settings/`;
+      const result = await getSettings(false, settingsUrl);
+      const linkData = result.data.links;
       setLinks(linkData);
     }
     fetchData();

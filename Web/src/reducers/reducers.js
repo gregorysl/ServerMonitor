@@ -38,8 +38,6 @@ const sessionsColumns = [
   { title: "State", dataIndex: "state", key: "state" }
 ];
 
-const hardwareInitialState = [];
-
 const tableInitialState = {
   columns: [],
   keys: [],
