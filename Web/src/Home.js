@@ -53,16 +53,17 @@ const Home = props => {
       }
     });
   }, [errors]);
-
   return (
     <div style={{ background: "#fff", padding: 5, height: "100%" }}>
       <h1>Hardware Monitor</h1>
       <IisMaster settings={settings} />
-      <DataTable
-        {...oracle}
-        title="Oracle Instances"
-        extraColumns={isDeployingColumn}
-      />
+      {oracle.data && (
+        <DataTable
+          {...oracle}
+          title="Oracle Instances"
+          extraColumns={isDeployingColumn}
+        />
+      )}
       <DataTable {...disk} title="Disk Status" rowKey="path" />
 
       <DataTable
