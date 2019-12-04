@@ -5,7 +5,16 @@ import arrayMutators from "final-form-arrays";
 import { setSettings } from "./actions/actions";
 import { FieldArray } from "react-final-form-arrays";
 
-import { Button, Input, Row, Col, Card, Checkbox, InputNumber } from "antd";
+import {
+  Button,
+  Input,
+  Row,
+  Col,
+  Card,
+  Checkbox,
+  InputNumber,
+  PageHeader
+} from "antd";
 
 const renderField = ({ input, label, type }) => (
   <Input {...input} type={type} placeholder={label} />
@@ -41,37 +50,12 @@ const RemoveButton = ({ fields, index }) => (
     ></Button>
   </Col>
 );
-
-const FullCard = ({
-  push,
-  name,
-  title,
-  subtitle,
-  newItem = {},
-  disableAdd,
-  children
-}) => (
-  <Card
-    className="settings-card"
-    title={
-      <Row type="flex" style={{ alignItems: "center" }} gutter={16}>
-        <Col sm={24} md={3}>
-          {!disableAdd && (
-            <Button icon="plus" onClick={() => push(name, newItem)}>
-              Add
-            </Button>
-          )}
-        </Col>
-        <Col>
-          <h3 className="card-header-title align-left">{title}</h3>
-          <h5 className="align-left">{subtitle}</h5>
-        </Col>
-      </Row>
-    }
-  >
-    {children}
-  </Card>
+const AddButton = ({ push, name, newItem = {} }) => (
+  <Button icon="plus" onClick={() => push(name, newItem)}>
+    Add
+  </Button>
 );
+
 const linksSection = ({ fields }) =>
   fields.map((member, index) => (
     <Row key={index}>
@@ -113,7 +97,7 @@ let Settings = props => {
       render={({
         form: {
           reset,
-          mutators: { push, pop }
+          mutators: { push }
         },
         handleSubmit,
         pristine,
@@ -151,41 +135,36 @@ let Settings = props => {
               <label>Path: </label>
               <Field name={pathType} component={renderField} type="text" />
             </Card>
-            <FullCard
-              push={push}
-              name="hardwareList"
+            <PageHeader
               title="Additional servers"
-              subtitle="(this will add more tabs to Hardware section)"
+              subTitle="(this will add more tabs to Hardware section)"
+              extra={<AddButton push={push} name="hardwareList" />}
             >
               <FieldArray name="hardwareList">{hardwareSection}</FieldArray>
-            </FullCard>
-            <FullCard
-              push={push}
-              name="links"
+            </PageHeader>
+            <PageHeader
               title="Components to check"
-              subtitle="(add data for services avaibility you want to check)"
+              subTitle="(add data for services avaibility you want to check)"
+              extra={<AddButton push={push} name="links" />}
             >
               <FieldArray name="links">{linksSection}</FieldArray>
-            </FullCard>
-            <FullCard
-              push={push}
-              name="dirsToCheckSize"
+            </PageHeader>
+            <PageHeader
               title="Directories"
-              subtitle="(will check size occupied)"
-              newItem={""}
+              subTitle="(will check size occupied)"
+              extra={<AddButton push={push} name="links" />}
             >
               <FieldArray name="dirsToCheckSize">{dirsSection}</FieldArray>
-            </FullCard>
-            <FullCard
-              push={push}
-              name="scheduledTasks"
+            </PageHeader>
+            <PageHeader
               title="Scheduled tasks"
-              subtitle="( )"
-              section={dirsSection}
-              newItem={""}
+              subTitle=""
+              extra={
+                <AddButton push={push} name="scheduledTasks" newItem={""} />
+              }
             >
               <FieldArray name="scheduledTasks">{dirsSection}</FieldArray>
-            </FullCard>
+            </PageHeader>
             <Card className="other" title="Additional Settings">
               <label>Group Apps by following name: </label>
               <Field name="commonAppName" component={renderField} type="text" />
