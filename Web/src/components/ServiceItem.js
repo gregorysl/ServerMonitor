@@ -25,7 +25,7 @@ const ServiceItem = ({ data, url }) => {
 
   return (
     <Tooltip title={message}>
-      <Tag color={color}>
+      <Tag className="tag-height" color={color}>
         <a className="service-link" target="blank" href={data.url}>
           {loading && <Spin size="small" indicator={antIcon} />}
           {data.name}
