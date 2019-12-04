@@ -6,11 +6,6 @@ import Home from "./Home";
 import Settings from "./Settings";
 import * as actions from "./actions/actions";
 
-if (process.env.NODE_ENV !== "production") {
-  const whyDidYouRender = require("@welldone-software/why-did-you-render");
-  whyDidYouRender(React);
-}
-
 const { Header, Content } = Layout;
 const App = props => {
   const { errors, settings } = useSelector(state => state);
