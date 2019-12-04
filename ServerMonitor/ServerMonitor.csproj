@@ -238,6 +238,7 @@
   <ItemGroup>
     <Compile Include="CommonNameBuildsProvider.cs" />
     <Compile Include="Controllers\CleanerController.cs" />
+    <Compile Include="Controllers\HeartbeatController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Entities\ApplicationEntity.cs" />
     <Compile Include="Entities\BuildEntity.cs" />

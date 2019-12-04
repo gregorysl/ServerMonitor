@@ -111,3 +111,10 @@ export function checkLink(data, url) {
 export function getServerLinks(url) {
   return get(`${url}Settings`);
 }
+export async function getHeartbeat(url) {
+  const response = await ky.get(url, {
+    throwHttpErrors: false,
+    retry: 1
+  });
+  return !response ? { status: 999 } : response;
+}

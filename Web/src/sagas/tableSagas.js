@@ -168,3 +168,15 @@ export function* setSettings(props) {
     yield put({ type: types.SET_SETTINGS_SUCCESS, data });
   }
 }
+
+export function* getHeartbeat(props) {
+  const data = yield call(api.getHeartbeat, props.url);
+  if (data.status === 200) {
+    yield put({ type: types.GET_HEARTBEAT_SUCCESS, data: props.name });
+  } else {
+    yield put({
+      type: types.GET_HEARTBEAT_ERROR,
+      data: props.name
+    });
+  }
+}

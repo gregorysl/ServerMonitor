@@ -54,12 +54,17 @@ export const killSession = name => ({
   name
 });
 
-export const getSettings = force => ({
-  type: types.GET_SETTINGS_REQUEST,
-  force
+export const getSettings = () => ({
+  type: types.GET_SETTINGS_REQUEST
 });
 
 export const setSettings = settings => ({
   type: types.SET_SETTINGS_REQUEST,
   settings
+});
+
+export const getHeartbeat = (name, url) => ({
+  type: types.GET_HEARTBEAT_REQUEST,
+  name,
+  url
 });

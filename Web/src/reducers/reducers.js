@@ -181,6 +181,26 @@ function hardwareReducer(state = {}, action) {
   }
 }
 
+function heartbeatReducer(state = {}, action) {
+  switch (action.type) {
+    case types.GET_HEARTBEAT_REQUEST:
+      const newStateReq = { ...state };
+      if (Object.keys(newStateReq).indexOf(action.name) === -1) {
+        newStateReq[action.name] = { loaded: false, loading: true };
+        return { ...newStateReq };
+      }
+      return state;
+    case types.GET_HEARTBEAT_ERROR:
+    case types.GET_HEARTBEAT_SUCCESS:
+      const newState = { ...state };
+      const working = action.type === types.GET_HEARTBEAT_SUCCESS;
+      newState[action.data] = { loading: false, loaded: true, working };
+      return { ...newState };
+    default:
+      return state;
+  }
+}
+
 function settingsReducer(
   state = {
     hardwareList: [],
@@ -193,11 +213,12 @@ function settingsReducer(
 ) {
   switch (action.type) {
     case types.GET_SETTINGS_SUCCESS:
-      return { ...action.data.data, loaded: true };
+      return { ...state, ...action.data.data, loaded: true };
     default:
       return state;
   }
 }
+
 function refreshReducer(state = {}, { type, url }) {
   switch (type) {
     case types.GET_IIS_APPS_REQUEST:
@@ -288,7 +309,8 @@ const rootReducer = combineReducers({
   sessions: sessionsReducer,
   oracle: oracleReducer,
   errors: errorReducer,
-  settings: settingsReducer
+  settings: settingsReducer,
+  heartbeat: heartbeatReducer
 });
 
 export default rootReducer;
