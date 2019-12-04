@@ -47,7 +47,7 @@ export function* watchKillUser() {
 }
 
 export function* watchGetSettings() {
-  yield takeLatest(types.GET_SETTINGS_REQUEST, saga.getSettings);
+  yield takeEvery(types.GET_SETTINGS_REQUEST, saga.getSettings);
 }
 
 export function* watchSetCleanerSettings() {
@@ -55,5 +55,5 @@ export function* watchSetCleanerSettings() {
 }
 
 export function* watchGetHeartbeat() {
-  yield takeLatest(types.GET_HEARTBEAT_REQUEST, saga.getHeartbeat);
+  yield takeEvery(types.GET_HEARTBEAT_REQUEST, saga.getHeartbeat);
 }

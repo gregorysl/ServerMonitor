@@ -186,15 +186,23 @@ function heartbeatReducer(state = {}, action) {
     case types.GET_HEARTBEAT_REQUEST:
       const newStateReq = { ...state };
       if (Object.keys(newStateReq).indexOf(action.name) === -1) {
-        newStateReq[action.name] = {};
+        newStateReq[action.name] = { loaded: false, loading: true };
         return { ...newStateReq };
       }
       return state;
     case types.GET_HEARTBEAT_SUCCESS:
-      debugger;
       const newState = { ...state };
-      newState[action.data] = { loaded: true, working: true };
+      newState[action.data] = { loading: false, loaded: true, working: true };
       return { ...newState };
+    case types.GET_HEARTBEAT_ERROR:
+      const newStateErr = { ...state };
+      newStateErr[action.data] = {
+        loading: false,
+        loaded: true,
+        working: false
+      };
+      return { ...newStateErr };
+
     default:
       return state;
   }

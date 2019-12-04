@@ -170,23 +170,13 @@ export function* setSettings(props) {
 }
 
 export function* getHeartbeat(props) {
-  try {
-    const data = yield call(api.getHeartbeat, props.url);
-    debugger;
-    if (data.status === 200) {
-      yield put({ type: types.GET_HEARTBEAT_SUCCESS, data: props.name });
-    }
-  } catch (error) {
+  const data = yield call(api.getHeartbeat, props.url);
+  if (data.status === 200) {
+    yield put({ type: types.GET_HEARTBEAT_SUCCESS, data: props.name });
+  } else {
     yield put({
       type: types.GET_HEARTBEAT_ERROR,
-      data: {
-        notifications: [
-          {
-            message: `${error.message} ${props.url}`,
-            type: "Error"
-          }
-        ]
-      }
+      data: props.name
     });
   }
 }
