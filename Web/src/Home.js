@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Row } from "antd";
 import * as actions from "./actions/actions";
 import { Checkbox, notification } from "antd";
 import DataTable from "./components/Iis/DataTable";
-import IisMaster from "./components/Iis/IisMaster";
+import ServerData from "./components/Iis/ServerData";
 import TaskActionButtons from "./components/TaskActionButtons";
 import OracleToggleButton from "./components/OracleToggleButton";
 import SessionsPanel from "./components/SessionsPanel";
@@ -53,10 +54,15 @@ const Home = props => {
       }
     });
   }, [errors]);
+  const data = settings.hardwareList.map(x => (
+    <ServerData key={x.name} name={x.name} url={x.url} />
+  ));
   return (
     <div style={{ background: "#fff", padding: 5, height: "100%" }}>
-      <h1>Hardware Monitor</h1>
-      <IisMaster settings={settings} />
+      <Row>
+        <h1 className="table-title">IIS Applications</h1>
+        {data}
+      </Row>
       {oracle.data && (
         <DataTable
           {...oracle}

@@ -5,7 +5,7 @@ import ServerLinks from "../Links/ServerLinks";
 import Hardware from "../Hardware";
 import IisSection from "./IisSection";
 import { getHeartbeat } from "../../actions/actions";
-const A = ({ name, url }) => {
+const ServerData = ({ name, url }) => {
   const heartbeat = useSelector(state => state.heartbeat[name]);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -31,16 +31,4 @@ const A = ({ name, url }) => {
     </div>
   );
 };
-const IisServicesList = props => {
-  const data = props.settings.hardwareList.map(x => (
-    <A key={x.name} name={x.name} url={x.url} />
-  ));
-  return (
-    <Row>
-      <h1 className="table-title">IIS Applications</h1>
-      {data}
-    </Row>
-  );
-};
-
-export default IisServicesList;
+export default ServerData;
