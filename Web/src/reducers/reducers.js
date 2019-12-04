@@ -190,19 +190,12 @@ function heartbeatReducer(state = {}, action) {
         return { ...newStateReq };
       }
       return state;
+    case types.GET_HEARTBEAT_ERROR:
     case types.GET_HEARTBEAT_SUCCESS:
       const newState = { ...state };
-      newState[action.data] = { loading: false, loaded: true, working: true };
+      const working = action.type === types.GET_HEARTBEAT_SUCCESS;
+      newState[action.data] = { loading: false, loaded: true, working };
       return { ...newState };
-    case types.GET_HEARTBEAT_ERROR:
-      const newStateErr = { ...state };
-      newStateErr[action.data] = {
-        loading: false,
-        loaded: true,
-        working: false
-      };
-      return { ...newStateErr };
-
     default:
       return state;
   }
