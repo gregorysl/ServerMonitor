@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row } from "antd";
+import { Row, Result } from "antd";
 import ServerLinks from "../Links/ServerLinks";
 import Hardware from "../Hardware";
 import IisSection from "./IisSection";
@@ -14,20 +14,20 @@ const A = ({ name, url }) => {
     }
   }, [dispatch, heartbeat, name, url]);
 
-  if (!heartbeat) return null;
-  const shouldLoad = heartbeat.working;
+  const working = heartbeat && heartbeat.working;
   return (
     <div style={{ marginBottom: 5 }}>
       <Row type="flex" justify="start">
-        <Row>
-          <Row>
-            <span className="app-title">{name}</span>
-          </Row>
-          <Row>{shouldLoad && <ServerLinks url={url} />}</Row>
-        </Row>
-        {shouldLoad && <Hardware name={name} url={url} />}
+        <span className="app-title">{name}</span>
+        {working && (
+          <>
+            <ServerLinks url={url} />
+            <Hardware name={name} url={url} />
+          </>
+        )}
       </Row>
-      <Row>{shouldLoad && <IisSection name={name} url={url} />}</Row>
+      {working && <IisSection name={name} url={url} />}
+      {!working && <Result status="warning" title="Connection Error!" />}
     </div>
   );
 };
