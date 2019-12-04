@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, Layout } from "antd";
+import { Icon, Layout, notification } from "antd";
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from "./Home";
 import Settings from "./Settings";
@@ -13,9 +13,18 @@ if (process.env.NODE_ENV !== "production") {
 
 const { Header, Content } = Layout;
 const App = props => {
-  const result = useSelector(state => state.settings);
+  const { errors, settings } = useSelector(state => state);
   const dispatch = useDispatch();
-  if (!result.loaded) {
+  useEffect(() => {
+    errors.data.forEach(item => {
+      if (item.type === "Success") {
+        notification.success(item);
+      } else {
+        notification.error(item);
+      }
+    });
+  }, [errors]);
+  if (!settings.loaded) {
     dispatch(actions.getSettings());
   }
   return (

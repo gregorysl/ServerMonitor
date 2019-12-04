@@ -49,6 +49,7 @@ const userSessionsErrorText = "User Sessions";
 const tasksErrorText = "Tasks";
 const hardwareErrorText = "Hardware Monitor";
 const diskUsageErrorText = "Disk Usage";
+const settingsErrorText = "Settings";
 const iisErrorText = "IIS Applications";
 
 function tableReducer(state = tableInitialState, action) {
@@ -291,6 +292,12 @@ function errorReducer(state = { id: 0, data: [] }, action) {
     case types.GET_IIS_RECYCLE_ERROR:
     case types.GET_IIS_RECYCLE_SUCCESS:
       title = iisErrorText;
+      break;
+    case types.SET_SETTINGS_SUCCESS:
+    case types.SET_SETTINGS_ERROR:
+    case types.GET_SETTINGS_ERROR:
+      debugger;
+      title = settingsErrorText;
       break;
     default:
       title = "";

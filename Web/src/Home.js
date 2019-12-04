@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row } from "antd";
 import * as actions from "./actions/actions";
-import { Checkbox, notification } from "antd";
+import { Checkbox } from "antd";
 import DataTable from "./components/Iis/DataTable";
 import ServerData from "./components/Iis/ServerData";
 import TaskActionButtons from "./components/TaskActionButtons";
@@ -37,7 +37,7 @@ const taskAction = {
 };
 
 const Home = props => {
-  const { errors, settings, tasks, disk, oracle } = useSelector(state => state);
+  const { settings, tasks, disk, oracle } = useSelector(state => state);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(actions.getTasksAction());
@@ -45,15 +45,6 @@ const Home = props => {
     dispatch(actions.getOracleAction());
   }, [dispatch, tasks.loaded, disk.loaded, oracle.loaded]);
 
-  useEffect(() => {
-    errors.data.forEach(item => {
-      if (item.type === "Success") {
-        notification.success(item);
-      } else {
-        notification.error(item);
-      }
-    });
-  }, [errors]);
   const data = settings.hardwareList.map(x => (
     <ServerData key={x.name} name={x.name} url={x.url} />
   ));
