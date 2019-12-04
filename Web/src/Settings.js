@@ -10,7 +10,6 @@ import {
   Input,
   Row,
   Col,
-  Card,
   Checkbox,
   InputNumber,
   PageHeader
@@ -110,7 +109,7 @@ let Settings = props => {
             : "cleaner.jsonWhitelistPath";
         return (
           <form onSubmit={handleSubmit}>
-            <Card className="cleaner" title="Cleaner configuration">
+            <PageHeader title="Cleaner configuration">
               <Row>
                 <label>Cleaner can remove builds older than (days): </label>
                 <Field name={`cleaner.beforeDays`} component={numberField} />
@@ -134,7 +133,7 @@ let Settings = props => {
               </Row>
               <label>Path: </label>
               <Field name={pathType} component={renderField} type="text" />
-            </Card>
+            </PageHeader>
             <PageHeader
               title="Additional servers"
               subTitle="(this will add more tabs to Hardware section)"
@@ -158,17 +157,16 @@ let Settings = props => {
             </PageHeader>
             <PageHeader
               title="Scheduled tasks"
-              subTitle=""
               extra={
                 <AddButton push={push} name="scheduledTasks" newItem={""} />
               }
             >
               <FieldArray name="scheduledTasks">{dirsSection}</FieldArray>
             </PageHeader>
-            <Card className="other" title="Additional Settings">
+            <PageHeader title="Additional Settings">
               <label>Group Apps by following name: </label>
               <Field name="commonAppName" component={renderField} type="text" />
-            </Card>
+            </PageHeader>
             <Row>
               <Col sm={24} md={12}>
                 <Button
