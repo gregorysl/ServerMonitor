@@ -45,6 +45,7 @@ const Home = props => {
     dispatch(actions.getOracleAction());
   }, [dispatch, tasks.loaded, disk.loaded, oracle.loaded]);
 
+  
   const data = settings.hardwareList.map(x => (
     <ServerData key={x.name} name={x.name} url={x.url} />
   ));

@@ -117,12 +117,14 @@ function tasksReducer(state = tableInitialState, action) {
 function sessionsReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.SESSIONS_SUCCESS:
-      return {
+      let newState = {
         ...state,
-        data: action.data.data,
         columns: sessionsColumns,
         loaded: true,
       };
+      if (action.data.responseStatus === "Success")
+        newState.data = action.data.data;
+      return newState;
     default:
       return state;
   }
@@ -164,8 +166,10 @@ function oracleReducer(state = tableInitialState, action) {
 function hardwareReducer(state = {}, action) {
   switch (action.type) {
     case types.GET_HARDWARE_DATA_SUCCESS:
+      if (action.data.responseStatus != "Success") return state;
       const newState = { ...state };
       const data = action.data.data;
+
       if (Object.keys(newState).indexOf(action.name) === -1) {
         newState[action.name] = { data: [] };
       }
@@ -297,7 +301,6 @@ function errorReducer(state = { id: 0, data: [] }, action) {
     case types.SET_SETTINGS_SUCCESS:
     case types.SET_SETTINGS_ERROR:
     case types.GET_SETTINGS_ERROR:
-      debugger;
       title = settingsErrorText;
       break;
     default:
