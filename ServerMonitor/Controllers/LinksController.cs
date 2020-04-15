@@ -19,7 +19,7 @@ namespace ServerMonitor.Controllers
             var links = Settings.Data.Links;
             if (links == null)
             {
-                response.Status = Status.Error;
+                response.ResponseStatus = Status.Error;
                 response.AddErrorNotification("Configuration of links missing");
                 return response;
             }
@@ -35,7 +35,7 @@ namespace ServerMonitor.Controllers
             var links = Settings.Data.Links;
             if (links == null)
             {
-                response.Status = Status.Error;
+                response.ResponseStatus = Status.Error;
                 response.AddErrorNotification("Configuration of links missing");
                 return response;
             }

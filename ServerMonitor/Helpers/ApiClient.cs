@@ -23,7 +23,7 @@ namespace ServerMonitor.Helpers
                 {
                     return new Response
                     {
-                        Status = Status.Error,
+                        ResponseStatus = Status.Error,
                         Notifications =
                         {
                             new Notification {Status = Status.Error, Message = responseApi.ReasonPhrase}
@@ -36,7 +36,7 @@ namespace ServerMonitor.Helpers
                 var response = JsonConvert.DeserializeObject<T>(result);
                 return new Response
                 {
-                    Status = Status.Success,
+                    ResponseStatus = Status.Success,
                     Data = response
                 };
             }

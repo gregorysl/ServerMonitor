@@ -22,7 +22,7 @@ namespace ServerMonitor.Controllers
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
-                response.Status = Status.Error;
+                response.ResponseStatus = Status.Error;
                 response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
@@ -38,7 +38,7 @@ namespace ServerMonitor.Controllers
 
             if (config == null)
             {
-                response.Status = Status.Error;
+                response.ResponseStatus = Status.Error;
                 response.AddErrorNotification("Configuration of hardwareList missing");
                 return response;
             }
@@ -47,11 +47,11 @@ namespace ServerMonitor.Controllers
             {
                 var linkUrl = $"{link.Url.EnsureSlash()}hardware/get";
                 var responseItem = ApiClient.Get<Response>(linkUrl);
-                if (responseItem.Status == Status.Success)
+                if (responseItem.ResponseStatus == Status.Success)
                 {
                     var innerResponse = (Response) responseItem.Data;
                     response.Notifications.AddRange(innerResponse.Notifications);
-                    if (innerResponse.Status == Status.Success)
+                    if (innerResponse.ResponseStatus == Status.Success)
                     {
                         var data = ((JObject) innerResponse.Data).ToObject<Hardware>();
                         hardwareList.Add(data);

@@ -29,7 +29,7 @@ namespace ServerMonitor.Helpers
                     Content = new ObjectContent(typeof(Response),
                         new Response
                         {
-                            Status = Status.Error,
+                            ResponseStatus = Status.Error,
                             Notifications =
                                 new List<Notification> {notification}
                         },

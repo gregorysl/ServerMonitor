@@ -9,7 +9,7 @@ namespace ServerMonitor.Controllers
     {
         public Response Get()
         {
-            var response = new Response{Status = Status.Success};
+            var response = new Response {ResponseStatus = Status.Success};
             return response;
         }
 

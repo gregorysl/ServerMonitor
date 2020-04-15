@@ -24,7 +24,7 @@ namespace ServerMonitor.Controllers
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
-                response.Status = Status.Error;
+                response.ResponseStatus = Status.Error;
                 response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }
@@ -55,7 +55,6 @@ namespace ServerMonitor.Controllers
                 var task = TaskService.Instance.GetTask(name);
                 if (task == null)
                 {
-                    response.Status = Status.Error;
                     response.AddErrorNotification("There is no task with given name");
                     return response;
                 }
@@ -72,13 +71,12 @@ namespace ServerMonitor.Controllers
                     message = "started";
                 }
 
-                response.AddSuccessNotification($"Task {message} successfuly");
+                response.AddSuccessNotification($"Task {message} successful");
                 return response;
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
-                response.Status = Status.Error;
                 response.AddErrorNotification(ex.Message, ex.StackTrace);
                 return response;
             }

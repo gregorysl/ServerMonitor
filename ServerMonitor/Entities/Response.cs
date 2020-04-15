@@ -7,7 +7,7 @@ namespace ServerMonitor.Entities
     public class Response
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public Status Status { get; set; }
+        public Status ResponseStatus { get; set; }
 
         public object Data { get; set; }
         public List<Notification> Notifications { get; set; } = new List<Notification>();
@@ -19,7 +19,7 @@ namespace ServerMonitor.Entities
 
         public void AddErrorNotification(string message, string messageDetails = "")
         {
-            Status = Status.Error;
+            ResponseStatus = Status.Error;
             AddNotification(Status.Error, message, messageDetails);
         }
 

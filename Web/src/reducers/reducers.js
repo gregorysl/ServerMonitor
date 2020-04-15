@@ -8,41 +8,41 @@ const diskColumns = [
   {
     title: "Size",
     dataIndex: "size",
-    render: size => (size !== "" ? filesize(size) : "")
+    render: (size) => (size !== "" ? filesize(size) : ""),
   },
   {
     title: "Usage",
     dataIndex: "usage",
     key: "usage",
-    render: usage => `${usage}%`
-  }
+    render: (usage) => `${usage}%`,
+  },
 ];
 const tasksColumns = [
   { title: "Name", dataIndex: "name", key: "name" },
   { title: "State", dataIndex: "state", key: "state" },
   { title: "Last Run Time", dataIndex: "lastRunTime", key: "lastRunTime" },
-  { title: "Last Result", dataIndex: "lastTaskResult", key: "lastTaskResult" }
+  { title: "Last Result", dataIndex: "lastTaskResult", key: "lastTaskResult" },
 ];
 const oracleColumns = [
   { title: "Name", dataIndex: "currentBuildName" },
   {
     title: "Date",
     dataIndex: "currentBuildDate",
-    Cell: date => dateformat(date.value, "dd.mm.yyyy, dddd")
+    Cell: (date) => dateformat(date.value, "dd.mm.yyyy, dddd"),
   },
-  { title: "Instance", dataIndex: "displayName" }
+  { title: "Instance", dataIndex: "displayName" },
 ];
 const sessionsColumns = [
   { title: "User", dataIndex: "user", key: "user" },
   { title: "Login Date", dataIndex: "loginDate", key: "loginDate" },
-  { title: "State", dataIndex: "state", key: "state" }
+  { title: "State", dataIndex: "state", key: "state" },
 ];
 
 const tableInitialState = {
   columns: [],
   keys: [],
   data: [],
-  errors: []
+  errors: [],
 };
 const oracleInstanciesErrorText = "Oracle Instancies";
 const userSessionsErrorText = "User Sessions";
@@ -55,6 +55,7 @@ const iisErrorText = "IIS Applications";
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.GET_IIS_APPS_SUCCESS:
+      if (action.data.responseStatus != "Success") return state;
       let newKeys = [...state.keys];
       let newData = [...state.data];
       let keyIndex = newKeys.indexOf(action.url);
@@ -68,7 +69,7 @@ function tableReducer(state = tableInitialState, action) {
       let newState = {
         ...state,
         keys: newKeys,
-        data: newData
+        data: newData,
       };
       return newState;
     default:
@@ -83,7 +84,7 @@ function diskUsageReducer(state = tableInitialState, action) {
         ...state,
         ...action.data,
         columns: diskColumns,
-        loaded: true
+        loaded: true,
       };
     default:
       return state;
@@ -97,16 +98,16 @@ function tasksReducer(state = tableInitialState, action) {
         ...state,
         data: action.data.data,
         columns: tasksColumns,
-        loaded: true
+        loaded: true,
       };
     case types.TASKS_RUN_REQUEST:
       return {
-        ...state
+        ...state,
       };
     case types.TASKS_ERROR:
       return {
         ...state,
-        loaded: true
+        loaded: true,
       };
     default:
       return state;
@@ -120,7 +121,7 @@ function sessionsReducer(state = tableInitialState, action) {
         ...state,
         data: action.data.data,
         columns: sessionsColumns,
-        loaded: true
+        loaded: true,
       };
     default:
       return state;
@@ -133,7 +134,7 @@ function oracleReducer(state = tableInitialState, action) {
       if (!action.data.data) {
         return {
           columns: oracleColumns,
-          loaded: true
+          loaded: true,
         };
       }
 
@@ -141,19 +142,19 @@ function oracleReducer(state = tableInitialState, action) {
         ...state,
         data: action.data.data,
         columns: oracleColumns,
-        loaded: true
+        loaded: true,
       };
 
     case types.ORACLE_ERROR:
       return {
         ...state,
         columns: oracleColumns,
-        loaded: true
+        loaded: true,
       };
     case types.TOGGLE_ORACLE_REQUEST:
       return {
         ...state,
-        loaded: false
+        loaded: false,
       };
     default:
       return state;
@@ -208,7 +209,7 @@ function settingsReducer(
     links: [],
     dirsToCheckSize: [],
     scheduledTasks: [],
-    cleaner: {}
+    cleaner: {},
   },
   action
 ) {
@@ -245,16 +246,16 @@ function addAllNotifications(stateArray, notifications, message) {
         {
           message,
           description: "404",
-          type: "Error"
-        }
-      ]
+          type: "Error",
+        },
+      ],
     };
   }
-  const toAdd = notifications.map(x => ({
+  const toAdd = notifications.map((x) => ({
     id: id++,
     message,
     description: x.message,
-    type: x.status
+    type: x.responseStatus,
   }));
   return { id: id + 1, data: [...toAdd] };
 }
@@ -317,7 +318,7 @@ const rootReducer = combineReducers({
   oracle: oracleReducer,
   errors: errorReducer,
   settings: settingsReducer,
-  heartbeat: heartbeatReducer
+  heartbeat: heartbeatReducer,
 });
 
 export default rootReducer;

@@ -53,7 +53,7 @@ namespace ServerMonitor.Controllers
                 }
 
                 response.AddErrorNotification($"Error trying to recycle {name}");
-                response.Status = Status.Error;
+                response.ResponseStatus = Status.Error;
                 return response;
             }
             catch (Exception ex)
