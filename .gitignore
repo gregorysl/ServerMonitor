@@ -6,7 +6,6 @@ Web/.cache
 # Only apps should have lockfiles
 Web/yarn.lock
 Web/yarn-error.log
-Web/package-lock.json
 Web/dist
 Web/dist/server_monitor.css
 Web/dist/server_monitor.js
