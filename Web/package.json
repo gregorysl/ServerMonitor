@@ -33,45 +33,6 @@
     "test": "craco test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "prettier"
-    ],
-    "plugins": [
-      "prettier"
-    ],
-    "rules": {
-      "global-require": "off",
-      "react/jsx-filename-extension": [
-        1,
-        {
-          "extensions": [
-            ".js",
-            ".jsx"
-          ]
-        }
-      ],
-      "linebreak-style": 0,
-      "comma-dangle": [
-        "error",
-        "never"
-      ],
-      "react/no-unused-prop-types": "warn",
-      "no-unused-vars": "warn",
-      "no-debugger": 0,
-      "no-console": 0,
-      "no-param-reassign": [
-        "error",
-        {
-          "props": false
-        }
-      ],
-      "prettier/prettier": [
-        "error"
-      ]
-    }
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
@@ -79,13 +40,14 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "eslint": "6.8.0",
-    "eslint-config-airbnb": "18.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "6.10.1",
-    "eslint-plugin-import": "2.20.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "3.1.3",
-    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
     "prettier": "2.0.4"
   }
 }
