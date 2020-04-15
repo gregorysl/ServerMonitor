@@ -259,7 +259,7 @@ function addAllNotifications(stateArray, notifications, message) {
     id: id++,
     message,
     description: x.message,
-    type: x.responseStatus,
+    type: x.status,
   }));
   return { id: id + 1, data: [...toAdd] };
 }
