@@ -18,10 +18,10 @@ const diskColumns = [
   }
 ];
 const tasksColumns = [
-  { title: "Name", dataIndex: "name", key: "name" },
-  { title: "State", dataIndex: "state", key: "state" },
-  { title: "Last Run Time", dataIndex: "lastRunTime", key: "lastRunTime" },
-  { title: "Last Result", dataIndex: "lastTaskResult", key: "lastTaskResult" }
+  { title: "Name", field: "name" },
+  { title: "State", field: "state" },
+  { title: "Last Run Time", field: "lastRunTime" },
+  { title: "Last Result", field: "lastTaskResult" }
 ];
 const oracleColumns = [
   { title: "Name", dataIndex: "currentBuildName" },
@@ -33,9 +33,9 @@ const oracleColumns = [
   { title: "Instance", dataIndex: "displayName" }
 ];
 const sessionsColumns = [
-  { title: "User", dataIndex: "user", key: "user" },
-  { title: "Login Date", dataIndex: "loginDate", key: "loginDate" },
-  { title: "State", dataIndex: "state", key: "state" }
+  { title: "User", field: "user" },
+  { title: "Login Date", field: "loginDate" },
+  { title: "State", field: "state" }
 ];
 
 const tableInitialState = {
@@ -174,7 +174,7 @@ function hardwareReducer(state = {}, action) {
       if (Object.keys(newState).indexOf(action.name) === -1) {
         newState[action.name] = { data: [] };
       }
-      var current = newState[action.name].data;
+      const current = newState[action.name].data;
       const newItem = {};
       for (const x in data) {
         newItem[data[x].key] = data[x].value;
