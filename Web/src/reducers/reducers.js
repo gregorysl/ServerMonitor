@@ -4,17 +4,16 @@ import dateformat from "dateformat";
 import * as types from "../constants/actionTypes";
 
 const diskColumns = [
-  { title: "Path", dataIndex: "path", key: "path" },
+  { title: "Path", field: "path" },
   {
     title: "Size",
-    dataIndex: "size",
-    render: size => (size !== "" ? filesize(size) : "")
+    field: "size",
+    render: row => (row.size !== "" ? filesize(row.size) : "")
   },
   {
     title: "Usage",
-    dataIndex: "usage",
-    key: "usage",
-    render: usage => `${usage}%`
+    field: "usage",
+    render: row => `${row.usage}%`
   }
 ];
 const tasksColumns = [
