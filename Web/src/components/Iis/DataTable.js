@@ -1,33 +1,33 @@
 import React from "react";
-import { Table } from "antd";
-import PropTypes from "prop-types";
+import MaterialTable from "material-table";
 
-const DataTable = ({ title, data, columns, extraColumns, loaded, rowKey }) => {
-  const finalColumns = [...columns, ...extraColumns];
+const DataTable = ({
+  title,
+  data,
+  columns,
+  extraColumns = [],
+  loaded,
+  rowKey
+}) => {
   return (
-    <React.Fragment>
-      <h1 className="table-title">{title}</h1>
-      <Table
-        loading={!loaded}
-        rowKey={rowKey}
-        pagination={false}
-        columns={finalColumns}
-        dataSource={data}
-      />
-    </React.Fragment>
+    <MaterialTable
+      title={title}
+      columns={columns}
+      data={data}
+      actions={extraColumns}
+      options={{
+        paging: false,
+        actionsColumnIndex: -1,
+        search: false,
+        sorting: false,
+        draggable: false
+      }}
+    />
   );
 };
 
 DataTable.defaultProps = {
-  extraColumns: [],
   rowKey: "id"
-};
-
-DataTable.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  title: PropTypes.string.isRequired,
-  extraColumns: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default DataTable;

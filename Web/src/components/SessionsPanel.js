@@ -1,36 +1,26 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../actions/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { getSessionsAction, killSession } from "../actions/actions";
 import DataTable from "./Iis/DataTable";
-import TooltipButton from "./TooltipButton";
-import { UserDeleteOutlined } from "@ant-design/icons";
+import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 
 const SessionsPanel = props => {
   const dispatch = useDispatch();
   const sessions = useSelector(state => state.sessions);
-  const sessionActions = {
-    title: "Action",
-    key: "x",
-    render: (text, row) =>
-      row.state !== "Active" && (
-        <TooltipButton
-          type="default"
-          click={() => dispatch(actions.killSession(row.id))}
-          icon={<UserDeleteOutlined />}
-          tooltip="Log off user"
-        />
-      ),
-    width: 100
-  };
+  const actions = [
+    rowData => ({
+      icon: () => <ExitToAppOutlinedIcon />,
+      tooltip: "Log off user",
+      onClick: (event, row) => dispatch(killSession(row.id)),
+      hidden: rowData.state === "Active"
+    })
+  ];
+
   if (!sessions.loaded) {
-    dispatch(actions.getSessionsAction());
+    dispatch(getSessionsAction());
   }
   return (
-    <DataTable
-      {...sessions}
-      title="User Sessions"
-      extraColumns={[sessionActions]}
-    />
+    <DataTable {...sessions} title="User Sessions" extraColumns={actions} />
   );
 };
 

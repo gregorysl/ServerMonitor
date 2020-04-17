@@ -3,6 +3,7 @@
   "plugins": ["prettier"],
   "rules": {
     "eqeqeq": "error",
+    "no-var": "error",
     "global-require": "off",
     "react/jsx-filename-extension": [
       1,
@@ -12,7 +13,6 @@
     ],
     "arrow-parens": "off",
     "linebreak-style": ["error", "unix"],
-    // "linebreak-style": "off",
     "comma-dangle": "off",
     "react/no-unused-prop-types": "warn",
     "no-unused-vars": "warn",
