@@ -23,13 +23,13 @@ const tasksColumns = [
   { title: "Last Result", field: "lastTaskResult" }
 ];
 const oracleColumns = [
-  { title: "Name", dataIndex: "currentBuildName" },
   {
     title: "Date",
-    dataIndex: "currentBuildDate",
-    Cell: date => dateformat(date.value, "dd.mm.yyyy, dddd")
+    field: "currentBuildDate",
+    render: row => dateformat(row.currentBuildDate, "dd.mm.yyyy, dddd")
   },
-  { title: "Instance", dataIndex: "displayName" }
+  { title: "Instance", field: "displayName" },
+  { title: "Name", field: "currentBuildName" }
 ];
 const sessionsColumns = [
   { title: "User", field: "user" },
