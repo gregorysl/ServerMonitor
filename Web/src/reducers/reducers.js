@@ -55,7 +55,7 @@ const iisErrorText = "IIS Applications";
 function tableReducer(state = tableInitialState, action) {
   switch (action.type) {
     case types.GET_IIS_APPS_SUCCESS:
-      if (action.data.responseStatus != "Success") return state;
+      if (action.data.responseStatus !== "Success") return state;
       const newKeys = [...state.keys];
       const newData = [...state.data];
       const keyIndex = newKeys.indexOf(action.url);
@@ -167,7 +167,7 @@ function oracleReducer(state = tableInitialState, action) {
 function hardwareReducer(state = {}, action) {
   switch (action.type) {
     case types.GET_HARDWARE_DATA_SUCCESS:
-      if (action.data.responseStatus != "Success") return state;
+      if (action.data.responseStatus !== "Success") return state;
       const newState = { ...state };
       const { data } = action.data;
 
