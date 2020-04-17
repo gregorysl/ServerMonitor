@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { checkLink } from "../api/api_new";
-import { Tooltip, Tag, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { CircularProgress, Tooltip, Chip } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import CheckIcon from "@material-ui/icons/Check";
 
-const antIcon = <LoadingOutlined spin />;
-
-const ServiceItem = ({ data, url }) => {
+const LinkStatus = ({ data, url }) => {
   const [message, setMessage] = useState();
   const [status, setStatus] = useState(false);
-  const [color, setColor] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,21 +17,31 @@ const ServiceItem = ({ data, url }) => {
       setLoading(false);
       setMessage(linkData.message);
       setStatus(linkData.working);
-      setColor(linkData.working ? "#87d068" : "#f50");
     }
     fetchData();
   }, [data, url]);
 
   return (
     <Tooltip title={message}>
-      <Tag className="tag-height" color={color}>
-        <a className="service-link" target="blank" href={data.url}>
-          {loading && <Spin size="small" indicator={antIcon} />}
-          {data.name}
-        </a>
-      </Tag>
+      <Chip
+        size="small"
+        icon={
+          loading ? (
+            <CircularProgress size={14} />
+          ) : status ? (
+            <CheckIcon />
+          ) : (
+            <CloseIcon />
+          )
+        }
+        label={data.name}
+        component="a"
+        href={data.url}
+        color={status ? "primary" : "secondary"}
+        clickable
+      />
     </Tooltip>
   );
 };
 
-export default ServiceItem;
+export default LinkStatus;

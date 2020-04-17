@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Result } from "antd";
-import ServerLinks from "../Links/ServerLinks";
+import ServerLinks from "../Links/LinkStatus";
 import Hardware from "../Hardware";
 import IisSection from "./IisSection";
 import { getHeartbeat } from "../../actions/actions";
