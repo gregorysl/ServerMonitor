@@ -1,46 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row } from "antd";
 import * as actions from "./actions/actions";
-import { Checkbox } from "antd";
 import DataTable from "./components/Iis/DataTable";
 import ServerData from "./components/Iis/ServerData";
-import TaskActionButtons from "./components/TaskActionButtons";
-import OracleToggleButton from "./components/OracleToggleButton";
 import SessionsPanel from "./components/SessionsPanel";
-
-const isDeployingColumn = [
-  {
-    title: "Reserved",
-    key: "isReserved",
-    dataIndex: "isReserved",
-    render: (value, row) => (
-      <OracleToggleButton id={row.id} isReserved={value} />
-    ),
-    width: 100
-  },
-  {
-    title: "Deploying",
-    key: "isDeploying",
-    dataIndex: "isDeploying",
-    render: value => <Checkbox defaultChecked={value} disabled />,
-    width: 100
-  }
-];
-
-const taskAction = {
-  title: "Action",
-  key: "x",
-  dataIndex: "x",
-  render: (value, row) => <TaskActionButtons {...row} />,
-  width: 100
-};
+import TasksPanel from "./components/TasksPanel";
+import OraclePanel from "./components/OraclePanel";
 
 const Home = props => {
   const { settings, tasks, disk, oracle } = useSelector(state => state);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(actions.getTasksAction());
     dispatch(actions.getDiskUsageAction());
     dispatch(actions.getOracleAction());
   }, [dispatch, tasks.loaded, disk.loaded, oracle.loaded]);
@@ -52,21 +22,10 @@ const Home = props => {
     <div style={{ background: "#fff", padding: 5, height: "100%" }}>
       <h1 className="table-title">IIS Applications</h1>
       {data}
-      {oracle.data && (
-        <DataTable
-          {...oracle}
-          title="Oracle Instances"
-          extraColumns={isDeployingColumn}
-        />
-      )}
-      <DataTable {...disk} title="Disk Status" rowKey="path" />
 
-      <DataTable
-        {...tasks}
-        rowKey="name"
-        title="Scheduled Tasks"
-        extraColumns={[taskAction]}
-      />
+      {oracle.data && <OraclePanel />}
+      <DataTable {...disk} title="Disk Status" />
+      <TasksPanel />
       <SessionsPanel />
     </div>
   );
