@@ -1,47 +1,49 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Layout, notification } from "antd";
-import { SettingFilled } from "@ant-design/icons";
+import { makeStyles } from "@material-ui/core/styles";
+import SettingsIcon from "@material-ui/icons/Settings";
+import { Toolbar, Typography, AppBar } from "@material-ui/core/";
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from "./Home";
 import Settings from "./Settings";
 import * as actions from "./actions/actions";
-
-const { Header, Content } = Layout;
+const useStyles = makeStyles(theme => ({
+  title: {
+    flexGrow: 1
+  }
+}));
 const App = props => {
+  const classes = useStyles();
   const { errors, settings } = useSelector(state => state);
   const dispatch = useDispatch();
-  useEffect(() => {
-    errors.data.forEach(item => {
-      if (item.type === "Success") {
-        notification.success(item);
-      } else {
-        notification.error(item);
-      }
-    });
-  }, [errors]);
+  //   useEffect(() => {
+  //     errors.data.forEach(item => {
+  //       if (item.type === "Success") {
+  //         notification.success(item);
+  //       } else {
+  //         notification.error(item);
+  //       }
+  //     });
+  //   }, [errors]);
   if (!settings.loaded) {
     dispatch(actions.getSettings());
   }
   return (
     <Router>
-      <Layout className="layout">
-        <Header>
-          <div className="logo" />
-          <Link className="text-colored" to="/">
-            Home
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/">Server Monitor</Link>
+          </Typography>
+          <Link to="/settings">
+            <SettingsIcon />
           </Link>
-          <Link className="settings" to="/settings">
-            <SettingFilled />
-          </Link>
-        </Header>
-        <Content style={{ padding: "0 50px" }}>
-          <Switch>
-            <Route exact path="/settings" component={Settings} />
-            <Route component={Home} />
-          </Switch>
-        </Content>
-      </Layout>
+        </Toolbar>
+      </AppBar>
+      <Switch>
+        <Route exact path="/settings" component={Settings} />
+        <Route component={Home} />
+      </Switch>
     </Router>
   );
 };
