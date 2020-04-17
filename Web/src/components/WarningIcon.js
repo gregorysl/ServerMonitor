@@ -1,15 +1,11 @@
 import React from "react";
-import { Icon, Tooltip } from "antd";
+import { Tooltip } from "antd";
+import { WarningTwoTone } from "@ant-design/icons";
 
 const WarningIcon = ({ text, show }) =>
   show && (
     <Tooltip title={text}>
-      <Icon
-        className="icon-large"
-        type="warning"
-        theme="twoTone"
-        twoToneColor="red"
-      />
+      <WarningTwoTone className="icon-large" twoToneColor="red" />
     </Tooltip>
   );
 

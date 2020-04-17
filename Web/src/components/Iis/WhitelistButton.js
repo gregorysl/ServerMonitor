@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { LockOutlined } from "@ant-design/icons";
 import TooltipButton from "../TooltipButton";
 
 const WhitelistButton = ({ whitelisted, click, build }) => {
@@ -16,7 +17,7 @@ const WhitelistButton = ({ whitelisted, click, build }) => {
       type="default"
       text={tooltip}
       click={whitelist}
-      icon="lock"
+      icon={<LockOutlined />}
       styles={styles}
     />
   );

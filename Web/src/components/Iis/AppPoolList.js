@@ -1,10 +1,16 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import dateformat from "dateformat";
+import {
+  ReloadOutlined,
+  PlayCircleOutlined,
+  CloseCircleOutlined
+} from "@ant-design/icons";
 import TooltipButton from "../TooltipButton";
 import ApplicationStatus from "./ApplicationStatus";
 import * as actions from "../../actions/actions";
-import { Row, Col, Icon, Tooltip } from "antd";
+import { Row, Col, Tooltip } from "antd";
+import { WarningFilled } from "@ant-design/icons";
 
 const AppPoolList = props => {
   const dispatch = useDispatch();
@@ -18,7 +24,7 @@ const AppPoolList = props => {
       <Col span={15}>
         {x.name && x.pool && x.name !== x.pool && (
           <Tooltip title="Application pool has different name than IIS application. Check your configuration for errors">
-            <Icon className="icon-large" type="warning" />
+            <WarningFilled className="icon-large" />
           </Tooltip>
         )}
         <span>{x.name}</span>
@@ -36,13 +42,13 @@ const AppPoolList = props => {
               action: "Toggle"
             })
           }
-          icon={x.running ? "close-circle" : "play-circle"}
+          icon={x.running ? <CloseCircleOutlined /> : <PlayCircleOutlined />}
         />
         {x.running && (
           <TooltipButton
             type="default"
             tooltip="recycle"
-            icon="reload"
+            icon={<ReloadOutlined />}
             click={() => {
               recycle(x.name);
             }}

@@ -4,6 +4,7 @@ import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { setSettings } from "./actions/actions";
 import { FieldArray } from "react-final-form-arrays";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import {
   Button,
@@ -43,14 +44,14 @@ const ColField = ({ name, component, label, md }) => (
 const RemoveButton = ({ fields, index }) => (
   <Col xs={24} sm={12} md={2}>
     <Button
-      icon="delete"
+      icon={<DeleteOutlined />}
       onClick={() => fields.remove(index)}
       type="danger"
     ></Button>
   </Col>
 );
 const AddButton = ({ push, name, newItem = {} }) => (
-  <Button icon="plus" onClick={() => push(name, newItem)}>
+  <Button icon={<PlusOutlined />} onClick={() => push(name, newItem)}>
     Add
   </Button>
 );
@@ -112,16 +113,16 @@ let Settings = props => {
             <PageHeader title="Cleaner configuration">
               <Row>
                 <label>Cleaner can remove builds older than (days): </label>
-                <Field name={`cleaner.beforeDays`} component={numberField} />
+                <Field name={"cleaner.beforeDays"} component={numberField} />
               </Row>
               <Row>
                 <label>
                   Exclude following number of latest builds from being cleaned:{" "}
                 </label>
-                <Field name={`cleaner.excludeNLast`} component={numberField} />
+                <Field name={"cleaner.excludeNLast"} component={numberField} />
               </Row>
               <Field
-                name={`cleaner.useWhiteList`}
+                name={"cleaner.useWhiteList"}
                 component={checkboxComponent}
               />
               <Row>

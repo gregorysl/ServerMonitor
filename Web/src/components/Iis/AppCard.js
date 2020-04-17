@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Card, Button } from "antd";
+import { UnorderedListOutlined } from "@ant-design/icons";
 import AppPoolList from "./AppPoolList";
 import NoteControl from "./NoteControl";
 import ApplicationStatus from "./ApplicationStatus";
@@ -40,7 +41,7 @@ const AppCard = ({ x, click, url }) => {
             click={() => setExpanded(!expanded)}
             isClicked={expanded}
             text="Details"
-            icon="unordered-list"
+            icon={<UnorderedListOutlined />}
           />
         ]}
         title={

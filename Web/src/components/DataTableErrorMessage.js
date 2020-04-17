@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Icon } from "antd";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 
 const DataTableErrorMessage = ({ title }) => (
   <React.Fragment>
-    <Icon style={{ color: "red" }} type="exclamation-circle" />
+    <ExclamationCircleFilled style={{ color: "red" }} />
     <h3>{title}</h3>
   </React.Fragment>
 );

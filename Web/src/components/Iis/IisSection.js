@@ -18,9 +18,9 @@ const IisSection = props => {
   const displayData = iisData.map(x => (
     <AppCard key={x.name} x={x} click={click} url={props.url} />
   ));
-  return iisData.length == 0 ? 
-  <Result status="warning" title="No data!" /> :
-  (
+  return iisData.length === 0 ? (
+    <Result status="warning" title="No data!" />
+  ) : (
     <Row type="flex" gutter={16}>
       {displayData}
     </Row>

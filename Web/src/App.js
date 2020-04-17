@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, Layout, notification } from "antd";
+import { Layout, notification } from "antd";
+import { SettingFilled } from "@ant-design/icons";
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from "./Home";
 import Settings from "./Settings";
@@ -31,7 +32,7 @@ const App = props => {
             Home
           </Link>
           <Link className="settings" to="/settings">
-            <Icon type="setting" />
+            <SettingFilled />
           </Link>
         </Header>
         <Content style={{ padding: "0 50px" }}>

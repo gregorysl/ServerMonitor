@@ -1,23 +1,8 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true
-  },
-  "extends": ["airbnb", "react-app", "prettier"],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
-  "plugins": ["react", "prettier"],
+  "extends": ["react-app", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
   "rules": {
-    "endOfLine": "auto",
+    "eqeqeq": "error",
     "global-require": "off",
     "react/jsx-filename-extension": [
       1,
@@ -25,12 +10,14 @@
         "extensions": [".js", ".jsx"]
       }
     ],
-    "linebreak-style": 0,
-    "comma-dangle": ["error", "never"],
+    "arrow-parens": "off",
+    "linebreak-style": ["error", "unix"],
+    // "linebreak-style": "off",
+    "comma-dangle": "off",
     "react/no-unused-prop-types": "warn",
     "no-unused-vars": "warn",
-    "no-debugger": 0,
-    "no-console": 0,
+    "no-debugger": "off",
+    "no-console": "off",
     "no-param-reassign": [
       "error",
       {

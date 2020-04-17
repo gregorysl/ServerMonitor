@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { checkLink } from "../api/api_new";
-import { Tooltip, Tag, Spin, Icon } from "antd";
+import { Tooltip, Tag, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
-const antIcon = <Icon type="loading" spin />;
+const antIcon = <LoadingOutlined spin />;
 
 const ServiceItem = ({ data, url }) => {
   const [message, setMessage] = useState();

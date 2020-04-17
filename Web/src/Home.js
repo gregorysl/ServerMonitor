@@ -45,16 +45,13 @@ const Home = props => {
     dispatch(actions.getOracleAction());
   }, [dispatch, tasks.loaded, disk.loaded, oracle.loaded]);
 
-  
   const data = settings.hardwareList.map(x => (
     <ServerData key={x.name} name={x.name} url={x.url} />
   ));
   return (
     <div style={{ background: "#fff", padding: 5, height: "100%" }}>
-      <Row>
-        <h1 className="table-title">IIS Applications</h1>
-        {data}
-      </Row>
+      <h1 className="table-title">IIS Applications</h1>
+      {data}
       {oracle.data && (
         <DataTable
           {...oracle}

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../actions/actions";
 import DataTable from "./Iis/DataTable";
 import TooltipButton from "./TooltipButton";
+import { UserDeleteOutlined } from "@ant-design/icons";
 
 const SessionsPanel = props => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const SessionsPanel = props => {
         <TooltipButton
           type="default"
           click={() => dispatch(actions.killSession(row.id))}
-          icon="user-delete"
+          icon={<UserDeleteOutlined />}
           tooltip="Log off user"
         />
       ),
