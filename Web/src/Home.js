@@ -8,12 +8,11 @@ import TasksPanel from "./components/TasksPanel";
 import OraclePanel from "./components/OraclePanel";
 
 const Home = props => {
-  const { settings, tasks, disk, oracle } = useSelector(state => state);
+  const { settings, disk } = useSelector(state => state);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(actions.getDiskUsageAction());
-    dispatch(actions.getOracleAction());
-  }, [dispatch, tasks.loaded, disk.loaded, oracle.loaded]);
+  }, [dispatch, disk.loaded]);
 
   const data = settings.hardwareList.map(x => (
     <ServerData key={x.name} name={x.name} url={x.url} />
@@ -23,7 +22,7 @@ const Home = props => {
       <h1 className="table-title">IIS Applications</h1>
       {data}
 
-      {oracle.data && <OraclePanel />}
+      <OraclePanel />
       <DataTable {...disk} title="Disk Status" />
       <TasksPanel />
       <SessionsPanel />

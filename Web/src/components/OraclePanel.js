@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasksAction, setOracle } from "../actions/actions";
+import { getOracleAction, setOracle } from "../actions/actions";
 import DataTable from "./Iis/DataTable";
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -20,11 +20,11 @@ const OraclePanel = props => {
   ];
 
   if (!oracle.loaded) {
-    dispatch(getTasksAction());
+    dispatch(getOracleAction());
   }
-  return (
+  return oracle.data ? (
     <DataTable {...oracle} title="Oracle Instances" extraColumns={actions} />
-  );
+  ) : null;
 };
 
 export default OraclePanel;
