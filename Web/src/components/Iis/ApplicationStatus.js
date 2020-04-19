@@ -1,12 +1,15 @@
 import React from "react";
-
-import { Tag } from "antd";
+import WarningIcon from "@material-ui/icons/Warning";
+import Chip from "@material-ui/core/Chip";
 
 const ApplicationStatus = ({ state }) =>
   state !== "Running" && (
-    <Tag width={100} color={state === "Stopped" ? "red" : "gold"}>
-      {state}
-    </Tag>
+    <Chip
+      color="primary"
+      className={state === "Stopped" ? "red" : "gold"}
+      icon={<WarningIcon />}
+      label={state}
+    />
   );
 
 export default ApplicationStatus;
