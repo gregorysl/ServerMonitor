@@ -6,7 +6,7 @@ import {
   PlayCircleOutlined,
   CloseCircleOutlined
 } from "@ant-design/icons";
-import TooltipButton from "../TooltipButton";
+import TooltipIcon from "../TooltipIcon";
 import ApplicationStatus from "./ApplicationStatus";
 import * as actions from "../../actions/actions";
 import { Row, Col, Tooltip } from "antd";
@@ -33,7 +33,7 @@ const AppPoolList = props => {
         <ApplicationStatus state={x.running ? "Running" : "Stopped"} {...x} />
       </Col>
       <Col span={4}>
-        <TooltipButton
+        <TooltipIcon
           tooltip={x.running ? "Stop" : "Start"}
           type="default"
           click={() =>
@@ -45,7 +45,7 @@ const AppPoolList = props => {
           icon={x.running ? <CloseCircleOutlined /> : <PlayCircleOutlined />}
         />
         {x.running && (
-          <TooltipButton
+          <TooltipIcon
             type="default"
             tooltip="recycle"
             icon={<ReloadOutlined />}

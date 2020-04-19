@@ -1,26 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { LockOutlined } from "@ant-design/icons";
-import TooltipButton from "../TooltipButton";
+import TooltipIcon from "../TooltipIcon";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 
 const WhitelistButton = ({ whitelisted, click, build }) => {
   const tooltip = whitelisted ? "Unlock" : "Lock";
-  const styles = whitelisted ? "locked" : "unlocked";
+  const icon = whitelisted ? <FavoriteIcon /> : <FavoriteBorderIcon />;
   const whitelist = () =>
     click({
       build,
       action: "Whitelist"
     });
-  return (
-    <TooltipButton
-      tooltip={tooltip}
-      type="default"
-      text={tooltip}
-      click={whitelist}
-      icon={<LockOutlined />}
-      styles={styles}
-    />
-  );
+  return <TooltipIcon tooltip={tooltip} click={whitelist} icon={icon} />;
 };
 
 WhitelistButton.propTypes = {

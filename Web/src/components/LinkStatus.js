@@ -5,7 +5,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
 
 const LinkStatus = ({ data, url }) => {
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(true);
 
