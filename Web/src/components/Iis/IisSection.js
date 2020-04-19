@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions";
-import { Row, Result } from "antd";
 import AppCard from "./AppCard";
+import ErrorCard from "../ErrorCard";
 
 const IisSection = props => {
   const iisData = useSelector(state => {
@@ -18,13 +18,7 @@ const IisSection = props => {
   const displayData = iisData.map(x => (
     <AppCard key={x.name} x={x} click={click} url={props.url} />
   ));
-  return iisData.length === 0 ? (
-    <Result status="warning" title="No data!" />
-  ) : (
-    <Row type="flex" gutter={16}>
-      {displayData}
-    </Row>
-  );
+  return iisData.length === 0 ? <ErrorCard title="No data!" /> : displayData;
 };
 
 export default IisSection;
