@@ -1,72 +1,94 @@
 import React, { useState } from "react";
-import { Row, Col, Card, Button } from "antd";
-import { UnorderedListOutlined } from "@ant-design/icons";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import EditIcon from "@material-ui/icons/Edit";
+import { makeStyles } from "@material-ui/core/styles";
+
 import AppPoolList from "./AppPoolList";
 import NoteControl from "./NoteControl";
-import ApplicationStatus from "./ApplicationStatus";
-import StartStopButton from "./StartStopButton";
 import WhitelistButton from "./WhitelistButton";
 import AppName from "./AppName";
-import WarningIcon from "../WarningIcon";
+import StartStopButton from "./StartStopButton";
+import ApplicationStatus from "./ApplicationStatus";
 
-const ActionToggleButton = ({ isClicked, click, text, icon }) => (
-  <Button
-    icon={icon}
-    size="small"
-    type={isClicked ? "primary" : "default"}
-    onClick={click}
-  >
-    {text}
-  </Button>
-);
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: 345
+  },
+  title: {
+    paddingLeft: 5
+  },
+  header: {
+    paddingBottom: 0
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  expandOpen: {
+    transform: "rotate(180deg)"
+  }
+}));
 
 const AppCard = ({ x, click, url }) => {
   const [expanded, setExpanded] = useState(false);
-  const location = url
-    .split("/")
-    .splice(0, 3)
-    .join("/");
+  const [isEdit, setIsEdit] = useState(false);
+  const classes = useStyles();
+
+  const location = url.split("/").splice(0, 3).join("/");
   return (
-    <Col xs={24} sm={12} md={12} lg={8} xl={6} key={x.name}>
-      <Card
-        className={x.running ? "" : "stopped"}
-        style={{ marginBottom: 8 }}
-        actions={[
-          <WhitelistButton
-            build={x}
-            click={click}
-            whitelisted={x.whitelisted}
-          />,
-          <ActionToggleButton
-            click={() => setExpanded(!expanded)}
-            isClicked={expanded}
-            text="Details"
-            icon={<UnorderedListOutlined />}
-          />
-        ]}
+    <Card className={classes.root}>
+      <CardHeader
+        className={classes.header}
         title={
           <>
-            <Row>
-              <WarningIcon
-                show={x.cleanerMark}
-                text="This build matches criteria to be cleaned on next run"
-              />
-              <AppName
-                location={location}
-                name={x.name}
-                org={x}
-                running={x.running}
-              />
-              <ApplicationStatus state={x.state} cleanerMark={x.cleanerMark} />
-            </Row>
-            <NoteControl org={x} url={url} />
+            <AppName location={location} name={x.name} running={x.running} />
+            <ApplicationStatus state={x.state} className={classes.title} />
           </>
         }
-        extra={<StartStopButton build={x} click={click} running={x.running} />}
-      >
-        {expanded && <AppPoolList org={x} url={url} items={x.apps} />}
-      </Card>
-    </Col>
+        subheader={
+          <NoteControl
+            build={x}
+            url={url}
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+          />
+        }
+      />
+      <CardActions disableSpacing>
+        <StartStopButton build={x} click={click} running={x.running} />
+        <WhitelistButton build={x} click={click} whitelisted={x.whitelisted} />
+        <IconButton
+          disabled={isEdit}
+          aria-label="share"
+          onClick={() => setIsEdit(!isEdit)}
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          className={
+            classes.expand + " " + (expanded ? classes.expandOpen : "")
+          }
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <AppPoolList org={x} url={url} items={x.apps} />
+        </CardContent>
+      </Collapse>
+    </Card>
   );
 };
 export default AppCard;
