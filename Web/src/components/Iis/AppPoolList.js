@@ -1,16 +1,19 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import dateformat from "dateformat";
-import {
-  ReloadOutlined,
-  PlayCircleOutlined,
-  CloseCircleOutlined
-} from "@ant-design/icons";
+import Tooltip from "@material-ui/core/Tooltip";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import ReportIcon from "@material-ui/icons/Report";
+import ReplayIcon from "@material-ui/icons/Replay";
+
+import StartStopButton from "./StartStopButton";
 import TooltipIcon from "../TooltipIcon";
 import ApplicationStatus from "./ApplicationStatus";
 import * as actions from "../../actions/actions";
-import { Row, Col, Tooltip } from "antd";
-import { WarningFilled } from "@ant-design/icons";
 
 const AppPoolList = props => {
   const dispatch = useDispatch();
@@ -19,50 +22,51 @@ const AppPoolList = props => {
   if (props.items.length === 0) {
     return <h1>No IIS applications found.</h1>;
   }
-  const data = props.items.map(x => (
-    <Row key={x.name}>
-      <Col span={15}>
-        {x.name && x.pool && x.name !== x.pool && (
-          <Tooltip title="Application pool has different name than IIS application. Check your configuration for errors">
-            <WarningFilled className="icon-large" />
-          </Tooltip>
-        )}
-        <span>{x.name}</span>
-      </Col>
-      <Col span={5}>
-        <ApplicationStatus state={x.running ? "Running" : "Stopped"} {...x} />
-      </Col>
-      <Col span={4}>
-        <TooltipIcon
-          tooltip={x.running ? "Stop" : "Start"}
-          type="default"
-          click={() =>
-            toggle({
-              build: { apps: [x] },
-              action: "Toggle"
-            })
-          }
-          icon={x.running ? <CloseCircleOutlined /> : <PlayCircleOutlined />}
-        />
-        {x.running && (
+  const data = props.items.map(value => (
+    <ListItem key={value.name} dense disableGutters>
+      {value.name && value.pool && value.name !== value.pool && (
+        <Tooltip title="Application pool has different name than IIS application. Check your configuration for errors">
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+        </Tooltip>
+      )}
+      <ListItemText
+        primary={value.name}
+        secondary={
+          <ApplicationStatus
+            state={value.running ? "Running" : "Stopped"}
+            {...value}
+            small
+          />
+        }
+      />
+      <ListItemSecondaryAction>
+        {value.running && (
           <TooltipIcon
-            type="default"
-            tooltip="recycle"
-            icon={<ReloadOutlined />}
+            tooltip="Recycle"
+            icon={<ReplayIcon />}
             click={() => {
-              recycle(x.name);
+              recycle(value.name);
             }}
           />
         )}
-      </Col>
-    </Row>
+        <StartStopButton
+          running={value.running}
+          build={{ apps: [value] }}
+          click={toggle}
+        />
+      </ListItemSecondaryAction>
+    </ListItem>
   ));
+  const since = dateformat(props.org.createdDateTime, " dd.mm.yyyy");
   return (
-    <Row>
-      {props.org.daysOld} days old, created
-      {dateformat(props.org.createdDateTime, " dd.mm.yyyy, dddd")}
+    <List>
+      <ListItem dense button disableGutters>
+        <ListItemText primary={`${since} (${props.org.daysOld} day(s) old)`} />
+      </ListItem>
       {data}
-    </Row>
+    </List>
   );
 };
 

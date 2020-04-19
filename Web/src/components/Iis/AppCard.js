@@ -14,16 +14,21 @@ import NoteControl from "./NoteControl";
 import WhitelistButton from "./WhitelistButton";
 import AppName from "./AppName";
 import StartStopButton from "./StartStopButton";
+import Divider from "@material-ui/core/Divider";
 import ApplicationStatus from "./ApplicationStatus";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: 345
+    width: 350
   },
   title: {
     paddingLeft: 5
   },
   header: {
+    paddingBottom: 0
+  },
+  expandPanel: {
+    paddingTop: 0,
     paddingBottom: 0
   },
   expand: {
@@ -84,7 +89,8 @@ const AppCard = ({ x, click, url }) => {
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
+        <CardContent className={classes.expandPanel}>
+          <Divider />
           <AppPoolList org={x} url={url} items={x.apps} />
         </CardContent>
       </Collapse>
