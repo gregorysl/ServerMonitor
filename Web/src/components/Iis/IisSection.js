@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../actions/actions";
 import AppCard from "./AppCard";
+import Grid from "@material-ui/core/Grid";
 import ErrorCard from "../ErrorCard";
 
 const IisSection = props => {
@@ -18,7 +19,13 @@ const IisSection = props => {
   const displayData = iisData.map(x => (
     <AppCard key={x.name} x={x} click={click} url={props.url} />
   ));
-  return iisData.length === 0 ? <ErrorCard title="No data!" /> : displayData;
+  return iisData.length === 0 ? (
+    <ErrorCard title="No data!" />
+  ) : (
+    <Grid container spacing={1}>
+      {displayData}
+    </Grid>
+  );
 };
 
 export default IisSection;

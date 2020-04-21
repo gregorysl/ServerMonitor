@@ -5,6 +5,10 @@ import Hardware from "../Hardware";
 import IisSection from "./IisSection";
 import { getHeartbeat } from "../../actions/actions";
 import ErrorCard from "../ErrorCard";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+
 const ServerData = ({ name, url }) => {
   const heartbeat = useSelector(state => state.heartbeat[name]);
   const dispatch = useDispatch();
@@ -15,18 +19,19 @@ const ServerData = ({ name, url }) => {
   }, [dispatch, heartbeat, name, url]);
 
   const working = heartbeat && heartbeat.working;
-  return (
-    <div style={{ marginBottom: 5 }}>
-      <span className="app-title">{name}</span>
-      {working && (
-        <>
-          <ServerLinks url={url} />
-          <Hardware name={name} url={url} />
-          <IisSection name={name} url={url} />
-        </>
-      )}
-      {!working && <ErrorCard title="Connection Error!" />}
-    </div>
+  return !working ? (
+    <ErrorCard title={`${name} connection Error!`} />
+  ) : (
+    <Card>
+      <CardHeader
+        title={name}
+        subheader={<ServerLinks url={url} />}
+        action={<Hardware name={name} url={url} />}
+      />
+      <CardContent>
+        <IisSection name={name} url={url} />
+      </CardContent>
+    </Card>
   );
 };
 export default ServerData;

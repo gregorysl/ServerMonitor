@@ -19,7 +19,6 @@ const Home = props => {
   ));
   return (
     <div style={{ background: "#fff", padding: 5, height: "100%" }}>
-      <h1 className="table-title">IIS Applications</h1>
       {data}
 
       <OraclePanel />
