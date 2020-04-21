@@ -8,28 +8,32 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import ErrorCard from "./ErrorCard";
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: { padding: 0, paddingRight: 5 }
 }));
 
-const ResponsiveAreaChart = ({ data, dataKey, color }) => (
-  <AreaChart
-    height={40}
-    width={60}
-    data={data}
-    margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-  >
-    <YAxis type="number" domain={[0, 100]} hide />
-    <Area
-      type="natural"
-      dataKey={dataKey}
-      stroke="none"
-      fill={color}
-      dot={false}
-    />
-  </AreaChart>
-);
+const ResponsiveAreaChart = ({ data, dataKey, color }) => {
+  const theme = useTheme();
+  return (
+    <AreaChart
+      height={40}
+      width={60}
+      data={data}
+      margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+    >
+      <YAxis type="number" domain={[0, 100]} hide />
+      <Area
+        type="natural"
+        dataKey={dataKey}
+        stroke="none"
+        fill={theme.palette.primary.main}
+        dot={false}
+      />
+    </AreaChart>
+  );
+};
 const Hardware = props => {
   const classes = useStyles();
   const dispatch = useDispatch();

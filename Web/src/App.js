@@ -4,10 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { Toolbar, Typography, AppBar } from "@material-ui/core/";
-import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Route,
+  Link as RouterLink,
+  Switch
+} from "react-router-dom";
 import Home from "./Home";
 import Settings from "./Settings";
 import * as actions from "./actions/actions";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -40,9 +46,11 @@ const App = props => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <Link to="/">Server Monitor</Link>
+            <Link color="textPrimary" component={RouterLink} to="/">
+              Server Monitor
+            </Link>
           </Typography>
-          <Link to="/settings">
+          <Link color="textPrimary" component={RouterLink} to="/settings">
             <SettingsIcon />
           </Link>
         </Toolbar>

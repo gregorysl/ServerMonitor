@@ -7,11 +7,26 @@ import App from "./App";
 import store from "./store";
 import "./styles/style.sass";
 
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#C30E2E"
+    },
+    secondary: {
+      main: "#0EC3A2"
+    }
+  }
+});
+
 const Item = (
-  <SnackbarProvider>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </SnackbarProvider>
+  <ThemeProvider theme={theme}>
+    <SnackbarProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </SnackbarProvider>
+  </ThemeProvider>
 );
 ReactDOM.render(Item, document.getElementById("root"));
