@@ -21,7 +21,13 @@ const ResponsiveAreaChart = ({ data, dataKey, color }) => (
     margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
   >
     <YAxis type="number" domain={[0, 100]} hide />
-    <Area type="monotone" dataKey={dataKey} stroke={color} fill={color} />
+    <Area
+      type="natural"
+      dataKey={dataKey}
+      stroke="none"
+      fill={color}
+      dot={false}
+    />
   </AreaChart>
 );
 const Hardware = props => {
