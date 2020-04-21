@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Row, Col, Typography } from "antd";
 import { usePageVisibility } from "react-page-visibility";
 import { getHardwareAction } from "../actions/actions";
 import { AreaChart, Area, YAxis } from "recharts";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import ErrorCard from "./ErrorCard";
 
-const { Text } = Typography;
+const useStyles = makeStyles(theme => ({
+  root: { padding: 0, paddingRight: 5 }
+}));
 
 const ResponsiveAreaChart = ({ data, dataKey, color }) => (
   <AreaChart
@@ -19,6 +25,7 @@ const ResponsiveAreaChart = ({ data, dataKey, color }) => (
   </AreaChart>
 );
 const Hardware = props => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const isVisible = usePageVisibility();
   useEffect(() => {
@@ -27,47 +34,39 @@ const Hardware = props => {
     }, 5000);
     return () => clearInterval(interval);
   }, [dispatch, isVisible, props.name, props.url]);
-  const hardware = useSelector(state => state.hardware[props.name]);
 
-  return !hardware ? null : (
-    <Row style={{ marginLeft: "auto" }} type="flex" justify="start">
-      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
-        <ResponsiveAreaChart
-          data={hardware.data}
-          dataKey="CPU"
-          color="#8884d8"
+  const hardware = useSelector(state => {
+    let namedHardware = state.hardware[props.name];
+    if (!namedHardware) {
+      namedHardware = { data: [], current: [] };
+    }
+    return namedHardware;
+  });
+
+  const data2 = hardware.current.map(x => (
+    <Grid item key={x.key}>
+      <Card>
+        <CardHeader
+          className={classes.root}
+          title={x.key}
+          subheader={x.value + "%"}
+          avatar={
+            <ResponsiveAreaChart
+              data={hardware.data}
+              dataKey={x.key}
+              color="#8884d8"
+            />
+          }
         />
-        <Row style={{ marginLeft: 12 }}>
-          <Text strong>CPU</Text>
-          <br />
-          <Text>{hardware.current[0].value}%</Text>
-        </Row>
-      </Col>
-      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
-        <ResponsiveAreaChart
-          data={hardware.data}
-          dataKey="RAM"
-          color="#8884d8"
-        />
-        <Row style={{ marginLeft: 12 }}>
-          <Text strong>RAM</Text>
-          <br />
-          <Text>{hardware.current[1].value}%</Text>
-        </Row>
-      </Col>
-      <Col span={4} style={{ display: "flex", margin: 5, width: 120 }}>
-        <ResponsiveAreaChart
-          data={hardware.data}
-          dataKey="HDD"
-          color="#8884d8"
-        />
-        <Row style={{ marginLeft: 12 }}>
-          <Text strong>HDD</Text>
-          <br />
-          <Text>{hardware.current[2].value}%</Text>
-        </Row>
-      </Col>
-    </Row>
+      </Card>
+    </Grid>
+  ));
+  return !hardware || !hardware.data ? (
+    <ErrorCard title="Connection Error!" />
+  ) : (
+    <Grid container spacing={1}>
+      {data2}
+    </Grid>
   );
 };
 
