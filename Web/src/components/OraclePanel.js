@@ -19,7 +19,7 @@ const OraclePanel = props => {
     })
   ];
 
-  if (!oracle.loaded) {
+  if (!oracle.loaded && !oracle.loading) {
     dispatch(getOracleAction());
   }
   return oracle.data ? (

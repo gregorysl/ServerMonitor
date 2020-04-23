@@ -43,6 +43,14 @@ const tableInitialState = {
   data: [],
   errors: []
 };
+const oracleInitialState = {
+  columns: [],
+  keys: [],
+  data: [],
+  errors: [],
+  loaded: false,
+  loading: false
+};
 const oracleInstanciesErrorText = "Oracle Instancies";
 const userSessionsErrorText = "User Sessions";
 const tasksErrorText = "Tasks";
@@ -130,13 +138,15 @@ function sessionsReducer(state = tableInitialState, action) {
   }
 }
 
-function oracleReducer(state = tableInitialState, action) {
+function oracleReducer(state = oracleInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
+      debugger;
       if (!action.data.data) {
         return {
           columns: oracleColumns,
-          loaded: true
+          loaded: true,
+          loading: false
         };
       }
 
@@ -144,19 +154,29 @@ function oracleReducer(state = tableInitialState, action) {
         ...state,
         data: action.data.data,
         columns: oracleColumns,
-        loaded: true
+        loaded: true,
+        loading: false
       };
 
     case types.ORACLE_ERROR:
+      debugger;
       return {
         ...state,
         columns: oracleColumns,
-        loaded: true
+        loaded: true,
+        loading: false
       };
     case types.TOGGLE_ORACLE_REQUEST:
       return {
         ...state,
-        loaded: false
+        loaded: false,
+        loading: true
+      };
+    case types.ORACLE_REQUEST:
+      return {
+        ...state,
+        loaded: false,
+        loading: true
       };
     default:
       return state;
