@@ -6,8 +6,8 @@ import CheckIcon from "@material-ui/icons/Check";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  success: { backgroundColor: theme.palette.secondary.main },
-  error: { backgroundColor: theme.palette.error.main }
+  success: { backgroundColor: "#87d068" },
+  error: { backgroundColor: "#f5222d" }
 }));
 
 const LinkStatus = ({ data, url }) => {

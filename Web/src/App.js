@@ -20,6 +20,9 @@ import Container from "@material-ui/core/Container";
 const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1
+  },
+  toolbar: {
+    backgroundColor: "black"
   }
 }));
 
@@ -47,7 +50,7 @@ const App = props => {
     <Router>
       <CssBaseline />
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Typography variant="h6" className={classes.title}>
             <Link color="error" component={RouterLink} to="/">
               Server Monitor
