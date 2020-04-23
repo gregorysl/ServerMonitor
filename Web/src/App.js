@@ -14,6 +14,8 @@ import Home from "./Home";
 import Settings from "./Settings";
 import * as actions from "./actions/actions";
 import Link from "@material-ui/core/Link";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -43,22 +45,25 @@ const App = props => {
   }
   return (
     <Router>
+      <CssBaseline />
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <Link color="textPrimary" component={RouterLink} to="/">
+            <Link color="error" component={RouterLink} to="/">
               Server Monitor
             </Link>
           </Typography>
-          <Link color="textPrimary" component={RouterLink} to="/settings">
+          <Link color="error" component={RouterLink} to="/settings">
             <SettingsIcon />
           </Link>
         </Toolbar>
       </AppBar>
-      <Switch>
-        <Route exact path="/settings" component={Settings} />
-        <Route component={Home} />
-      </Switch>
+      <Container maxWidth="lg">
+        <Switch>
+          <Route exact path="/settings" component={Settings} />
+          <Route component={Home} />
+        </Switch>
+      </Container>
     </Router>
   );
 };

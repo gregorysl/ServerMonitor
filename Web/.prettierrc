@@ -5,5 +5,5 @@
   "useTabs": false,
   "arrowParens": "avoid",
   "trailingComma": "none",
-  "endOfLine": "lf"
+  "endOfLine": "crlf"
 }

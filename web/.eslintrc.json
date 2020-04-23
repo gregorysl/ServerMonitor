@@ -12,7 +12,7 @@
       }
     ],
     "arrow-parens": "off",
-    "linebreak-style": "off",
+    "linebreak-style": ["error", "unix"],
     "comma-dangle": "off",
     "react/no-unused-prop-types": "warn",
     "no-unused-vars": "warn",

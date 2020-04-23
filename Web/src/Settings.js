@@ -102,86 +102,112 @@ let Settings = props => {
             : "cleaner.jsonWhitelistPath";
         return (
           <form onSubmit={handleSubmit}>
-            <Card>
-              <CardHeader
-                title="Additional servers"
-                subheader="(this will add more tabs to Hardware section)"
-                action={<AddButton push={push} name="hardwareList" />}
-              />
-              <CardContent>
-                <FieldArray name="hardwareList">{hardwareSection}</FieldArray>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader
-                title="Components to check"
-                subheader="(add data for services avaibility you want to check)"
-                action={<AddButton push={push} name="links" />}
-              />
-              <CardContent>
-                <FieldArray name="links">{linksSection}</FieldArray>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader
-                title="Directories"
-                subheader="(will check size occupied)"
-                action={
-                  <AddButton push={push} name="dirsToCheckSize" newItem={""} />
-                }
-              />
-              <CardContent>
-                <FieldArray name="dirsToCheckSize">{dirsSection}</FieldArray>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader
-                action={
-                  <AddButton push={push} name="scheduledTasks" newItem={""} />
-                }
-                title="Scheduled tasks"
-              />
-              <CardContent>
-                <FieldArray name="scheduledTasks">{dirsSection}</FieldArray>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader title="Additional Settings" />
-              <CardContent>
-                <Field
-                  label="Group apps by"
-                  name="commonAppName"
-                  component={fieldInput}
-                  type="text"
-                />
-                <label>Whitelist type: </label>
-                <Field name="cleaner.whitelistType" component="select">
-                  <option value={0}>XML</option>
-                  <option value={1}>JSON</option>
-                </Field>
-                <Field
-                  label="Whitelist path"
-                  name={pathType}
-                  component={fieldInput}
-                  type="text"
-                />
-              </CardContent>
-            </Card>
-            <Button
-              variant="contained"
-              type="submit"
-              color="primary"
-              disabled={submitting || pristine}
-            >
-              Save settings
-            </Button>
-            <Button
-              variant="contained"
-              onClick={reset}
-              disabled={submitting || pristine}
-            >
-              Reset
-            </Button>
+            <Grid container spacing={3}>
+              <Grid item lg={12}>
+                <Card>
+                  <CardHeader
+                    title="Additional servers"
+                    subheader="(this will add more tabs to Hardware section)"
+                    action={<AddButton push={push} name="hardwareList" />}
+                  />
+                  <CardContent>
+                    <FieldArray name="hardwareList">
+                      {hardwareSection}
+                    </FieldArray>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item lg={12}>
+                <Card>
+                  <CardHeader
+                    title="Components to check"
+                    subheader="(add data for services avaibility you want to check)"
+                    action={<AddButton push={push} name="links" />}
+                  />
+                  <CardContent>
+                    <FieldArray name="links">{linksSection}</FieldArray>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item lg={12}>
+                <Card>
+                  <CardHeader
+                    title="Directories"
+                    subheader="(will check size occupied)"
+                    action={
+                      <AddButton
+                        push={push}
+                        name="dirsToCheckSize"
+                        newItem={""}
+                      />
+                    }
+                  />
+                  <CardContent>
+                    <FieldArray name="dirsToCheckSize">
+                      {dirsSection}
+                    </FieldArray>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item lg={12}>
+                <Card>
+                  <CardHeader
+                    action={
+                      <AddButton
+                        push={push}
+                        name="scheduledTasks"
+                        newItem={""}
+                      />
+                    }
+                    title="Scheduled tasks"
+                  />
+                  <CardContent>
+                    <FieldArray name="scheduledTasks">{dirsSection}</FieldArray>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item lg={12}>
+                <Card>
+                  <CardHeader title="Additional Settings" />
+                  <CardContent>
+                    <Field
+                      label="Group apps by"
+                      name="commonAppName"
+                      component={fieldInput}
+                      type="text"
+                    />
+                    <label>Whitelist type: </label>
+                    <Field name="cleaner.whitelistType" component="select">
+                      <option value={0}>XML</option>
+                      <option value={1}>JSON</option>
+                    </Field>
+                    <Field
+                      label="Whitelist path"
+                      name={pathType}
+                      component={fieldInput}
+                      type="text"
+                    />
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item lg={12}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  disabled={submitting || pristine}
+                >
+                  Save settings
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={reset}
+                  disabled={submitting || pristine}
+                >
+                  Reset
+                </Button>
+              </Grid>
+            </Grid>
           </form>
         );
       }}

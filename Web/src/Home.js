@@ -6,6 +6,7 @@ import ServerData from "./components/Iis/ServerData";
 import SessionsPanel from "./components/SessionsPanel";
 import TasksPanel from "./components/TasksPanel";
 import OraclePanel from "./components/OraclePanel";
+import Grid from "@material-ui/core/Grid";
 
 const Home = props => {
   const { settings, disk } = useSelector(state => state);
@@ -15,17 +16,26 @@ const Home = props => {
   }, [dispatch, disk.loaded]);
 
   const data = settings.hardwareList.map(x => (
-    <ServerData key={x.name} name={x.name} url={x.url} />
+    <Grid key={x.name} item lg={12}>
+      <ServerData name={x.name} url={x.url} />
+    </Grid>
   ));
   return (
-    <div style={{ background: "#fff", padding: 5, height: "100%" }}>
+    <Grid container spacing={3}>
       {data}
-
-      <OraclePanel />
-      <DataTable {...disk} title="Disk Status" />
-      <TasksPanel />
-      <SessionsPanel />
-    </div>
+      <Grid item lg={12}>
+        <OraclePanel />
+      </Grid>
+      <Grid item lg={12}>
+        <DataTable {...disk} title="Disk Status" />
+      </Grid>
+      <Grid item lg={12}>
+        <TasksPanel />
+      </Grid>
+      <Grid item lg={12}>
+        <SessionsPanel />
+      </Grid>
+    </Grid>
   );
 };
 Home.defaultProps = { isDisabled: true, data: [], columns: [] };
