@@ -170,13 +170,15 @@ function oracleReducer(state = oracleInitialState, action) {
       return {
         ...state,
         loaded: false,
-        loading: true
+        loading: true,
+        columns: oracleColumns
       };
     case types.ORACLE_REQUEST:
       return {
         ...state,
         loaded: false,
-        loading: true
+        loading: true,
+        columns: oracleColumns
       };
     default:
       return state;
