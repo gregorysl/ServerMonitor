@@ -52,11 +52,11 @@ const App = props => {
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
           <Typography variant="h6" className={classes.title}>
-            <Link color="error" component={RouterLink} to="/">
+            <Link color="primary" component={RouterLink} to="/">
               Server Monitor
             </Link>
           </Typography>
-          <Link color="error" component={RouterLink} to="/settings">
+          <Link color="primary" component={RouterLink} to="/settings">
             <SettingsIcon />
           </Link>
         </Toolbar>

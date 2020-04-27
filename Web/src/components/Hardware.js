@@ -74,7 +74,7 @@ const Hardware = props => {
   return !hardware || !hardware.data ? (
     <ErrorCard title="Connection Error!" />
   ) : (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       {data2}
     </Grid>
   );

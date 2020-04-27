@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import TooltipIcon from "../TooltipIcon";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import StarIcon from "@material-ui/icons/Star";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
 
 const WhitelistButton = ({ whitelisted, click, build }) => {
   const tooltip = whitelisted ? "Unlock" : "Lock";
-  const icon = whitelisted ? <FavoriteIcon /> : <FavoriteBorderIcon />;
+  const icon = whitelisted ? <StarIcon /> : <StarBorderIcon />;
   const whitelist = () =>
     click({
       build,

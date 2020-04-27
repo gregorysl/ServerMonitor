@@ -17,12 +17,14 @@ const IisSection = props => {
   }, [dispatch, props.url]);
   const click = data => dispatch(actions.setIisAction(data, props.url));
   const displayData = iisData.map(x => (
-    <AppCard key={x.name} x={x} click={click} url={props.url} />
+    <Grid item key={x.name}>
+      <AppCard x={x} click={click} url={props.url} />
+    </Grid>
   ));
   return iisData.length === 0 ? (
     <ErrorCard title="No data!" />
   ) : (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       {displayData}
     </Grid>
   );

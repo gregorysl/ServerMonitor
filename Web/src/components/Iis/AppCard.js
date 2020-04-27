@@ -16,6 +16,7 @@ import AppName from "./AppName";
 import StartStopButton from "./StartStopButton";
 import Divider from "@material-ui/core/Divider";
 import ApplicationStatus from "./ApplicationStatus";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,10 +55,14 @@ const AppCard = ({ x, click, url }) => {
       <CardHeader
         className={classes.header}
         title={
-          <>
-            <AppName location={location} name={x.name} running={x.running} />
-            <ApplicationStatus state={x.state} className={classes.title} />
-          </>
+          <Grid container spacing={1}>
+            <Grid item>
+              <AppName location={location} name={x.name} running={x.running} />
+            </Grid>
+            <Grid item>
+              <ApplicationStatus state={x.state} className={classes.title} />
+            </Grid>
+          </Grid>
         }
         subheader={
           <NoteControl
