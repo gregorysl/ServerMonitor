@@ -12,7 +12,7 @@ const DataTable = ({
 }) => {
   return (
     <>
-      <Typography variant="subtitle1">{title}</Typography>
+      <Typography variant="h5">{title}</Typography>
       <MaterialTable
         columns={columns}
         data={data}
@@ -23,7 +23,10 @@ const DataTable = ({
           search: false,
           sorting: false,
           draggable: false,
-          toolbar: false
+          toolbar: false,
+          headerStyle: {
+            backgroundColor: "#efefef"
+          }
         }}
       />
     </>

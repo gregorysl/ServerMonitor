@@ -12,7 +12,14 @@ const WhitelistButton = ({ whitelisted, click, build }) => {
       build,
       action: "Whitelist"
     });
-  return <TooltipIcon tooltip={tooltip} click={whitelist} icon={icon} />;
+  return (
+    <TooltipIcon
+      condition={whitelisted}
+      tooltip={tooltip}
+      click={whitelist}
+      icon={icon}
+    />
+  );
 };
 
 WhitelistButton.propTypes = {

@@ -6,7 +6,6 @@ import { setSettings } from "./actions/actions";
 import { FieldArray } from "react-final-form-arrays";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import AddIcon from "@material-ui/icons/Add";
-import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
@@ -14,20 +13,26 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-const fieldInput = ({ input, label, type }) => (
-  <TextField {...input} label={label} />
+const fieldInput = ({ input, label }) => (
+  <TextField fullWidth {...input} label={label} />
 );
-const renderField = ({ input, label, type }) => (
-  <Input fullWidth {...input} type={type} placeholder={label} />
+const checkboxInput = ({ input, label }) => (
+  <FormControlLabel control={<Checkbox {...input} />} label={label} />
+);
+const renderField = ({ input, label }) => (
+  <TextField fullWidth {...input} placeholder={label} label={label} />
 );
 
-const ColField = ({ name, component, label, md }) => (
+const ColField = ({ name, component, label, md, type }) => (
   <Grid item xs={12} sm={6} md={md}>
     <Field
       name={name}
       component={component ? component : renderField}
       label={label}
+      type={type}
     />
   </Grid>
 );
@@ -55,7 +60,12 @@ const linksSection = ({ fields }) =>
       <ColField name={`${member}.name`} label="name" md={1} />
       <ColField name={`${member}.url`} label="url" md={6} />
       <ColField name={`${member}.username`} label="username" md={2} />
-      <ColField name={`${member}.password`} label="password" md={2} />
+      <ColField
+        name={`${member}.password`}
+        label="password"
+        type="password"
+        md={2}
+      />
       <RemoveButton fields={fields} index={index} />
     </Grid>
   ));
@@ -70,7 +80,7 @@ const hardwareSection = ({ fields }) =>
 const dirsSection = ({ fields }) =>
   fields.map((member, index) => (
     <Grid container spacing={3} key={index}>
-      <ColField name={`${member}`} label="name" md={11} />
+      <ColField name={`${member}`} label="location" md={11} />
       <RemoveButton fields={fields} index={index} />
     </Grid>
   ));
@@ -170,23 +180,32 @@ let Settings = props => {
                 <Card>
                   <CardHeader title="Additional Settings" />
                   <CardContent>
-                    <Field
-                      label="Group apps by"
-                      name="commonAppName"
-                      component={fieldInput}
-                      type="text"
-                    />
-                    <label>Whitelist type: </label>
-                    <Field name="cleaner.whitelistType" component="select">
-                      <option value={0}>XML</option>
-                      <option value={1}>JSON</option>
-                    </Field>
-                    <Field
-                      label="Whitelist path"
-                      name={pathType}
-                      component={fieldInput}
-                      type="text"
-                    />
+                    <Grid container spacing={2}>
+                      <Grid item lg={12}>
+                        <Field
+                          type="checkbox"
+                          name="isOracleInstanceManagerEnabled"
+                          component={checkboxInput}
+                          label="Use Oracle Instance Manager"
+                        />
+                      </Grid>
+                      <Grid item lg={12}>
+                        <Field
+                          label="Group apps by"
+                          name="commonAppName"
+                          component={fieldInput}
+                          type="text"
+                        />
+                      </Grid>
+                      <Grid item lg={12}>
+                        <Field
+                          label="Whitelist path"
+                          name={pathType}
+                          component={fieldInput}
+                          type="text"
+                        />
+                      </Grid>
+                    </Grid>
                   </CardContent>
                 </Card>
               </Grid>
