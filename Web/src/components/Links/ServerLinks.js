@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getSettings } from "../../api/api_new";
 import LinkStatus from "../LinkStatus";
+import { Grid } from "@material-ui/core";
 
 const ServerLinks = ({ url }) => {
   const [links, setLinks] = useState([]);
@@ -14,8 +15,16 @@ const ServerLinks = ({ url }) => {
     }
     fetchData();
   }, [url]);
-  const data = links.map(x => <LinkStatus data={x} key={x.name} url={url} />);
-  return <>{data}</>;
+  const data = links.map(x => (
+    <Grid item key={x.name}>
+      <LinkStatus data={x} url={url} />
+    </Grid>
+  ));
+  return (
+    <Grid container spacing={1}>
+      {data}
+    </Grid>
+  );
 };
 
 export default ServerLinks;

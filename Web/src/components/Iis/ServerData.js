@@ -9,6 +9,8 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,8 +34,16 @@ const ServerData = ({ name, url }) => {
     <Card>
       <CardHeader
         className={classes.root}
-        title={name}
-        subheader={<ServerLinks url={url} />}
+        title={
+          <Grid container spacing={2}>
+            <Grid item>
+              <Typography variant="h5">{name}</Typography>
+            </Grid>
+            <Grid item>
+              <ServerLinks url={url} />
+            </Grid>
+          </Grid>
+        }
         action={<Hardware name={name} url={url} />}
       />
       <CardContent>
