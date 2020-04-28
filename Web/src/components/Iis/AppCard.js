@@ -17,7 +17,6 @@ import StartStopButton from "./StartStopButton";
 import Divider from "@material-ui/core/Divider";
 import ApplicationStatus from "./ApplicationStatus";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,66 +54,56 @@ const AppCard = ({ x, click, url }) => {
 
   const location = url.split("/").splice(0, 3).join("/");
   return (
-    <Paper elevation={3}>
-      <Card className={classes.root}>
-        <CardHeader
-          className={classes.header}
-          title={
-            <Grid container spacing={1}>
-              <Grid item>
-                <AppName
-                  location={location}
-                  name={x.name}
-                  running={x.running}
-                />
-              </Grid>
-              <Grid item>
-                <ApplicationStatus state={x.state} className={classes.title} />
-              </Grid>
+    <Card elevation={3} className={classes.root}>
+      <CardHeader
+        className={classes.header}
+        title={
+          <Grid container spacing={1}>
+            <Grid item>
+              <AppName location={location} name={x.name} running={x.running} />
             </Grid>
-          }
-          subheader={
-            <NoteControl
-              build={x}
-              url={url}
-              isEdit={isEdit}
-              setIsEdit={setIsEdit}
-            />
-          }
-        />
-        <CardActions disableSpacing className={classes.actions}>
-          <StartStopButton build={x} click={click} running={x.running} />
-          <WhitelistButton
+            <Grid item>
+              <ApplicationStatus state={x.state} className={classes.title} />
+            </Grid>
+          </Grid>
+        }
+        subheader={
+          <NoteControl
             build={x}
-            click={click}
-            whitelisted={x.whitelisted}
+            url={url}
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
           />
-          <IconButton
-            disabled={isEdit}
-            aria-label="share"
-            color="primary"
-            onClick={() => setIsEdit(!isEdit)}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            className={
-              classes.expand + " " + (expanded ? classes.expandOpen : "")
-            }
-            onClick={() => setExpanded(!expanded)}
-            aria-expanded={expanded}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent className={classes.expandPanel}>
-            <Divider />
-            <AppPoolList org={x} url={url} items={x.apps} />
-          </CardContent>
-        </Collapse>
-      </Card>
-    </Paper>
+        }
+      />
+      <CardActions disableSpacing className={classes.actions}>
+        <StartStopButton build={x} click={click} running={x.running} />
+        <WhitelistButton build={x} click={click} whitelisted={x.whitelisted} />
+        <IconButton
+          disabled={isEdit}
+          aria-label="share"
+          color="primary"
+          onClick={() => setIsEdit(!isEdit)}
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          className={
+            classes.expand + " " + (expanded ? classes.expandOpen : "")
+          }
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent className={classes.expandPanel}>
+          <Divider />
+          <AppPoolList org={x} url={url} items={x.apps} />
+        </CardContent>
+      </Collapse>
+    </Card>
   );
 };
 export default AppCard;

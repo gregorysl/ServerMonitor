@@ -12,7 +12,6 @@ import ReplayIcon from "@material-ui/icons/Replay";
 
 import StartStopButton from "./StartStopButton";
 import TooltipIcon from "../TooltipIcon";
-import ApplicationStatus from "./ApplicationStatus";
 import * as actions from "../../actions/actions";
 
 const AppPoolList = props => {
