@@ -141,7 +141,6 @@ function sessionsReducer(state = tableInitialState, action) {
 function oracleReducer(state = oracleInitialState, action) {
   switch (action.type) {
     case types.ORACLE_SUCCESS:
-      debugger;
       if (!action.data.data) {
         return {
           columns: oracleColumns,
@@ -159,7 +158,6 @@ function oracleReducer(state = oracleInitialState, action) {
       };
 
     case types.ORACLE_ERROR:
-      debugger;
       return {
         ...state,
         columns: oracleColumns,

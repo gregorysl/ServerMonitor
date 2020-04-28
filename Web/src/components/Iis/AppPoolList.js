@@ -31,16 +31,7 @@ const AppPoolList = props => {
           </ListItemIcon>
         </Tooltip>
       )}
-      <ListItemText
-        primary={value.name}
-        secondary={
-          <ApplicationStatus
-            state={value.running ? "Running" : "Stopped"}
-            {...value}
-            small
-          />
-        }
-      />
+      <ListItemText primary={value.name} />
       <ListItemSecondaryAction>
         {value.running && (
           <TooltipIcon

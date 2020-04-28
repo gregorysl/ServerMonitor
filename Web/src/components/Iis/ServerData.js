@@ -8,8 +8,15 @@ import ErrorCard from "../ErrorCard";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    paddingBottom: 0
+  }
+}));
 const ServerData = ({ name, url }) => {
+  const classes = useStyles();
   const heartbeat = useSelector(state => state.heartbeat[name]);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,6 +31,7 @@ const ServerData = ({ name, url }) => {
   ) : (
     <Card>
       <CardHeader
+        className={classes.root}
         title={name}
         subheader={<ServerLinks url={url} />}
         action={<Hardware name={name} url={url} />}
