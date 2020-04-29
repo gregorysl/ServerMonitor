@@ -36,6 +36,7 @@ const ColField = ({ name, component, label, md, type }) => (
     />
   </Grid>
 );
+
 const RemoveButton = ({ fields, index }) => (
   <Grid item xs={12} sm={6} md={1}>
     <IconButton aria-label="delete" onClick={() => fields.remove(index)}>
@@ -189,6 +190,42 @@ let Settings = props => {
                           label="Use Oracle Instance Manager"
                         />
                       </Grid>
+                      {values.isOracleInstanceManagerEnabled && (
+                        <Grid container item spacing={1} lg={12}>
+                          <Grid item lg={3}>
+                            <Field
+                              type="text"
+                              name="instanceManager.server"
+                              component={fieldInput}
+                              label="Server"
+                            />
+                          </Grid>
+                          <Grid item lg={3}>
+                            <Field
+                              type="text"
+                              name="instanceManager.database"
+                              component={fieldInput}
+                              label="Database"
+                            />
+                          </Grid>
+                          <Grid item lg={3}>
+                            <Field
+                              type="text"
+                              name="instanceManager.username"
+                              component={fieldInput}
+                              label="Username"
+                            />
+                          </Grid>
+                          <Grid item lg={3}>
+                            <Field
+                              name="instanceManager.password"
+                              component={fieldInput}
+                              label="Password"
+                              type="password"
+                            />
+                          </Grid>
+                        </Grid>
+                      )}
                       <Grid item lg={12}>
                         <Field
                           label="Group apps by"

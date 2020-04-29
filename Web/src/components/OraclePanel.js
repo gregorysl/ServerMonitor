@@ -6,7 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 const OraclePanel = props => {
   const dispatch = useDispatch();
-  const oracle = useSelector(state => state.oracle);
+  const { oracle, settings } = useSelector(state => state);
   const actionColumns = [
     {
       title: "Reserved",
@@ -35,6 +35,7 @@ const OraclePanel = props => {
       )
     }
   ];
+  if (!settings.isOracleInstanceManagerEnabled) return null;
   const finalColumns = [...oracle.columns, ...actionColumns];
   if (!oracle.loaded && !oracle.loading) {
     dispatch(getOracleAction());
