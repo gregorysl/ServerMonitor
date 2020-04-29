@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ServerMonitor.Helpers;
 
 namespace ServerMonitor.Oracle
 {
@@ -7,9 +8,11 @@ namespace ServerMonitor.Oracle
     {
         protected readonly OracleInstanceRepository OracleInstanceRepository;
 
-        public OracleInstanceBl()
+        public OracleInstanceBl(SettingsHandler settings)
         {
-            OracleInstanceRepository = new OracleInstanceRepository(new OracleModuleDbContext());
+            var instanceSettings = settings.Data.InstanceManager;
+            OracleInstanceRepository = new OracleInstanceRepository(new OracleModuleDbContext(instanceSettings.Server,
+                instanceSettings.Database, instanceSettings.Username, instanceSettings.Password));
         }
 
         public virtual OracleInstanceConnectionDetails GetAvailableInstance(string buildServerName)

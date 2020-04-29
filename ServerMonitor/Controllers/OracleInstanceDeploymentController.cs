@@ -7,13 +7,13 @@ using ServerMonitor.Oracle;
 namespace ServerMonitor.Controllers
 {
     [RoutePrefix("OracleInstanceDeployment")]
-    public class OracleInstanceDeploymentController : ApiController
+    public class OracleInstanceDeploymentController : BaseApi
     {
         private readonly OracleInstanceBl _oracleInstanceBl;
 
         public OracleInstanceDeploymentController()
         {
-            _oracleInstanceBl = new OracleInstanceBl();
+            _oracleInstanceBl = new OracleInstanceBl(Settings);
         }
 
         [Route("{buildServerName}")]

@@ -48,12 +48,13 @@ namespace ServerMonitor.Helpers
             if (fileInfo.Exists) return;
             if (fileInfo.Directory != null) Directory.CreateDirectory(fileInfo.Directory.FullName);
             File.Create(path).Close();
+            var defaultWhitelistType = WhitelistType.Xml;
             var defaultSettings = new JsonSettings
             {
                 Cleaner = new FilterInput
                 {
-                    WhitelistType = WhitelistType.Json,
-                    JsonWhitelistPath = HostingEnvironment.MapPath("~/whitelist.json")
+                    WhitelistType = defaultWhitelistType,
+                    JsonWhitelistPath = HostingEnvironment.MapPath($"~/whitelist.{defaultWhitelistType}")
                 }
             };
             Save(defaultSettings);

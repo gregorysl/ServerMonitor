@@ -12,7 +12,7 @@ namespace ServerMonitor.Controllers
 
         public OracleInstanceController()
         {
-            _oracleInstanceBl = new OracleInstanceBl();
+            _oracleInstanceBl = new OracleInstanceBl(Settings);
         }
 
         [Route]

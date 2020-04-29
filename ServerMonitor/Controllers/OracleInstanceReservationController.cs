@@ -6,13 +6,13 @@ using ServerMonitor.Oracle;
 namespace ServerMonitor.Controllers
 {
     [RoutePrefix("OracleInstanceReservation")]
-    public class OracleInstanceReservationController : ApiController
+    public class OracleInstanceReservationController : BaseApi
     {
         private readonly OracleInstanceBl _oracleInstanceBl;
 
         public OracleInstanceReservationController()
         {
-            _oracleInstanceBl = new OracleInstanceBl();
+            _oracleInstanceBl = new OracleInstanceBl(Settings);
         }
 
         [Route]

@@ -15,8 +15,16 @@ namespace ServerMonitor.Entities
         public int CacheInSeconds { get; set; }
         public bool IsOracleInstanceManagerEnabled { get; set; }
         public FilterInput Cleaner { get; set; } = new FilterInput();
+        public InstanceManagerSettings InstanceManager { get; set; } = new InstanceManagerSettings();
     }
 
+    public class InstanceManagerSettings
+    {
+        public string Server { get; set; }
+        public string Database { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
     public class ServerData
     {
         public string Name { get; set; }
