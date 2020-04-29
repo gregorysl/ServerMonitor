@@ -24,6 +24,14 @@ namespace ServerMonitor.Entities
         public string Database { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool HasData => !string.IsNullOrWhiteSpace(Server)
+                               && !string.IsNullOrWhiteSpace(Database)
+                               && !string.IsNullOrWhiteSpace(Username)
+                               && !string.IsNullOrWhiteSpace(Password);
+
     }
     public class ServerData
     {

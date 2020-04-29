@@ -12,7 +12,7 @@ namespace ServerMonitor.Controllers
 
         public OracleInstanceController()
         {
-            _oracleInstanceBl = new OracleInstanceBl(Settings);
+            _oracleInstanceBl = Settings.Data.InstanceManager.HasData ? new OracleInstanceBl(Settings) : null;
         }
 
         [Route]
@@ -23,7 +23,7 @@ namespace ServerMonitor.Controllers
             {
 
                 var isEnabled = Settings.Data.IsOracleInstanceManagerEnabled;
-                if (isEnabled)
+                if (isEnabled && Settings.Data.InstanceManager.HasData)
                 {
                     Log.Debug("GetAllInstances called.");
                     var instances = _oracleInstanceBl.GetAllInstances();
