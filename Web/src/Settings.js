@@ -57,7 +57,7 @@ const AddButton = ({ push, name, newItem = {} }) => (
 
 const linksSection = ({ fields }) =>
   fields.map((member, index) => (
-    <Grid container spacing={3} key={index}>
+    <Grid container spacing={2} key={index}>
       <ColField name={`${member}.name`} label="name" md={1} />
       <ColField name={`${member}.url`} label="url" md={6} />
       <ColField name={`${member}.username`} label="username" md={2} />
@@ -72,7 +72,7 @@ const linksSection = ({ fields }) =>
   ));
 const hardwareSection = ({ fields }) =>
   fields.map((member, index) => (
-    <Grid container spacing={3} key={index}>
+    <Grid container spacing={2} key={index}>
       <ColField name={`${member}.name`} label="name" md={3} />
       <ColField name={`${member}.url`} label="url" md={8} />
       <RemoveButton fields={fields} index={index} />
@@ -80,7 +80,7 @@ const hardwareSection = ({ fields }) =>
   ));
 const dirsSection = ({ fields }) =>
   fields.map((member, index) => (
-    <Grid container spacing={3} key={index}>
+    <Grid container spacing={2} key={index}>
       <ColField name={`${member}`} label="location" md={11} />
       <RemoveButton fields={fields} index={index} />
     </Grid>
@@ -113,8 +113,8 @@ let Settings = props => {
             : "cleaner.jsonWhitelistPath";
         return (
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item lg={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
                 <Card>
                   <CardHeader
                     title="Additional servers"
@@ -128,7 +128,7 @@ let Settings = props => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={12}>
+              <Grid item xs={12}>
                 <Card>
                   <CardHeader
                     title="Components to check"
@@ -140,7 +140,7 @@ let Settings = props => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={12}>
+              <Grid item xs={12}>
                 <Card>
                   <CardHeader
                     title="Directories"
@@ -160,7 +160,7 @@ let Settings = props => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={12}>
+              <Grid item xs={12}>
                 <Card>
                   <CardHeader
                     action={
@@ -177,12 +177,12 @@ let Settings = props => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={12}>
+              <Grid item xs={12}>
                 <Card>
                   <CardHeader title="Additional Settings" />
                   <CardContent>
                     <Grid container spacing={2}>
-                      <Grid item lg={12}>
+                      <Grid item xs={12}>
                         <Field
                           type="checkbox"
                           name="isOracleInstanceManagerEnabled"
@@ -191,8 +191,8 @@ let Settings = props => {
                         />
                       </Grid>
                       {values.isOracleInstanceManagerEnabled && (
-                        <Grid container item spacing={1} lg={12}>
-                          <Grid item lg={3}>
+                        <Grid container item spacing={1} xs={12}>
+                          <Grid item xs={4}>
                             <Field
                               type="text"
                               name="instanceManager.server"
@@ -200,7 +200,7 @@ let Settings = props => {
                               label="Server"
                             />
                           </Grid>
-                          <Grid item lg={3}>
+                          <Grid item xs={4}>
                             <Field
                               type="text"
                               name="instanceManager.database"
@@ -208,7 +208,7 @@ let Settings = props => {
                               label="Database"
                             />
                           </Grid>
-                          <Grid item lg={3}>
+                          <Grid item xs={2}>
                             <Field
                               type="text"
                               name="instanceManager.username"
@@ -216,7 +216,7 @@ let Settings = props => {
                               label="Username"
                             />
                           </Grid>
-                          <Grid item lg={3}>
+                          <Grid item xs={2}>
                             <Field
                               name="instanceManager.password"
                               component={fieldInput}
@@ -226,7 +226,7 @@ let Settings = props => {
                           </Grid>
                         </Grid>
                       )}
-                      <Grid item lg={12}>
+                      <Grid item xs={12}>
                         <Field
                           label="Group apps by"
                           name="commonAppName"
@@ -234,7 +234,7 @@ let Settings = props => {
                           type="text"
                         />
                       </Grid>
-                      <Grid item lg={12}>
+                      <Grid item xs={12}>
                         <Field
                           label="Whitelist path"
                           name={pathType}
@@ -246,22 +246,27 @@ let Settings = props => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={12}>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  disabled={submitting || pristine}
-                >
-                  Save settings
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={reset}
-                  disabled={submitting || pristine}
-                >
-                  Reset
-                </Button>
+              <Grid container spacing={2} item xs={12}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    disabled={submitting || pristine}
+                  >
+                    Save settings
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={reset}
+                    disabled={submitting || pristine}
+                  >
+                    Reset
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </form>

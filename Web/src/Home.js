@@ -16,23 +16,23 @@ const Home = props => {
   }, [dispatch, disk.loaded]);
 
   const data = settings.hardwareList.map(x => (
-    <Grid key={x.name} item lg={12}>
+    <Grid key={x.name} item xs={12}>
       <ServerData name={x.name} url={x.url} />
     </Grid>
   ));
   return (
     <Grid container spacing={3}>
       {data}
-      <Grid item lg={12}>
+      <Grid item xs={12}>
         <OraclePanel />
       </Grid>
-      <Grid item lg={12}>
+      <Grid item xs={12}>
         <DataTable {...disk} title="Disk Status" />
       </Grid>
-      <Grid item lg={12}>
+      <Grid item xs={12}>
         <TasksPanel />
       </Grid>
-      <Grid item lg={12}>
+      <Grid item xs={12}>
         <SessionsPanel />
       </Grid>
     </Grid>
