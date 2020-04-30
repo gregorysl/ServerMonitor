@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOracleAction, setOracle } from "../actions/actions";
 import DataTable from "./Iis/DataTable";
@@ -7,6 +7,11 @@ import Checkbox from "@material-ui/core/Checkbox";
 const OraclePanel = props => {
   const dispatch = useDispatch();
   const { oracle, settings } = useSelector(state => state);
+  useEffect(() => {
+    if (!oracle.loaded && !oracle.loading) {
+      dispatch(getOracleAction());
+    }
+  }, [dispatch, oracle.loaded, oracle.loading]);
   const actionColumns = [
     {
       title: "Reserved",
@@ -37,9 +42,7 @@ const OraclePanel = props => {
   ];
   if (!settings.isOracleInstanceManagerEnabled) return null;
   const finalColumns = [...oracle.columns, ...actionColumns];
-  if (!oracle.loaded && !oracle.loading) {
-    dispatch(getOracleAction());
-  }
+
   return oracle.data ? (
     <DataTable {...oracle} columns={finalColumns} title="Oracle Instances" />
   ) : null;
