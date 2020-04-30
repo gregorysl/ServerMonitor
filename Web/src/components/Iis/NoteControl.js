@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const NoteControl = ({ build, url, isEdit, setIsEdit }) => {
-  const [note, setNote] = useState(build.note);
+  const [note, setNote] = useState(build.note ?? "");
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -57,7 +57,6 @@ const NoteControl = ({ build, url, isEdit, setIsEdit }) => {
   return (
     <Paper elevation={isEdit ? 1 : 0} className={classes.root}>
       <InputBase
-        autoFocus
         disabled={!isEdit}
         className={classes.input}
         placeholder="Build note"
