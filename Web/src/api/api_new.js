@@ -75,8 +75,14 @@ export function getOracleInstancies() {
   return get(oracleUri);
 }
 
-export function setOracle(data) {
-  return put(setOracleUri, data);
+export async function setOracle(data) {
+  const response = await ky.put(setOracleUri, makeOptions(data));
+  return {
+    responseStatus: "Success",
+    status: response.status,
+    data: "",
+    notifications: []
+  };
 }
 
 export function getUserSessions() {

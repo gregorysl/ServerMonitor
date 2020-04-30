@@ -24,7 +24,7 @@ const OraclePanel = props => {
             )
           }
           color="primary"
-          defaultChecked={rowData.isReserved}
+          checked={rowData.isReserved}
         />
       )
     },
@@ -32,11 +32,7 @@ const OraclePanel = props => {
       title: "Deploying",
       width: 50,
       render: rowData => (
-        <Checkbox
-          color="primary"
-          defaultChecked={rowData.isDeploying}
-          disabled
-        />
+        <Checkbox color="primary" checked={rowData.isDeploying} disabled />
       )
     }
   ];

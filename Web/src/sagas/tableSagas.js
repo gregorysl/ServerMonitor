@@ -66,7 +66,7 @@ export function* setIisAppRecycle(props) {
 
 export function* setOracle(props) {
   const data = yield call(api.setOracle, props.data);
-  if (data.status !== 200) {
+  if (![200, 204].includes(data.status)) {
     const errorType = types.TOGGLE_ORACLE_ERROR;
     yield put(prepareErrorObject(errorType, data.notifications));
   } else {
