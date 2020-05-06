@@ -40,10 +40,10 @@ const App = props => {
   useEffect(() => {
     errors.data.forEach(item => {
       options.variant = item.type.toLowerCase();
-      enqueueSnackbar(item.description, options);
+      enqueueSnackbar(item.message, options);
     });
   }, [errors, enqueueSnackbar]);
-  if (!settings.loaded) {
+  if (!settings.loaded && !settings.loading) {
     dispatch(actions.getSettings());
   }
   return (

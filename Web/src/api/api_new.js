@@ -9,8 +9,21 @@ const makeOptions = data => {
   };
 };
 async function get(url) {
-  const response = await ky.get(url);
-  return handleResponse(response);
+  let data = null;
+  try {
+    const response = await ky.get(url);
+    data = handleResponse(response);
+  } catch (error) {
+    console.log({ error });
+    data = {
+      responseStatus: "Error",
+      status: error.response.status,
+      data: "",
+      notifications: [{ message: error.message }]
+    };
+  } finally {
+    return data;
+  }
 }
 
 async function put(url, data) {

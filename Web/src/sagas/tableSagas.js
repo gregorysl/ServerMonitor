@@ -2,9 +2,9 @@ import { put, call } from "redux-saga/effects";
 import * as api from "../api/api_new";
 import * as types from "../constants/actionTypes";
 
-function prepareErrorObject(notifications, type) {
+function prepareErrorObject(type, notifications) {
   const notify = notifications.map(x => {
-    return { message: x.message, type: "Error" };
+    return { message: x.message, type: "Error", status: "Error" };
   });
   return {
     type: type,

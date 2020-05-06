@@ -239,7 +239,11 @@ function settingsReducer(
 ) {
   switch (action.type) {
     case types.GET_SETTINGS_SUCCESS:
-      return { ...state, ...action.data.data, loaded: true };
+      return { ...state, ...action.data.data, loaded: true, loading: false };
+    case types.GET_SETTINGS_REQUEST:
+      return { ...state, loading: true };
+    case types.GET_SETTINGS_ERROR:
+      return { ...state, loaded: true, loading: false };
     default:
       return state;
   }
@@ -277,8 +281,7 @@ function addAllNotifications(stateArray, notifications, message) {
   }
   const toAdd = notifications.map(x => ({
     id: id++,
-    message,
-    description: x.message,
+    message: `${message}: ${x.message}`,
     type: x.status
   }));
   return { id: id + 1, data: [...toAdd] };
@@ -327,7 +330,6 @@ function errorReducer(state = { id: 0, data: [] }, action) {
       title = "";
   }
   if (title === "") return state;
-
   return addAllNotifications(state, action.data.notifications, title);
 }
 
