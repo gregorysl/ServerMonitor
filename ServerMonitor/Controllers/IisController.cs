@@ -79,8 +79,7 @@ namespace ServerMonitor.Controllers
                     response.AddSuccessNotification("Application pools toggled successfully.");
                     break;
                 case "Whitelist":
-                    var whitelistProvider = new WhitelistHandler().Provider;
-                    var isWhitelisted = whitelistProvider.Toggle(action.Build.Name);
+                    var isWhitelisted = _handler.ToggleWhitelistForBuild(action.Build.Name);
                     var function = isWhitelisted ? "" : "un";
 
                     response.AddSuccessNotification($"Application {function}whitelisted successfully.");

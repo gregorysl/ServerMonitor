@@ -66,5 +66,25 @@ namespace ServerMonitor
             Save();
             return !isWhitelisted;
         }
+
+        public bool Toggle(List<string> list)
+        {
+            Load();
+            var searchedItem = _whitelist.Where(list.Contains).ToList();
+            var isWhitelisted = searchedItem.Any();
+            if (isWhitelisted)
+            {
+                foreach (var whiteListApp in searchedItem)
+                {
+                    _whitelist.Remove(whiteListApp);
+                }
+            }
+            else
+            {
+                _whitelist.AddRange(list);
+            }
+            Save();
+            return !isWhitelisted;
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace ServerMonitor.Interfaces
     {
         List<string> Get();
         bool Toggle(string name);
+        bool Toggle(List<string> list);
 
     }
 }
