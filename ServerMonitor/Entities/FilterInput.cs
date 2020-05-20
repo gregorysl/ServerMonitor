@@ -11,7 +11,7 @@ namespace ServerMonitor.Entities
         public int? ExcludeNLast { get; set; }
         public string XmlWhitelistPath { get; set; }
         public string JsonWhitelistPath { get; set; }
-        public WhitelistType WhitelistType { get; set; } = WhitelistType.Json;
+        public WhitelistType WhitelistType { get; set; } = WhitelistType.Xml;
     }
 
     public enum WhitelistType

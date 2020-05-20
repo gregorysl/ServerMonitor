@@ -25,7 +25,7 @@ namespace ServerMonitor.Entities
         public string Username { get; set; }
         public string Password { get; set; }
 
-
+        [JsonIgnore]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool HasData => !string.IsNullOrWhiteSpace(Server)
                                && !string.IsNullOrWhiteSpace(Database)

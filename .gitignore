@@ -12,7 +12,8 @@ Web/dist/server_monitor.js
 Web/npm-debug.log
 
 Release
-tools
+tools/*
+!tools/packages.config
 
 packages
 .vs

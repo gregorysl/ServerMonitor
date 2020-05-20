@@ -6,13 +6,15 @@ namespace ServerMonitor.Helpers
 {
     public class WhitelistHandler
     {
-        public IWhitelistProvider Provider { get; set; }
-        public WhitelistHandler()
+        public IWhitelistProvider Provider { get
         {
             var settings = SettingsHandler.Instance.Data;
-            Provider = settings.Cleaner.WhitelistType == WhitelistType.Xml
+            return settings.Cleaner.WhitelistType == WhitelistType.Xml
                 ? new XmlWhitelistProvider(settings.Cleaner.XmlWhitelistPath)
-                : (IWhitelistProvider) new JsonWhitelistProvider(settings.Cleaner.JsonWhitelistPath);
+                : (IWhitelistProvider)new JsonWhitelistProvider(settings.Cleaner.JsonWhitelistPath);
+            } }
+        public WhitelistHandler()
+        {
         }
     }
 }

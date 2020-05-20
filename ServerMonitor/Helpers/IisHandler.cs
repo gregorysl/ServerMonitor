@@ -25,6 +25,11 @@ namespace ServerMonitor.Helpers
             return buildsToRemove;
         }
 
+        public bool ToggleWhitelistForBuild(string name)
+        {
+            var builds = _commonNameBuildsProvider.GetBuilds().FirstOrDefault(x=>x.Name == name)?.Apps.Select(x=>x.Name).ToList(); 
+            return _whitelistHandler.Provider.Toggle(builds);
+        }
 
         public IList<BuildEntity> GetFilteredApps()
         {

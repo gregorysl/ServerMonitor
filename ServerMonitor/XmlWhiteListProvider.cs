@@ -23,21 +23,17 @@ namespace ServerMonitor
 
         public void Load()
         {
-            Whitelist whitelist;
             var file = new FileInfo(_path);
-            if (file.Directory !=null && !file.Exists)
+            if (file.Directory != null && !file.Exists)
             {
                 Directory.CreateDirectory(file.Directory.FullName);
                 var xml = new XDocument(new XElement("whiteList", new XElement("builds")));
                 xml.Save(_path);
             }
 
-            using (var streamReader = new StreamReader(_path))
-            {
-                var serializer = new XmlSerializer(typeof(Whitelist));
-
-                whitelist = (Whitelist)serializer.Deserialize(streamReader);
-            }
+            var whitelistFile = XElement.Load(_path);
+            var whitelist = new Whitelist();
+            ParseToList(whitelistFile, whitelist);
 
             _whitelist = whitelist;
         }
@@ -57,7 +53,7 @@ namespace ServerMonitor
         }
 
         public void Save()
-        {    
+        {
             var serializer = new XmlSerializer(_whitelist.GetType());
             using (var stream = new MemoryStream())
             {
@@ -80,10 +76,47 @@ namespace ServerMonitor
             }
             else
             {
-                _whitelist.Builds.Add(new WhiteListApp{Value = name});
+                _whitelist.Builds.Add(new WhiteListApp { Value = name });
             }
             Save();
             return !isWhitelisted;
+        }
+
+        public bool Toggle(List<string> list)
+        {
+            Load();
+            var searchedItem = _whitelist.Builds.Where(x => list.Contains(x.Value)).ToList();
+            var isWhitelisted = searchedItem.Any();
+            if (isWhitelisted)
+            {
+                foreach (var whiteListApp in searchedItem)
+                {
+                    _whitelist.Builds.Remove(whiteListApp);
+                }
+            }
+            else
+            {
+                var toAdd = list.Select(x => new WhiteListApp {Value = x});
+                _whitelist.Builds.AddRange(toAdd);
+            }
+            Save();
+            return !isWhitelisted;
+        }
+
+        public void ParseToList(XElement el, Whitelist whitelist)
+        {
+            foreach (var node in el.Elements())
+            {
+                if (node.Elements().Any())
+                {
+                    ParseToList(node, whitelist);
+                }
+                else
+                {
+                    var value = node.Attributes().FirstOrDefault(x => x.Name == "value")?.Value;
+                    whitelist.Builds.Add(new WhiteListApp { Value = value });
+                }
+            }
         }
     }
 
@@ -93,7 +126,7 @@ namespace ServerMonitor
     {
         [XmlArray("builds")]
         [XmlArrayItem("app")]
-        public List<WhiteListApp> Builds { get; set; }
+        public List<WhiteListApp> Builds { get; set; } = new List<WhiteListApp>();
     }
 
     public class WhiteListApp
