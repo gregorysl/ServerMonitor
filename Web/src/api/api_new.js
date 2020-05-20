@@ -114,9 +114,10 @@ export function runTask(name) {
   return post(`${tasksUri}/${name}`);
 }
 
-export function getSettings(force) {
+export function getSettings(force, customUrl) {
+  const url = customUrl ? customUrl : settingsUri;
   const forceParam = !!force ? "?force=true" : "";
-  return get(settingsUri + forceParam);
+  return get(url + forceParam);
 }
 
 export function setSettings(settings) {
