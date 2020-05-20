@@ -8,6 +8,33 @@ Simple tool to monitor server resources, manage IIS applications, check disk usa
   <img src="screenshot.png?raw=true" alt="Server Monitor"/>
 </h1>
 
+## Overview
+
+- **IIS application monitoring**
+  - Group by name
+  - Turn on/off groupped application pools
+  - Turn on/off individual application pools
+  - Recycle application pool
+  - Whitelist application (to prevent it from being cleaned up)
+  - Adding notes to a build
+- **Hardware monitoring**
+  - Displays CPU usage graph
+  - Displays RAM usage graph
+  - Displays HDD space graph
+- **Link Checker**
+  - Display status of links configured in settings
+- **Scheduled Tasks**
+  - Display status of configured tasks
+  - Run tasks
+- **User Sessions**
+  - List currently logged in users on maching
+  - Ability to sign off disconnected users
+- **Oracle Instances**
+  - List oracle instances, and their status
+  - Reserve instance to prevent overwriting
+- **Disk status**
+  - how much space configured directories occupy
+
 ## Getting started
 
 Open `settings.json` file and fill settings

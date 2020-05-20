@@ -3,14 +3,10 @@
   "userName": "pc\\username",
   "password": "password",
   "releaseLocation": "c:\\inetpub\\wwwroot\\ServerMonitor",
-  "dataSource": "localhost\\SQL",
-  "database": "Automation",
-  "dbUser": "sa",
-  "dbPassword": "password",
   "webConfig": {
     "hardwareList": [
       {
-        "name": "Google",
+        "name": "Local",
         "url": "http://localhost/ServerMonitor/"
       }
     ],
@@ -29,7 +25,16 @@
     "cleaner": {
       "useWhiteList": true,
       "beforeDays": 2,
-      "excludeNLast": 1
+      "excludeNLast": 1,
+      "xmlWhitelistPath": "D:\\WhiteListForCleanBuilds.config",
+      "jsonWhitelistPath": null,
+      "whitelistType": 0
+    },
+    "instanceManager": {
+      "server": "localhost\\SQL",
+      "database": "Automation",
+      "username": "sa",
+      "password": "password"
     }
   }
 }
