@@ -59,9 +59,11 @@ Task("Create-Release")
         );
 
 	CopyDirectory(webDistDir, releaseDir);
+    if((bool)settings["copyWebConfig"]){
         var webConfigTokens = settings["webConfig"];
         var json = JsonConvert.SerializeObject(webConfigTokens, Newtonsoft.Json.Formatting.Indented);
         FileWriteText(releaseDir + "/settings.json",json);
+    }
 });
 
 Task("Npm")

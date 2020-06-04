@@ -3,6 +3,7 @@
   "userName": "pc\\username",
   "password": "password",
   "releaseLocation": "c:\\inetpub\\wwwroot\\ServerMonitor",
+  "copyWebConfig": false,
   "webConfig": {
     "hardwareList": [
       {
@@ -17,19 +18,21 @@
         "url": "https://www.google.com/"
       }
     ],
-    "dirsToCheckSize": ["C:\\Logs", "C:\\inetpub\\wwwroot"],
-    "scheduledTasks": ["CleanBuilds", "CleanUpBuilds"],
+    "dirsToCheckSize": [
+      "C:\\Logs",
+      "C:\\inetpub\\wwwroot"
+    ],
+    "scheduledTasks": [
+      "CleanBuilds",
+      "CleanUpBuilds"
+    ],
     "commonAppName": ".Api.Entity",
     "cacheInSeconds": 3,
-    "isOracleInstanceManagerEnabled": true,
     "cleaner": {
       "useWhiteList": true,
-      "beforeDays": 2,
-      "excludeNLast": 1,
-      "xmlWhitelistPath": "D:\\WhiteListForCleanBuilds.config",
-      "jsonWhitelistPath": null,
-      "whitelistType": 0
+      "xmlWhitelistPath": "D:\\WhiteListForCleanBuilds.config"
     },
+    "isOracleInstanceManagerEnabled": true,
     "instanceManager": {
       "server": "localhost\\SQL",
       "database": "Automation",
