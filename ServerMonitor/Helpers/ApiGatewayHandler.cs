@@ -25,7 +25,7 @@ namespace ServerMonitor.Helpers
                 notification.Status = Status.Error;
                 return new HttpResponseMessage
                 {
-                    StatusCode = HttpStatusCode.NotFound,
+                    StatusCode = HttpStatusCode.InternalServerError,
                     Content = new ObjectContent(typeof(Response),
                         new Response
                         {

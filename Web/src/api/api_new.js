@@ -56,10 +56,9 @@ if (process.env.NODE_ENV === "production") {
   appUri = href;
 }
 
-const apiUri = `${appUri}Monitor/`;
 const oracleUri = `${appUri}OracleInstance`;
 const sessionsUri = `${appUri}Sessions`;
-const diskUri = `${apiUri}GetDiskUsage`;
+const diskUri = `${appUri}Monitor/GetDiskUsage`;
 const setOracleUri = `${appUri}OracleInstanceReservation`;
 const tasksUri = `${appUri}Tasks/`;
 const settingsUri = `${appUri}Settings/`;
@@ -93,13 +92,26 @@ export function getOracleInstancies() {
 }
 
 export async function setOracle(data) {
-  const response = await ky.put(setOracleUri, makeOptions(data));
-  return {
-    responseStatus: "Success",
-    status: response.status,
-    data: "",
-    notifications: []
-  };
+  let oracleData = null;
+  try {
+    const response = await ky.put(setOracleUri, makeOptions(data));
+    oracleData = {
+      responseStatus: "Success",
+      status: response.status,
+      data: "",
+      notifications: [{ message: "Reserved status changed" }]
+    };
+  } catch (error) {
+    console.log({ error });
+    oracleData = {
+      responseStatus: "Error",
+      status: error.response.status,
+      data: "",
+      notifications: [{ message: error.message }]
+    };
+  } finally {
+    return oracleData;
+  }
 }
 
 export function getUserSessions() {
