@@ -1,6 +1,6 @@
 # Server Monitor
 
-Simple tool to monitor server resources, manage IIS applications, check disk usage, run windows tasks and monitor user sessions
+Monitor server resources, manage IIS applications, check disk usage, run windows tasks and monitor user sessions
 
 ## Screenshot
 
@@ -10,6 +10,11 @@ Simple tool to monitor server resources, manage IIS applications, check disk usa
 
 ## Overview
 
+- **Multiple server monitoring**
+  - Each configured server will have all capabilities on following functions
+    - IIS application monitoring
+    - Hardware monitoring
+    - Link Checker
 - **IIS application monitoring**
   - Group by name
   - Turn on/off groupped application pools
@@ -37,24 +42,20 @@ Simple tool to monitor server resources, manage IIS applications, check disk usa
 
 ## Getting started
 
-Open `settings.json` file and fill settings
+- Open `settings.json` file and fill settings
+- Run Powershell in main dir
+- Run command `.\build.ps1 -target Package`
+- Copy contents of `./Release` to server
+- Run `.\Setup.ps1`
+- Finished!
 
-### Local build
+## Installer Settings
 
-1. Run Powershell in main dir
-2. Run command `.\build.ps1 -target Local`
-
-### Production build
-
-1. Run Powershell in main dir
-2. Run command `.\build.ps1 -target Package`
-3. Copy contents of `./Release` to server
-4. Run `.\Setup.ps1`
-5. Finished!
-
-### Other options
-
-`.\build.ps1 -target Api` Builds only API project, and creates package
-`.\build.ps1` Builds only API for local purposes
-
-## Settings explained
+<!-- prettier-ignore -->
+| Name | type | Description |
+| ---- | ------ | ---- |
+| **appName** | string | Name of application and application pool on IIS|
+| **userName** | string | Name of user with admin rights to be set on app pool|
+| **password** | string | Password of user with admin rights to be set on app pool|
+| **releaseLocation** | string | Place where Server Monitor will be located|
+| **copyWebConfig** | bool   | Handles logic for creating `settings.json` file in Release dir.<br>Set to false if previous version already exists on server |
