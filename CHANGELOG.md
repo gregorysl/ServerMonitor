@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - publishing profile
 - updated packages to latest version
 - logging in setup script
+- ability to skip settings.json file in release package
 
 ### Changed
 
@@ -24,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - restored compatibility with existing XML whitelist file
 - server will display links set in that server
 - no more warnings in setup script
+- handling error response after setting oracle instance
+- deleting user session request
 
 <!-- ## [1.0.0] - 2017-06-20 -->
 <!-- Added
