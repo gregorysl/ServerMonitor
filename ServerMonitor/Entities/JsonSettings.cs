@@ -46,9 +46,5 @@ namespace ServerMonitor.Entities
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Password { get; set; }
-
-        [DefaultValue("General")]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public string Type { get; set; }
     }
 }
