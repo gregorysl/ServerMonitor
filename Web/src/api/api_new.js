@@ -35,6 +35,10 @@ async function post(url, data) {
   const response = await ky.post(url, makeOptions(data));
   return handleResponse(response);
 }
+async function del(url) {
+  const response = await ky.delete(url);
+  return handleResponse(response);
+}
 
 async function handleResponse(response) {
   const responseData = await response.json();
@@ -103,7 +107,7 @@ export function getUserSessions() {
 }
 
 export function killUser(data) {
-  return delete `${sessionsUri}/${data}`;
+  return del(`${sessionsUri}/${data}`);
 }
 
 export function getTasks() {

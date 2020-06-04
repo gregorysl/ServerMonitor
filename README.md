@@ -4,9 +4,7 @@ Monitor server resources, manage IIS applications, check disk usage, run windows
 
 ## Screenshot
 
-<h1 align="center">
-  <img src="screenshot.png?raw=true" alt="Server Monitor"/>
-</h1>
+<img src="screenshot.png?raw=true" alt="Server Monitor"/>
 
 ## Overview
 
