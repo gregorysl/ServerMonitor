@@ -68,11 +68,27 @@ namespace ServerMonitor.Controllers
         [Route]
         public Response Post(IisAction action)
         {
+            try
+            {
+                var response = HandlePostAction(action);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var response = new Response();
+                Log.Error(ex.Message);
+                response.AddErrorNotification(ex.Message, ex.StackTrace);
+                return response;
+            }
+        }
+
+        private Response HandlePostAction(IisAction action)
+        {
             var response = new Response();
             switch (action.Action)
             {
                 case "Toggle":
-                    
+
                     var buildAppPools = action.Build.Apps.Select(x => x.Pool).ToList();
                     _handler.Toggle(buildAppPools);
 
