@@ -209,6 +209,8 @@ function hardwareReducer(state = {}, action) {
 
 function heartbeatReducer(state = {}, action) {
   switch (action.type) {
+    case types.CLEAR_HEARTBEAT:
+      return {};
     case types.GET_HEARTBEAT_REQUEST:
       const newStateReq = { ...state };
       if (Object.keys(newStateReq).indexOf(action.name) === -1) {
