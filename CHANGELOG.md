@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - error details on iis post route
+- hardware header as link to hardware server monitor
 
 ### Fixed
 
