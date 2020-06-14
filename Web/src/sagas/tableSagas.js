@@ -165,6 +165,7 @@ export function* setSettings(props) {
     yield put(prepareErrorObject(errorType, data.notifications));
   } else {
     yield put({ type: types.GET_SETTINGS_REQUEST, force: true });
+    yield put({ type: types.CLEAR_HEARTBEAT });
     yield put({ type: types.SET_SETTINGS_SUCCESS, data });
   }
 }

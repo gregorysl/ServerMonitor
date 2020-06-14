@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - error handling on sending post requests from app
+- reload heartbeat status after settings save
 
 ## [1.0.0] - 2020-06-04
 
