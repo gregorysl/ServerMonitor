@@ -31,9 +31,22 @@ async function put(url, data) {
   return handleResponse(response);
 }
 
-async function post(url, data) {
-  const response = await ky.post(url, makeOptions(data));
-  return handleResponse(response);
+async function post(url, postData) {
+  let data = null;
+  try {
+    const response = await ky.post(url, makeOptions(postData));
+    data = handleResponse(response);
+  } catch (error) {
+    console.log({ error });
+    data = {
+      responseStatus: "Error",
+      status: error.response.status,
+      data: "",
+      notifications: [{ message: error.message }]
+    };
+  } finally {
+    return data;
+  }
 }
 async function del(url) {
   const response = await ky.delete(url);
