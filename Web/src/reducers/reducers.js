@@ -96,6 +96,11 @@ function diskUsageReducer(state = diskInitialState, action) {
         columns: diskColumns,
         loaded: true
       };
+    case types.CLEAR_LOAD:
+      return {
+        ...state,
+        loaded: undefined
+      };
     default:
       return state;
   }
