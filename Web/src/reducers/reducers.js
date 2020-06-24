@@ -40,14 +40,16 @@ const sessionsColumns = [
 const tableInitialState = {
   columns: [],
   keys: [],
-  data: [],
-  errors: []
+  data: []
+};
+const diskInitialState = {
+  columns: [],
+  data: []
 };
 const oracleInitialState = {
   columns: [],
   keys: [],
   data: [],
-  errors: [],
   loaded: false,
   loading: false
 };
@@ -85,12 +87,12 @@ function tableReducer(state = tableInitialState, action) {
   }
 }
 
-function diskUsageReducer(state = tableInitialState, action) {
+function diskUsageReducer(state = diskInitialState, action) {
   switch (action.type) {
     case types.DISK_USAGE_SUCCESS:
       return {
         ...state,
-        ...action.data,
+        data: action.data.data,
         columns: diskColumns,
         loaded: true
       };
@@ -116,6 +118,11 @@ function tasksReducer(state = tableInitialState, action) {
       return {
         ...state,
         loaded: true
+      };
+    case types.CLEAR_LOAD:
+      return {
+        ...state,
+        loaded: undefined
       };
     default:
       return state;
@@ -148,7 +155,6 @@ function oracleReducer(state = oracleInitialState, action) {
           loading: false
         };
       }
-
       return {
         ...state,
         data: action.data.data,
@@ -156,7 +162,6 @@ function oracleReducer(state = oracleInitialState, action) {
         loaded: true,
         loading: false
       };
-
     case types.ORACLE_ERROR:
       return {
         ...state,
@@ -177,6 +182,12 @@ function oracleReducer(state = oracleInitialState, action) {
         loaded: false,
         loading: true,
         columns: oracleColumns
+      };
+    case types.CLEAR_LOAD:
+      return {
+        ...state,
+        loaded: undefined,
+        loading: undefined
       };
     default:
       return state;
