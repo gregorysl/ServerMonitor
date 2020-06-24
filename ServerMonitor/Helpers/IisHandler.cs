@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Web.Administration;
 using ServerMonitor.Entities;
+using ServerMonitor.Interfaces;
 
 namespace ServerMonitor.Helpers
 {
@@ -9,17 +10,17 @@ namespace ServerMonitor.Helpers
     {
         private readonly SettingsHandler _settings = SettingsHandler.Instance;
         private readonly CommonNameBuildsProvider _commonNameBuildsProvider;
-        private readonly WhitelistHandler _whitelistHandler;
+        private readonly IWhitelistProvider _whitelistProvider;
 
         public IisHandler()
         {
             _commonNameBuildsProvider = new CommonNameBuildsProvider(_settings.Data.CommonAppName);
-            _whitelistHandler = new WhitelistHandler();
+            _whitelistProvider = new XmlWhitelistProvider(_settings.Data.Cleaner.XmlWhitelistPath);
         }
 
         public List<BuildEntity> GetBuildsToClean()
         {
-            var filterHandler = new FilterHandler(_whitelistHandler.Provider, _commonNameBuildsProvider);
+            var filterHandler = new FilterHandler(_whitelistProvider, _commonNameBuildsProvider);
             var buildsToRemove = filterHandler.Execute(_settings.Data.Cleaner);
 
             return buildsToRemove;
@@ -28,14 +29,14 @@ namespace ServerMonitor.Helpers
         public bool ToggleWhitelistForBuild(string name)
         {
             var builds = _commonNameBuildsProvider.GetBuilds().FirstOrDefault(x=>x.Name == name)?.Apps.Select(x=>x.Name).ToList(); 
-            return _whitelistHandler.Provider.Toggle(builds);
+            return _whitelistProvider.Toggle(builds);
         }
 
         public IList<BuildEntity> GetFilteredApps()
         {
             var builds = _commonNameBuildsProvider.GetBuilds().OrderBy(x => x.Name).ToList();
 
-            var whitelist = _whitelistHandler.Provider.Get();
+            var whitelist = _whitelistProvider.Get();
             FillAdditionalData(builds, whitelist);
 
             var cleanList = GetBuildsToClean();

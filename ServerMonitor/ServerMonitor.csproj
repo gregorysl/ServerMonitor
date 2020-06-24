@@ -251,7 +251,6 @@
     <Compile Include="Helpers\IisHandler.cs" />
     <Compile Include="Helpers\NoteHelper.cs" />
     <Compile Include="Helpers\SettingsHandler.cs" />
-    <Compile Include="Helpers\WhitelistHandler.cs" />
     <Compile Include="Interfaces\IBuildsProvider.cs" />
     <Compile Include="Interfaces\IWhiteListProvider.cs" />
     <Compile Include="JsonWhitelistProvider.cs" />
