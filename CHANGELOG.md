@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - error details on iis post route
 - hardware header as link to hardware server monitor
+- reload Disk,Tasks, Oracle data after saving settings
 
 ### Fixed
 
 - error handling on sending post requests from app
 - reload heartbeat status after settings save
+- error handling on oracle cancelled request
 
 ## [1.0.0] - 2020-06-04
 
