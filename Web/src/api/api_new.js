@@ -14,10 +14,10 @@ async function get(url) {
     const response = await ky.get(url);
     data = handleResponse(response);
   } catch (error) {
-    console.log({ error });
+    const status = error.response ? error.response.status : 500;
     data = {
       responseStatus: "Error",
-      status: error.response.status,
+      status,
       data: "",
       notifications: [{ message: error.message }]
     };

@@ -82,7 +82,7 @@ export function* getDiskUsageData() {
   } else {
     yield put({
       type: types.DISK_USAGE_SUCCESS,
-      data
+      data: { data: data.data, notifications: data.notifications }
     });
   }
 }
@@ -166,6 +166,7 @@ export function* setSettings(props) {
   } else {
     yield put({ type: types.GET_SETTINGS_REQUEST, force: true });
     yield put({ type: types.CLEAR_HEARTBEAT });
+    yield put({ type: types.CLEAR_LOAD });
     yield put({ type: types.SET_SETTINGS_SUCCESS, data });
   }
 }
