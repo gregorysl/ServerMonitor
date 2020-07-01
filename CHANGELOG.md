@@ -13,11 +13,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - hardware header as link to hardware server monitor
 - reload Disk,Tasks, Oracle data after saving settings
 
+### Changed
+
+- changed default Common App name
+
 ### Fixed
 
 - error handling on sending post requests from app
 - reload heartbeat status after settings save
 - error handling on oracle cancelled request
+
+### Removed
+
+- Whitelist Provider
 
 ## [1.0.0] - 2020-06-04
 
