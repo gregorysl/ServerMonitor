@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace ServerMonitor.Entities
@@ -9,10 +8,8 @@ namespace ServerMonitor.Entities
         public List<ServerData> HardwareList { get; set; } = new List<ServerData>();
         public List<UncheckedLink> Links { get; set; } = new List<UncheckedLink>();
         public List<string> DirsToCheckSize { get; set; } = new List<string>();
-
         public List<string> ScheduledTasks { get; set; } = new List<string>();
-        public string CommonAppName { get; set; } = "Api";
-        public int CacheInSeconds { get; set; }
+        public string CommonAppName { get; set; } = ".Api.Entity";
         public bool IsOracleInstanceManagerEnabled { get; set; }
         public FilterInput Cleaner { get; set; } = new FilterInput();
         public InstanceManagerSettings InstanceManager { get; set; } = new InstanceManagerSettings();
