@@ -29,7 +29,7 @@ namespace ServerMonitor
             {
                 using (var serverManager = new ServerManager())
                 {
-                    rootFolder = serverManager.Sites[DefaultWebSite].Applications["/"].VirtualDirectories["/"].PhysicalPath;
+                    rootFolder = Environment.ExpandEnvironmentVariables(serverManager.Sites[DefaultWebSite].Applications["/"].VirtualDirectories["/"].PhysicalPath);
                 }
             }
             catch (Exception e)
@@ -38,8 +38,10 @@ namespace ServerMonitor
                 throw;
             }
 
-            var builds = Directory.GetDirectories(Environment.ExpandEnvironmentVariables(rootFolder))
-                .Where(a => a.Contains(name)).ToList();
+            var builds = Directory.GetDirectories(rootFolder)
+                .Where(a => a.Contains(name))
+                .Select(a => a.Replace(rootFolder+"\\", ""))
+                .ToList();
 
             if (builds == null)
             {
