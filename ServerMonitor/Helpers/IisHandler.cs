@@ -9,11 +9,13 @@ namespace ServerMonitor.Helpers
     {
         private readonly SettingsHandler _settings = SettingsHandler.Instance;
         private readonly CommonNameBuildsProvider _commonNameBuildsProvider;
+        private readonly CommonNameFoldersProvider _commonNameFolderProvider;
         private readonly WhitelistHandler _whitelistHandler;
 
         public IisHandler()
         {
             _commonNameBuildsProvider = new CommonNameBuildsProvider(_settings.Data.CommonAppName);
+            _commonNameFolderProvider = new CommonNameFoldersProvider();
             _whitelistHandler = new WhitelistHandler();
         }
 
@@ -27,8 +29,9 @@ namespace ServerMonitor.Helpers
 
         public bool ToggleWhitelistForBuild(string name)
         {
-            var builds = _commonNameBuildsProvider.GetBuilds().FirstOrDefault(x=>x.Name == name)?.Apps.Select(x=>x.Name).ToList(); 
-            return _whitelistHandler.Provider.Toggle(builds);
+            List<string> builds = _commonNameBuildsProvider.GetBuilds().FirstOrDefault(x=>x.Name == name)?.Apps.Select(x=>x.Name).ToList();
+            List<string> folders = _commonNameFolderProvider.GetFolders(name);
+            return _whitelistHandler.Provider.Toggle((builds ?? new List<string>()).Union(folders).ToList());
         }
 
         public IList<BuildEntity> GetFilteredApps()
