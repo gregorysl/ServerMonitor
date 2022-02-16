@@ -39,9 +39,9 @@ const OraclePanel = props => {
   if (!settings.isOracleInstanceManagerEnabled) return null;
   const finalColumns = [...oracle.columns, ...actionColumns];
 
-  return oracle.data ? (
+  return (
     <DataTable {...oracle} columns={finalColumns} title="Oracle Instances" />
-  ) : null;
+  );
 };
 
 export default OraclePanel;
