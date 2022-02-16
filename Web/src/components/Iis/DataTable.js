@@ -10,7 +10,7 @@ const DataTable = ({
   loaded,
   rowKey
 }) => {
-  return (
+  return data?.length > 0 ? (
     <>
       <Typography variant="h5">{title}</Typography>
       <MaterialTable
@@ -30,7 +30,7 @@ const DataTable = ({
         }}
       />
     </>
-  );
+  ) : null;
 };
 
 DataTable.defaultProps = {
