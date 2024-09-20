@@ -10,9 +10,12 @@ namespace ServerMonitor.Controllers
     public class IisController : BaseApi
     {
         private readonly IisHandler _handler;
+        private readonly ServiceHandler _service;
+
         public IisController()
         {
             _handler = new IisHandler();
+            _service = new ServiceHandler();
         }
 
         [Route]
@@ -75,7 +78,7 @@ namespace ServerMonitor.Controllers
                     
                     var buildAppPools = action.Build.Apps.Select(x => x.Pool).ToList();
                     _handler.Toggle(buildAppPools);
-
+                    _service.Toggle(action.Build?.Name);
                     response.AddSuccessNotification("Application pools toggled successfully.");
                     break;
                 case "Whitelist":
